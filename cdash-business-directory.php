@@ -62,22 +62,11 @@ add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 
 
-// ------------------------------------------------------------------------------
-// SAMPLE USAGE FUNCTIONS:
-// ------------------------------------------------------------------------------
-// THE FOLLOWING FUNCTIONS SAMPLE USAGE OF THE PLUGINS OPTIONS DEFINED ABOVE. TRY
-// CHANGING THE DROPDOWN SELECT BOX VALUE AND SAVING THE CHANGES. THEN REFRESH
-// A PAGE ON YOUR SITE TO SEE THE UPDATED VALUE.
-// ------------------------------------------------------------------------------
 
-// As a demo let's add a paragraph of the select box value to the content output
-// add_filter( "the_content", "cdash_add_content" );
-// function cdash_add_content($text) {
-// 	$options = get_option('cdash_options');
-// 	$select = $options['drp_select_box'];
-// 	$text = "<p style=\"color: #777;border:1px dashed #999; padding: 6px;\">Select box Plugin option is: {$select}</p>{$text}";
-// 	return $text;
-// }
+function cdash_language_init() {
+  load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
+}
+add_action('init', 'cdash_language_init');
 
 // Register Custom Taxonomy - Business Cateogory
 function cdash_register_taxonomy_business_category() {
@@ -200,7 +189,10 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 //Create metabox
 include_once 'wpalchemy/MetaBox.php';
+include_once 'wpalchemy/MediaAccess.php';
 define( 'MYPLUGINNAME_PATH', plugin_dir_path(__FILE__) );
+
+$wpalchemy_media_access = new WPAlchemy_MediaAccess();
 
 function wpa_people_metabox_styles()
 {
@@ -214,9 +206,45 @@ add_action( 'init', 'wpa_people_metabox_styles' );
 $buscontact_metabox = new WPAlchemy_MetaBox(array
 (
     'id' => 'buscontact_meta',
-    'title' => 'Business Contact Information',
+    'title' => 'Locations',
     'types' => array('business'),
     'template' => MYPLUGINNAME_PATH . '/wpalchemy/buscontact.php',
     'mode' => WPALCHEMY_MODE_EXTRACT,
     'prefix' => '_cdash_'
 ));
+
+$buslogo_metabox = new WPAlchemy_MetaBox(array
+(
+    'id' => 'buslogo_meta',
+    'title' => 'Logo',
+    'types' => array('business'),
+    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buslogo.php',
+    'mode' => WPALCHEMY_MODE_EXTRACT,
+    'prefix' => '_cdash_'
+));
+
+$busnotes_metabox = new WPAlchemy_MetaBox(array
+(
+    'id' => 'busnotes_meta',
+    'title' => 'Notes',
+    'types' => array('business'),
+    'template' => MYPLUGINNAME_PATH . '/wpalchemy/busnotes.php',
+    'mode' => WPALCHEMY_MODE_EXTRACT,
+    'prefix' => '_cdash_'
+));
+
+/* TODO - make a metabox full of custom fields */
+
+// Display single business (filter content)
+
+function cdash_single_business($content) {
+	if( is_singular('business') ) {
+		$new_content = '<p>This is added to the bottom of all post and page content, as well as custom post types.</p>';
+		$content = $new_content;	
+	}	
+	return $content;
+}
+add_filter('the_content', 'cdash_single_business');
+
+
+// Create shortcode for displaying business directory
