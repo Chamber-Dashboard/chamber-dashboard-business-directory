@@ -1,0 +1,27 @@
+#business img {
+max-width: 100%; 
+height: auto;
+}
+
+#business img[class*="align"],
+#business img[class*="wp-image-"] {
+height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
+}
+
+#business img.size-full {
+max-width: 100%;
+width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
+}
+
+#business .membership span, 
+#business .categories span {
+ font-weight: bold; 
+}
+
+#business .membership {
+ margin: 0; 
+}
+
+#business .location p {
+ margin: 0; 
+}

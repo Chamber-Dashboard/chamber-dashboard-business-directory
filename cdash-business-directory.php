@@ -233,16 +233,133 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
-/* TODO - make a metabox full of custom fields */
+/* TODO - make a metabox for custom fields */
+
+// Enqueue stylesheet for single businesses
+
+function cdash_single_business_style() {
+	if(is_singular('business')) {
+		wp_enqueue_style( 'cdash-single-business', plugin_dir_url(__FILE__) . 'css/cdash-single-business.css' );
+	}
+}
+
+add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 
 // Display single business (filter content)
 
 function cdash_single_business($content) {
 	if( is_singular('business') ) {
-		$new_content = '<p>This is added to the bottom of all post and page content, as well as custom post types.</p>';
-		$content = $new_content;	
+		$options = get_option('cdash_directory_options');
+		global $buscontact_metabox;
+		$contactmeta = $buscontact_metabox->the_meta();
+		global $buslogo_metabox;
+		$logometa = $buslogo_metabox->the_meta();
+		global $post;
+		$business_content .= "<div id='business'>";
+		if (($options['sv_thumb']) == "1") { 
+			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
+		}
+		if (($options['sv_logo']) == "1") { 
+			$attr = array(
+				'class'	=> 'align-left',
+			);
+			$business_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
+		}
+		if (($options['sv_description']) == "1") { 
+			$business_content .= $content;
+		}
+		if (($options['sv_memberlevel']) == "1") { 
+			$id = get_the_id();
+			$levels = get_the_terms( $id, 'membership_level');
+			$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+			$i = 1;
+			foreach($levels as $level) {
+				if($i !== 1) {
+					$business_content .= ",&nbsp;";
+				}
+				$business_content .= $level->name;
+				$i++;
+			}
+		}
+		if (($options['sv_category']) == "1") { 
+			$id = get_the_id();
+			$levels = get_the_terms( $id, 'business_category');
+			$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+			$i = 1;
+			foreach($levels as $level) {
+				if($i !== 1) {
+					$business_content .= ",&nbsp;";
+				}
+				$business_content .= $level->name;
+				$i++;
+			}
+		}
+		$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if($location['donotdisplay'] == "1") {
+				continue;
+			} else {
+				if (($options['sv_name']) == "1" && isset($location['altname'])) { 
+					$business_content .= "<div class='location'>";
+					$business_content .= "<h3>" . $location['altname'] . "</h3>";
+				}
+				if (($options['sv_address']) == "1") { 
+					$business_content .= "<p class='address'>";
+	 					if(isset($location['address'])) {
+							$address = $location['address'];
+							$business_content .= str_replace("\n", '<br />', $address);
+						}
+						if(isset($location['city'])) {
+							$business_content .= "<br />" . $location['city'] . ",&nbsp;";
+						}
+						if(isset($location['state'])) {
+							$business_content .= $location['state'] . "&nbsp";
+						}
+						if(isset($location['zip'])) {
+							$business_content .= $location['zip'];
+						} 
+					$business_content .= "</p>";
+				}
+				if (($options['sv_url']) == "1") { 
+					$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+				}
+				if (($options['sv_phone']) == "1" && isset($location['phone'])) { 
+					$business_content .= "<p class='phone'>";
+						$i = 1;
+						$phones = $location['phone'];
+						foreach($phones as $phone) {
+							if($i !== 1) {
+								$business_content .= "<br />";
+							}
+							$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+							if(isset($phone['phonetype'])) {
+								$business_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$business_content .= "</p>";
+				}
+				if (($options['sv_email']) == "1" && isset($location['email'])) { 
+					$business_content .= "<p class='email'>";
+						$i = 1;
+						$emails = $location['email'];
+						foreach($emails as $email) {
+							if($i !== 1) {
+								$business_content .= "<br />";
+							}
+							$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+							if(isset($email['emailtype'])) {
+								$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$business_content .= "</p>";
+				}
+			}
+		}
+		$business_content .= "</div>";
 	}	
-	return $content;
+	return $business_content;
 }
 add_filter('the_content', 'cdash_single_business');
 

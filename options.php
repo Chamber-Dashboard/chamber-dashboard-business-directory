@@ -30,17 +30,25 @@ function cdash_add_defaults() {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
 						"bus_email_type" => "Main, Sales, Accounting, HR",
+						"sv_description" => "1",
+						"sv_name"		 => "1",
+						"sv_address"	 => "1",
+						"sv_url"		 => "1",
+						"sv_logo"		 => "1",
+						"sv_category"	 => "1",
 
-						"chk_button1" => "1",
-						"chk_button3" => "1",
-						"textarea_one" => "This type of control allows a large amount of information to be entered all at once. Set the 'rows' and 'cols' attributes to set the width and height.",
-						"textarea_two" => "This text area control uses the TinyMCE editor to make it super easy to add formatted content.",
-						"textarea_three" => "Another TinyMCE editor! It is really easy now in WordPress 3.3 to add one or more instances of the built-in WP editor.",
-						"txt_one" => "Enter whatever you like here..",
-						"drp_select_box" => "four",
-						"chk_default_options_db" => "",
-						"rdo_group_one" => "one",
-						"rdo_group_two" => "two"
+
+
+						// "chk_button1" => "1",
+						// "chk_button3" => "1",
+						// "textarea_one" => "This type of control allows a large amount of information to be entered all at once. Set the 'rows' and 'cols' attributes to set the width and height.",
+						// "textarea_two" => "This text area control uses the TinyMCE editor to make it super easy to add formatted content.",
+						// "textarea_three" => "Another TinyMCE editor! It is really easy now in WordPress 3.3 to add one or more instances of the built-in WP editor.",
+						// "txt_one" => "Enter whatever you like here..",
+						// "drp_select_box" => "four",
+						// "chk_default_options_db" => "",
+						// "rdo_group_one" => "one",
+						// "rdo_group_two" => "two"
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -195,7 +203,7 @@ function cdash_render_form() {
 						Second radio button 
 						<label><input name="cdash_directory_options[rdo_group_one]" type="radio" value="two" <?php checked('two', $options['rdo_group_one']); ?> /> Radio Button #2 <span style="color:#666666;margin-left:32px;">[option specific comment could go here]</span></label><br /><span style="color:#666666;">General comment to explain more about this Plugin option.</span>
 					</td>
-				</tr>
+				</tr> 
 
 				Checkbox Buttons 
 				<tr valign="top">
