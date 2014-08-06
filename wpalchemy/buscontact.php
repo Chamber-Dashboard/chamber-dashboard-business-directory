@@ -13,7 +13,7 @@
 
 		<?php $mb->the_field('donotdisplay'); ?>
 		<label>Do Not Display</label>
-		<span>Check this if you do not want this location to display on the website</span>
+		<p class="explain"><?php _e('Check this if you do not want this location to display to the public on the website'); ?></p>
 		<p><input type="checkbox" name="<?php $mb->the_name(); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> Do Not Display</p>
 
 
@@ -47,7 +47,7 @@
 			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" placeholder="http://"/></p>
 		</div>
 
-		<fieldset class="half">
+		<fieldset class="half left">
 			<legend><?php _e('Phone Number(s)', 'cdash'); ?></legend>
 
 			<a href="#" class="dodelete-phone button"><?php _e('Remove All Phone Numbers', 'cdash'); ?></a>
@@ -77,7 +77,7 @@
 
 			<?php $mb->the_group_close(); ?>
 			<?php endwhile; ?>
-			<p style="margin-bottom:15px; padding-top:5px;"><a href="#" class="docopy-phone button"><?php _e('Add Another Phone Number', 'cdash'); ?></a></p>
+			<p><a href="#" class="docopy-phone button"><?php _e('Add Another Phone Number', 'cdash'); ?></a></p>
 		</fieldset>
 
 		<fieldset class="half">
@@ -109,15 +109,15 @@
 
 			<?php $mb->the_group_close(); ?>
 			<?php endwhile; ?>
-			<p style="margin-bottom:15px; padding-top:5px;"><a href="#" class="docopy-email button"><?php _e('Add Another Email Address', 'cdash'); ?></a></p>
+			<p><a href="#" class="docopy-email button"><?php _e('Add Another Email Address', 'cdash'); ?></a></p>
 		</fieldset>
 
-		<a href="#" class="dodelete button"><?php _e('Remove This Location', 'cdash'); ?></a>
+		<p class="clearfix"><a href="#" class="dodelete button"><?php _e('Remove This Location', 'cdash'); ?></a></p>
  
 		</div>
 	<?php $mb->the_group_close(); ?>
 	<?php endwhile; ?>
- 	<p><?php _e('If this business has multiple locations, but you want them all to appear in one business listing, add the other locations here.  If you want the other locations to have their own individual listing on the site, create a new business with this business as the parent.', 'cdash'); ?></p>
-	<p style="margin-bottom:15px; padding-top:5px;"><a href="#" class="docopy-location button"><?php _e('Add Another Location', 'cdash'); ?></a></p>
+ 	<p class="explain"><?php _e('If this business has multiple locations, but you want them all to appear in one business listing, add the other locations here.  If you want the other locations to have their own individual listing on the site, create a new business with this business as the parent.', 'cdash'); ?></p>
+	<p><a href="#" class="docopy-location button"><?php _e('Add Another Location', 'cdash'); ?></a></p>
 
 </div>

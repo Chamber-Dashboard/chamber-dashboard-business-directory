@@ -82,7 +82,7 @@ function cdash_add_options_page() {
 		'manage_options', 
 		'/cdash-business-directory/options.php', 
 		'cdash_render_form', 
-		plugins_url( 'myplugin/images/icon.png' ), 
+		'dashicons-admin-generic', 
 		85 
 	);
 	//add_options_page('Chamber Dashboard Settings', 'Chamber Dashboard', 'manage_options', __FILE__, 'cdash_render_form');

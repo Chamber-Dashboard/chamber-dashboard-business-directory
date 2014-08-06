@@ -75,3 +75,8 @@ clear: both;
 	margin-right: 2%;
 	float: left;
 }
+
+#businesslist .pagination {
+	text-align: center;
+	margin: 20px 0;
+}

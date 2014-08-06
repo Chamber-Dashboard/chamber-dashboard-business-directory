@@ -62,7 +62,7 @@ add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 
 
-
+// Initialize language so it can be translated
 function cdash_language_init() {
   load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
 }
@@ -101,6 +101,8 @@ function cdash_register_taxonomy_business_category() {
 
 }
 
+add_action( 'init', 'cdash_register_taxonomy_business_category', 0 );
+
 // Register Custom Taxonomy - Membership Level
 function cdash_register_taxonomy_membership_level() {
 
@@ -134,11 +136,7 @@ function cdash_register_taxonomy_membership_level() {
 
 }
 
-// Hook into the 'init' action
 add_action( 'init', 'cdash_register_taxonomy_membership_level', 0 );
-
-// Hook into the 'init' action
-add_action( 'init', 'cdash_register_taxonomy_business_category', 0 );
 
 
 // Register Custom Post Type - Businesses
@@ -183,26 +181,27 @@ function cdash_register_cpt_business() {
 
 }
 
-// Hook into the 'init' action
 add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 
-//Create metabox
+//Create metaboxes
 include_once 'wpalchemy/MetaBox.php';
 include_once 'wpalchemy/MediaAccess.php';
 define( 'MYPLUGINNAME_PATH', plugin_dir_path(__FILE__) );
 
 $wpalchemy_media_access = new WPAlchemy_MediaAccess();
 
-function wpa_people_metabox_styles()
+// Add a stylesheet to the admin area to make meta boxes look nice
+function cdash_metabox_stylesheet()
 {
     if ( is_admin() )
     {
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/cdash-business-directory/wpalchemy/meta.css' );
     }
 }
-add_action( 'init', 'wpa_people_metabox_styles' );
- 
+add_action( 'init', 'cdash_metabox_stylesheet' );
+
+// Create metabox for location/address information
 $buscontact_metabox = new WPAlchemy_MetaBox(array
 (
     'id' => 'buscontact_meta',
@@ -213,6 +212,7 @@ $buscontact_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
+// Create metabox for business logo
 $buslogo_metabox = new WPAlchemy_MetaBox(array
 (
     'id' => 'buslogo_meta',
@@ -223,6 +223,7 @@ $buslogo_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
+// Create metabox for internal notes
 $busnotes_metabox = new WPAlchemy_MetaBox(array
 (
     'id' => 'busnotes_meta',
@@ -236,7 +237,6 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
 /* TODO - make a metabox for custom fields */
 
 // Enqueue stylesheet for single businesses
-
 function cdash_single_business_style() {
 	if(is_singular('business')) {
 		wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
@@ -250,11 +250,17 @@ add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 function cdash_single_business($content) {
 	if( is_singular('business') ) {
 		$options = get_option('cdash_directory_options');
+
+		// make location/address metabox data available
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
+
+		// make logo metabox data available
 		global $buslogo_metabox;
 		$logometa = $buslogo_metabox->the_meta();
+
 		global $post;
+
 		$business_content .= "<div id='business'>";
 		if (($options['sv_thumb']) == "1") { 
 			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
@@ -370,9 +376,7 @@ add_filter('the_content', 'cdash_single_business');
 // Create shortcode for displaying business directory
 
 function cdash_business_directory_shortcode( $atts ) {
-	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
-
-	// Attributes
+	// Set our default attributes
 	extract( shortcode_atts(
 		array(
 			'format' => 'list',  // options: list, grid2, grid3, grid4
@@ -388,13 +392,22 @@ function cdash_business_directory_shortcode( $atts ) {
 		), $atts )
 	);
 
+	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+	if($format !== 'list') {
+		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );
+	}
+
+	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
   		$displayopts = explode( ", ", $display);
   	}
 
+  	$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
 	$args = array( 
 		'post_type' => 'business',
 		'posts_per_page' => $perpage, 
+		'paged' => $paged,
 	    'order' => $order,
 	    'orderby' => $orderby, 	
 	    'business_category' => $category,	
@@ -420,7 +433,11 @@ function cdash_business_directory_shortcode( $atts ) {
 				  	$logoattr = array(
 						'class'	=> 'alignleft logo',
 					);
-			  		$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+					if($single_link == "yes") {
+						$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
+					} else {
+						$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+					}
 			  	} elseif($image == "featured") {
 			  		$thumbattr = array(
 						'class'	=> 'alignleft logo',
@@ -438,57 +455,61 @@ function cdash_business_directory_shortcode( $atts ) {
 					$contactmeta = $buscontact_metabox->the_meta();
 				  	$locations = $contactmeta['location'];
 					foreach($locations as $location) {
-					  	if(in_array("location_name", $displayopts)) {
-					  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
-					  	}
-					  	if(in_array("address", $displayopts)) {
-							$business_list .= "<p class='address'>";
-			 					if(isset($location['address'])) {
-									$address = $location['address'];
-									$business_list .= str_replace("\n", '<br />', $address);
-								}
-								if(isset($location['city'])) {
-									$business_list .= "<br />" . $location['city'] . ",&nbsp;";
-								}
-								if(isset($location['state'])) {
-									$business_list .= $location['state'] . "&nbsp";
-								}
-								if(isset($location['zip'])) {
-									$business_list .= $location['zip'];
-								} 
-							$business_list .= "</p>";
-					  	}
-					  	if(in_array("phone", $displayopts)) {
-							$business_list .= "<p class='phone'>";
-								$i = 1;
-								$phones = $location['phone'];
-								foreach($phones as $phone) {
-									if($i !== 1) {
-										$business_list .= "<br />";
+						if($location['donotdisplay'] == "1") {
+							continue;
+						} else {
+						  	if(in_array("location_name", $displayopts)) {
+						  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
+						  	}
+						  	if(in_array("address", $displayopts)) {
+								$business_list .= "<p class='address'>";
+				 					if(isset($location['address'])) {
+										$address = $location['address'];
+										$business_list .= str_replace("\n", '<br />', $address);
 									}
-									$business_list .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-									if(isset($phone['phonetype'])) {
-										$business_list .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+									if(isset($location['city'])) {
+										$business_list .= "<br />" . $location['city'] . ",&nbsp;";
 									}
-									$i++;
-								}
-							$business_list .= "</p>";
-					  	} 
-					  	if(in_array("email", $displayopts)) {
-							$business_list .= "<p class='email'>";
-								$i = 1;
-								$emails = $location['email'];
-								foreach($emails as $email) {
-									if($i !== 1) {
-										$business_list .= "<br />";
+									if(isset($location['state'])) {
+										$business_list .= $location['state'] . "&nbsp";
 									}
-									$business_list .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-									if(isset($email['emailtype'])) {
-										$business_list .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+									if(isset($location['zip'])) {
+										$business_list .= $location['zip'];
+									} 
+								$business_list .= "</p>";
+						  	}
+						  	if(in_array("phone", $displayopts)) {
+								$business_list .= "<p class='phone'>";
+									$i = 1;
+									$phones = $location['phone'];
+									foreach($phones as $phone) {
+										if($i !== 1) {
+											$business_list .= "<br />";
+										}
+										$business_list .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+										if(isset($phone['phonetype'])) {
+											$business_list .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+										}
+										$i++;
 									}
-									$i++;
-								}
-							$business_list .= "</p>";
+								$business_list .= "</p>";
+						  	} 
+						  	if(in_array("email", $displayopts)) {
+								$business_list .= "<p class='email'>";
+									$i = 1;
+									$emails = $location['email'];
+									foreach($emails as $email) {
+										if($i !== 1) {
+											$business_list .= "<br />";
+										}
+										$business_list .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+										if(isset($email['emailtype'])) {
+											$business_list .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+										}
+										$i++;
+									}
+								$business_list .= "</p>";
+							}
 					  	} 
 					  	if(in_array("url", $displayopts)) {
 					  		$business_list .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
@@ -523,13 +544,25 @@ function cdash_business_directory_shortcode( $atts ) {
 			  	}
 			  	$business_list .= "</div>";
 			endwhile;
+
+			// pagination links
+			$total_pages = $businessquery->max_num_pages;
+			if ($total_pages > 1){
+				$current_page = max(1, get_query_var('paged'));
+   				$business_list .= "<div class='pagination'>";
+			  	$business_list .= paginate_links(array(
+			      'base' => get_pagenum_link(1) . '%_%',
+			      'format' => '/page/%#%',
+			      'current' => $current_page,
+			      'total' => $total_pages,
+			    ));
+			    $business_list .= "</div>";
+			}
+
 		$business_list .= "</div>";
 	endif;
 
 	return $business_list;
-	// Reset Post Data
 	wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
-
-// TODO - add equal height script to shortcode
