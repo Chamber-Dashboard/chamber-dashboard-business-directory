@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 0.1
+Version: 1.0
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -30,7 +30,7 @@ Author URI: http://wpalchemists.com
 // ------------------------------------------------------------------------
 
 
-function requires_wordpress_version() {
+function cdash_requires_wordpress_version() {
 	global $wp_version;
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
@@ -42,13 +42,10 @@ function requires_wordpress_version() {
 		}
 	}
 }
-add_action( 'admin_init', 'requires_wordpress_version' );
+add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
-// ------------------------------------------------------------------------
-// HOOKS TO SETUP DEFAULT PLUGIN OPTIONS, HANDLE CLEAN-UP OF OPTIONS WHEN
-// PLUGIN IS DEACTIVATED AND DELETED, INITIALISE PLUGIN, ADD OPTIONS PAGE.
 // ------------------------------------------------------------------------
 
 // Set-up Action and Filter Hooks
@@ -361,7 +358,11 @@ function cdash_single_business($content) {
 						}
 					$business_content .= "</p>";
 				}
+			$business_content .= "</div>";
 			}
+		}
+		if ($options['sv_map'] == "1" ) {
+			$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 		}
 		$business_content .= "</div>";
 	$content = $business_content;
@@ -566,3 +567,97 @@ function cdash_business_directory_shortcode( $atts ) {
 	wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
+
+// add business category and member level slugs as body and post class
+function cdash_add_taxonomy_classes($classes) {
+	global $post;
+	foreach((get_the_terms($post->ID, 'business_category')) as $taxonomy) {
+		$classes[] = $taxonomy->slug;
+	}
+	foreach((get_the_terms($post->ID, 'membership_level')) as $taxonomy) {
+		$classes[] = $taxonomy->slug;
+	}
+	return $classes;
+}
+add_filter('post_class', 'cdash_add_taxonomy_classes');
+add_filter('body_class', 'cdash_add_taxonomy_classes');
+
+function cdash_single_business_map() {
+	$options = get_option('cdash_directory_options');
+	if( is_singular('business') && $options['sv_map'] == "1" ) { 
+		global $buscontact_metabox;
+		$contactmeta = $buscontact_metabox->the_meta();
+		$locations = $contactmeta['location']; ?>
+		<script type="text/javascript"
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo5af2QNNd4t8uq3T4oOgjQanQNJo4btY&sensor=false">
+		</script>
+		<script type="text/javascript">
+
+function initialize() {
+  var myLatlng = new google.maps.LatLng(47,-122);
+
+  var locations = [
+		<?php 
+		foreach($locations as $location) {
+	    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+			$address = str_replace(' ', '+', $rawaddress);
+
+			$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+			$json = json_decode($json);
+			$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+			$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+
+			$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; ?>
+			['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $location["altname"]; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+			
+		<?php } ?>
+
+		    ];
+		    var bounds = new google.maps.LatLngBounds();
+		  var mapOptions = {
+		    // zoom: 13,
+		  }
+		  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		      var infowindow = new google.maps.InfoWindow();
+
+		    var marker, i;
+
+		    for (i = 0; i < locations.length; i++) {  
+		      marker = new google.maps.Marker({
+		        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+		        map: map,
+		        icon: locations[i][3]
+		      });
+
+			  bounds.extend(marker.position);
+
+		      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		        return function() {
+		          infowindow.setContent(locations[i][0]);
+		          infowindow.open(map, marker);
+		        }
+		      })(marker, i));
+
+		      map.fitBounds(bounds);
+
+		    }
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+		</script>
+
+	<?php }
+}
+add_action('wp_footer', 'cdash_single_business_map');
+
+function cdash_info_window() {
+	global $post;
+	$output .= "<div style=\x22width: 200px; height: 150px\x22>";
+	$output .= $location['altname'];
+	$output .= "</div>";
+	return $output;
+}
+
+?>
