@@ -60,7 +60,7 @@ function cdash_add_options_page() {
 		'dashicons-admin-generic', 
 		85 
 	);
-	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	// add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 }
 
 // ------------------------------------------------------------------------------

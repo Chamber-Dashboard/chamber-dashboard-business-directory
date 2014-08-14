@@ -91,7 +91,7 @@ function cdash_register_taxonomy_business_category() {
 		'public'                     => true,
 		'show_ui'                    => true,
 		'show_admin_column'          => true,
-		'show_in_nav_menus'          => true,
+		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => true,
 	);
 	register_taxonomy( 'business_category', array( 'business' ), $args );
@@ -126,7 +126,7 @@ function cdash_register_taxonomy_membership_level() {
 		'public'                     => true,
 		'show_ui'                    => true,
 		'show_admin_column'          => true,
-		'show_in_nav_menus'          => true,
+		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => true,
 	);
 	register_taxonomy( 'membership_level', array( 'business' ), $args );
@@ -274,27 +274,31 @@ function cdash_single_business($content) {
 		if (($options['sv_memberlevel']) == "1") { 
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
-			$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
-			$i = 1;
-			foreach($levels as $level) {
-				if($i !== 1) {
-					$business_content .= ",&nbsp;";
+			if($levels) {
+				$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$i = 1;
+				foreach($levels as $level) {
+					if($i !== 1) {
+						$business_content .= ",&nbsp;";
+					}
+					$business_content .= $level->name;
+					$i++;
 				}
-				$business_content .= $level->name;
-				$i++;
 			}
 		}
 		if (($options['sv_category']) == "1") { 
 			$id = get_the_id();
-			$levels = get_the_terms( $id, 'business_category');
-			$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
-			$i = 1;
-			foreach($levels as $level) {
-				if($i !== 1) {
-					$business_content .= ",&nbsp;";
+			$buscats = get_the_terms( $id, 'business_category');
+			if($buscats) {
+				$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$i = 1;
+				foreach($buscats as $buscat) {
+					if($i !== 1) {
+						$business_content .= ",&nbsp;";
+					}
+					$business_content .= $buscat->name;
+					$i++;
 				}
-				$business_content .= $level->name;
-				$i++;
 			}
 		}
 		$locations = $contactmeta['location'];
@@ -568,20 +572,94 @@ function cdash_business_directory_shortcode( $atts ) {
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
-// add business category and member level slugs as body and post class
-function cdash_add_taxonomy_classes($classes) {
-	global $post;
-	foreach((get_the_terms($post->ID, 'business_category')) as $taxonomy) {
-		$classes[] = $taxonomy->slug;
-	}
-	foreach((get_the_terms($post->ID, 'membership_level')) as $taxonomy) {
-		$classes[] = $taxonomy->slug;
-	}
-	return $classes;
-}
-add_filter('post_class', 'cdash_add_taxonomy_classes');
-add_filter('body_class', 'cdash_add_taxonomy_classes');
+// Create shortcode for displaying map of businesses
+function cdash_business_map_shortcode( $atts ) {
+	// Set our default attributes
+	extract( shortcode_atts(
+		array(
+			'category' => '', // options: slug of any category
+			'level' => '', // options: sluf of any membership level
+			'single_link' => 'yes', // options: yes, no
+			'perpage' => '-1', // options: any number
+		), $atts )
+	);
 
+	$args = array( 
+		'post_type' => 'business',
+		'posts_per_page' => $perpage, 
+	    'business_category' => $category,	
+	    'membership_level' => $level,								 
+	);
+
+	$mapquery = new WP_Query( $args );
+	$business_map .= "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
+	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
+	$business_map .= "<script type='text/javascript'>";
+	$business_map .= "function initialize() {
+				var locations = [";
+
+	// The Loop
+	if ( $mapquery->have_posts() ) :
+		while ( $mapquery->have_posts() ) : $mapquery->the_post();
+			global $buscontact_metabox;
+			$contactmeta = $buscontact_metabox->the_meta();
+			$locations = $contactmeta['location'];
+			foreach($locations as $location) {
+		    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+				$address = str_replace(' ', '+', $rawaddress);
+
+				$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+				$json = json_decode($json);
+				$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+				$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+				// TODO - let people upload different icons for each category
+				$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+				$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . $location['altname'] . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+			}
+		endwhile;
+	endif;
+
+	$business_map .= "];
+
+					var bounds = new google.maps.LatLngBounds();
+					var mapOptions = {
+					    // zoom: 13,
+					}
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var infowindow = new google.maps.InfoWindow();
+					var marker, i;
+
+				    for (i = 0; i < locations.length; i++) {  
+				    	marker = new google.maps.Marker({
+				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				        map: map,
+				        icon: locations[i][3]
+				    	});
+
+						bounds.extend(marker.position);
+
+						google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						    return function() {
+						        infowindow.setContent(locations[i][0]);
+						        infowindow.open(map, marker);
+						    }
+						})(marker, i));
+
+						map.fitBounds(bounds);
+
+					}
+				}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+
+		</script>";
+
+	return $business_map;
+	wp_reset_postdata();
+}
+add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
+
+// Add map to single business view
 function cdash_single_business_map() {
 	$options = get_option('cdash_directory_options');
 	if( is_singular('business') && $options['sv_map'] == "1" ) { 
@@ -589,62 +667,59 @@ function cdash_single_business_map() {
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location']; ?>
 		<script type="text/javascript"
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo5af2QNNd4t8uq3T4oOgjQanQNJo4btY&sensor=false">
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false">
 		</script>
 		<script type="text/javascript">
 
-function initialize() {
-  var myLatlng = new google.maps.LatLng(47,-122);
+			function initialize() {
+				var locations = [
+					<?php 
+					foreach($locations as $location) {
+				    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+						$address = str_replace(' ', '+', $rawaddress);
 
-  var locations = [
-		<?php 
-		foreach($locations as $location) {
-	    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
-			$address = str_replace(' ', '+', $rawaddress);
+						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+						$json = json_decode($json);
+						$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+						$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+						// TODO - let people upload different icons for each category
+						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; ?>
+						['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $location["altname"]; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+						
+					<?php } ?>
 
-			$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-			$json = json_decode($json);
-			$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-			$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+					];
 
-			$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; ?>
-			['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $location["altname"]; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
-			
-		<?php } ?>
+					var bounds = new google.maps.LatLngBounds();
+					var mapOptions = {
+					    // zoom: 13,
+					}
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var infowindow = new google.maps.InfoWindow();
+					var marker, i;
 
-		    ];
-		    var bounds = new google.maps.LatLngBounds();
-		  var mapOptions = {
-		    // zoom: 13,
-		  }
-		  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				    for (i = 0; i < locations.length; i++) {  
+				    	marker = new google.maps.Marker({
+				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				        map: map,
+				        icon: locations[i][3]
+				    	});
 
-		      var infowindow = new google.maps.InfoWindow();
+						bounds.extend(marker.position);
 
-		    var marker, i;
+						google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						    return function() {
+						        infowindow.setContent(locations[i][0]);
+						        infowindow.open(map, marker);
+						    }
+						})(marker, i));
 
-		    for (i = 0; i < locations.length; i++) {  
-		      marker = new google.maps.Marker({
-		        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-		        map: map,
-		        icon: locations[i][3]
-		      });
+						map.fitBounds(bounds);
 
-			  bounds.extend(marker.position);
+					}
+				}
 
-		      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-		        return function() {
-		          infowindow.setContent(locations[i][0]);
-		          infowindow.open(map, marker);
-		        }
-		      })(marker, i));
-
-		      map.fitBounds(bounds);
-
-		    }
-		}
-
-		google.maps.event.addDomListener(window, 'load', initialize);
+			google.maps.event.addDomListener(window, 'load', initialize);
 
 		</script>
 
@@ -659,5 +734,25 @@ function cdash_info_window() {
 	$output .= "</div>";
 	return $output;
 }
+
+// add business category and member level slugs as body and post class
+function cdash_add_taxonomy_classes($classes) {
+	global $post;
+	$buscats = get_the_terms($post->ID, 'business_category');
+	if ($buscats) {
+		foreach($buscats as $taxonomy) {
+			$classes[] = $taxonomy->slug;
+		}
+	}
+	$buslevels = get_the_terms($post->ID, 'membership_level');
+	if ($buslevels) {
+		foreach($buslevels as $taxonomy) {
+			$classes[] = $taxonomy->slug;
+		}
+	}
+	return $classes;
+}
+add_filter('post_class', 'cdash_add_taxonomy_classes');
+add_filter('body_class', 'cdash_add_taxonomy_classes');
 
 ?>
