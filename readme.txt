@@ -65,5 +65,11 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.1 =
+* Added Google map to single business view
+* Added shortcode to create map of all businesses
+* Added category and membership level to body and post classes
+* Bug fixes
+
 = 1.0 =
 * First release
