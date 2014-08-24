@@ -65,6 +65,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.3 = 
+* Created filters to allow use of theme archive pages for business category and membership level
+* Other small fixes
+
 = 1.2 =
 * Added the ability to create custom fields for businesses
 * Bug fixes

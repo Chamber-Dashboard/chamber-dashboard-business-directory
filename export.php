@@ -13,21 +13,21 @@ $args = array(
 );
 
 $sizequery = new WP_Query( $args );
-$maxsize = 0;
+$numberoflocations = 0;
 
 if ( $sizequery->have_posts() ) :
-			while ( $sizequery->have_posts() ) : $sizequery->the_post();
+while ( $sizequery->have_posts() ) : $sizequery->the_post();
 
-				$id = get_the_id();
-				$variable = get_post_meta($id, '_cdash_location', true);
-				if(sizeof($variable) > $maxsize)
-					$maxsize= sizeof($variable);
+	$id = get_the_id();
+	$variable = get_post_meta($id, '_cdash_location', true);
+	if(sizeof($variable) > $numberoflocations)
+		$numberoflocations= sizeof($variable);
 
-							endwhile;
-			endif;
-			
-			// Reset Post Data
-			wp_reset_postdata();
+	endwhile;
+endif;
+
+// Reset Post Data
+wp_reset_postdata();
 
 
 
@@ -55,7 +55,7 @@ $args = array(
 			if ( $testquery->have_posts() ) :
 			while ( $testquery->have_posts() ) : $testquery->the_post();
 
-$
+
 			  	global $buscontact_metabox;
 				$contactmeta = $buscontact_metabox->the_meta();
 				echo '<pre>';
