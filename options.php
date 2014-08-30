@@ -64,6 +64,7 @@ function cdash_add_options_page() {
 	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 }
 
+
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION SPECIFIED IN: add_options_page()
 // ------------------------------------------------------------------------------
@@ -108,9 +109,7 @@ function cdash_render_form() {
 							<input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
 							<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.)', 'cdash'); ?></span>
 						</td>
-					</tr>				
-
-					<!-- TODO - make field for default city -->
+					</tr>	
 
 					<!-- Single View Options -->
 					<tr valign="top">
