@@ -288,6 +288,7 @@ function cdash_export_form() { ?>
 		<div class="wrap">
 			<div class="icon32" id="icon-options-general"><br></div>
 			<h2><?php _e('Export', 'cdash'); ?></h2>
+			<p>Click the button below to download a CSV of all of your businesses.</p>
 			<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
 
 			<input type="submit" value="Download CSV">
