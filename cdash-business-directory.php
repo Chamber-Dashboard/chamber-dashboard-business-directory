@@ -254,6 +254,29 @@ if(!empty($options['bus_custom'])) {
 
 
 // ------------------------------------------------------------------------
+// ADD CUSTOM META DATA TO TAXONOMIES - http://en.bainternet.info/wordpress-taxonomies-extra-fields-the-easy-way/
+// ------------------------------------------------------------------------
+
+//include the main class file
+require_once( plugin_dir_path( __FILE__ ) . "/Tax-meta-class/Tax-meta-class.php");
+
+// configure custom fields
+$config = array(
+   'id' => 'business_category_meta',
+   'title' => 'Business Category Information',
+   'pages' => array('business_category'),
+   'context' => 'normal',
+   'fields' => array(),
+   'local_images' => true,
+   'use_with_theme' => false
+);
+
+$buscat_meta = new Tax_Meta_Class($config);
+$buscat_meta->addImage('category_map_icon',array('name'=> 'Map Icon '));
+$buscat_meta->Finish();
+
+
+// ------------------------------------------------------------------------
 // SINGLE BUSINESS VIEW
 // ------------------------------------------------------------------------
 
@@ -800,14 +823,14 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		}
 			  		if(in_array("category", $displayopts)) {
 						$id = get_the_id();
-						$levels = get_the_terms( $id, 'business_category');
+						$buscats = get_the_terms( $id, 'business_category');
 						$business_list .= "<p class='categories'><span>Categories:</span>&nbsp;";
 						$i = 1;
-						foreach($levels as $level) {
+						foreach($buscats as $buscat) {
 							if($i !== 1) {
 								$business_list .= ",&nbsp;";
 							}
-							$business_list .= $level->name;
+							$business_list .= $buscat->name;
 							$i++;
 						}
 				  	}
@@ -904,6 +927,7 @@ function cdash_business_map_shortcode( $atts ) {
 				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 					continue;
 				} else {
+					// Get the latitude and longitude from the address
 			    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
 					$address = urlencode($rawaddress);
 					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
@@ -912,7 +936,20 @@ function cdash_business_map_shortcode( $atts ) {
 						$lat = $json['results'][0]['geometry']['location']['lat'];
 						$long = $json['results'][0]['geometry']['location']['lng']; 
 					}
-					$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+					// Get the map icon
+					$id = get_the_id();
+					$buscats = get_the_terms( $id, 'business_category');
+					foreach($buscats as $buscat) {
+						$buscatid = $buscat->term_id;
+						$iconid = get_tax_meta($buscatid,'category_map_icon');
+						if($iconid !== '') {
+							$icon = $iconid['src'];
+						}
+					}
+					if(!isset($icon)) {
+						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+					}
+					// Create the pop-up info window
 					if($single_link == "yes") {
 						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
 					} else {
