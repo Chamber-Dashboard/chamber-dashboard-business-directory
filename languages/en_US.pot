@@ -1,20 +1,58 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: cdash_business_directory\n"
-"POT-Creation-Date: 2014-08-23 17:00-0800\n"
-"PO-Revision-Date: 2014-08-23 17:01-0800\n"
+"Project-Id-Version: cdash 1.6\n"
+"POT-Creation-Date: 2014-09-05 16:38-0800\n"
+"PO-Revision-Date: 2014-09-05 16:45-0800\n"
 "Last-Translator: Morgan <morgan@wpalchemists.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.8\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPath-1: ..\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: ../Tax-meta-class/Tax-meta-class.php:250
+msgid "Delete this image"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:250
+#: ../Tax-meta-class/Tax-meta-class.php:882
+msgid "Delete"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:582
+#: ../Tax-meta-class/Tax-meta-class.php:629
+msgid "Remove"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:595
+msgid "Add"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:878
+msgid "Uploaded files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:889
+msgid "Upload new files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:895
+msgid "Add more files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:947
+msgid "Select a color"
+msgstr ""
 
 #: ../cdash-business-directory.php:78
 msgid "Business Category"
@@ -168,15 +206,15 @@ msgstr ""
 msgid "Businesses and Organizations"
 msgstr ""
 
-#: ../options.php:82
+#: ../options.php:84
 msgid "Chamber Dashboard Settings"
 msgstr ""
 
-#: ../options.php:97
+#: ../options.php:99
 msgid "Phone Number Types"
 msgstr ""
 
-#: ../options.php:100
+#: ../options.php:102
 msgid ""
 "When you enter a phone number for a business, you can choose what type of "
 "phone number it is.  The default options are \"Main, Office, Cell\".  To "
@@ -185,11 +223,11 @@ msgid ""
 "cell, you will need to enter them.)"
 msgstr ""
 
-#: ../options.php:106
+#: ../options.php:108
 msgid "Email Types"
 msgstr ""
 
-#: ../options.php:109
+#: ../options.php:111
 msgid ""
 "When you enter an email address for a business, you can choose what type of "
 "email address it is.  The default options are \"Main, Sales, Accounting, HR"
@@ -331,12 +369,36 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: ../options.php:257
+#: ../options.php:280
 msgid "Settings"
 msgstr ""
 
-#: ../options.php:268
+#: ../options.php:291
 msgid "Export"
+msgstr ""
+
+#: ../options.php:292
+msgid "Click the button below to download a CSV of all of your businesses."
+msgstr ""
+
+#: ../options.php:303
+msgid "Import"
+msgstr ""
+
+#: ../options.php:304
+msgid ""
+"You can import businesses from a CSV file.  First, you must format the CSV "
+"properly.  Your CSV must have the following columns in the following order, "
+"even if some of the columns are empty: <ul><li>Business Name</"
+"li><li>Description</li><li>Category (separate multiple with semicolons)</"
+"li><li>Membership Level (separate multiple with semicolons)</li><li>Location "
+"Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</"
+"li><li>Phone (separate multiple with semicolons)</li><li>Email (separate "
+"multiple with semicolons)</li></ul>"
+msgstr ""
+
+#: ../options.php:305
+msgid "Download a sample CSV to see how to format your file."
 msgstr ""
 
 #: ../wpalchemy/buscontact.php:3
@@ -357,75 +419,75 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:28
+#: ../wpalchemy/buscontact.php:30
 msgid "City"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:34
+#: ../wpalchemy/buscontact.php:36
 msgid "State"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:40
+#: ../wpalchemy/buscontact.php:42
 msgid "Zip"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:46
+#: ../wpalchemy/buscontact.php:48
 msgid "Web Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:51
+#: ../wpalchemy/buscontact.php:53
 msgid "Phone Number(s)"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:53
+#: ../wpalchemy/buscontact.php:55
 msgid "Remove All Phone Numbers"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:58
+#: ../wpalchemy/buscontact.php:60
 msgid "Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:62
+#: ../wpalchemy/buscontact.php:64
 msgid "Phone Number Type"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:75
+#: ../wpalchemy/buscontact.php:77
 msgid "Remove This Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:80
+#: ../wpalchemy/buscontact.php:82
 msgid "Add Another Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:84
+#: ../wpalchemy/buscontact.php:86
 msgid "Email Address(es)"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:85
+#: ../wpalchemy/buscontact.php:87
 msgid "Remove All Email Addresses"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:90
+#: ../wpalchemy/buscontact.php:92
 msgid "Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:94
+#: ../wpalchemy/buscontact.php:96
 msgid "Email Address Type"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:107
+#: ../wpalchemy/buscontact.php:109
 msgid "Remove This Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:112
+#: ../wpalchemy/buscontact.php:114
 msgid "Add Another Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:115
+#: ../wpalchemy/buscontact.php:117
 msgid "Remove This Location"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:120
+#: ../wpalchemy/buscontact.php:122
 msgid ""
 "If this business has multiple locations, but you want them all to appear in "
 "one business listing, add the other locations here.  If you want the other "
@@ -433,7 +495,7 @@ msgid ""
 "business with this business as the parent."
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:121
+#: ../wpalchemy/buscontact.php:123
 msgid "Add Another Location"
 msgstr ""
 

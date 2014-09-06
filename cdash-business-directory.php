@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.5
+Version: 1.6
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -171,7 +171,8 @@ function cdash_register_cpt_business() {
 		'show_in_nav_menus'   => true,
 		'show_in_admin_bar'   => true,
 		'menu_position'       => 5,
-		'menu_icon'           => 'dashicons-shop',
+		//'menu_icon'           => 'dashicons-shop',
+		'menu_icon'           => 'dashicons-flag',
 		'can_export'          => true,
 		'has_archive'         => true,
 		'exclude_from_search' => false,
@@ -293,12 +294,19 @@ add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 
 function cdash_single_business($content) {
 	if( is_singular('business') ) {
+		$post_id = get_the_id();
+		$meta = get_post_custom($post_id); 
+		echo "<pre>";
+		print_r($meta);
+		echo "</pre>";
 		$options = get_option('cdash_directory_options');
 
 		// make location/address metabox data available
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
-
+		echo "<pre>";
+		print_r($contactmeta);
+		echo "</pre>";
 		// make logo metabox data available
 		global $buslogo_metabox;
 		$logometa = $buslogo_metabox->the_meta();
@@ -309,7 +317,7 @@ function cdash_single_business($content) {
 		if (isset($options['sv_thumb']) && $options['sv_thumb'] == "1") { 
 			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (isset($options['sv_logo']) && $options['sv_logo'] == "1") { 
+		if (isset($options['sv_logo']) && isset($logometa['buslogo']) && $options['sv_logo'] == "1") { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
@@ -348,68 +356,70 @@ function cdash_single_business($content) {
 				}
 			}
 		}
-		$locations = $contactmeta['location'];
-		foreach($locations as $location) {
-			if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-				continue;
-			} else {
-				$business_content .= "<div class='location'>";
-				if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
-					$business_content .= "<h3>" . $location['altname'] . "</h3>";
-				}
-				if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
-					$business_content .= "<p class='address'>";
-	 					if(isset($location['address'])) {
-							$address = $location['address'];
-							$business_content .= str_replace("\n", '<br />', $address);
-						}
-						if(isset($location['city'])) {
-							$business_content .= "<br />" . $location['city'] . ",&nbsp;";
-						}
-						if(isset($location['state'])) {
-							$business_content .= $location['state'] . "&nbsp";
-						}
-						if(isset($location['zip'])) {
-							$business_content .= $location['zip'];
-						} 
-					$business_content .= "</p>";
-				}
-				if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-					$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
-				}
-				if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
-					$business_content .= "<p class='phone'>";
-						$i = 1;
-						$phones = $location['phone'];
-						foreach($phones as $phone) {
-							if($i !== 1) {
-								$business_content .= "<br />";
+		if(isset($contactmeta['location'])) {
+			$locations = $contactmeta['location'];
+			foreach($locations as $location) {
+				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+					continue;
+				} else {
+					$business_content .= "<div class='location'>";
+					if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
+						$business_content .= "<h3>" . $location['altname'] . "</h3>";
+					}
+					if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
+						$business_content .= "<p class='address'>";
+		 					if(isset($location['address'])) {
+								$address = $location['address'];
+								$business_content .= str_replace("\n", '<br />', $address);
 							}
-							$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-							if(isset($phone['phonetype'])) {
-								$business_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							if(isset($location['city'])) {
+								$business_content .= "<br />" . $location['city'] . ",&nbsp;";
 							}
-							$i++;
-						}
-					$business_content .= "</p>";
+							if(isset($location['state'])) {
+								$business_content .= $location['state'] . "&nbsp";
+							}
+							if(isset($location['zip'])) {
+								$business_content .= $location['zip'];
+							} 
+						$business_content .= "</p>";
+					}
+					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
+						$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					}
+					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
+						$business_content .= "<p class='phone'>";
+							$i = 1;
+							$phones = $location['phone'];
+							foreach($phones as $phone) {
+								if($i !== 1) {
+									$business_content .= "<br />";
+								}
+								$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+								if(isset($phone['phonetype'])) {
+									$business_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+								}
+								$i++;
+							}
+						$business_content .= "</p>";
+					}
+					if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
+						$business_content .= "<p class='email'>";
+							$i = 1;
+							$emails = $location['email'];
+							foreach($emails as $email) {
+								if($i !== 1) {
+									$business_content .= "<br />";
+								}
+								$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+								if(isset($email['emailtype'])) {
+									$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+								}
+								$i++;
+							}
+						$business_content .= "</p>";
+					}
+				$business_content .= "</div>";
 				}
-				if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
-					$business_content .= "<p class='email'>";
-						$i = 1;
-						$emails = $location['email'];
-						foreach($emails as $email) {
-							if($i !== 1) {
-								$business_content .= "<br />";
-							}
-							$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-							if(isset($email['emailtype'])) {
-								$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-							}
-							$i++;
-						}
-					$business_content .= "</p>";
-				}
-			$business_content .= "</div>";
 			}
 		}
 		if($options['bus_custom']) {
