@@ -296,17 +296,13 @@ function cdash_single_business($content) {
 	if( is_singular('business') ) {
 		$post_id = get_the_id();
 		$meta = get_post_custom($post_id); 
-		echo "<pre>";
-		print_r($meta);
-		echo "</pre>";
+
 		$options = get_option('cdash_directory_options');
 
 		// make location/address metabox data available
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
-		echo "<pre>";
-		print_r($contactmeta);
-		echo "</pre>";
+
 		// make logo metabox data available
 		global $buslogo_metabox;
 		$logometa = $buslogo_metabox->the_meta();
