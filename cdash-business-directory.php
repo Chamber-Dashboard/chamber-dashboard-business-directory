@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.1
+Version: 1.6.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -190,10 +190,13 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 // SET UP METABOXES
 // ------------------------------------------------------------------------
 
-include_once 'wpalchemy/MetaBox.php';
-include_once 'wpalchemy/MediaAccess.php';
+if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another plugin hasn't done it
+	include_once 'wpalchemy/MetaBox.php';
+}
+
 define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 
+include_once 'wpalchemy/MediaAccess.php';
 $wpalchemy_media_access = new WPAlchemy_MediaAccess();
 
 // Add a stylesheet to the admin area to make meta boxes look nice

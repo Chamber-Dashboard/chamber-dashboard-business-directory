@@ -17,7 +17,7 @@ function cdash_delete_plugin_options() {
 // Define default option settings
 function cdash_add_defaults() {
 	$tmp = get_option('cdash_directory_options');
-    if(($tmp['chk_default_options_db']=='1')||(!is_array($tmp))) {
+    if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
 						"bus_email_type" => "Main, Sales, Accounting, HR",
@@ -237,12 +237,14 @@ function cdash_render_form() {
 			</script>
 		</div><!-- #main -->
 		<div id="sidebar" style="width: 28%; float: right; min-width: 150px;">
-			<h3>Documentation</h3>
-			<p>If you're looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com</a></p>
-			<h3>Contact</h3>
-			<p>Don't hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.</p>
-			<h3>Donate</h3>
-			<p>All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.</p>
+			<h3><?php _e('Documentation', 'cdash'); ?></h3>
+			<p><?php _e('If you\'re looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com', 'cdash'); ?></a></p>
+			<h3><?php _e('Contact', 'cdash'); ?></h3>
+			<p><?php _e('Don\'t hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.', 'cdash'); ?></p>
+			<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
+			<p><?php _e('This plugin is designed to work with the Chamber Dashboard CRM plugin - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
+			<h3><?php _e('Donate', 'cdash'); ?></h3>
+			<p><?php _e('All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 			<input type="hidden" name="cmd" value="_donations">
 			<input type="hidden" name="business" value="director@fremont.com">
@@ -392,5 +394,4 @@ function cdash_import_form() { ?>
 	
 }
 
-
- ?>
+?>
