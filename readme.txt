@@ -66,6 +66,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.3 =
+* made Business Directory compatible with new Chamber Dashboard CRM plugin
+
 = 1.6.2 =
 * Small bug fixes
 

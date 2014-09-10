@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cdash 1.6\n"
-"POT-Creation-Date: 2014-09-05 16:38-0800\n"
-"PO-Revision-Date: 2014-09-05 16:45-0800\n"
+"POT-Creation-Date: 2014-09-09 17:13-0800\n"
+"PO-Revision-Date: 2014-09-09 17:13-0800\n"
 "Last-Translator: Morgan <morgan@wpalchemists.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -369,23 +369,66 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: ../options.php:280
+#: ../options.php:240
+msgid "Documentation"
+msgstr ""
+
+#: ../options.php:241
+msgid ""
+"If you're looking for more information about how to use this plugin, visit "
+"the <a href=\"http://chamberdashboard.com/support/documentation/\" target="
+"\"_blank\">Documentation page at ChamberDashboard.com"
+msgstr ""
+
+#: ../options.php:242
+msgid "Contact"
+msgstr ""
+
+#: ../options.php:243
+msgid ""
+"Don't hesitate to <a href=\"http://chamberdashboard.com/contact/\" target="
+"\"_blank\">contact us</a> to request new features, ask questions, or just "
+"say hi."
+msgstr ""
+
+#: ../options.php:244
+msgid "Other Chamber Dashboard Plugins"
+msgstr ""
+
+#: ../options.php:245
+msgid ""
+"This plugin is designed to work with the Chamber Dashboard CRM plugin - keep "
+"track of the people associated with your businesses!"
+msgstr ""
+
+#: ../options.php:246
+msgid "Donate"
+msgstr ""
+
+#: ../options.php:247
+msgid ""
+"All donations are tax-deductible and go to the <a href=\"http://fremont.com"
+"\" target=\"_blank\">Fremont Chamber of Commerce</a> to support further "
+"development of Chamber Dashboard."
+msgstr ""
+
+#: ../options.php:282
 msgid "Settings"
 msgstr ""
 
-#: ../options.php:291
+#: ../options.php:293
 msgid "Export"
 msgstr ""
 
-#: ../options.php:292
+#: ../options.php:294
 msgid "Click the button below to download a CSV of all of your businesses."
 msgstr ""
 
-#: ../options.php:303
+#: ../options.php:305
 msgid "Import"
 msgstr ""
 
-#: ../options.php:304
+#: ../options.php:306
 msgid ""
 "You can import businesses from a CSV file.  First, you must format the CSV "
 "properly.  Your CSV must have the following columns in the following order, "
@@ -397,7 +440,7 @@ msgid ""
 "multiple with semicolons)</li></ul>"
 msgstr ""
 
-#: ../options.php:305
+#: ../options.php:307
 msgid "Download a sample CSV to see how to format your file."
 msgstr ""
 
