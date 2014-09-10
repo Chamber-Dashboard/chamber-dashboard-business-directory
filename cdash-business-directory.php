@@ -466,19 +466,36 @@ function cdash_single_business_map() {
 				var locations = [
 					<?php 
 					foreach($locations as $location) {
-						if($location['donotdisplay'] == "1") {
+						if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 							continue;
 						} else {
-					    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
-							$address = str_replace(' ', '+', $rawaddress);
-
+					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
+							$address = urlencode($rawaddress);
 							$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-							$json = json_decode($json);
-							$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-							$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
-							// TODO - let people upload different icons for each category
-							$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; ?>
-							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $location["altname"]; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							$json = json_decode($json, true);
+							if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
+								$lat = $json['results'][0]['geometry']['location']['lat'];
+								$long = $json['results'][0]['geometry']['location']['lng']; 
+							}
+							// get the map icon
+							$id = get_the_id();
+							$buscats = get_the_terms( $id, 'business_category');
+							foreach($buscats as $buscat) {
+								$buscatid = $buscat->term_id;
+								$iconid = get_tax_meta($buscatid,'category_map_icon');
+								if($iconid !== '') {
+									$icon = $iconid['src'];
+								}
+							}
+							if(!isset($icon)) {
+								$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+							}
+							if(isset($location['altname'])) {
+								$name = $location['altname'];
+							} else {
+								$name = get_the_title();
+							}?>
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $name; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 						<?php }
 					} ?>
 
@@ -939,7 +956,7 @@ function cdash_business_map_shortcode( $atts ) {
 					continue;
 				} else {
 					// Get the latitude and longitude from the address
-			    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+			    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 					$address = urlencode($rawaddress);
 					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
 					$json = json_decode($json, true);
