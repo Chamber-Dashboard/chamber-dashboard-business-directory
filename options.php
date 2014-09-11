@@ -1,5 +1,5 @@
 <?php
-/* Options Page */
+/* Options Page for Chamber Dashboard Business Directory */
 
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options')
@@ -56,13 +56,13 @@ function cdash_add_options_page() {
 		'Chamber Dashboard', 
 		'Chamber Dashboard', 
 		'manage_options', 
-		'/cdash-business-directory/options.php', 
+		'/chamber-dashboard-business-directory/options.php', 
 		'cdash_render_form', 
 		'dashicons-admin-generic', 
 		85 
 	);
-	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
-	add_submenu_page( '/cdash-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 }
 
 
@@ -81,7 +81,7 @@ function cdash_render_form() {
 		
 		<!-- Display Plugin Icon, Header, and Description -->
 		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Chamber Dashboard Settings', 'cdash'); ?></h2>
+		<h2><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
 
 
 		<div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -279,7 +279,7 @@ function cdash_validate_options($input) {
 function cdash_plugin_action_links( $links, $file ) {
 
 	if ( $file == plugin_basename( __FILE__ ) ) {
-		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=cdash-business-directory/options.php">'.__('Settings').'</a>';
+		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=chamber-dashboard-business-directory/options.php">'.__('Settings').'</a>';
 		// make the 'Settings' link appear first
 		array_unshift( $links, $cdash_links );
 	}
