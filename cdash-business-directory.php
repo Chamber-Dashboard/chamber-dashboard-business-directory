@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.7.1
+Version: 1.7.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -316,12 +316,14 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 		foreach($locations as $location) {
 			if(isset($location['phone'])) {
 				$phones = $location['phone'];
-				foreach($phones as $phone) {
-					$phonenumbers .= $phone['phonenumber'];
-					if(isset($phone['phonetype'])) {
-						$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+				if(is_array($phones)) {
+					foreach($phones as $phone) {
+						$phonenumbers .= $phone['phonenumber'];
+						if(isset($phone['phonetype'])) {
+							$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+						}
+						$phonenumbers .= "<br />";
 					}
-					$phonenumbers .= "<br />";
 				}
 			}
 		}
@@ -489,7 +491,17 @@ function cdash_single_business($content) {
 			}
 		}
 		if (isset($options['sv_map']) && $options['sv_map'] == "1" ) {
-			$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
+			// only show the map if locations have addresses entered
+			$needmap = "false";
+			foreach ($locations as $location) {
+				if(isset($location['address']) && !isset($location['donotdisplay'])) {
+					$needmap = "true";
+				}
+			} 
+			if($needmap == "true") { 
+				$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
+				add_action('wp_footer', 'cdash_single_business_map');
+			}
 		}
 		$business_content .= "</div>";
 	$content = $business_content;
@@ -509,27 +521,26 @@ function cdash_single_business_map() {
 	if( is_singular('business') && isset($options['sv_map']) && $options['sv_map'] == "1" ) { 
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
-		$locations = $contactmeta['location']; ?>
+		$locations = $contactmeta['location'];  ?>
 		<script type="text/javascript"
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false">
 		</script>
 		<script type="text/javascript">
 
-			function initialize() {
-				var locations = [
-					<?php 
-					foreach($locations as $location) {
-						if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-							continue;
-						} else {
-					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-							$address = urlencode($rawaddress);
-							$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-							$json = json_decode($json, true);
-							if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
-								$lat = $json['results'][0]['geometry']['location']['lat'];
-								$long = $json['results'][0]['geometry']['location']['lng']; 
-							}
+		function initialize() {
+			var locations = [
+				<?php 
+				foreach($locations as $location) {
+					if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+						continue;
+					} else {
+				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
+						$address = urlencode($rawaddress);
+						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+						$json = json_decode($json, true);
+						if(is_array($json) && $json['status'] == 'OK') {
+							$lat = $json['results'][0]['geometry']['location']['lat'];
+							$long = $json['results'][0]['geometry']['location']['lng']; 
 							// get the map icon
 							$id = get_the_id();
 							$buscats = get_the_terms( $id, 'business_category');
@@ -544,62 +555,75 @@ function cdash_single_business_map() {
 								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 							}
 							if(isset($location['altname'])) {
-								$name = $location['altname'];
+								$htmlname = $location['altname'];
+								$poptitle = htmlentities($htmlname, ENT_QUOTES);
 							} else {
-								$name = get_the_title();
-							}?>
-							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $name; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
-						<?php }
-					} ?>
-
-					];
-
-					var bounds = new google.maps.LatLngBounds();
-					var mapOptions = {
-					    // zoom: 13,
-					}
-					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-					var infowindow = new google.maps.InfoWindow();
-					var marker, i;
-
-				    for (i = 0; i < locations.length; i++) {  
-				    	marker = new google.maps.Marker({
-				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-				        map: map,
-				        icon: locations[i][3]
-				    	});
-
-						bounds.extend(marker.position);
-
-						// Don't zoom in too far on only one marker - http://stackoverflow.com/questions/3334729/google-maps-v3-fitbounds-zoom-too-close-for-single-marker
-					    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
-					       var extendPoint1 = new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01);
-					       var extendPoint2 = new google.maps.LatLng(bounds.getNorthEast().lat() - 0.01, bounds.getNorthEast().lng() - 0.01);
-					       bounds.extend(extendPoint1);
-					       bounds.extend(extendPoint2);
-					    }
-
-					    map.fitBounds(bounds);
-
-						google.maps.event.addListener(marker, 'click', (function(marker, i) {
-						    return function() {
-						        infowindow.setContent(locations[i][0]);
-						        infowindow.open(map, marker);
-						    }
-						})(marker, i));
-
-						map.fitBounds(bounds);
+								$htmltitle = htmlentities(get_the_title(), ENT_QUOTES);
+								$poptitle = htmlentities($htmltitle, ENT_QUOTES);
+							}
+							// get other information for the pop-up window
+							$htmladdress = htmlentities($location['address'], ENT_QUOTES);
+							$popaddress = htmlentities($htmladdress, ENT_QUOTES); // why do I have to do this twice?  I have no idea, but it works... :P
+							$htmlcity = htmlentities($location['city'], ENT_QUOTES);
+							$popcity = htmlentities($htmlcity, ENT_QUOTES);
+							$htmlstate = htmlentities($location['state'], ENT_QUOTES);
+							$popstate = htmlentities($htmlstate, ENT_QUOTES);
+							?>
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							<?php
+						}
+		
 
 					}
+				} ?>
+
+				];
+
+				var bounds = new google.maps.LatLngBounds();
+				var mapOptions = {
+				    // zoom: 13,
 				}
+				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				var infowindow = new google.maps.InfoWindow();
+				var marker, i;
 
-			google.maps.event.addDomListener(window, 'load', initialize);
+			    for (i = 0; i < locations.length; i++) {  
+			    	marker = new google.maps.Marker({
+			        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+			        map: map,
+			        icon: locations[i][3]
+			    	});
+
+					bounds.extend(marker.position);
+
+					// Don't zoom in too far on only one marker - http://stackoverflow.com/questions/3334729/google-maps-v3-fitbounds-zoom-too-close-for-single-marker
+				    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+				       var extendPoint1 = new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01);
+				       var extendPoint2 = new google.maps.LatLng(bounds.getNorthEast().lat() - 0.01, bounds.getNorthEast().lng() - 0.01);
+				       bounds.extend(extendPoint1);
+				       bounds.extend(extendPoint2);
+				    }
+
+				    map.fitBounds(bounds);
+
+					google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					    return function() {
+					        infowindow.setContent(locations[i][0]);
+					        infowindow.open(map, marker);
+					    }
+					})(marker, i));
+
+					map.fitBounds(bounds);
+
+				}
+			}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
 
 		</script>
-
 	<?php }
 }
-add_action('wp_footer', 'cdash_single_business_map');
+
 
 function cdash_info_window() {
 	global $post;
@@ -632,11 +656,11 @@ function cdash_taxonomy_filter($content) {
 		if (isset($options['tax_thumb']) && $options['tax_thumb'] == "1") { 
 			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (isset($options['tax_logo']) && $options['tax_logo'] == "1") { 
+		if (isset($options['tax_logo']) && $options['tax_logo'] == "1" && isset($logometa['buslogo'])) { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
-			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
+			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', false, $attr );
 		}
 		$tax_content .= $content; 
 		if (isset($options['tax_memberlevel']) && $options['tax_memberlevel'] == "1") { 
@@ -688,14 +712,14 @@ function cdash_taxonomy_filter($content) {
 							$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
 						}
 						if(isset($location['state'])) {
-							$tax_content .= $location['state'] . "&nbsp";
+							$tax_content .= $location['state'] . "&nbsp;";
 						}
 						if(isset($location['zip'])) {
 							$tax_content .= $location['zip'];
 						} 
 					$tax_content .= "</p>";
 				}
-				if (isset($options['tax_url']) && $options['tax_url'] == "1") { 
+				if (isset($options['tax_url']) && $options['tax_url'] == "1" && isset($location['url'])) { 
 					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
@@ -752,7 +776,7 @@ function cdash_taxonomy_filter($content) {
 	return $content;
 }
 add_filter( 'the_content', 'cdash_taxonomy_filter' );
-add_filter( 'get_the_excerpt', 'cdash_taxonomy_filter' );
+// add_filter( 'get_the_excerpt', 'cdash_taxonomy_filter' ); this won't retain formatting
 
 // ------------------------------------------------------------------------
 // BUSINESS DIRECTORY SHORTCODE
@@ -846,7 +870,7 @@ function cdash_business_directory_shortcode( $atts ) {
 							continue;
 						} else {
 						  	if(in_array("location_name", $displayopts)) {
-						  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
+						  		// $business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
 						  	}
 						  	if(in_array("address", $displayopts)) {
 								$business_list .= "<p class='address'>";
@@ -977,7 +1001,7 @@ function cdash_business_map_shortcode( $atts ) {
 	extract( shortcode_atts(
 		array(
 			'category' => '', // options: slug of any category
-			'level' => '', // options: sluf of any membership level
+			'level' => '', // options: slug of any membership level
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
 		), $atts )
@@ -1005,37 +1029,50 @@ function cdash_business_map_shortcode( $atts ) {
 			global $buscontact_metabox;
 			$contactmeta = $buscontact_metabox->the_meta();
 			$locations = $contactmeta['location'];
-			foreach($locations as $location) {
-				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-					continue;
-				} else {
-					// Get the latitude and longitude from the address
-			    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-					$address = urlencode($rawaddress);
-					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-					$json = json_decode($json, true);
-					if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
-						$lat = $json['results'][0]['geometry']['location']['lat'];
-						$long = $json['results'][0]['geometry']['location']['lng']; 
-					}
-					// Get the map icon
-					$id = get_the_id();
-					$buscats = get_the_terms( $id, 'business_category');
-					foreach($buscats as $buscat) {
-						$buscatid = $buscat->term_id;
-						$iconid = get_tax_meta($buscatid,'category_map_icon');
-						if($iconid !== '') {
-							$icon = $iconid['src'];
+			if(!empty($locations)) {
+				foreach($locations as $location) {
+					if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+						continue;
+					} elseif(isset($location['address'])) {
+						// Get the latitude and longitude from the address
+				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
+						$address = urlencode($rawaddress);
+						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+						$json = json_decode($json, true);
+						if(is_array($json) && $json['status'] == 'OK') {
+							$lat = $json['results'][0]['geometry']['location']['lat'];
+							$long = $json['results'][0]['geometry']['location']['lng']; 
+							// Get the map icon
+							$id = get_the_id();
+							$buscats = get_the_terms( $id, 'business_category');
+							foreach($buscats as $buscat) {
+								$buscatid = $buscat->term_id;
+								$iconid = get_tax_meta($buscatid,'category_map_icon');
+								if($iconid !== '') {
+									$icon = $iconid['src'];
+								}
+							}
+							if(!isset($icon)) {
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+							}
+							// Create the pop-up info window
+							$htmladdress = htmlentities($location['address'], ENT_QUOTES);
+							$popaddress = htmlentities($htmladdress, ENT_QUOTES); // why do I have to do this twice?  I have no idea, but it works... :P
+							$htmlcity = htmlentities($location['city'], ENT_QUOTES);
+							$popcity = htmlentities($htmlcity, ENT_QUOTES);
+							$htmlstate = htmlentities($location['state'], ENT_QUOTES);
+							$popstate = htmlentities($htmlstate, ENT_QUOTES);
+							$htmltitle = htmlentities(get_the_title(), ENT_QUOTES);
+							$poptitle = htmlentities($htmltitle, ENT_QUOTES);
+							if($single_link == "yes") {
+								$thismapmarker = "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . $poptitle . "</a></h5> " . $popaddress . "<br />" . $popcity . ", " . $popstate . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+								$business_map .= str_replace(array("\r", "\n"), '', $thismapmarker);
+							} else {
+								$thismapmarker .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . $poptitle . "</h5> " . $popaddress . "<br />" . $popcity . ", " . $popstate . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+								$business_map .= str_replace(array("\r", "\n"), '', $thismapmarker);
+							}
 						}
-					}
-					if(!isset($icon)) {
-						$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
-					}
-					// Create the pop-up info window
-					if($single_link == "yes") {
-						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
-					} else {
-						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . get_the_title() . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+
 					}
 				}
 			}
