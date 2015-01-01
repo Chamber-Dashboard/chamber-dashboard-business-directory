@@ -72,6 +72,15 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.9 =
+* added social media fields
+* fixed bug that prevented custom fields from displaying
+* fixed display errors when business has empty fields
+* made ampersands display correctly on map
+
+= 1.8.1 =
+* fixed minor bug when displaying email addresses in business_directory shortcode
+
 = 1.8 =
 * added search_form and search_results shortcodes
 * added search widget
