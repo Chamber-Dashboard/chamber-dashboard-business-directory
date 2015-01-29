@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.9.1
+Version: 2.1
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -216,12 +216,11 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another plugin hasn't done it
 	include_once 'wpalchemy/MetaBox.php';
+	include_once 'wpalchemy/MediaAccess.php';
+	$wpalchemy_media_access = new WPAlchemy_MediaAccess();
 }
 
 define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
-
-include_once 'wpalchemy/MediaAccess.php';
-$wpalchemy_media_access = new WPAlchemy_MediaAccess();
 
 // Add a stylesheet to the admin area to make meta boxes look nice
 function cdash_metabox_stylesheet()
@@ -244,7 +243,7 @@ $buscontact_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
-// Create metabox for location/address information
+// Create metabox for billing information
 $billing_metabox = new WPAlchemy_MetaBox(array
 (
     'id' => 'billing_meta',
@@ -278,7 +277,7 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
 ));
 
 $options = get_option('cdash_directory_options');
-if(!empty($options['bus_custom'])) {
+if( !empty( $options['bus_custom'] ) ) {
 	// Create metabox for custom fields
 	$custom_metabox = new WPAlchemy_MetaBox(array
 	(
@@ -290,6 +289,25 @@ if(!empty($options['bus_custom'])) {
 	    'prefix' => '_cdash_'
 	));
 }
+
+// if member manager isn't installed, create metabox to advertise it
+function cdash_promote_member_manager() {
+	if( !function_exists( 'cdashmm_language_init' ) ) {
+		$advert_metabox = new WPAlchemy_MetaBox(array
+		(
+		    'id' => 'cdash_advert',
+		    'title' => 'Membership Payments',
+		    'types' => array('business'),
+		    'template' => CDASH_PATH . '/wpalchemy/advert.php',
+		    'mode' => WPALCHEMY_MODE_EXTRACT,
+		    'prefix' => '_cdash_',
+		    'context' => 'side',
+	        'priority' => 'default'
+		));
+	}
+}
+add_action( 'plugins_loaded', 'cdash_promote_member_manager' );
+
 
 
 // ------------------------------------------------------------------------
