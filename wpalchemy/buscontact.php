@@ -43,6 +43,16 @@
 			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 		</div>
 
+		<div class="hidden">
+			<?php $mb->the_field('latitude'); ?>
+			<label><?php _e('Latitude', 'cdash'); ?></label>
+			<p><input type="text" name="<?php $mb->the_name(); ?>" id="latitude" value="<?php $mb->the_value(); ?>"/></p>
+
+			<?php $mb->the_field('longitude'); ?>
+			<label><?php _e('Longitude', 'cdash'); ?></label>
+			<p><input type="text" name="<?php $mb->the_name(); ?>" id="longitude" value="<?php $mb->the_value(); ?>"/></p>
+		</div>
+
 		<div class="clearfix">
 			<?php $mb->the_field('url'); ?>
 			<label><?php _e('Web Address', 'cdash'); ?></label>

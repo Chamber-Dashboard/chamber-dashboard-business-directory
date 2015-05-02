@@ -71,6 +71,8 @@ function cdash_add_options_page() {
 	);
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	// this is a hidden submenu page for updating geolocation data
+	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
 }
 
 

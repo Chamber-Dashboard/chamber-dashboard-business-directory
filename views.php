@@ -104,13 +104,7 @@ function cdash_single_business($content) {
 				$locations = $contactmeta['location'];
 				foreach ( $locations as $location ) {
 					if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
-						$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-						$address = urlencode($rawaddress);
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-						$json = json_decode($json['body'], true);
-						if(is_array($json) && $json['status'] == 'OK') {
-							$needmap = "true";
-						}
+						$needmap = "true";	
 					}
 				} 
 			}
@@ -150,13 +144,9 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-						$address = urlencode( $rawaddress );
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-						$json = json_decode($json['body'], true);
-						if( is_array( $json ) && $json['status'] == 'OK') {
-							$lat = $json['results'][0]['geometry']['location']['lat'];
-							$long = $json['results'][0]['geometry']['location']['lng']; 
+						if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
+							$lat = $location['latitude'];
+							$long = $location['longitude']; 
 							// get the map icon
 							$id = get_the_id();
 							$buscats = get_the_terms( $id, 'business_category');
@@ -187,8 +177,6 @@ function cdash_single_business_map() {
 							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 							<?php
 						}
-		
-
 					}
 				} ?>
 
@@ -544,19 +532,15 @@ function cdash_business_map_shortcode( $atts ) {
 			$contactmeta = $buscontact_metabox->the_meta();
 			if( isset( $contactmeta['location'] ) ) {
 				$locations = $contactmeta['location'];
-				if(!empty($locations)) {
-					foreach($locations as $location) {
-						if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+				if( !empty( $locations ) ) {
+					foreach( $locations as $location ) {
+						if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 							continue;
-						} elseif(isset($location['address'])) {
+						} elseif( isset( $location['address'] ) ) {
 							// Get the latitude and longitude from the address
-					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-							$address = urlencode($rawaddress);
-							$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-							$json = json_decode($json['body'], true);
-							if(is_array($json) && $json['status'] == 'OK') {
-								$lat = $json['results'][0]['geometry']['location']['lat'];
-								$long = $json['results'][0]['geometry']['location']['lng']; 
+							if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
+								$lat = $location['latitude'];
+								$long = $location['longitude']; 
 								// Get the map icon
 								$id = get_the_id();
 								$buscats = get_the_terms( $id, 'business_category');
@@ -704,7 +688,7 @@ function cdash_business_search_results_shortcode() {
 				if ( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
 					$search_results .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
 				}
-				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] ) { 
+				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) { 
 					$attr = array(
 						'class'	=> 'alignleft logo',
 					);
@@ -943,20 +927,24 @@ function cdash_display_custom_fields( $postid ) {
 
 	$custom_fields = ''; 
 
-	if( is_array( $customfields ) ) {
+	if( isset( $customfields ) && is_array( $customfields ) ) {
 		foreach($customfields as $field) { 
-			if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
-				$fieldname = '_cdash_'.$field['name'];
-				if(isset($custommeta[$fieldname])) {
+			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
+				$fieldname = $field['name'];
+				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-				}	
-			} elseif( "yes" !== $field['display_dir'] ) {
+				} elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+				}
+			} elseif( isset( $field['display_dir'] ) && "yes" !== $field['display_dir'] ) {
 				continue;
 			} else {
-				$fieldname = '_cdash_'.$field['name'];
-				if(isset($custommeta[$fieldname])) {
+				$fieldname = $field['name'];
+				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-				}	
+				} elseif( isset( $custommeta['_cdash_'.$fieldname] ) ) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+				}
 			}
 		}
 	}
