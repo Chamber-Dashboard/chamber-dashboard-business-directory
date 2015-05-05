@@ -1,22 +1,20 @@
 jQuery(document).ready(function ($) {
-	// when someone saves a business, add latitude and longitude to the location   
-	$('#publish').on('click', function (e) { // this is what triggers the function        
-		var url = businessajax.ajaxurl; // this tells the function to be ajaxy        
-		var address = $('#level').val(); // these variables come from the HTML  
-		var city = $('#city').val()''
-		var state = $('#state').val()''
-		var zip = $('#zip').val()''
-		var nonce = $('#cdashmm_membership_nonce').val();        
-		var data = { // gather all the variables to send them to PHP            
-		'action': 'cdashmm_update_total_amount', // this is the name of the PHP function            
-		'level_id': level,            
-		'nonce': nonce        
-		};        
+// When someone picks a membership level, add the price to the total    
+	$('.billing-copy').click(function (evt) {  // this is what triggers the function   
+		var address = $( evt.target ).closest('.location').children('.address-data').children('.address-wrapper').children('textarea').val();
+		$("#billing-address").val(address);
+		var city = $( evt.target ).closest('.location').children('.address-data').children('.city-wrapper').children('p').children('.city').val();
+		$("#billing-city").val(city);
+		var state = $( evt.target ).closest('.location').children('.address-data').children('.state-wrapper').children('p').children('.state').val();
+		$("#billing-state").val(state);
+		var zip = $( evt.target ).closest('.location').children('.address-data').children('.zip-wrapper').children('p').children('.zip').val();
+		$("#billing-zip").val(zip);
+		var email = $( evt.target ).closest('.location').children('.email-fieldset').children('.wpa_loop-email').children('.first').children('p').children('.email').val();
+		$("#billing-email").val(email);
+		var phone = $( evt.target ).closest('.location').children('.phone-fieldset').children('.wpa_loop-phone').children('.first').children('p').children('.phone').val();
+		$("#billing-phone").val(phone);
 
-		// update the subtotal, then add it to the donation to get the total        
-		$.post(url, data, function (response) { // this is what JS gets back from PHP                       
-			$("#latitude").val(response.latitude);     
-			$("#longitude").val(response.longitude);     
-		});    
+		$( evt.target ).closest('.location').children('.copy-confirm').show();
+		return false;
 	});
 });

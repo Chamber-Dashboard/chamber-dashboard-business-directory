@@ -241,6 +241,19 @@ function cdash_info_window() {
 // TAXONOMY VIEW
 // ------------------------------------------------------------------------
 
+// modify query to order by business name
+function cdash_reorder_taxonomies( $query ) {
+	$options = get_option( 'cdash_directory_options' );
+	if( isset( $options['tax_orderby_name'] ) && "1" == $options['tax_orderby_name'] ) {
+		if( !( is_admin() || is_search() ) && ( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) ) {
+			$query->set( 'orderby', 'title' );
+			$query->set( 'order', 'ASC' );
+		}
+	}
+}
+
+add_action( 'pre_get_posts', 'cdash_reorder_taxonomies' );
+
 function cdash_taxonomy_filter( $content ) {
 	if( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) {
 		$options = get_option( 'cdash_directory_options' );
@@ -506,6 +519,7 @@ function cdash_business_map_shortcode( $atts ) {
 			'level' => '', // options: slug of any membership level
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
+			'cluster' => 'no' // options: yes or no
 		), $atts )
 	);
 
@@ -521,6 +535,13 @@ function cdash_business_map_shortcode( $atts ) {
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
+		
+	if( "yes" == $cluster ) {
+		$business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
+	    // $business_map .= "<script src='http://maps.google.com/maps/api/js?sensor=false'></script>";
+	    $business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
+	}
+
 	$business_map .= "<script type='text/javascript'>";
 	$business_map .= "function initialize() {
 				var locations = [";
@@ -582,8 +603,16 @@ function cdash_business_map_shortcode( $atts ) {
 					var bounds = new google.maps.LatLngBounds();
 					var mapOptions = {
 					    zoom: 13,
+					    scrollwheel: false
 					}
-					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);";
+
+					if( "yes" == $cluster ) {
+						$business_map .=
+						"var markerCluster = new MarkerClusterer(map, marker);";
+					}
+
+					$business_map .= "
 					var infowindow = new google.maps.InfoWindow();
 					var marker, i;
 
@@ -592,8 +621,13 @@ function cdash_business_map_shortcode( $atts ) {
 				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 				        map: map,
 				        icon: locations[i][3]
-				    	});
+				    	});";
 
+						if( "yes" == $cluster ) {
+							$business_map .= "markerCluster.addMarker(marker);";
+						}
+
+						$business_map .= "
 						bounds.extend(marker.position);
 
 						google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -840,9 +874,10 @@ function cdash_business_categories_shortcode( $atts ) {
 		array(
 		'orderby' => 'name', // options: date, modified, menu_order, rand
 		'showcount' => 0,
-		'padcounts' => 0,
 		'hierarchical' => 1,
-		'title' => ''
+		'hide_empty' => 1,
+		'child_of' => 0,
+		'exclude' => '',
 		), $atts )
 	);
 	$taxonomy = 'business_category';
@@ -850,9 +885,10 @@ function cdash_business_categories_shortcode( $atts ) {
 		'taxonomy' => $taxonomy,
 		'orderby' => $orderby,
 		'show_count' => $showcount,
-		'pad_counts' => $padcounts,
 		'hierarchical' => $hierarchical,
-		'title_li' => $title
+		'hide_empty' => $hide_empty,
+		'child_of' => $child_of,
+		'exclude' => $exclude,
 	);
 	echo '<ul class="business-categories">';
 	wp_list_categories($args);

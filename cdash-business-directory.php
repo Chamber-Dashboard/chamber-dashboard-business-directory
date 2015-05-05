@@ -165,6 +165,12 @@ add_action( 'init', 'cdash_register_taxonomy_membership_level', 0 );
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
 
+	$options = get_option( 'cdash_directory_options' );
+	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', );
+	if( isset( $options['sv_comments'] ) && "1" == $options['sv_comments'] ) {
+		$supports[] = 'comments';
+	}
+
 	$labels = array(
 		'name'                => _x( 'Businesses', 'Post Type General Name', 'cdash' ),
 		'singular_name'       => _x( 'Business', 'Post Type Singular Name', 'cdash' ),
@@ -184,7 +190,7 @@ function cdash_register_cpt_business() {
 		'label'               => __( 'business', 'cdash' ),
 		'description'         => __( 'Businesses and Organizations', 'cdash' ),
 		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', ),
+		'supports'            => $supports,
 		'taxonomies'          => array( 'business_category', ' membership_level' ),
 		'hierarchical'        => true,
 		'public'              => true,
@@ -224,21 +230,24 @@ if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another
 define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 
 // Enqueue styles and scripts
-function cdash_metabox_stylesheet()
+function cdash_admin_scripts_and_styles($hook)
 {
     if ( is_admin() ) {
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
     }
 
+    global $post;
+
     // business AJAX
-    if ( isset( $post ) && 'business' === $post->post_type ) {       
-	    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
-	    wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
+    if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
+	    if ( isset( $post ) && 'business' === $post->post_type ) {       
+		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
+		    // don't actually need ajax yet
+		    // wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
+		}
 	}
-
-
 }
-add_action( 'init', 'cdash_metabox_stylesheet' );
+add_action( 'admin_enqueue_scripts', 'cdash_admin_scripts_and_styles' );
 
 // Create metabox for location/address information
 $buscontact_metabox = new WPAlchemy_MetaBox(array
@@ -537,7 +546,7 @@ register_activation_hook(__FILE__, 'cdash_activation_geolocation_check');
 
 function cdash_activation_geolocation_check() {
 	// if we have stored the geolocation option, we don't need to do this
-	$options = get_option('cdash_directory_options');
+	$options = get_option('cdash_directory_version');
 	if( "yes" == $options['geolocation_updated'] ) {
 		// do nothing
 	} else { 
@@ -550,7 +559,7 @@ function cdash_activation_geolocation_check() {
 		} else {
 			// there are no businesses, so we can save the geolocation option and move on
 			$options['geolocation_updated'] = "yes";
-    		update_option( 'cdash_directory_options', $options );
+    		update_option( 'cdash_directory_version', $options );
 		}
 	}
 }
@@ -560,7 +569,7 @@ add_action( 'admin_init', 'cdash_check_geolocation' );
 
 function cdash_check_geolocation() {
 	// if we have stored the geolocation option, we don't need to do this
-	$options = get_option('cdash_directory_options');
+	$options = get_option('cdash_directory_version');
 	if( "yes" == $options['geolocation_updated'] ) {
 		// do nothing
 	} else { 
@@ -577,15 +586,13 @@ function cdash_check_geolocation() {
 
 function cdash_ask_to_update_geolocation() {
 	?>
-    <div class="updated">
+    <div class="update-nag">
         <p><?php _e( 'Chamber Dashboard needs to update your database to ensure that your maps display correctly.', 'cdash' ); ?></p>
-        <p><a class="button submit-button" href="http://cdash.wpalchemists-dev.com/wp-admin/admin.php?page=chamber-dashboard-update-geolocation"><?php _e( 'Update Now', 'cdash' ); ?></a></p>
+        <p><a class="button submit-button" href="<?php echo admin_url( 'admin.php?page=chamber-dashboard-update-geolocation' ); ?>"><?php _e( 'Update Now', 'cdash' ); ?></a></p>
     </div>
     <?php
 }
 
-
-// http://cdash.wpalchemists-dev.com/wp-admin/admin.php?page=chamber-dashboard-update-geolocation
 
 function cdash_update_geolocation_data_page() {
 	// TODO - add a nonce ?>
@@ -615,6 +622,7 @@ function cdash_find_and_update_all_business_geolocation( $return ) {
 	$args = array( 
         'post_type' => 'business',
         'posts_per_page' => -1,
+        'post_status' => 'any',
     );
     
     $businesses = new WP_Query( $args );
@@ -630,9 +638,9 @@ function cdash_find_and_update_all_business_geolocation( $return ) {
     
     wp_reset_postdata(); 
     
-    $options = get_option('cdash_directory_options');
+    $options = get_option('cdash_directory_version');
     $options['geolocation_updated'] = "yes";
-    update_option( 'cdash_directory_options', $options );
+    update_option( 'cdash_directory_version', $options );
 
     if( "return" == $return ) {
 	    return $i;
