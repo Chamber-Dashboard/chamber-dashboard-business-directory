@@ -106,7 +106,10 @@ while ( $exportquery->have_posts() ) : $exportquery->the_post();
 			if( is_array($phones)) {
 				$phoneinfo = '';
 				foreach($phones as $phone) {
-					$phoneinfo .= $phone['phonenumber'] . " (" . $phone['phonetype'] . ")";
+					$phoneinfo .= $phone['phonenumber'];
+					if( isset( $phone['phonetype'] ) && '' !== $phone['phonetype'] ) {
+						$phoneinfo .= " (" . $phone['phonetype'] . ")";
+					}
 				}
 				$fields[] = $phoneinfo;
 			} 
@@ -119,7 +122,11 @@ while ( $exportquery->have_posts() ) : $exportquery->the_post();
 			if(is_array($emails)) {
 				$emailinfo = '';
 				foreach($emails as $email) {
-					$emailinfo .= $email['emailaddress'] . "(" . $email['emailtype'] . ")";
+					$emailinfo .= $email['emailaddress'];
+					if( isset( $email['emailtype'] ) && '' !== $email['emailtype'] ) {
+						$emailinfo .= " (" . $email['emailtype'] . ")";
+					}
+				}
 				}
 				$fields[] = $emailinfo;
 			}
