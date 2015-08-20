@@ -3,7 +3,7 @@ Contributors: gwendydd
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
-Tested up to: 4.2
+Tested up to: 4.3
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -86,6 +86,15 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7 =
+* added the ability to preview business maps and enter custom coordinates
+* removed extraneous slash from business directory pagination
+* added "order" parameter to business_categories shortcode so that you can choose ascending or descending order
+* search results ordered in ascending order
+
+= 2.6.2 =
+* fixed bug in Featured Business widget
+
 = 2.6.1 =
 * changed H2s to H1s in admin to conform to new accessibility guidelines
 * added "Add-Ons" page
