@@ -231,7 +231,7 @@ function cdash_single_business_map() {
 
 function cdash_info_window() {
 	global $post;
-	$output .= "<div style=\x22width: 200px; height: 150px\x22>";
+	$output = "<div style=\x22width: 200px; height: 150px\x22>";
 	$output .= $location['altname'];
 	$output .= "</div>";
 	return $output;
@@ -649,13 +649,22 @@ add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
 // BUSINESS SEARCH RESULTS SHORTCODE
 // ------------------------------------------------------------------------
 
-function cdash_business_search_results_shortcode() {
+function cdash_business_search_results_shortcode( $atts ) {
+
+	extract( shortcode_atts(
+					array(
+							'format' => 'list',  // options: list, grid2, grid3, grid4
+					), $atts )
+	);
 
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+	if( $format !== 'list' ) {
+		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );
+	}
 
 	$search_results = "";
 	// Search results 
-	if($_GET) {
+	if( $_GET ) {
 		// Get the search terms
 		$buscat = $_GET['buscat'];
 		$searchtext = $_GET['searchtext'];
@@ -688,11 +697,11 @@ function cdash_business_search_results_shortcode() {
         $search_query = new WP_Query( $args );
 		if ( $search_query->have_posts() ) :
 			// Display the search results
-			$search_results .= "<div id='search-results'>";
+			$search_results .= "<div id='search-results' class='" . $format . "'>";
 			$search_results .= "<h2>" . __('Search Results', 'cdash') . "</h2>";
 			while ( $search_query->have_posts() ) : $search_query->the_post();
 
-				$search_results .= "<div class='search-result'>";
+				$search_results .= "<div class='search-result business'>";
 				$search_results .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 				$options = get_option('cdash_directory_options');
 
@@ -755,7 +764,7 @@ function cdash_business_search_results_shortcode() {
 					$search_results .= cdash_display_custom_fields( get_the_id() );
 				}
 
-				$search_results .= "</div><!-- .search-result --><div style='clear:both'></div>";
+				$search_results .= "</div><!-- .search-result -->";
 			endwhile;
 			$total_pages = $search_query->max_num_pages;
 			if ($total_pages > 1){
@@ -826,9 +835,16 @@ add_shortcode( 'business_search_form', 'cdash_business_search_form_shortcode' );
 // ------------------------------------------------------------------------
 
 function cdash_business_search_shortcode( $atts ) {
+
+	extract( shortcode_atts(
+					array(
+							'format' => 'list',  // options: any url
+					), $atts )
+	);
+
 	$resultspage = str_replace( home_url('/'), "", get_the_permalink() );
 
-	$business_search = do_shortcode('[business_search_results]');
+	$business_search = do_shortcode('[business_search_results format=' . $format . ']');
 	$business_search .= do_shortcode('[business_search_form results_page='.$resultspage.']');
 
 	return $business_search;

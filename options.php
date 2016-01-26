@@ -75,7 +75,6 @@ function cdash_add_options_page() {
 	);
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Add-Ons', 'Add-Ons', 'manage_options', 'chamber-dashboard-addons', 'cdash_addons_page' );
 	// this is a hidden submenu page for updating geolocation data
 	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
 }
@@ -98,11 +97,15 @@ function cdash_render_form() {
 		<h1><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h1>
 
 
-		<div id="main" style="width: 70%; min-width: 350px; float: left;">
+		<div id="main">
 			<!-- Beginning of the Plugin Options Form -->
 			<form method="post" action="options.php">
 				<?php settings_fields('cdash_plugin_options'); ?>
 				<?php $options = get_option('cdash_directory_options'); ?>
+
+				<?php if ( cdbd_fs()->is_paying() ) { ?>
+					<p><a href="https://chamberdashboard.com/professional-services-support/documentation/" target="_blank"><?php _e( 'Need help?  Take a look at our documentation!', 'cdash' ); ?></a></p>
+				<?php } ?>
 
 				<!-- Table Structure Containing Form Controls -->
 				<!-- Each Plugin Option Defined on a New Table Row -->
@@ -313,7 +316,6 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<?php include( plugin_dir_path( __FILE__ ) . '/includes/aside.php' ); ?>
 	</div>
 
 	<?php	
@@ -354,7 +356,7 @@ function cdash_export_form() {
 		<form action="' . plugin_dir_url( __FILE__ ) . 'export.php">
 		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
-		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="https://chamberdashboard.com/downloads/chamber-dashboard-exporter/" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="http://cdash.wpalchemists-dev.com/wp-admin/admin.php?page=chamber-dashboard-business-directory/options.php-addons" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 
@@ -488,53 +490,6 @@ function cdash_import_form() { ?>
 	}
 	
 	do_action( 'cdash_importer' );
-}
-
-function cdash_addons_page() { ?>
-	<div class="wrap">
-		<h1><?php _e( 'Add-Ons', 'cdash' ); ?></h1>
-		<?php _e( 'You can extend the functionality of Chamber Dashboard even more with these add-ons!', 'cdash' ); ?>
-		<div id="add-ons-container">
-			<div class="add-on recurring">
-				<h3><?php _e( 'Recurring Payments', 'cdash' ); ?></h3>
-				<?php $recurring_payments_content = '
-				<p>' . __( 'Make the membership manager even more powerful by adding automatic recurring payments!', 'cdash' ) . '</p>
-				<p>' . __( 'With the Recurring Payments add-on, you will never have to create membership invoices again - the plugin will create and send annual membership invoices to your customers, and give them the option to sign up for automatic recurring payments through PayPal.', 'cdash' ) . '</p>
-				<p class="center"><a href="https://chamberdashboard.com/downloads/recurring-payments/?utm_source=plugin&utm_medium=addons_page&utm_campaign=business-directory" class="button button-primary">' . __( 'Learn More', 'cdash' ) . '</a></p>';
-				echo apply_filters( 'cdash_addons_recurring', $recurring_payments_content ); ?>
-			</div>
-
-			<div class="add-on export">
-				<h3><?php _e( 'Exporter', 'cdash' ); ?></h3>
-				<?php 
-		    	$exporter_content = '
-				<p>' . __( 'Advanced export functionality makes it easy to export businesses, invoices, or people based on criteria you select.  You can select what information to export.', 'cdash' ) . '</p>
-				<p class="center"><a href="https://chamberdashboard.com/downloads/chamber-dashboard-exporter/?utm_source=plugin&utm_medium=addons_page&utm_campaign=business-directory" class="button button-primary">' . __( 'Learn More', 'cdash' ) . '</a></p>';
-				echo apply_filters( 'cdash_addons_exporter_content', $exporter_content );
-				do_action( 'cdash_addons_exporter' );
-			    ?>
-			</div>
-			
-			<div class="add-on tickets coming">
-				<h3><?php _e( 'Ticket Sales', 'cdash' ); ?></h3>
-				<?php $ticket_content = '
-				<p>' . __( 'Integrate with the Chamber Dashboard Events Calendar to sell tickets to your events, email ticketholders, and track attendance.', 'cdash' ) . '</p>
-				<p>' . __( 'Coming Soon!  Sign up for our newsletter to find out when Ticket Sales is released!', 'cdash' ) . '</p>
-				<iframe width="100%" scrolling="no" frameborder="0" src="https://chamberdashboard.com/?wysija-page=1&controller=subscribers&action=wysija_outter&wysija_form=3&external_site=1&wysijap=subscriptions" class="iframe-wysija" vspace="0" tabindex="0" style="position: static; top: 0pt; margin: 0px; border-style: none; height: 125px; left: 0pt; visibility: visible;" marginwidth="0" marginheight="0" hspace="0" allowtransparency="true" title="Subscription MailPoet"></iframe>';
-				echo apply_filters( 'cdash_addons_ticket', $ticket_content ); ?>
-			</div>
-
-			<div class="add-on import coming">
-				<h3><?php _e( 'Importer', 'cdash' ); ?></h3>
-				<?php $importer_content = '
-				<p>' . __( 'Extend Chamber Dashboard\'s import function to import businesses and people, along with custom fields and other data.', 'cdash' ) . '</p>
-				<p>' . __( 'Coming Soon!  Sign up for our newsletter to find out when the Importer is released!', 'cdash' ) . '</p>
-				<iframe width="100%" scrolling="no" frameborder="0" src="https://chamberdashboard.com/?wysija-page=1&controller=subscribers&action=wysija_outter&wysija_form=3&external_site=1&wysijap=subscriptions" class="iframe-wysija" vspace="0" tabindex="0" style="position: static; top: 0pt; margin: 0px; border-style: none; height: 125px; left: 0pt; visibility: visible;" marginwidth="0" marginheight="0" hspace="0" allowtransparency="true" title="Subscription MailPoet"></iframe>';
-				echo apply_filters( 'cdash_addons_importer', $importer_content ); ?>
-			</div>
-		</div>
-	</div>
-	<?php 
 }
 
 ?>

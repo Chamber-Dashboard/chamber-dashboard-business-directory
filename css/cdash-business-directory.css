@@ -56,13 +56,15 @@ max-width: 50%;
  margin: 0; 
 }
 
-#businesslist.list .business:after {
+#businesslist.list .business:after,
+#search-results .business:after {
 display: table;
 content: '';
 clear: both;
 }
 
-#businesslist .business {
+#businesslist .business,
+#search-results .business {
 	margin-bottom: 15px;
 }
 
@@ -71,28 +73,35 @@ clear: both;
 #businesslist.grid4:after,
 #cdcrm-people.grid2:after,
 #cdcrm-people.grid3:after,
-#cdcrm-people.grid4:after {
+#cdcrm-people.grid4:after,
+#search-results.grid2:after,
+#search-results.grid3:after,
+#search-results.grid4:after {
 	display: table;
 content: '';
 clear: both;
 }
 
 #businesslist.grid2 .business,
-#cdcrm-people.grid2 .cdcrm-person {
+#cdcrm-people.grid2 .cdcrm-person,
+#search-results.grid2 .business {
 	width: 45%;
 	margin-right: 2%;
 	float: left;
 }
 
 #businesslist.grid3 .business,
-#cdcrm-people.grid3 .cdcrm-person {
+#cdcrm-people.grid3 .cdcrm-person,
+#search-results.grid3 .business {
 	width: 30%;
 	margin-right: 2%;
 	float: left;
 }
 
 #businesslist.grid3 .business .logo.alignleft,
-#businesslist.grid4 .business .logo.alignleft {
+#businesslist.grid4 .business .logo.alignleft,
+#search-results.grid3 .business .logo.alignleft,
+#search-results.grid4 .business .logo.alignleft{
 	width: 100%;
 	max-width: 100%;
 	float: none;
@@ -100,7 +109,8 @@ clear: both;
 }
 
 #businesslist.grid4 .business,
-#cdcrm-people.grid4 .cdcrm-person {
+#cdcrm-people.grid4 .cdcrm-person,
+#search-results.grid4 .business {
 	width: 22.5%;
 	margin-right: 2%;
 	float: left;
@@ -125,7 +135,10 @@ clear: both;
 #businesslist.grid4 .business,
 #cdcrm-people.grid2 .cdcrm-person,
 #cdcrm-people.grid3 .cdcrm-person,
-#cdcrm-people.grid4 .cdcrm-person {
+#cdcrm-people.grid4 .cdcrm-person,
+#search-results.grid2 .business,
+#search-results.grid3 .business,
+#search-results.grid4 .business,{
 	width: 100%;
 	float: none;
 	}

@@ -3,7 +3,7 @@
 ?>
 
 <div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
-	<h3><?php _e('We\'re here to help!', 'cdashmm'); ?></h3>
+	<h3><?php _e('We\'re here to help!', 'cdash'); ?></h3>
 	<ul>
 		<li><a href="https://chamberdashboard.com/document/installing-chamber-dashboard-business-directory/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php _e('Business Directory Documentation', 'cdashmm'); ?></a></li>
 		<li><a href="https://chamberdashboard.com/professional-services-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#installation" target="_blank"><?php _e('Installation and Configuration:', 'cdashmm'); ?></a> <?php _e(' sit back and let experienced pros configure Chamber Dashboard to do just what you need', 'cdashmm'); ?></li>
