@@ -465,7 +465,10 @@
 				'slug'    => $this->_slug
 			);
 
-			fs_require_once_template( 'deactivation-feedback-modal.php', $vars );
+			/**
+			 * @todo Deactivation form core functions should be loaded only once! Otherwise, when there are multiple Freemius powered plugins the same code is loaded multiple times. The only thing that should be loaded differently is the various deactivation reasons object based on the state of the plugin.
+			 */
+			fs_require_template( 'deactivation-feedback-modal.php', $vars );
 		}
 
 		/**
@@ -957,7 +960,10 @@
 					if ( ( $this->_storage->connectivity_test['is_connected'] &&
 					       $this->_storage->connectivity_test['is_active'] ) ||
 					     ( ! $flush &&
-					       $version == $this->_storage->connectivity_test['version'] )
+					       /**
+					        * @since 1.1.7 Don't check for connectivity on plugin downgrade.
+					        */
+					       version_compare( $version, $this->_storage->connectivity_test['version'], '<=' ) )
 					) {
 						$this->_has_api_connection = $this->_storage->connectivity_test['is_connected'];
 						$this->_is_on              = $this->_storage->connectivity_test['is_active'] || ( WP_FS__DEV_MODE && $this->_has_api_connection );
@@ -972,15 +978,23 @@
 			if ( WP_FS__SIMULATE_NO_API_CONNECTIVITY ) {
 				$is_connected = false;
 			} else {
-				$pong         = $this->get_api_plugin_scope()->ping( $this->get_anonymous_id(), $is_update );
+				$pong         = $this->get_api_plugin_scope()->ping(
+					$this->get_anonymous_id(),
+					$is_update,
+					$version
+				);
 				$is_connected = $this->get_api_plugin_scope()->is_valid_ping( $pong );
 			}
 
 			if ( ! $is_connected ) {
 				// 2nd try of connectivity.
-				$pong = $this->get_api_plugin_scope()->ping( $this->get_anonymous_id(), $is_update );
+				$pong = $this->get_api_plugin_scope()->ping(
+					$this->get_anonymous_id(),
+					$is_update,
+					$version
+				);
 
-				if ( $this->get_api_plugin_scope()->is_valid_ping( $pong ) ) {
+				if ( ! WP_FS__SIMULATE_NO_API_CONNECTIVITY && $this->get_api_plugin_scope()->is_valid_ping( $pong ) ) {
 					$is_connected = true;
 				} else {
 					// Another API failure.
@@ -988,9 +1002,13 @@
 				}
 			}
 
-			$is_active = ( ! $is_connected ) ?
-				false :
-				( isset( $pong->is_active ) && true == $pong->is_active );
+			$is_active = $this->apply_filters(
+				'is_on',
+				( ! $is_connected ) ? false :
+					( isset( $pong->is_active ) && true == $pong->is_active ),
+				$this->is_plugin_update(),
+				$version
+			);
 
 			$this->_storage->connectivity_test = array(
 				'is_connected' => $is_connected,
@@ -1643,7 +1661,7 @@
 					if ( ! $this->is_parent_plugin_installed() ) {
 						$this->_admin_notices->add(
 							( is_string( $parent_name ) ?
-								sprintf( __fs( 'addon-cannot-run-without-x', $this->_slug ), $this->get_plugin_name(), $parent_name ) :
+								sprintf( __fs( 'addon-x-cannot-run-without-y', $this->_slug ), $this->get_plugin_name(), $parent_name ) :
 								sprintf( __fs( 'addon-x-cannot-run-without-parent', $this->_slug ), $this->get_plugin_name() )
 							),
 							__fs( 'oops', $this->_slug ) . '...',
@@ -1670,19 +1688,9 @@
 					     'plugin-information' === fs_request_get( 'tab', false ) &&
 					     $this->get_id() == fs_request_get( 'parent_plugin_id', false )
 					) {
-						// Remove default plugin information action.
-						remove_all_actions( 'install_plugins_pre_plugin-information' );
+						require_once WP_FS__DIR_INCLUDES . '/fs-plugin-info-dialog.php';
 
-						require_once WP_FS__DIR_INCLUDES . '/fs-plugin-functions.php';
-
-						// Override action with custom plugins function for add-ons.
-						add_action( 'install_plugins_pre_plugin-information', 'fs_install_plugin_information' );
-
-						// Override request for plugin information for Add-ons.
-						add_filter( 'fs_plugins_api', array(
-							&$this,
-							'_get_addon_info_filter'
-						), WP_FS__DEFAULT_PRIORITY, 3 );
+						new FS_Plugin_Info_Dialog( $this );
 					}
 				}
 
@@ -1787,145 +1795,6 @@
 		#endregion Initialization ------------------------------------------------------------------
 
 		#region Add-ons -------------------------------------------------------------------------
-
-		/**
-		 * Generate add-on plugin information.
-		 *
-		 * @author Vova Feldman (@svovaf)
-		 * @since  1.0.6
-		 *
-		 * @param array       $data
-		 * @param string      $action
-		 * @param object|null $args
-		 *
-		 * @return array|null
-		 */
-		function _get_addon_info_filter( $data, $action = '', $args = null ) {
-			$this->_logger->entrance();
-
-			$parent_plugin_id = fs_request_get( 'parent_plugin_id', false );
-
-			if ( $this->get_id() != $parent_plugin_id ||
-			     ( 'plugin_information' !== $action ) ||
-			     ! isset( $args->slug )
-			) {
-				return $data;
-			}
-
-			// Find add-on by slug.
-			$addons         = $this->get_addons();
-			$selected_addon = false;
-			foreach ( $addons as $addon ) {
-				if ( $addon->slug == $args->slug ) {
-					$selected_addon = $addon;
-					break;
-				}
-			}
-
-			if ( false === $selected_addon ) {
-				return $data;
-			}
-
-			if ( ! isset( $selected_addon->info ) ) {
-				// Setup some default info.
-				$selected_addon->info                  = new stdClass();
-				$selected_addon->info->selling_point_0 = 'Selling Point 1';
-				$selected_addon->info->selling_point_1 = 'Selling Point 2';
-				$selected_addon->info->selling_point_2 = 'Selling Point 3';
-				$selected_addon->info->description     = '<p>Tell your users all about your add-on</p>';
-			}
-
-			fs_enqueue_local_style( 'fs_addons', '/admin/add-ons.css' );
-
-			$data = $args;
-
-			// Fetch as much as possible info from local files.
-			$plugin_local_data = $this->get_plugin_data();
-			$data->name        = $selected_addon->title;
-			$data->author      = $plugin_local_data['Author'];
-			$view_vars         = array( 'plugin' => $selected_addon );
-			$data->sections    = array(
-				'description' => fs_get_template( '/plugin-info/description.php', $view_vars ),
-			);
-
-			if ( ! empty( $selected_addon->info->banner_url ) ) {
-				$data->banners = array(
-					'low' => $selected_addon->info->banner_url,
-				);
-			}
-
-			if ( ! empty( $selected_addon->info->screenshots ) ) {
-				$view_vars                     = array(
-					'screenshots' => $selected_addon->info->screenshots,
-					'plugin'      => $selected_addon,
-				);
-				$data->sections['screenshots'] = fs_get_template( '/plugin-info/screenshots.php', $view_vars );
-			}
-
-			// Load add-on pricing.
-			$has_pricing  = false;
-			$has_features = false;
-			$plans        = false;
-			$plans_result = $this->get_api_site_or_plugin_scope()->get( "/addons/{$selected_addon->id}/plans.json" );
-			if ( ! isset( $plans_result->error ) ) {
-				$plans = $plans_result->plans;
-				if ( is_array( $plans ) ) {
-					foreach ( $plans as &$plan ) {
-						$pricing_result = $this->get_api_site_or_plugin_scope()->get( "/addons/{$selected_addon->id}/plans/{$plan->id}/pricing.json" );
-						if ( ! isset( $pricing_result->error ) ) {
-							// Update plan's pricing.
-							$plan->pricing = $pricing_result->pricing;
-
-							$has_pricing = true;
-						}
-
-						$features_result = $this->get_api_site_or_plugin_scope()->get( "/addons/{$selected_addon->id}/plans/{$plan->id}/features.json" );
-						if ( ! isset( $features_result->error ) &&
-						     is_array( $features_result->features ) &&
-						     0 < count( $features_result->features )
-						) {
-							// Update plan's pricing.
-							$plan->features = $features_result->features;
-
-							$has_features = true;
-						}
-					}
-				}
-			}
-
-			// Get latest add-on version.
-			$latest = $this->_fetch_latest_version( $selected_addon->id );
-
-			if ( is_object( $latest ) ) {
-				$data->version      = $latest->version;
-				$data->last_updated = ! is_null( $latest->updated ) ? $latest->updated : $latest->created;
-				$data->requires     = $latest->requires_platform_version;
-				$data->tested       = $latest->tested_up_to_version;
-			} else {
-				// Add dummy version.
-				$data->version = '1.0.0';
-
-				// Add message to developer to deploy the plugin through Freemius.
-			}
-
-			$data->checkout_link = $this->checkout_url();
-			$data->download_link = 'https://dummy.com';
-
-			if ( $has_pricing ) {
-				// Add plans to data.
-				$data->plans = $plans;
-
-				if ( $has_features ) {
-					$view_vars                  = array(
-						'plans'  => $plans,
-						'plugin' => $selected_addon,
-					);
-					$data->sections['features'] = fs_get_template( '/plugin-info/features.php', $view_vars );
-				}
-			}
-
-			return $data;
-		}
 
 		/**
 		 * Check if add-on installed and activated on site.
@@ -2248,12 +2117,19 @@
 		 * @since  1.0.7
 		 */
 		function _admin_init_action() {
-			// Automatically redirect to connect/activation page after plugin activation.
+			/**
+			 * Automatically redirect to connect/activation page after plugin activation.
+			 *
+			 * @since 1.1.7 Do NOT redirect to opt-in when running in network admin mode.
+			 */
 			if ( $this->is_plugin_activation() ) {
 				delete_option( "fs_{$this->_slug}_activated" );
-				$this->_redirect_on_activation_hook();
 
-				return;
+				if ( ! function_exists( 'is_network_admin' ) || ! is_network_admin() ) {
+					$this->_redirect_on_activation_hook();
+
+					return;
+				}
 			}
 
 			if ( fs_request_is_action( $this->_slug . '_skip_activation' ) ) {
@@ -2491,7 +2367,7 @@
 				 * the first time that the plugin installed on the site, or the plugin was installed
 				 * before but didn't have Freemius integrated.
 				 *
-				 * Since register_activation_hook() do NOT fires since 3.1, and only fires
+				 * Since register_activation_hook() do NOT fires on updates since 3.1, and only fires
 				 * on manual activation via the dashboard, is_plugin_activation() is TRUE
 				 * only after immediate activation.
 				 *
@@ -2635,6 +2511,24 @@
 		 */
 		private function reset_anonymous_mode() {
 			unset( $this->_storage->is_anonymous );
+		}
+
+		/**
+		 * Clears the anonymous mode and redirects to the opt-in screen.
+		 *
+		 * @author Vova Feldman (@svovaf)
+		 * @since  1.1.7
+		 */
+		function connect_again() {
+			if ( ! $this->is_anonymous() ) {
+				return;
+			}
+
+			$this->reset_anonymous_mode();
+
+			if ( fs_redirect( $this->get_activation_url() ) ) {
+				exit();
+			}
 		}
 
 		/**
@@ -4967,7 +4861,7 @@
 			$this->embed_submenu_items();
 
 			// Start with specially high number to make sure it's appended.
-			$i = 10000;
+			$i = max( 10000, max( array_keys( $top_level_menu ) ) + 1 );
 			foreach ( $all_submenu_items_after as $meta ) {
 				$top_level_menu[ $i ] = $meta;
 				$i ++;
@@ -4977,12 +4871,26 @@
 			ksort( $top_level_menu );
 		}
 
+		/**
+		 * Displays the Support Forum link when enabled.
+		 *
+		 * Can be filtered like so:
+		 *
+		 *  function _fs_show_support_menu( $is_visible, $menu_id ) {
+		 *      if ( 'support' === $menu_id ) {
+		 * 		    return _fs->is_registered();
+		 * 		}
+		 * 		return $is_visible;
+		 * 	}
+		 * 	_fs()->add_filter('is_submenu_visible', '_fs_show_support_menu', 10, 2);
+		 *
+		 */
 		function _add_default_submenu_items() {
 			if ( ! $this->is_on() ) {
 				return;
 			}
 
-			if ( $this->is_registered() ) {
+			if ( $this->is_registered() || $this->is_anonymous() ) {
 				if ( $this->_menu->is_submenu_item_visible( 'support' ) ) {
 					$this->add_submenu_link_item(
 						$this->apply_filters( 'support_forum_submenu', __fs( 'support-forum', $this->_slug ) ),
@@ -6420,7 +6328,9 @@
 				$this->_get_latest_version_endpoint( $addon_id, 'json' ),
 				true
 			);
+
 			$latest_version = ( is_object( $tag ) && isset( $tag->version ) ) ? $tag->version : 'couldn\'t get';
+
 			$this->_logger->departure( 'Latest version ' . $latest_version );
 
 			return ( is_object( $tag ) && isset( $tag->version ) ) ? $tag : false;
@@ -7093,11 +7003,7 @@
 			$this->_logger->entrance();
 
 			$vars = array( 'slug' => $this->_slug );
-			if ( $this->is_pending_activation() ) {
-				fs_require_once_template( 'pending-activation.php', $vars );
-			} else {
-				fs_require_once_template( 'connect.php', $vars );
-			}
+			fs_require_once_template( 'connect.php', $vars );
 		}
 
 		/**
@@ -7505,7 +7411,7 @@
 						__fs( 'upgrade', $this->_slug ),
 						$this->get_upgrade_url(),
 						false,
-						20,
+						7,
 						'upgrade'
 					);
 				}
@@ -7515,7 +7421,7 @@
 						__fs( 'add-ons', $this->_slug ),
 						$this->_get_admin_page_url( 'addons' ),
 						false,
-						WP_FS__DEFAULT_PRIORITY,
+						9,
 						'addons'
 					);
 				}
@@ -7576,27 +7482,48 @@
 		function _modify_plugin_action_links_hook( $links, $file ) {
 			$this->_logger->entrance();
 
+			$passed_deactivate = false;
+			$deactivate_link   = '';
+			$before_deactivate = array();
+			$after_deactivate  = array();
+			foreach ( $links as $key => $link ) {
+				if ( 'deactivate' === $key ) {
+					$deactivate_link   = $link;
+					$passed_deactivate = true;
+					continue;
+				}
+
+				if ( ! $passed_deactivate ) {
+					$before_deactivate[ $key ] = $link;
+				} else {
+					$after_deactivate[ $key ] = $link;
+				}
+			}
+
 			ksort( $this->_action_links );
 
 			foreach ( $this->_action_links as $new_links ) {
 				foreach ( $new_links as $link ) {
-					$links[ $link['key'] ] = '<a href="' . $link['href'] . '"' . ( $link['external'] ? ' target="_blank"' : '' ) . '>' . $link['label'] . '</a>';
+					$before_deactivate[ $link['key'] ] = '<a href="' . $link['href'] . '"' . ( $link['external'] ? ' target="_blank"' : '' ) . '>' . $link['label'] . '</a>';
 				}
 			}
 
+			if ( ! empty( $deactivate_link ) ) {
+				if ( ! $this->is_paying_or_trial() || $this->is_premium() ) {
 			/*
 			 * This HTML element is used to identify the correct plugin when attaching an event to its Deactivate link.
 			 * 
 			 * If user is paying or in trial and have the free version installed,
 			 * assume that the deactivation is for the upgrade process, so this is not needed.
 			 */
-			if ( ! $this->is_paying_or_trial() || $this->is_premium() ) {
-				if ( isset( $links['deactivate'] ) ) {
-					$links['deactivate'] .= '<i class="fs-slug" data-slug="' . $this->_slug . '"></i>';
+					$deactivate_link .= '<i class="fs-slug" data-slug="' . $this->_slug . '"></i>';
 				}
+
+				// Append deactivation link.
+				$before_deactivate['deactivate'] = $deactivate_link;
 			}
 
-			return $links;
+			return array_merge( $before_deactivate, $after_deactivate );
 		}
 
 		/**

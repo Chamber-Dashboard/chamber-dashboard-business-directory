@@ -103,7 +103,7 @@ function cdash_render_form() {
 				<?php settings_fields('cdash_plugin_options'); ?>
 				<?php $options = get_option('cdash_directory_options'); ?>
 
-				<?php if ( cdbd_fs()->is_paying() ) { ?>
+				<?php if ( cdash_bd()->is_paying() ) { ?>
 					<p><a href="https://chamberdashboard.com/professional-services-support/documentation/" target="_blank"><?php _e( 'Need help?  Take a look at our documentation!', 'cdash' ); ?></a></p>
 				<?php } ?>
 
@@ -349,11 +349,19 @@ function cdash_plugin_action_links( $links, $file ) {
 	return $links;
 }
 
+add_action( 'admin_init', 'cdash_watch_for_export' );
+function cdash_watch_for_export() {
+	if( isset( $_POST['cdash_export'] ) && 'cdash_do_export' == $_POST['cdash_export'] ) {
+		require_once( dirname(__FILE__) . '/export.php' );
+		cdash_simple_export();
+	}
+}
 function cdash_export_form() {
 
 	$export_form = 
 		'<p>' . __( 'Click the button below to download a CSV of all of your businesses.', 'cdash' ) . '</p>
-		<form action="' . plugin_dir_url( __FILE__ ) . 'export.php">
+		<form method="post" action="' . admin_url( 'admin.php?page=chamber-dashboard-export') . '">
+		<input type="hidden" name="cdash_export" value="cdash_do_export">
 		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
 		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="http://cdash.wpalchemists-dev.com/wp-admin/admin.php?page=chamber-dashboard-business-directory/options.php-addons" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );

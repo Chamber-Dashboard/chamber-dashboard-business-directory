@@ -29,7 +29,6 @@ function cdash_about_screen()
 		<p class="cdash-actions">
 			<a href="<?php echo esc_url(admin_url('admin.php?page=chamber-dashboard-business-directory/options.php')); ?>" class="button button-primary"><?php _e('Settings', 'cdash'); ?></a>
 			<a href="http://chamberdashboard.com/support/documentation/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" class="button button-primary" target="_blank"><?php _e('Documentation', 'cdash'); ?></a>
-			<a href="http://chamberdashboard.com/support/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" class="button button-primary" target="_blank"><?php _e('Support', 'cdash'); ?></a>
 		</p>
 
 		<h2 class="nav-tab-wrapper">
@@ -54,62 +53,18 @@ function cdash_about_screen()
 						<p><?php _e('Easily import listings from or export listings to a CSV file.  Customize your listings to meet member needs.', 'cdash'); ?></p>
 					</div>
 
-					<div class="last-feature">
+					<div>
 						<h4><?php _e('Display Directory on your Website', 'cdash'); ?></h4>
 						<p><?php _e('Display member businesses as a complete, searchable directory or single listing. Turn your site into a community resource of local business connections.', 'cdash'); ?></p>
 					</div>
 
-				</div>
-				
-			</div>
-
-			<div class="changelog">
-
-				<h3><?php _e('Professional Services', 'cdash'); ?></h3>
-
-				<div class="feature-section col three-col">
-
-					<div>
-						<h4><a href="https://chamberdashboard.com/downloads/instant-chamber-dash/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" target="_blank"><?php _e('Chamber Dashboard Installation', 'cdash'); ?></a></h4>
-						<p><?php _e('Let us build your site for you!  We will install all of the Chamber Dashboard plugins and configure your site to your liking.', 'cdash'); ?></p>
-					</div>
-
-					<div>
-						<h4><a href="https://chamberdashboard.com/downloads/priority-support/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" target="_blank"><?php _e('Priority Support', 'cdash'); ?></a></h4>
-						<p><?php _e('Prefer to do it yourself, but want some help along the way?  With our Priority Support, our experts are ready to help you!', 'cdash'); ?></p>
-					</div>
-
 					<div class="last-feature">
-						<h4><a href="https://chamberdashboard.com/downloads/basic-worry-free-maintenance/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" target="_blank"><?php _e('Worry-Free Maintenance', 'cdash'); ?></a></h4>
-						<p><?php _e('Let us take care of updating your site, adding content, and troubleshooting problems, so that you can focus your time on what you do best.', 'cdash'); ?></p>
+						<h4><?php _e('Sign Up for Our Exceptional Support', 'cdash'); ?></h4>
+						<p><?php _e('We are here to answer your questions and help you get the most out of Chamber Dashboard!  Go to the Upgrade page in the Chamber Dashboard menu to receive our first-class support.', 'cdash'); ?></p>
 					</div>
 
 				</div>
 				
-			</div>
-
-			<div class="changelog">
-			
-				<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
-				<p><?php _e('The Business Directory is just one in a suite of plugins designed to make your Chamber or organization an easy to manage, central source of information regarding local businesses, event management and professional communication.', 'cdash'); ?></p>
-
-				<div class="feature-section col three-col">
-					<div>
-						<h4><a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank"><?php _e('Chamber Dashboard CRM', 'cdash'); ?></a></h4>
-						<p><?php _e('Customer Relationship Management has evolved. Organizations today need tools that enhance customer interaction from marketing to sales to follow up services. This plugin creates a directory of the people associated with your organization and allows you to track the progression of your relationship with them.', 'cdash'); ?></p>
-					</div>
-					<div>
-						<h4><a href="https://wordpress.org/plugins/chamber-dashboard-events-calendar/" target="_blank"><?php _e('Chamber Dashboard Events Calendar', 'cdash'); ?></a></h4>
-						<p><?php _e('Create an events calendar on your site. Track event registrations and attendees, connect and encourage members to grow their professional networks. ', 'cdash'); ?></p>
-					</div>
-					
-					<div class='last-feature'>
-						<h4><a href="https://wordpress.org/plugins/chamber-dashboard-member-manager/" target="_blank"><?php _e('Chamber Dashboard Member Manager', 'cdash'); ?></a></h4>
-						<p><?php _e('Streamline management of your organization. The Member Management plugin allows you to track membership levels, accept online member payments, and more, freeing you up to work with your members on your core mission.', 'cdash'); ?></p>
-					</div>
-					
-				</div>
-
 			</div>
 
 			<div class="return-to-dashboard">

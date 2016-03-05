@@ -398,14 +398,16 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                __( 'Select Membership Levels', 'cdash' )
 		            );
 					$category_list = get_terms( 'membership_level', 'hide_empty=true' );
-					foreach( $category_list as $term ) {
-		                printf(
-		                    '<option value="%s" %s>%s</option>',
-		                    $term->term_id,
-		                    in_array( $term->term_id, $instance['level']) ? 'selected="selected"' : '',
-		                    $term->name
-		                );
-		            }
+					if( is_array( $category_list ) && !empty( $category_list ) && isset( $instance['level'] ) ) {
+						foreach ($category_list as $term) {
+							printf(
+								'<option value="%s" %s>%s</option>',
+								$term->term_id,
+								in_array($term->term_id, $instance['level']) ? 'selected="selected"' : '',
+								$term->name
+							);
+						}
+					}
 		            echo '</select>'; ?>
 				</p>
 				<?php $active_plugins = wp_get_active_and_valid_plugins();

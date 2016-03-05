@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.7.8
+Version: 2.7.9
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -52,22 +52,20 @@ function cdash_bd() {
 
 	if ( ! isset( $cdash_bd ) ) {
 		// Include Freemius SDK.
-		require_once( dirname(__FILE__) . '/freemius/start.php' );
+		require_once dirname(__FILE__) . '/freemius/start.php';
 
 		$cdash_bd = fs_dynamic_init( array(
 				'id'                => '170',
-				'slug'              => 'chamber-dashboard-business-directory/options.php',
+				'slug'              => 'chamber-dashboard-business-directory',
 				'public_key'        => 'pk_fb8be3233878561440e6781b2bda4',
 				'is_premium'        => true,
 				'has_addons'        => true,
 				'has_paid_plans'    => true,
 				'menu'              => array(
 						'slug'       => 'chamber-dashboard-business-directory/options.php',
+						'first-path' => 'index.php?page=cdash-about',
 						'support'    => false,
 				),
-			// Set the SDK to work in a sandbox mode (for development & testing).
-			// IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
-				'secret_key'  => 'sk_W(h:YbY4%2626ysyuvhNp(Tu=G.(#',
 		) );
 	}
 
@@ -80,8 +78,8 @@ cdash_bd();
 
 
 function cdash_show_contact_menu( $menu_id, $is_visible ) {
-	if ('contact' !== $menu_id)
-		return $is_visible;
+	if ('contact' !== $is_visible)
+		return $menu_id;
 
 	return cdash_bd()->is_paying();
 }

@@ -93,7 +93,7 @@ function cdash_single_business($content) {
 			if( isset( $contactmeta['location'] ) ) {
 				$locations = $contactmeta['location'];
 				foreach ( $locations as $location ) {
-					if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
+					if( ( isset( $location['address'] ) || ( isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) ) && !isset( $location['donotdisplay'] ) ) {
 						$needmap = "true";	
 					}
 				} 
@@ -123,7 +123,7 @@ function cdash_single_business_map() {
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location'];  ?>
 		<script type="text/javascript"
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false">
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&">
 		</script>
 		<script type="text/javascript">
 
@@ -511,11 +511,11 @@ function cdash_business_map_shortcode( $atts ) {
 
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
-	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
+	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&'></script>";
 		
 	if( "yes" == $cluster ) {
-		$business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
-	    $business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
+		$business_map .= "<script src='https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
+	    $business_map .= "<script src='https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
 	}
 
 	$business_map .= "<script type='text/javascript'>";

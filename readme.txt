@@ -86,6 +86,13 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7.9 =
+* fixed bug in exporter
+* fixed broken link on welcome page
+* fixed potential problem with Google maps and SSL
+* fixed bug in widgets
+* removed sensor from maps
+
 = 2.7.8 =
 * [business_search] and [business_search_results] shortcode now take the same formatting options (list, grid1, grid2, grid3, grid4) as the [business_directory] shortcode
 * Freemius integration
