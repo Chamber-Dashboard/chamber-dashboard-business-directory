@@ -23,6 +23,7 @@ function cdash_single_business($content) {
 		$meta = get_post_custom($post_id); 
 
 		$options = get_option('cdash_directory_options');
+		$member_options = get_option('cdashmm_options');
 
 		// make location/address metabox data available
 		global $buscontact_metabox;
@@ -35,6 +36,17 @@ function cdash_single_business($content) {
 		global $post;
 
 		$business_content = "<div id='business'>";
+		if(isset($member_options['hide_lapsed_members'])){
+			//echo $member_options['hide_lapsed_members'];
+			$business_content .= cdash_display_business_status($post_id);
+			$lapsed = cdash_display_business_status($post_id);
+			if($lapsed == "lapsed"){
+				echo "This business is not a current member.";
+			}
+			else{
+				echo "Pleaae show this business";
+			}
+		}
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) { 
 			$business_content .= get_the_post_thumbnail( $post_id, 'full' );
 		}
@@ -1130,5 +1142,29 @@ function cdash_display_business_categories( $id ) {
 
 	$category_content = apply_filters( 'cdash_filter_business_categories', $category_content, $id );
 	return $category_content;
+}
+
+// ------------------------------------------------------------------------
+// DISPLAY BUSINESS STATUS
+// ------------------------------------------------------------------------
+
+function cdash_display_business_status( $id ) {
+	$status_content = '';
+	$busstatuses = get_the_terms( $id, 'membership_status');
+	if($busstatuses) {
+		//$status_content .= "<p class='categories'><span>" . __('Status:&nbsp;', 'cdash') . "</span>";
+		$i = 1;
+		foreach($busstatuses as $busstatus) {
+			$busstatus_link = get_term_link( $busstatus );
+			if($i !== 1) {
+				$status_content .= ",&nbsp;";
+			}
+			$status_content .= $busstatus->slug;
+			$i++;
+		}
+	}
+
+	$status_content = apply_filters( 'cdash_filter_business_status', $status_content, $id );
+	return $status_content;
 }
 ?>
