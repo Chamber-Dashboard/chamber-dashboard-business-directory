@@ -36,17 +36,18 @@ function cdash_single_business($content) {
 		global $post;
 
 		$business_content = "<div id='business'>";
-		if(isset($member_options['hide_lapsed_members'])){
+		if((isset($member_options['hide_lapsed_members'])) && (cdash_display_business_status($post_id) == "lapsed")) {
+			$business_content .= "This business is not a current member.";
 			//echo $member_options['hide_lapsed_members'];
-			$business_content .= cdash_display_business_status($post_id);
+			/*$business_content .= cdash_display_business_status($post_id);
 			$lapsed = cdash_display_business_status($post_id);
 			if($lapsed == "lapsed"){
 				echo "This business is not a current member.";
 			}
 			else{
 				echo "Pleaae show this business";
-			}
-		}
+			}*/
+		}else{
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) { 
 			$business_content .= get_the_post_thumbnail( $post_id, 'full' );
 		}
@@ -114,6 +115,7 @@ function cdash_single_business($content) {
 				$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 				add_action('wp_footer', 'cdash_single_business_map');
 			}
+		}
 		}
 		$business_content .= "</div>";
 	$content = $business_content;
@@ -375,7 +377,7 @@ function cdash_business_directory_shortcode( $atts ) {
   	}
 
   	$paged = get_query_var('paged') ? get_query_var('paged') : 1;
-
+    				
 	$args = array( 
 		'post_type' => 'business',
 		'posts_per_page' => $perpage, 
@@ -383,9 +385,19 @@ function cdash_business_directory_shortcode( $atts ) {
 	    'order' => $order,
 	    'orderby' => $orderby, 	
 	    'business_category' => $category,	
-	    'membership_level' => $level,		
-	    'membership_status' => $status						 
+	    'membership_level' => $level	
 	);
+	
+	if((isset($status)) && ($status != '')){
+		$args['tax_query'][] = array(
+			    'taxonomy' => 'membership_status',
+		        'field' => 'slug',
+                'terms' => array($status),
+				'operator' => 'IN'
+			);
+	}	
+	
+	$args = cdash_add_hide_lapsed_members_filter($args);
 
 	$businessquery = new WP_Query( $args );
 
@@ -399,8 +411,9 @@ function cdash_business_directory_shortcode( $atts ) {
 					$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 				} else {
 					$business_list .= "<h3>" . get_the_title() . "</h3>";
-				}
+				}				
 				$business_list .= "<div class='description'>";
+				
 			  	if( "logo" == $image ) {
 			  		global $buslogo_metabox;
 					$logometa = $buslogo_metabox->the_meta();
@@ -520,6 +533,8 @@ function cdash_business_map_shortcode( $atts ) {
 	);
 
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+	
+	$args = cdash_add_hide_lapsed_members_filter($args);
 
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
@@ -705,6 +720,8 @@ function cdash_business_search_results_shortcode( $atts ) {
             if ( $searchtext ) {
             	$args['s'] = $searchtext;
             }
+			
+			$args = cdash_add_hide_lapsed_members_filter($args);
                 
         $search_query = new WP_Query( $args );
 		if ( $search_query->have_posts() ) :
@@ -1150,21 +1167,40 @@ function cdash_display_business_categories( $id ) {
 
 function cdash_display_business_status( $id ) {
 	$status_content = '';
-	$busstatuses = get_the_terms( $id, 'membership_status');
-	if($busstatuses) {
+	$statuses = get_the_terms( $id, 'membership_status');
+	if($statuses) {
 		//$status_content .= "<p class='categories'><span>" . __('Status:&nbsp;', 'cdash') . "</span>";
 		$i = 1;
-		foreach($busstatuses as $busstatus) {
-			$busstatus_link = get_term_link( $busstatus );
+		foreach($statuses as $status) {
+			$status_link = get_term_link( $status );
 			if($i !== 1) {
 				$status_content .= ",&nbsp;";
 			}
-			$status_content .= $busstatus->slug;
+			$status_content .= $status->slug;
 			$i++;
 		}
 	}
 
 	$status_content = apply_filters( 'cdash_filter_business_status', $status_content, $id );
+	$membership_status = $status_content;
 	return $status_content;
+}
+
+// ------------------------------------------------------------------------
+// ADD TAXONOMY FILTER TO HIDE LAPSED BUSINESSES
+// ------------------------------------------------------------------------
+
+function cdash_add_hide_lapsed_members_filter($args){
+	$member_options = get_option('cdashmm_options');
+	if(isset($member_options['hide_lapsed_members'])){
+		$args['tax_query'][] = array(
+      		'taxonomy' => 'membership_status',
+		    'field' => 'slug',
+            'terms' => array('lapsed'),
+			'operator' => 'NOT IN'
+		);
+	}
+	
+	return $args;
 }
 ?>
