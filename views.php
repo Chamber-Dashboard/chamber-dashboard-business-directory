@@ -1193,7 +1193,7 @@ function cdash_display_business_status( $id ) {
 function cdash_add_hide_lapsed_members_filter($args){
 	$member_options = get_option('cdashmm_options');
 	if(isset($member_options['hide_lapsed_members'])){
-		$args['tax_query'][] = array(
+        $args['tax_query'][] = array(
       		'taxonomy' => 'membership_status',
 		    'field' => 'slug',
             'terms' => array('lapsed'),
