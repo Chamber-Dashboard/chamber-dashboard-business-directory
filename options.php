@@ -364,7 +364,7 @@ function cdash_export_form() {
 		<input type="hidden" name="cdash_export" value="cdash_do_export">
 		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
-		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="http://cdash.wpalchemists-dev.com/wp-admin/admin.php?page=chamber-dashboard-business-directory/options.php-addons" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="' . admin_url( 'admin.php?page=chamber-dashboard-business-directory/options.php-addons' ) . '" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 

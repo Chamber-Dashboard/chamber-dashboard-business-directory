@@ -1,5 +1,5 @@
 === Chamber Dashboard Business Directory ===
-Contributors: gwendydd
+Contributors: gwendydd, cguntur
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
@@ -86,6 +86,10 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.8.0 =
+* display membership status in single business view
+* fixed broken links in dashboard
+
 = 2.7.9 =
 * fixed bug in exporter
 * fixed broken link on welcome page
