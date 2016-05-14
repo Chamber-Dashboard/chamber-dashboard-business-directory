@@ -2415,36 +2415,53 @@
 		 * @return bool If add-on was deactivated.
 		 */
 		private function deactivate_premium_only_addon_without_license( $is_after_trial_cancel = false ) {
-			if ( ! $this->has_free_plan() &&
-			     ! $this->has_features_enabled_license() &&
-			     ! $this->_has_premium_license()
-			) {
-				deactivate_plugins( array( $this->_plugin_basename ), true );
+            if ( ! $this->has_free_plan() &&
+                 ! $this->has_features_enabled_license() &&
+                 ! $this->_has_premium_license()
+            ) {
+                /**
+                 * Retry syncing the user add-on licenses.
+                 */
+                // Sync licenses.
+                $this->_sync_licenses();
 
-				$this->_parent->_admin_notices->add_sticky(
-					sprintf(
-						__fs( ( $is_after_trial_cancel ?
-								'addon-trial-cancelled-message' :
-								'addon-no-license-message' ),
-							$this->_parent->_slug
-						),
-						'<b>' . $this->_plugin->title . '</b>'
-					) . ' ' . sprintf(
-						'<a href="%s" aria-label="%s" class="button button-primary" style="margin-left: 10px; vertical-align: middle;">%s &nbsp;&#10140;</a>',
-						$this->_parent->addon_url( $this->_slug ),
-						esc_attr( sprintf( __fs( 'more-information-about-x', $this->_parent->_slug ), $this->_plugin->title ) ),
-						__fs( 'purchase-license', $this->_parent->_slug )
-					),
-					'no_addon_license',
-					( $is_after_trial_cancel ? '' : __fs( 'oops', $this->_parent->_slug ) . '...' ),
-					( $is_after_trial_cancel ? 'success' : 'error' )
-				);
+                // Try to activate premium license.
+                $this->_activate_license( true );
 
-				return true;
-			}
+                if ( ! $this->has_free_plan() &&
+                     ! $this->has_features_enabled_license() &&
+                     ! $this->_has_premium_license()
+                ) {
+                    // @todo Check if deactivate plugins also call the deactivation hook.
 
-			return false;
-		}
+                    deactivate_plugins( array( $this->_plugin_basename ), true );
+
+                    $this->_parent->_admin_notices->add_sticky(
+                        sprintf(
+                            __fs( ( $is_after_trial_cancel ?
+                                    'addon-trial-cancelled-message' :
+                                    'addon-no-license-message' ),
+                                $this->_parent->_slug
+                            ),
+                            '<b>' . $this->_plugin->title . '</b>'
+                        ) . ' ' . sprintf(
+                            '<a href="%s" aria-label="%s" class="button button-primary" style="margin-left: 10px; vertical-align: middle;">%s &nbsp;&#10140;</a>',
+                            $this->_parent->addon_url( $this->_slug ),
+                            esc_attr( sprintf( __fs( 'more-information-about-x', $this->_parent->_slug ), $this->_plugin->title ) ),
+                            __fs( 'purchase-license', $this->_parent->_slug )
+                        ),
+                        'no_addon_license',
+                        ( $is_after_trial_cancel ? '' : __fs( 'oops', $this->_parent->_slug ) . '...' ),
+                        ( $is_after_trial_cancel ? 'success' : 'error' )
+                    );
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
 		#endregion ------------------------------------------------------------------
 
