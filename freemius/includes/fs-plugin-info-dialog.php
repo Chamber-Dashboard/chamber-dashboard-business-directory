@@ -31,7 +31,7 @@
 		 */
 		private $_fs;
 
-		function __construct(Freemius $fs) {
+		function __construct( Freemius $fs ) {
 			$this->_fs = $fs;
 
 			$this->_logger = FS_Logger::get_logger( WP_FS__SLUG . '_' . $fs->get_slug() . '_info', WP_FS__DEBUG_SDK, WP_FS__ECHO_DEBUG_SDK );
@@ -110,7 +110,10 @@
 			if ( ! isset( $plans_result->error ) ) {
 				$plans = $plans_result->plans;
 				if ( is_array( $plans ) ) {
-					foreach ( $plans as &$plan ) {
+					for ( $i = 0, $len = count( $plans ); $i < $len; $i ++ ) {
+						$plans[ $i ] = new FS_Plugin_Plan( $plans[ $i ] );
+						$plan        = $plans[ $i ];
+
 						$pricing_result = $this->_fs->get_api_site_or_plugin_scope()->get( "/addons/{$selected_addon->id}/plans/{$plan->id}/pricing.json" );
 						if ( ! isset( $pricing_result->error ) ) {
 							// Update plan's pricing.
@@ -118,6 +121,10 @@
 
 							if ( is_array( $plan->pricing ) && ! empty( $plan->pricing ) ) {
 								$is_free = false;
+
+								foreach ( $plan->pricing as &$pricing ) {
+									$pricing = new FS_Pricing( $pricing );
+								}
 							}
 
 							$has_pricing = true;
@@ -140,29 +147,46 @@
 			// Fetch latest version from Freemius.
 			$latest = $this->_fs->_fetch_latest_version( $selected_addon->id );
 
-			// If not versions found, then assume it's a .org plugin.
-			$is_wordpress_org = !$is_free || ( false === $latest );
+			if ( ! $is_free ) {
+				// If paid add-on, then it's not on wordpress.org
+				$is_wordpress_org = false;
+			} else {
+				// If no versions found, then assume it's a .org plugin.
+				$is_wordpress_org = ( false === $latest );
+			}
 
-			if ( $is_free ) {
-				if ( $is_wordpress_org ) {
+			if ( $is_wordpress_org ) {
+				$repo_data = FS_Plugin_Updater::_fetch_plugin_info_from_repository(
+					'plugin_information', (object) array(
+						'slug'   => $selected_addon->slug,
+						'is_ssl' => is_ssl(),
+						'fields' => array(
+							'banners'         => true,
+							'reviews'         => true,
+							'downloaded'      => false,
+							'active_installs' => true
+						)
+					) );
 
-					$data = FS_Plugin_Updater::_fetch_plugin_info_from_repository(
-						'plugin_information', (object) array(
-							'slug' => $selected_addon->slug,
-							'is_ssl' => is_ssl(),
-							'fields' => array(
-								'banners' => true,
-								'reviews' => true,
-								'downloaded' => false,
-								'active_installs' => true
-							)
-						) );
+				if ( ! empty( $repo_data ) ) {
+					$data                 = $repo_data;
+					$data->wp_org_missing = false;
 				} else {
+					// Couldn't find plugin on .org.
+					$is_wordpress_org = false;
+
+					// Plugin is missing, not on Freemius nor WP.org.
+					$data->wp_org_missing = true;
+				}
+			}
+
+			if ( ! $is_wordpress_org ) {
+				$data->checkout_link = $this->_fs->checkout_url();
+				$data->fs_missing    = ( false === $latest );
+
+				if ( $is_free ) {
 					$data->download_link = $this->_fs->_get_latest_download_local_url( $selected_addon->id );
 				}
-			} else {
-				$is_wordpress_org    = false;
-				$data->checkout_link = $this->_fs->checkout_url();
 			}
 
 			if ( ! $is_wordpress_org ) {
@@ -225,12 +249,12 @@
 		 * @author Vova Feldman (@svovaf)
 		 * @since  1.1.7
 		 *
-		 * @param object $plan
+		 * @param FS_Plugin_Plan $plan
 		 *
 		 * @return string
 		 */
-		private function get_billing_cycle( $plan ) {
-			$billing_cycle = 'annual';
+		private function get_billing_cycle( FS_Plugin_Plan $plan ) {
+			$billing_cycle = null;
 
 			if ( 1 === count( $plan->pricing ) && 1 == $plan->pricing[0]->licenses ) {
 				$pricing = $plan->pricing[0];
@@ -250,6 +274,10 @@
 					} else if ( isset( $pricing->lifetime_price ) ) {
 						$billing_cycle = 'lifetime';
 					}
+
+					if ( ! is_null( $billing_cycle ) ) {
+						break;
+					}
 				}
 			}
 
@@ -260,22 +288,52 @@
 		 * @author Vova Feldman (@svovaf)
 		 * @since  1.1.7
 		 *
-		 * @param object $api
+		 * @param FS_Plugin_Plan $plan
+		 * @param FS_Pricing     $pricing
+		 *
+		 * @return float|null|string
+		 */
+		private function get_price_tag( FS_Plugin_Plan $plan, FS_Pricing $pricing ) {
+			$price_tag = '';
+			if ( isset( $pricing->annual_price ) ) {
+				$price_tag = $pricing->annual_price . ( $plan->is_block_features ? ' / year' : '' );
+			} else if ( isset( $pricing->monthly_price ) ) {
+				$price_tag = $pricing->monthly_price . ' / mo';
+			} else if ( isset( $pricing->lifetime_price ) ) {
+				$price_tag = $pricing->lifetime_price;
+			}
+
+			return '$' . $price_tag;
+		}
+
+		/**
+		 * @author Vova Feldman (@svovaf)
+		 * @since  1.1.7
+		 *
+		 * @param object              $api
+		 * @param FS_Plugin_Plan|null $plan
 		 *
 		 * @return string
 		 */
-		private function get_plugin_cta( $api ) {
+		private function get_plugin_cta( $api, $plan = null ) {
 			if ( ( current_user_can( 'install_plugins' ) || current_user_can( 'update_plugins' ) ) ) {
 
 				if ( ! empty( $api->checkout_link ) && isset( $api->plans ) && 0 < is_array( $api->plans ) ) {
-					$plan = $api->plans[0];
+					if ( is_null( $plan ) ) {
+						$plan = $api->plans[0];
+					}
 
-					return ' <a class="button button-primary right" href="' . esc_url( add_query_arg( array(
-						'plugin_id'     => $plan->plugin_id,
-						'plan_id'       => $plan->id,
-						'pricing_id'    => $plan->pricing[0]->id,
-						'billing_cycle' => $this->get_billing_cycle( $plan ),
-					), $api->checkout_link ) ) . '" target="_parent">' . __fs( 'purchase', $api->slug ) . '</a>';
+					return ' <a class="button button-primary right" href="' . $this->_fs->addon_checkout_url(
+						$plan->plugin_id,
+						$plan->pricing[0]->id,
+						$this->get_billing_cycle( $plan ),
+						$plan->has_trial()
+					) . '" target="_parent">' .
+					       ( ! $plan->has_trial() ?
+						       __fs( 'purchase', $api->slug ) :
+						       sprintf( __fs( 'start-free-x', $api->slug ), $this->get_trial_period( $plan ) )
+					       ) .
+					       '</a>';
 
 					// @todo Add Cart concept.
 //			echo ' <a class="button right" href="' . $status['url'] . '" target="_parent">' . __( 'Add to Cart' ) . '</a>';
@@ -284,40 +342,60 @@
 					$status = install_plugin_install_status( $api );
 
 
-						// Hosted on WordPress.org.
-						switch ( $status['status'] ) {
-							case 'install':
-								if ($api->external &&
-								    $this->_fs->is_org_repo_compliant() ||
-								    !$this->_fs->is_premium())
-								{
-									/**
-									 * Add-on hosted on Freemius, not yet installed, and core
-									 * plugin is wordpress.org compliant. Therefore, require a download
-									 * since installing external plugins is not allowed by the wp.org guidelines.
-									 */
-									return ' <a class="button button-primary right" href="' . esc_url( $api->download_link ) . '" target="_blank">' . __fs( 'download-latest', $api->slug ) . '</a>';
-								}
-								else {
-									if ( $status['url'] ) {
-										return '<a class="button button-primary right" href="' . $status['url'] . '" target="_parent">' . __( 'Install Now' ) . '</a>';
-									}
-								}
-								break;
-							case 'update_available':
+					// Hosted on WordPress.org.
+					switch ( $status['status'] ) {
+						case 'install':
+							if ( $api->external &&
+							     $this->_fs->is_org_repo_compliant() ||
+							     ! $this->_fs->is_premium()
+							) {
+								/**
+								 * Add-on hosted on Freemius, not yet installed, and core
+								 * plugin is wordpress.org compliant. Therefore, require a download
+								 * since installing external plugins is not allowed by the wp.org guidelines.
+								 */
+								return ' <a class="button button-primary right" href="' . esc_url( $api->download_link ) . '" target="_blank">' . __fs( 'download-latest', $api->slug ) . '</a>';
+							} else {
 								if ( $status['url'] ) {
-									return '<a class="button button-primary right" href="' . $status['url'] . '" target="_parent">' . __( 'Install Update Now' ) . '</a>';
+									return '<a class="button button-primary right" href="' . $status['url'] . '" target="_parent">' . __( 'Install Now' ) . '</a>';
 								}
-								break;
-							case 'newer_installed':
-								return '<a class="button button-primary right disabled">' . sprintf( __( 'Newer Version (%s) Installed' ), $status['version'] ) . '</a>';
-								break;
-							case 'latest_installed':
-								return '<a class="button button-primary right disabled">' . __( 'Latest Version Installed' ) . '</a>';
-								break;
-						}
+							}
+							break;
+						case 'update_available':
+							if ( $status['url'] ) {
+								return '<a class="button button-primary right" href="' . $status['url'] . '" target="_parent">' . __( 'Install Update Now' ) . '</a>';
+							}
+							break;
+						case 'newer_installed':
+							return '<a class="button button-primary right disabled">' . sprintf( __( 'Newer Version (%s) Installed' ), $status['version'] ) . '</a>';
+							break;
+						case 'latest_installed':
+							return '<a class="button button-primary right disabled">' . __( 'Latest Version Installed' ) . '</a>';
+							break;
+					}
 
 				}
+			}
+		}
+
+		/**
+		 * @author Vova Feldman (@svovaf)
+		 * @since  1.1.7
+		 *
+		 * @param FS_Plugin_Plan $plan
+		 *
+		 * @return string
+		 */
+		private function get_trial_period( $plan ) {
+			$trial_period = (int) $plan->trial_period;
+
+			switch ( $trial_period ) {
+				case 30:
+					return 'month';
+				case 60:
+					return '2 months';
+				default:
+					return "{$plan->trial_period} days";
 			}
 		}
 
@@ -340,9 +418,9 @@
 				'slug'   => wp_unslash( $_REQUEST['plugin'] ),
 				'is_ssl' => is_ssl(),
 				'fields' => array(
-					'banners' => true,
-					'reviews' => true,
-					'downloaded' => false,
+					'banners'         => true,
+					'reviews'         => true,
+					'downloaded'      => false,
 					'active_installs' => true
 				)
 			);
@@ -488,159 +566,291 @@
 			?>
 		<div id="<?php echo $_tab; ?>-content" class='<?php echo $_with_banner; ?>'>
 			<div class="fyi">
+			<?php if ( $api->is_paid ) : ?>
 				<?php if ( isset( $api->plans ) ) : ?>
 					<div class="plugin-information-pricing">
-						<?php foreach ($api->plans as $plan) : ?>
-						<h3 data-plan="<?php echo $plan->id ?>"><?php printf( __fs( 'x-plan', $api->slug ), $plan->title ) ?></h3>
-						<?php if ( $api->is_paid ) : ?>
-							<ul>
-								<?php $billing_cycle = 'annual' ?>
-								<?php if ( 1 === count( $plan->pricing ) && 1 == $plan->pricing[0]->licenses ) : ?>
-									<?php $pricing = $plan->pricing[0] ?>
-									<li><label><?php _efs( 'price', $api->slug ) ?>: $<?php
-												if ( isset( $pricing->annual_price ) ) {
-													echo $pricing->annual_price . ( $plan->is_block_features ? ' / year' : '' );
-													$billing_cycle = 'annual';
-												} else if ( isset( $pricing->monthly_price ) ) {
-													echo $pricing->monthly_price . ' / mo';
-													$billing_cycle = 'monthly';
-												} else if ( isset( $pricing->lifetime_price ) ) {
-													echo $pricing->lifetime_price;
-													$billing_cycle = 'lifetime';
+					<?php foreach ( $api->plans as $plan ) : ?>
+						<?php
+						/**
+						 * @var FS_Plugin_Plan $plan
+						 */
+						?>
+						<?php $first_pricing = $plan->pricing[0] ?>
+						<?php $is_multi_cycle = $first_pricing->is_multi_cycle() ?>
+						<div class="fs-plan<?php if ( ! $is_multi_cycle ) {
+							echo ' fs-single-cycle';
+						} ?>" data-plan-id="<?php echo $plan->id ?>">
+							<h3 data-plan="<?php echo $plan->id ?>"><?php printf( __fs( 'x-plan', $api->slug ), $plan->title ) ?></h3>
+							<?php $has_annual = $first_pricing->has_annual() ?>
+							<?php $has_monthly = $first_pricing->has_monthly() ?>
+							<div class="nav-tab-wrapper">
+								<?php $billing_cycles = array( 'monthly', 'annual', 'lifetime' ) ?>
+								<?php $i = 0;
+									foreach ( $billing_cycles as $cycle ) : ?>
+										<?php $prop = "{$cycle}_price";
+										if ( isset( $first_pricing->{$prop} ) ) : ?>
+											<?php $is_featured = ( 'annual' === $cycle && $is_multi_cycle ) ?>
+											<?php
+											$prices = array();
+											foreach ( $plan->pricing as $pricing ) {
+												if ( isset( $pricing->{$prop} ) ) {
+													$prices[] = array(
+														'id'       => $pricing->id,
+														'licenses' => $pricing->licenses,
+														'price'    => $pricing->{$prop}
+													);
 												}
-											?></label></li>
-								<?php else : ?>
-									<?php $first = true;
-									foreach ( $plan->pricing as $pricing ) : ?>
-										<li><label><input name="pricing-<?php echo $plan->id ?>" type="radio"
-										                  value="<?php echo $pricing->id ?>"<?php checked( $first, true ) ?>><?php
-													switch ( $pricing->licenses ) {
-														case '1':
-															_efs( 'license-single-site', $api->slug );
-															break;
-														case null:
-															_efs( 'license-unlimited', $api->slug );
-															break;
-														default:
-															printf( __fs( 'license-x-sites', $api->slug ), $pricing->licenses );
-															break;
-													}
-												?> - $<?php
-													if ( isset( $pricing->annual_price ) ) {
-														echo $pricing->annual_price . ( $plan->is_block_features ? ' / year' : '' );
-														$billing_cycle = 'annual';
-													} else if ( isset( $pricing->monthly_price ) ) {
-														echo $pricing->monthly_price . ' / mo';
-														$billing_cycle = 'monthly';
-													} else if ( isset( $pricing->lifetime_price ) ) {
-														echo $pricing->lifetime_price;
-														$billing_cycle = 'lifetime';
-													}
-												?></label></li>
-										<?php $first = false; endforeach ?>
-								<?php endif ?>
-							</ul>
-						<?php endif ?>
-						<?php echo $this->get_plugin_cta($api) ?>
-					</div>
-				<?php endforeach ?>
-				<?php wp_enqueue_script( 'jquery' ); ?>
-					<script type="text/javascript">
-						(function ($) {
-							$('.plugin-information-pricing input[type=radio]').click(function () {
-								var checkout_url = '<?php echo esc_url_raw(add_query_arg(array(
-								'plugin_id' => $plan->plugin_id,
-								'billing_cycle' => $billing_cycle,
-							), $api->checkout_link)) ?>&plan_id=' +
-									$(this).parents('.plugin-information-pricing').find('h3').attr('data-plan') +
-									'&pricing_id=' + $(this).val();
+											}
+											?>
+											<a class="nav-tab" data-billing-cycle="<?php echo $cycle ?>"
+											   data-pricing="<?php esc_attr_e( json_encode( $prices ) ) ?>">
+												<?php if ( $is_featured ) : ?>
+													<label>&#9733; <?php _efs( 'best', $api->slug ) ?> &#9733;</label>
+												<?php endif ?>
+												<?php _efs( $cycle, $api->slug ) ?>
+											</a>
+										<?php endif ?>
+										<?php $i ++; endforeach ?>
+								<?php wp_enqueue_script( 'jquery' ) ?>
+								<script type="text/javascript">
+									(function ($, undef) {
+										var
+											_formatBillingFrequency = function (cycle) {
+												switch (cycle) {
+													case 'monthly':
+														return '<?php printf(__fs('billed-x', $api->slug), __fs('monthly', $api->slug)) ?>';
+													case 'annual':
+														return '<?php printf(__fs('billed-x', $api->slug), __fs('annually', $api->slug)) ?>';
+													case 'lifetime':
+														return '<?php printf(__fs('billed-x', $api->slug), __fs('once', $api->slug)) ?>';
+												}
+											},
+											_formatLicensesTitle = function (pricing) {
+												switch (pricing.licenses) {
+													case 1:
+														return '<?php _efs( 'license-single-site', $api->slug ) ?>';
+													case null:
+														return '<?php _efs( 'license-unlimited', $api->slug ) ?>';
+													default:
+														return '<?php _efs( 'license-x-sites', $api->slug ) ?>'.replace('%s', pricing.licenses);
+												}
+											},
+											_formatPrice = function (pricing, cycle, multipleLicenses) {
+												if (undef === multipleLicenses)
+													multipleLicenses = true;
 
-								$('.plugin-information-pricing .button, #plugin-information-footer .button').attr('href', checkout_url);
-							});
-						})(jQuery);
-					</script>
+												var priceCycle;
+												switch (cycle) {
+													case 'monthly':
+														priceCycle = ' / <?php _efs('mo', $api->slug) ?>';
+														break;
+													case 'lifetime':
+														priceCycle = '';
+														break;
+													case 'annual':
+													default:
+														priceCycle = ' / <?php _efs('year', $api->slug) ?>';
+														break;
+												}
+
+												if (!multipleLicenses && 1 == pricing.licenses) {
+													return '$' + pricing.price + priceCycle;
+												}
+
+												return _formatLicensesTitle(pricing) + ' - <var class="fs-price">$' + pricing.price + priceCycle + '</var>';
+											},
+											_checkoutUrl = function (plan, pricing, cycle) {
+												return '<?php echo esc_url_raw(remove_query_arg('billing_cycle', add_query_arg(array('plugin_id' => $plan->plugin_id), $api->checkout_link))) ?>' +
+												'&plan_id=' + plan +
+												'&pricing_id=' + pricing +
+												'&billing_cycle=' + cycle<?php if ($plan->has_trial()) { echo " + '&trial=true'"; }?>;
+											},
+											_updateCtaUrl = function (plan, pricing, cycle) {
+												$('.plugin-information-pricing .button, #plugin-information-footer .button').attr('href', _checkoutUrl(plan, pricing, cycle));
+											};
+
+										$(document).ready(function () {
+											var $plan = $('.plugin-information-pricing .fs-plan[data-plan-id=<?php echo $plan->id ?>]');
+											$plan.find('input[type=radio]').live('click', function () {
+												_updateCtaUrl(
+													$plan.attr('data-plan-id'),
+													$(this).val(),
+													$plan.find('.nav-tab-active').attr('data-billing-cycle')
+												);
+
+												$plan.find('.fs-trial-terms .fs-price').html(
+													$(this).parents('label').find('.fs-price').html()
+												);
+											});
+
+											$plan.find('.nav-tab').click(function () {
+												if ($(this).hasClass('nav-tab-active'))
+													return;
+
+												var $this = $(this),
+												    billingCycle = $this.attr('data-billing-cycle'),
+												    pricing = JSON.parse($this.attr('data-pricing')),
+												    $pricesList = $this.parents('.fs-plan').find('.fs-pricing-body .fs-licenses'),
+												    html = '';
+
+												// Un-select previously selected tab.
+												$plan.find('.nav-tab').removeClass('nav-tab-active');
+
+												// Select current tab.
+												$this.addClass('nav-tab-active');
+
+												// Render licenses prices.
+												if (1 == pricing.length) {
+													html = '<li><label><?php _efs( 'price', $api->slug ) ?>: ' + _formatPrice(pricing[0], billingCycle, false) + '</label></li>';
+												} else {
+													for (var i = 0; i < pricing.length; i++) {
+														html += '<li><label><input name="pricing-<?php echo $plan->id ?>" type="radio" value="' + pricing[i].id + '">' + _formatPrice(pricing[i], billingCycle) + '</label></li>';
+													}
+												}
+												$pricesList.html(html);
+
+												if (1 < pricing.length) {
+													// Select first license option.
+													$pricesList.find('li:first input').click();
+												}
+												else {
+													_updateCtaUrl(
+														$plan.attr('data-plan-id'),
+														pricing[0].id,
+														billingCycle
+													);
+												}
+
+												// Update billing frequency.
+												$plan.find('.fs-billing-frequency').html(_formatBillingFrequency(billingCycle));
+
+												if ('annual' === billingCycle) {
+													$plan.find('.fs-annual-discount').show();
+												} else {
+													$plan.find('.fs-annual-discount').hide();
+												}
+											});
+
+											<?php if ( $has_annual ) : ?>
+											// Select annual by default.
+											$plan.find('.nav-tab[data-billing-cycle=annual]').click();
+											<?php else : ?>
+											// Select first tab.
+											$plan.find('.nav-tab:first').click();
+											<?php endif ?>
+										});
+									}(jQuery));
+								</script>
+							</div>
+							<div class="fs-pricing-body">
+								<span class="fs-billing-frequency"></span>
+								<?php $annual_discount = ( $has_annual && $has_monthly ) ? $plan->pricing[0]->annual_discount_percentage() : 0 ?>
+								<?php if ( $annual_discount > 0 ) : ?>
+									<span
+										class="fs-annual-discount"><?php printf( __fs( 'save-x', $api->slug ), $annual_discount . '%' ) ?></span>
+								<?php endif ?>
+								<ul class="fs-licenses">
+								</ul>
+								<?php echo $this->get_plugin_cta( $api, $plan ) ?>
+								<div style="clear:both"></div>
+								<?php if ( $plan->has_trial() ) : ?>
+									<?php $trial_period = $this->get_trial_period( $plan ) ?>
+									<ul class="fs-trial-terms">
+										<li>
+											<i class="dashicons dashicons-yes"></i><?php printf( __fs( 'no-commitment-x', $api->slug ), $trial_period ) ?>
+										</li>
+										<li>
+											<i class="dashicons dashicons-yes"></i><?php printf( __fs( 'after-x-pay-as-little-y', $api->slug ), $trial_period, '<var class="fs-price">' . $this->get_price_tag( $plan, $plan->pricing[0] ) . '</var>' ) ?>
+										</li>
+									</ul>
+								<?php endif ?>
+							</div>
+						</div>
+						</div>
+					<?php endforeach ?>
 				<?php endif ?>
-				<div>
-					<h3><?php _efs( 'details', $api->slug ) ?></h3>
-					<ul>
-						<?php if ( ! empty( $api->version ) ) { ?>
-							<li><strong><?php _e( 'Version:' ); ?></strong> <?php echo $api->version; ?></li>
+			<?php endif ?>
+			<div>
+				<h3><?php _efs( 'details', $api->slug ) ?></h3>
+				<ul>
+					<?php if ( ! empty( $api->version ) ) { ?>
+						<li><strong><?php _e( 'Version:' ); ?></strong> <?php echo $api->version; ?></li>
+					<?php
+					}
+						if ( ! empty( $api->author ) ) {
+							?>
+							<li>
+								<strong><?php _e( 'Author:' ); ?></strong> <?php echo links_add_target( $api->author, '_blank' ); ?>
+							</li>
 						<?php
 						}
-							if ( ! empty( $api->author ) ) {
-								?>
-								<li>
-									<strong><?php _e( 'Author:' ); ?></strong> <?php echo links_add_target( $api->author, '_blank' ); ?>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->last_updated ) ) {
-								?>
-								<li><strong><?php _e( 'Last Updated:' ); ?></strong> <span
-										title="<?php echo $api->last_updated; ?>">
+						if ( ! empty( $api->last_updated ) ) {
+							?>
+							<li><strong><?php _e( 'Last Updated:' ); ?></strong> <span
+									title="<?php echo $api->last_updated; ?>">
 				<?php printf( __( '%s ago' ), human_time_diff( strtotime( $api->last_updated ) ) ); ?>
 			</span></li>
-							<?php
-							}
-							if ( ! empty( $api->requires ) ) {
-								?>
-								<li>
-									<strong><?php _e( 'Requires WordPress Version:' ); ?></strong> <?php printf( __( '%s or higher' ), $api->requires ); ?>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->tested ) ) {
-								?>
-								<li><strong><?php _e( 'Compatible up to:' ); ?></strong> <?php echo $api->tested; ?>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->downloaded ) ) {
-								?>
-								<li>
-									<strong><?php _e( 'Downloaded:' ); ?></strong> <?php printf( _n( '%s time', '%s times', $api->downloaded ), number_format_i18n( $api->downloaded ) ); ?>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->slug ) && empty( $api->external ) ) {
-								?>
-								<li><a target="_blank"
-								       href="https://wordpress.org/plugins/<?php echo $api->slug; ?>/"><?php _e( 'WordPress.org Plugin Page &#187;' ); ?></a>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->homepage ) ) {
-								?>
-								<li><a target="_blank"
-								       href="<?php echo esc_url( $api->homepage ); ?>"><?php _e( 'Plugin Homepage &#187;' ); ?></a>
-								</li>
-							<?php
-							}
-							if ( ! empty( $api->donate_link ) && empty( $api->contributors ) ) {
-								?>
-								<li><a target="_blank"
-								       href="<?php echo esc_url( $api->donate_link ); ?>"><?php _e( 'Donate to this plugin &#187;' ); ?></a>
-								</li>
-							<?php } ?>
-					</ul>
-				</div>
-				<?php if ( ! empty( $api->rating ) ) { ?>
-					<h3><?php _e( 'Average Rating' ); ?></h3>
-					<?php wp_star_rating( array(
-						'rating' => $api->rating,
-						'type'   => 'percent',
-						'number' => $api->num_ratings
-					) ); ?>
-					<small><?php printf( _n( '(based on %s rating)', '(based on %s ratings)', $api->num_ratings ), number_format_i18n( $api->num_ratings ) ); ?></small>
-				<?php
-				}
-
-					if ( ! empty( $api->ratings ) && array_sum( (array) $api->ratings ) > 0 ) {
-						foreach ( $api->ratings as $key => $ratecount ) {
-							// Avoid div-by-zero.
-							$_rating = $api->num_ratings ? ( $ratecount / $api->num_ratings ) : 0;
+						<?php
+						}
+						if ( ! empty( $api->requires ) ) {
 							?>
-							<div class="counter-container">
+							<li>
+								<strong><?php _e( 'Requires WordPress Version:' ); ?></strong> <?php printf( __( '%s or higher' ), $api->requires ); ?>
+							</li>
+						<?php
+						}
+						if ( ! empty( $api->tested ) ) {
+							?>
+							<li><strong><?php _e( 'Compatible up to:' ); ?></strong> <?php echo $api->tested; ?>
+							</li>
+						<?php
+						}
+						if ( ! empty( $api->downloaded ) ) {
+							?>
+							<li>
+								<strong><?php _e( 'Downloaded:' ); ?></strong> <?php printf( _n( '%s time', '%s times', $api->downloaded ), number_format_i18n( $api->downloaded ) ); ?>
+							</li>
+						<?php
+						}
+						if ( ! empty( $api->slug ) && empty( $api->external ) ) {
+							?>
+							<li><a target="_blank"
+							       href="https://wordpress.org/plugins/<?php echo $api->slug; ?>/"><?php _e( 'WordPress.org Plugin Page &#187;' ); ?></a>
+							</li>
+						<?php
+						}
+						if ( ! empty( $api->homepage ) ) {
+							?>
+							<li><a target="_blank"
+							       href="<?php echo esc_url( $api->homepage ); ?>"><?php _e( 'Plugin Homepage &#187;' ); ?></a>
+							</li>
+						<?php
+						}
+						if ( ! empty( $api->donate_link ) && empty( $api->contributors ) ) {
+							?>
+							<li><a target="_blank"
+							       href="<?php echo esc_url( $api->donate_link ); ?>"><?php _e( 'Donate to this plugin &#187;' ); ?></a>
+							</li>
+						<?php } ?>
+				</ul>
+			</div>
+			<?php if ( ! empty( $api->rating ) ) { ?>
+				<h3><?php _e( 'Average Rating' ); ?></h3>
+				<?php wp_star_rating( array(
+					'rating' => $api->rating,
+					'type'   => 'percent',
+					'number' => $api->num_ratings
+				) ); ?>
+				<small><?php printf( _n( '(based on %s rating)', '(based on %s ratings)', $api->num_ratings ), number_format_i18n( $api->num_ratings ) ); ?></small>
+			<?php
+			}
+
+				if ( ! empty( $api->ratings ) && array_sum( (array) $api->ratings ) > 0 ) {
+					foreach ( $api->ratings as $key => $ratecount ) {
+						// Avoid div-by-zero.
+						$_rating = $api->num_ratings ? ( $ratecount / $api->num_ratings ) : 0;
+						?>
+						<div class="counter-container">
 					<span class="counter-label"><a
 							href="https://wordpress.org/support/view/plugin-reviews/<?php echo $api->slug; ?>?filter=<?php echo $key; ?>"
 							target="_blank"
@@ -648,37 +858,37 @@
 					<span class="counter-back">
 						<span class="counter-bar" style="width: <?php echo 92 * $_rating; ?>px;"></span>
 					</span>
-								<span class="counter-count"><?php echo number_format_i18n( $ratecount ); ?></span>
-							</div>
-						<?php
-						}
+							<span class="counter-count"><?php echo number_format_i18n( $ratecount ); ?></span>
+						</div>
+					<?php
 					}
-					if ( ! empty( $api->contributors ) ) {
-						?>
-						<h3><?php _e( 'Contributors' ); ?></h3>
-						<ul class="contributors">
-							<?php
-								foreach ( (array) $api->contributors as $contrib_username => $contrib_profile ) {
-									if ( empty( $contrib_username ) && empty( $contrib_profile ) ) {
-										continue;
-									}
-									if ( empty( $contrib_username ) ) {
-										$contrib_username = preg_replace( '/^.+\/(.+)\/?$/', '\1', $contrib_profile );
-									}
-									$contrib_username = sanitize_user( $contrib_username );
-									if ( empty( $contrib_profile ) ) {
-										echo "<li><img src='https://wordpress.org/grav-redirect.php?user={$contrib_username}&amp;s=36' width='18' height='18' />{$contrib_username}</li>";
-									} else {
-										echo "<li><a href='{$contrib_profile}' target='_blank'><img src='https://wordpress.org/grav-redirect.php?user={$contrib_username}&amp;s=36' width='18' height='18' />{$contrib_username}</a></li>";
-									}
+				}
+				if ( ! empty( $api->contributors ) ) {
+					?>
+					<h3><?php _e( 'Contributors' ); ?></h3>
+					<ul class="contributors">
+						<?php
+							foreach ( (array) $api->contributors as $contrib_username => $contrib_profile ) {
+								if ( empty( $contrib_username ) && empty( $contrib_profile ) ) {
+									continue;
 								}
-							?>
-						</ul>
-						<?php if ( ! empty( $api->donate_link ) ) { ?>
-							<a target="_blank"
-							   href="<?php echo esc_url( $api->donate_link ); ?>"><?php _e( 'Donate to this plugin &#187;' ); ?></a>
-						<?php } ?>
+								if ( empty( $contrib_username ) ) {
+									$contrib_username = preg_replace( '/^.+\/(.+)\/?$/', '\1', $contrib_profile );
+								}
+								$contrib_username = sanitize_user( $contrib_username );
+								if ( empty( $contrib_profile ) ) {
+									echo "<li><img src='https://wordpress.org/grav-redirect.php?user={$contrib_username}&amp;s=36' width='18' height='18' />{$contrib_username}</li>";
+								} else {
+									echo "<li><a href='{$contrib_profile}' target='_blank'><img src='https://wordpress.org/grav-redirect.php?user={$contrib_username}&amp;s=36' width='18' height='18' />{$contrib_username}</a></li>";
+								}
+							}
+						?>
+					</ul>
+					<?php if ( ! empty( $api->donate_link ) ) { ?>
+						<a target="_blank"
+						   href="<?php echo esc_url( $api->donate_link ); ?>"><?php _e( 'Donate to this plugin &#187;' ); ?></a>
 					<?php } ?>
+				<?php } ?>
 			</div>
 			<div id="section-holder" class="wrap">
 	<?php
@@ -696,6 +906,17 @@
 
 			$display = ( $section_name === $section ) ? 'block' : 'none';
 
+			if ( 'description' === $section_name &&
+			     ( ( ! $api->external && $api->wp_org_missing ) ||
+			       ( $api->external && $api->fs_missing ) )
+			) {
+				$missing_notice = array(
+					'type'    => 'error',
+					'id'      => md5( microtime() ),
+					'message' => __fs( ( $api->is_paid ? 'paid-addon-not-deployed' : 'free-addon-not-deployed' ), $api->slug ),
+				);
+				fs_require_template( 'admin-notice.php', $missing_notice );
+			}
 			echo "\t<div id='section-{$san_section}' class='section' style='display: {$display};'>\n";
 			echo $content;
 			echo "\t</div>\n";
@@ -705,7 +926,7 @@
 	echo "</div>\n"; // #plugin-information-scrollable
 	echo "<div id='$tab-footer'>\n";
 
-	echo $this->get_plugin_cta($api);
+	echo $this->get_plugin_cta( $api );
 
 	echo "</div>\n";
 

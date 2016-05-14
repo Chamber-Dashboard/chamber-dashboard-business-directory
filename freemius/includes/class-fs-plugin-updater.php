@@ -27,6 +27,11 @@
 		 * @since 1.0.4
 		 */
 		private $_logger;
+		/**
+		 * @var object
+		 * @since 1.1.8.1
+		 */
+		private $_update_details;
 
 		function __construct( Freemius $freemius ) {
 			$this->_fs = $freemius;
@@ -167,21 +172,36 @@
 				return $transient_data;
 			}
 
-			// Get plugin's newest update.
-			$new_version = $this->_fs->get_update();
+			if ( ! isset( $this->_update_details ) ) {
+				// Get plugin's newest update.
+				$new_version = $this->_fs->get_update( false, false );
 
-			if ( is_object( $new_version ) ) {
-				$this->_logger->log( 'Found newer plugin version ' . $new_version->version );
+				$this->_update_details = false;
 
-				$plugin_details              = new stdClass();
-				$plugin_details->slug        = $this->_fs->get_slug();
-				$plugin_details->new_version = $new_version->version;
-				$plugin_details->url         = WP_FS__ADDRESS;
-				$plugin_details->package     = $new_version->url;
-				$plugin_details->plugin      = $this->_fs->get_plugin_basename();
+				if ( is_object( $new_version ) ) {
+					$this->_logger->log( 'Found newer plugin version ' . $new_version->version );
 
+					$plugin_details              = new stdClass();
+					$plugin_details->slug        = $this->_fs->get_slug();
+					$plugin_details->new_version = $new_version->version;
+					$plugin_details->url         = WP_FS__ADDRESS;
+					$plugin_details->package     = $new_version->url;
+					$plugin_details->plugin      = $this->_fs->get_plugin_basename();
+
+					/**
+					 * Cache plugin details locally since set_site_transient( 'update_plugins' )
+					 * called multiple times and the non wp.org plugins are filtered after the
+					 * call to .org.
+					 *
+					 * @since 1.1.8.1
+					 */
+					$this->_update_details = $plugin_details;
+				}
+			}
+
+			if ( is_object( $this->_update_details ) ) {
 				// Add plugin to transient data.
-				$transient_data->response[ $this->_fs->get_plugin_basename() ] = $plugin_details;
+				$transient_data->response[ $this->_fs->get_plugin_basename() ] = $this->_update_details;
 			}
 
 			return $transient_data;

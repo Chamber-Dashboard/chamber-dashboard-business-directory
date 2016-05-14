@@ -10,7 +10,12 @@
 		exit;
 	}
 
-	$this_sdk_version = '1.1.7.2';
+	/**
+	 * Freemius SDK Version.
+	 *
+	 * @var string
+	 */
+	$this_sdk_version = '1.1.8.1';
 
 	#region SDK Selection Logic --------------------------------------------------------------------
 
@@ -207,12 +212,14 @@
 	 *      fs_uninstall_confirmation_message_{plugin_slug}
 	 *      fs_pending_activation_message_{plugin_slug}
 	 *      fs_is_submenu_visible_{plugin_slug}
+	 *      fs_plugin_icon_{plugin_slug}
+	 *      fs_show_trial_{plugin_slug}
 	 *
 	 * --------------------------------------------------------
 	 *
 	 * Freemius actions collection:
 	 *
-	 *     fs_after_license_loaded_{plugin_slug}
+	 *      fs_after_license_loaded_{plugin_slug}
 	 *      fs_after_license_change_{plugin_slug}
 	 *      fs_after_plans_sync_{plugin_slug}
 	 *
@@ -258,6 +265,7 @@
 
 		// Logger must be loaded before any other.
 		require_once WP_FS__DIR_INCLUDES . '/class-fs-logger.php';
+		require_once WP_FS__DIR_INCLUDES . '/debug/debug-bar-start.php';
 
 		require_once WP_FS__DIR_INCLUDES . '/fs-core-functions.php';
 //		require_once WP_FS__DIR_INCLUDES . '/managers/class-fs-abstract-manager.php';
@@ -277,6 +285,7 @@
 		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-info.php';
 		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-tag.php';
 		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-plan.php';
+		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-pricing.php';
 		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-license.php';
 		require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-subscription.php';
 		require_once WP_FS__DIR_INCLUDES . '/class-fs-api.php';

@@ -10,6 +10,11 @@ http://bit.ly/freemius-beta
 
 **Below you'll find the integration instructions for our WordPress SDK.**
 
+## Code Documentation
+
+You can find the SDK's PHP-Doc documentation here:
+https://codedoc.pub/freemius/wordpress-sdk/master/
+
 ## Initializing the SDK
 
 Copy the code below and paste it into the top of your main plugin's PHP file, right after the plugin's header comment:
@@ -77,9 +82,9 @@ Add marketing content to encourage your users to upgrade for your paid version:
 ```php
 <?php
     if ( my_prefix_fs()->is_not_paying() ) {
-        echo '<section><h1>' . __('Awesome Premium Features', 'my-plugin-slug') . '</h1>';
+        echo '<section><h1>' . esc_html__('Awesome Premium Features', 'my-plugin-slug') . '</h1>';
         echo '<a href="' . my_prefix_fs()->get_upgrade_url() . '">' .
-            __('Upgrade Now!', 'my-plugin-slug') .
+            esc_html__('Upgrade Now!', 'my-plugin-slug') .
             '</a>';
         echo '</section>';
     }
