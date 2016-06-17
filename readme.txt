@@ -3,8 +3,8 @@ Contributors: gwendydd, cguntur
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
-Tested up to: 4.3
-Stable tag: 2.8.2
+Tested up to: 4.5.2
+Stable tag: 2.8.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,8 +87,12 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 
 == Changelog ==
 
+==2.8.3==
+* Fixed the map clusters link for displaying Google Map Clusters
+* Added tags to businesses
+
 ==2.8.2 ==
-*Added code to fix the Freemius licensing issue
+* Added code to fix the Freemius licensing issue
 
 == 2.8.1 ==
 * Updated Freemius to the latest version

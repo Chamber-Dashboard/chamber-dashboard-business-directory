@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.8.2
+Version: 2.8.3
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -247,7 +247,7 @@ add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
 function cdash_register_cpt_business() {
 
 	$options = get_option( 'cdash_directory_options' );
-	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'author' );
+	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'author', 'tags' );
 	if( isset( $options['sv_comments'] ) && "1" == $options['sv_comments'] ) {
 		$supports[] = 'comments';
 	}
@@ -272,7 +272,7 @@ function cdash_register_cpt_business() {
 		'description'         => __( 'Businesses and Organizations', 'cdash' ),
 		'labels'              => $labels,
 		'supports'            => $supports,
-		'taxonomies'          => array( 'business_category', ' membership_level', 'private_category' ),
+		'taxonomies'          => array( 'business_category', ' membership_level', 'private_category', 'post_tag' ),
 		'hierarchical'        => true,
 		'public'              => true,
 		'show_ui'             => true,
@@ -324,7 +324,7 @@ function cdash_admin_scripts_and_styles($hook)
 	    if ( isset( $post ) && 'business' === $post->post_type ) {     
 	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false' );  
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
-		    // wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
+		    //wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
 		}
 	}
 }
