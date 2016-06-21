@@ -314,7 +314,8 @@ define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 function cdash_admin_scripts_and_styles($hook)
 {
     if ( is_admin() ) {
-        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
+        //wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' ); 
+        wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));               
     }
 
     global $post;

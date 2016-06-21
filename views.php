@@ -182,7 +182,8 @@ function cdash_single_business_map() {
 							}
 
 							if(!isset($icon)) {
-								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+								//$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+                                $icon = plugins_url( '/images/map_marker.png', __FILE__ );
 							}
 
 							if(isset($location['altname'])) {
@@ -881,7 +882,8 @@ function cdash_business_map_shortcode( $atts ) {
 								}
 
 								if(!isset($icon)) {
-									$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+									//$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+                                    $icon = plugins_url( '/images/map_marker.png', __FILE__ );
 								}
 
 								// Create the pop-up info window
