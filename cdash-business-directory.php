@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.8.3
+Version: 2.8.3.1
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -548,10 +548,9 @@ function cdash_add_taxonomy_classes($classes) {
 			foreach($buslevels as $taxonomy) {
 				$classes[] = $taxonomy->slug;
 			}
-		}
-		return $classes;
+		}		
 	}
-
+    return $classes;
 }
 add_filter('post_class', 'cdash_add_taxonomy_classes');
 add_filter('body_class', 'cdash_add_taxonomy_classes');
