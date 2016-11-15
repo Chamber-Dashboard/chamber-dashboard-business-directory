@@ -121,9 +121,12 @@ function cdash_single_business($content) {
 				$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 				add_action('wp_footer', 'cdash_single_business_map');
 			}
-		}
-		}
+		}        
+        
+		}        
 		$business_content .= "</div>";
+        $business_content .= cdash_display_edit_link($post_id);
+        
         
 	$content = $business_content;
 	} 
@@ -2040,4 +2043,68 @@ function cdash_add_hide_lapsed_members_filter($args){
 
 }
 
+// ------------------------------------------------------------------------
+// ADD EDIT BUTTON IF MEMBER UPDATER IS INSTALLED AND USERS ARE LOGGED IN
+// ------------------------------------------------------------------------
+
+function cdash_show_edit_link(){
+    $member_options = get_option('cdashmm_options');
+    
+    if(is_plugin_active('chamber-dashboard-member-updater/cdash-member-updater.php')){
+        if ( !current_user_can('publish_posts') ) {
+            echo "<h2>Please Login to update your business listing. If you do not have an account, please create an account. If you have already created an account, please contact Chamber Name to activate your account. Thanks!</h2><br />";
+            //Link to the member login page
+            echo '<p><a href="' . $member_options['user_login_page'] . '">Login</a></p><br />';
+            echo '<p><a href="' . $member_options['user_registration_page'] . '">Register</a></p><br />';
+            return; 
+            
+        }
+        else{
+            //Check if the person (people post type) connected to this user is published. If the person is still pending, take the user to the business, but display a message saying that they need to be approved in order to edit they business listing.
+            $edit_post_link = esc_url( add_query_arg( 'post_id', get_the_ID(), home_url('/edit-post/') ) );
+            $business_edit .= "<a href='" . $edit_post_link . "'>Edit Your Business Listing</a><br />";            
+        }        
+    }    
+    return $business_edit;
+}
+
+// ------------------------------------------------------------------------
+// CHECK IF MEMBER UPDATER IS ACTIVE
+// ------------------------------------------------------------------------
+function cdash_is_member_updater_active(){
+    if(is_plugin_active('chamber-dashboard-member-updater/cdash-member-updater.php')){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+// ------------------------------------------------------------------------
+// DISPLAY THE EDIT BUSINESS LINK ON THE SINGLE BUSINESS PAGE
+// ------------------------------------------------------------------------
+
+function cdash_display_edit_link($business_id)
+{
+    $member_options = get_option('cdashmm_options');
+    $member_updater = cdash_is_member_updater_active();
+    if($member_updater){
+        if(is_user_logged_in()){
+            $user = wp_get_current_user();   
+            $user_id = $user->ID;        
+            //return $user_id;     
+            
+            $user_can_update = cdashmu_can_user_update_business($user_id, $business_id);
+            if(!$user_can_update){            
+                return null;
+            }else{
+                $link = cdashmu_get_business_edit_link();        
+                return $link;
+            }
+        }
+        else{
+            $login_link = "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+            return $login_link;
+        }
+    }
+}
 ?>
