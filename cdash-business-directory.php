@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.8.3.1
+Version: 2.8.3.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -563,7 +563,7 @@ add_filter('body_class', 'cdash_add_taxonomy_classes');
 
 function cdash_get_latest_priority( $filter ) // figure out what priority the geolocation function needs, thanks to http://wordpress.stackexchange.com/questions/116221/how-to-force-function-to-run-as-the-last-one-when-saving-the-post
 {
-    if ( empty ( $GLOBALS['wp_filter'][ $filter ] ) )
+    if ( empty ( $GLOBALS['wp_filter'][ $filter ]->callbacks ) )
         return PHP_INT_MAX;
 
     $priorities = array_keys( $GLOBALS['wp_filter'][ $filter ] );
