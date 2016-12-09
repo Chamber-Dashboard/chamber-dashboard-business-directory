@@ -563,10 +563,20 @@ add_filter('body_class', 'cdash_add_taxonomy_classes');
 
 function cdash_get_latest_priority( $filter ) // figure out what priority the geolocation function needs, thanks to http://wordpress.stackexchange.com/questions/116221/how-to-force-function-to-run-as-the-last-one-when-saving-the-post
 {
-    if ( empty ( $GLOBALS['wp_filter'][ $filter ]->callbacks ) )
+    global $wp_version; 
+    
+    
+    if ( empty ( $GLOBALS['wp_filter'][ $filter ] ) )
         return PHP_INT_MAX;
 
-    $priorities = array_keys( $GLOBALS['wp_filter'][ $filter ] );
+    if ( version_compare($wp_version, "4.7", "<" ) ) {
+        $priorities = array_keys( $GLOBALS['wp_filter'][$filter] );
+    }
+    else{
+        $priorities = array_keys( $GLOBALS['wp_filter'][$filter]->callbacks );
+    }
+    
+    //$priorities = array_keys( $GLOBALS['wp_filter'][ $filter ] );
     $last       = end( $priorities );
 
     if ( is_numeric( $last ) )
