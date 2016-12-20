@@ -6,7 +6,7 @@ function cdash_simple_export() {
 //output the headers for the CSV file
 	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	header('Content-Description: File Transfer');
-	header("Content-type: text/csv");
+	header("Content-Type: text/csv");
 	header("Content-Disposition: attachment; filename=chamber-dashboard-export.csv");
 	header("Expires: 0");
 	header("Pragma: public");
@@ -50,6 +50,8 @@ function cdash_simple_export() {
 		'City',
 		'State',
 		'Zip',
+        'Country',
+        'Hours',
 		'URL',
 		'Phone',
 		'Email',
@@ -88,6 +90,8 @@ function cdash_simple_export() {
 						'city' => '',
 						'state' => '',
 						'zip' => '',
+                        'country' => '',
+                        'hours' => '',
 						'url' => '',
 					);
 					foreach ($locationinfo as $key => $value) {

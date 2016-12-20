@@ -87,6 +87,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 
 == Changelog ==
 
+== 2.8.3.4 ==
+* Added Hours field to Businesses
+* Added Country and Hours to export and import functions
+* Changed the minimum required version of WordPress to 4.2
+
 == 2.8.3.3 ==
 * Added 'Country' to the business import
 

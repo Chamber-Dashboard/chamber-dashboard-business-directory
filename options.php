@@ -358,6 +358,7 @@ function cdash_watch_for_export() {
 	if( isset( $_POST['cdash_export'] ) && 'cdash_do_export' == $_POST['cdash_export'] ) {
 		require_once( dirname(__FILE__) . '/export.php' );
 		cdash_simple_export();
+        exit();
 	}
 }
 function cdash_export_form() {
@@ -387,7 +388,7 @@ function cdash_import_form() { ?>
 		<div class="icon32" id="icon-options-general"><br></div>
 			<h1><?php _e('Import', 'cdash'); ?></h1>
 			<h3><?php _e( 'Import Businesses', 'cdash' ); ?></h3>
-			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>Country</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
+			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>Country</li><li>Business Hours</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
 			<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly.', 'cdash' ); ?></p>
 			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
 			<?php wp_import_upload_form('admin.php?page=chamber-dashboard-import'); ?>
@@ -433,8 +434,8 @@ function cdash_import_form() { ?>
 
 					// Get all the phone numbers and put them in the array format wpalchemy expects
 					$numbers = array();
-					if(isset($data[11]) && !empty($data[11])) {
-						$tempnums = explode(';', $data[11]);
+					if(isset($data[12]) && !empty($data[12])) {
+						$tempnums = explode(';', $data[12]);
 						foreach ($tempnums as $number) {
 							$numbers[]['phonenumber'] = $number;
 						}
@@ -444,8 +445,8 @@ function cdash_import_form() { ?>
 
 					// Get all the email addresses and put them in the array format wpalchemy expects
 					$emails = array();
-					if(isset($data[12]) && !empty($data[12])) {
-						$tempmails = explode(';', $data[12]);
+					if(isset($data[13]) && !empty($data[13])) {
+						$tempmails = explode(';', $data[13]);
 						foreach ($tempmails as $email) {
 							$emails[]['emailaddress'] = $email;
 						}
@@ -484,9 +485,10 @@ function cdash_import_form() { ?>
 							'state'		=> $data[7],
 							'zip'		=> $data[8],
                             'country'   => $data[9],
+                            'hours'     => $data[10],
 							'latitude'	=> $latitude,
 							'longitude'	=> $longitude,
-							'url'		=> $data[10],
+							'url'		=> $data[11],
 							'phone'		=> $numbers,
 							'email'		=> $emails,
 							)
