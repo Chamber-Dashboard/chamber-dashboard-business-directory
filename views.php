@@ -82,6 +82,10 @@ function cdash_single_business($content) {
 					if( isset( $options['sv_address'] ) && "1" == $options['sv_address'] ) { 
 						$business_content .= cdash_display_address( $location );
 					}
+                    
+                    if( isset( $options['sv_hours'] ) && "1" == $options['sv_hours'] ) { 
+						$business_content .= $location['hours'];
+					}
 
 					if( isset( $options['sv_url'] ) && "1" == $options['sv_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
 						$business_content .= cdash_display_url( $location['url'] );
@@ -388,6 +392,12 @@ function cdash_taxonomy_filter( $content ) {
 
 						}
 
+                        if( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] ) { 
+
+							$tax_content .= $location['hours'];
+
+						}
+
 						if( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) && '' !== $location['url'] ) { 
 
 							$tax_content .= cdash_display_url( $location['url'] );
@@ -464,7 +474,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 			'text' => 'excerpt', // options: excerpt, description, none
 
-			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons
+			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location hours
 
 			'single_link' => 'yes', // options: yes, no
 
@@ -663,6 +673,13 @@ function cdash_business_directory_shortcode( $atts ) {
 										$business_list .= cdash_display_address( $location );
 
 								  	}
+                                    
+                                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
+
+										$business_list .= $location['hours'];
+
+								  	} 
+
 
 								  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
 
@@ -1189,6 +1206,12 @@ function cdash_business_search_results_shortcode( $atts ) {
 								$search_results .= cdash_display_url( $location['url'] );
 
 							}
+                            
+                            if ( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] && isset( $location['hours'] ) && '' !== $location['hours'] ) { 
+
+								$search_results .= $location['hours'];
+
+							}
 
 							if ( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
 
@@ -1514,7 +1537,13 @@ function cdash_display_address( $location ) {
 
 		if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 
-			$address .= $location['zip'];
+			$address .= $location['zip'] . "&nbsp;";
+
+		} 
+        
+        if( isset( $location['country'] ) && '' !== $location['country'] ) {
+
+			$address .= $location['country'];
 
 		} 
 

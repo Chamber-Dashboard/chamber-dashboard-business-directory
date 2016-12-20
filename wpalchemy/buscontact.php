@@ -149,7 +149,14 @@
 			<p><a href="#" class="docopy-email button"><?php _e('Add Another Email Address', 'cdash'); ?></a></p>
 		</fieldset>
 
-		<a href="#" class="button billing-copy"><?php _e('Use This Location for Billing', 'cdash'); ?></a>
+       
+		<div class="fourth hours-wrapper">
+            <?php $mb->the_field('hours'); ?>
+            <label><?php _e('Business Hours', 'cdash'); ?></label>
+            <p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+        </div>
+        
+        <p class="clearfix"><a href="#" class="button billing-copy"><?php _e('Use This Location for Billing', 'cdash'); ?></a></p>
 		<span class="copy-confirm" style="display: none;"><?php _e( 'Done!  Make sure you save your changes!', 'cdash' ); ?></span>
 		<p class="clearfix"><a href="#" class="dodelete button"><?php _e('Remove This Location', 'cdash'); ?></a></p>
  

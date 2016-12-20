@@ -238,16 +238,21 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 							if( in_array( 'address', $instance['display'] ) ) {
 								echo cdash_display_address( $location );
 							}
+                            if( in_array( 'hours', $instance['display'] ) && isset( $location['hours'] ) ) {
+                                echo $location['hours'] . '<br /><br />';
+					        }
+        					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
+                                echo cdash_display_url( $location['url'] );
+					        }
+                    
+                            if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
+                                echo cdash_display_phone_numbers( $location['phone'] );
+                            }
+                            if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
+                                echo cdash_display_email_addresses( $location['email'] );
+                            }
+
 						}
-					}
-					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
-						echo cdash_display_url( $location['url'] );
-					}
-					if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
-						echo cdash_display_phone_numbers( $location['phone'] );
-					}
-					if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
-						echo cdash_display_email_addresses( $location['email'] );
 					}
 					if( in_array( 'social', $instance['display'] ) ) {
 						echo cdash_display_social_media( $post_id );
@@ -445,6 +450,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 				'excerpt' => __( 'Excerpt', 'cdash' ),
 				'location_name' => __( 'Location Name', 'cdash' ),
 				'address' => __( 'Location Address', 'cdash' ),
+                'hours' =>  __('Business Hours', 'cdash'),        
 				'url' => __( 'Web Address', 'cdash' ),
 				'phone' => __( 'Phone Number(s)', 'cdash' ),
 				'email' => __( 'Email Address(es)', 'cdash' ),
