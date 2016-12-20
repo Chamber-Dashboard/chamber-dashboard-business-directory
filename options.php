@@ -27,11 +27,13 @@ function cdash_add_defaults() {
 						"sv_description" => "1",
 						"sv_name"		 => "1",
 						"sv_address"	 => "1",
+                        "sv_hours"       => "1",
 						"sv_url"		 => "1",
 						"sv_logo"		 => "1",
 						"sv_category"	 => "1",
 						"tax_name"		 => "1",
 						"tax_address"	 => "1",
+                        "tax_hours"       => "1",
 						"tax_url" 		 => "1",
 						"tax_logo"		 => "1",
 						"sm_display"	 => "icons",
@@ -137,6 +139,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[sv_description]" type="checkbox" value="1" <?php if (isset($options['sv_description'])) { checked('1', $options['sv_description']); } ?> /><?php _e(' Description', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_name]" type="checkbox" value="1" <?php if (isset($options['sv_name'])) { checked('1', $options['sv_name']); } ?> /><?php _e(' Location Name <em>Note: you can hide individual locations in the "edit business" view</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_address]" type="checkbox" value="1" <?php if (isset($options['sv_address'])) { checked('1', $options['sv_address']); } ?> /><?php _e(' Location Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_hours]" type="checkbox" value="1" <?php if (isset($options['sv_hours'])) { checked('1', $options['sv_hours']); } ?> /><?php _e(' Location Hours', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_map]" type="checkbox" value="1" <?php if (isset($options['sv_map'])) { checked('1', $options['sv_map']); } ?> /><?php _e(' Map', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_url]" type="checkbox" value="1" <?php if (isset($options['sv_url'])) { checked('1', $options['sv_url']); } ?> /><?php _e(' Location Web Address', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_phone]" type="checkbox" value="1" <?php if (isset($options['sv_phone'])) { checked('1', $options['sv_phone']); } ?> /><?php _e(' Phone Number(s)', 'cdash'); ?></label><br />
@@ -157,6 +160,7 @@ function cdash_render_form() {
 							<span style="color:#666666;margin-left:2px;"><?php _e('What information would you like to display on the category/membership level view?  Note: Chamber Dashboard might not be able to over-ride all of your theme settings (for instance, your theme might show the featured image on category pages).  If you don\'t like how your theme displays category and membership level pages, you might want to create custom pages using the [business_directory] shortcode.  This is more labor-intensive, but gives you more control over appearance.', 'cdash'); ?></span><br />
 							<label><input name="cdash_directory_options[tax_name]" type="checkbox" value="1" <?php if (isset($options['tax_name'])) { checked('1', $options['tax_name']); } ?> /><?php _e(' Location Name <em>Note: you can hide individual locations in the "edit business" view</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_address]" type="checkbox" value="1" <?php if (isset($options['tax_address'])) { checked('1', $options['tax_address']); } ?> /><?php _e(' Location Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_hours]" type="checkbox" value="1" <?php if (isset($options['tax_hours'])) { checked('1', $options['tax_hours']); } ?> /><?php _e(' Location Hours', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_url]" type="checkbox" value="1" <?php if (isset($options['tax_url'])) { checked('1', $options['tax_url']); } ?> /><?php _e(' Location Web Address', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_phone]" type="checkbox" value="1" <?php if (isset($options['tax_phone'])) { checked('1', $options['tax_phone']); } ?> /><?php _e(' Phone Number(s)', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_email]" type="checkbox" value="1" <?php if (isset($options['tax_email'])) { checked('1', $options['tax_email']); } ?> /><?php _e(' Email Address(es)', 'cdash'); ?></label><br />

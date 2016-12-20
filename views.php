@@ -82,6 +82,10 @@ function cdash_single_business($content) {
 					if( isset( $options['sv_address'] ) && "1" == $options['sv_address'] ) { 
 						$business_content .= cdash_display_address( $location );
 					}
+                    
+                    if( isset( $options['sv_hours'] ) && "1" == $options['sv_hours'] ) { 
+						$business_content .= $location['hours'];
+					}
 
 					if( isset( $options['sv_url'] ) && "1" == $options['sv_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
 						$business_content .= cdash_display_url( $location['url'] );
@@ -385,6 +389,12 @@ function cdash_taxonomy_filter( $content ) {
 						if( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
 
 							$tax_content .= cdash_display_address( $location );
+
+						}
+
+                        if( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] ) { 
+
+							$tax_content .= $location['hours'];
 
 						}
 
