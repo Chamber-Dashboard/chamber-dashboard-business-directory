@@ -474,7 +474,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 			'text' => 'excerpt', // options: excerpt, description, none
 
-			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons
+			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location hours
 
 			'single_link' => 'yes', // options: yes, no
 
@@ -673,6 +673,13 @@ function cdash_business_directory_shortcode( $atts ) {
 										$business_list .= cdash_display_address( $location );
 
 								  	}
+                                    
+                                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
+
+										$business_list .= $location['hours'];
+
+								  	} 
+
 
 								  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
 
@@ -1197,6 +1204,12 @@ function cdash_business_search_results_shortcode( $atts ) {
 							if ( isset( $options['tax_url'] ) && "1" == $options['tax_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
 
 								$search_results .= cdash_display_url( $location['url'] );
+
+							}
+                            
+                            if ( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] && isset( $location['hours'] ) && '' !== $location['hours'] ) { 
+
+								$search_results .= $location['hours'];
 
 							}
 
