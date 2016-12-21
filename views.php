@@ -1537,7 +1537,13 @@ function cdash_display_address( $location ) {
 
 		if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 
-			$address .= $location['zip'];
+			$address .= $location['zip'] . "&nbsp;";
+
+		} 
+        
+        if( isset( $location['country'] ) && '' !== $location['country'] ) {
+
+			$address .= $location['country'];
 
 		} 
 
