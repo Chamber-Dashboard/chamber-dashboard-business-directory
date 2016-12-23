@@ -40,7 +40,7 @@ function cdash_add_defaults() {
 						"sm_icon_size"	 => "32px",
 						"currency_position" => "before",
 						"currency_symbol" => "$",
-						"currency" => "USD",
+						"currency" => "USD",                        
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -224,7 +224,6 @@ function cdash_render_form() {
 							</label>
 						</td>
 					</tr>
-
 					<!-- Custom Fields -->
 					<tr>
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
@@ -319,6 +318,8 @@ function cdash_render_form() {
 			});
 
 			</script>
+			
+			
 		</div><!-- #main -->
 	</div>
 
