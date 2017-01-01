@@ -2085,10 +2085,11 @@ function cdash_is_member_updater_active(){
 
 function cdash_display_edit_link($business_id)
 {
-    $member_options = get_option('cdashmm_options');
-    $member_updater = cdash_is_member_updater_active();
+    //$member_options = get_option('cdashmm_options');
+    $member_updater = cdash_is_member_updater_active();    
     if($member_updater){
-        if(is_user_logged_in()){
+        return cdashmu_display_business_edit_link($business_id);
+        /*if(is_user_logged_in()){
             $user = wp_get_current_user();   
             $user_id = $user->ID;        
             //return $user_id;     
@@ -2104,7 +2105,7 @@ function cdash_display_edit_link($business_id)
         else{
             $login_link = "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
             return $login_link;
-        }
+        }*/
     }
 }
 ?>
