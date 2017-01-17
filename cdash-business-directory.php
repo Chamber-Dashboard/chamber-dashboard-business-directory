@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.8.3.2
+Version: 2.8.4
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -36,10 +36,10 @@ function cdash_requires_wordpress_version() {
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
 
-	if ( version_compare($wp_version, "3.8", "<" ) ) {
+	if ( version_compare($wp_version, "4.2", "<" ) ) {
 		if( is_plugin_active($plugin) ) {
 			deactivate_plugins( $plugin );
-			wp_die( "'".$plugin_data['Name']."' requires WordPress 3.8 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
+			wp_die( "'".$plugin_data['Name']."' requires WordPress 4.2 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
 		}
 	}
 }
@@ -58,9 +58,9 @@ function cdash_bd() {
 				'id'                => '170',
 				'slug'              => 'chamber-dashboard-business-directory',
 				'public_key'        => 'pk_fb8be3233878561440e6781b2bda4',
-				'is_premium'        => true,
-				'has_addons'        => true,
-				'has_paid_plans'    => true,
+				'is_premium'        => false,
+				'has_addons'        => false,
+				'has_paid_plans'    => false,
 				'menu'              => array(
 						'slug'       => 'chamber-dashboard-business-directory/options.php',
 						'first-path' => 'index.php?page=cdash-about',
@@ -113,7 +113,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
 // Require currency list
 require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
-
+// Require extensions
+require_once( plugin_dir_path( __FILE__ ) . 'extensions.php' );
 
 
 // Initialize language so it can be translated
