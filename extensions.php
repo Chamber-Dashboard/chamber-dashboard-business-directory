@@ -8,6 +8,7 @@ wp_enqueue_style( 'thickbox' );
 wp_enqueue_style( 'addons.css', plugins_url( 'includes/addons.css', __FILE__ ));
 
 function display_addons($title, $slug, $description, $link, $price){
+    $url = admin_url();
 ?>
     <li class="single_addon">                          
         <img src="<?php echo plugins_url( 'images/' . $slug . '.jpg' , __FILE__ ); ?>" />
@@ -43,7 +44,7 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard Member Manager',
                             'member_manager',
                             'Let Members join your organization right on your website!',
-                            'http://chamber-dashboard.gcsdesign.com/wp-admin/plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-member-manager&amp;TB_iframe=true&amp;width=772&amp;height=700',
+                            $url . 'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-member-manager&amp;TB_iframe=true&amp;width=772&amp;height=700',
                             'Free'
                         );
                         
@@ -51,7 +52,7 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard CRM',
                             'crm',
                             'Keep track of people in your organization.',
-                            'http://chamber-dashboard.gcsdesign.com/wp-admin/plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-crm&amp;TB_iframe=true&amp;width=772&amp;height=700',
+                            $url . 'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-crm&amp;TB_iframe=true&amp;width=772&amp;height=700',
                             'Free'
                         );
                         
