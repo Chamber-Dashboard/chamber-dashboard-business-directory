@@ -65,45 +65,38 @@ function cdash_about_page_render() {
     ?>
     <div class="wrap">
 			<div class="changelog">
-
-				<h3><?php _e('Main Features', 'cdash'); ?></h3>
+                
+                <h3><?php _e('Core Plugins', 'cdash'); ?></h3>				
 
 				<div class="feature-section col three-col">
+                   
+                    <p><?php _e('Visit'); ?> <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-extensions'), 'admin.php'))); ?>">Extensions</a> <?php _e('page to install the full series of free core plugins.'); ?></p> 
 
 					<div>
-						<h4><?php _e('Business Directory', 'cdash'); ?></h4>
-						<p><?php _e('Build a website to showcase your members\' businesses more effectively.  Customize your listings to meet member needs.', 'cdash'); ?></p>
-						<p><?php _e('Display member businesses as a complete, searchable directory or single listing. Turn your site into a community resource of local business connections.', 'cdash'); ?></p>
+					    <ul>
+                            <ol><h4><?php _e('Business Directory:', 'cdash'); ?></h4><p><?php _e('Create a directory of member businesses on your WordPress website.', 'cdash'); ?></p></ol>
+                            <ol><h4><?php _e('CRM:', 'cdash'); ?></h4><p><?php _e('Keep track of the people in your organization.', 'cdash'); ?></p></ol>
+                            <ol><h4><?php _e('Member Manager:', 'cdash'); ?></h4><p><?php _e('Let members join your organization right on your website!', 'cdash'); ?></p></ol>
+                        </ul>
 					</div>
+					
+                    <p>Get started right away with our <a href="https://chamberdashboard.com/5-min-getting-started-guide/" target="_blank">5 Min. Setup Guide</a><br />
+                    
+                        Or go to <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-business-directory/options.php'), 'admin.php'))); ?>">Chamber Dashboard Settings</a>
+                    </p> 
+                    
+                    <h3><?php _e('Make your website even more dynamic!', 'cdash'); ?></h3>
 
 					<div>
-						<h4><?php _e('Import Existing Member Listings', 'cdash'); ?></h4>
-						<p><?php _e('Easily import listings from or export listings to a CSV file.  Customize your listings to meet member needs.', 'cdash'); ?></p>
-					</div>					
-					
-					<div>
-						<h4><?php _e('Member Manager', 'cdash'); ?></h4>
-						<p><?php _e('Create membership levels, let businesses sign up for membership on your site, collect payment wiht PayPal and track when membership payments are due.', 'cdash'); ?></p>
-					</div>					
-                    
-                    <div>
 						<h4><?php _e('Member Updater', 'cdash'); ?></h4>
 						<p><?php _e('Give the ability for businesses to edit their own listings and keep them up to date.', 'cdash'); ?></p>
-					</div>					
-                    
-                    <div>
-						<h4><?php _e('Import Existing Member Listings', 'cdash'); ?></h4>
-						<p><?php _e('Easily import listings from or export listings to a CSV file.  Customize your listings to meet member needs.', 'cdash'); ?></p>
-					</div>				
+					</div>	
 					
 					<div class="last-feature">
 						<h4><?php _e('Sign Up for Our Exceptional Support', 'cdash'); ?></h4>
 						<p><?php _e('We are here to answer your questions and help you get the most out of Chamber Dashboard!  Click on the support tab to get help with your Chamber Dashboard plugins.', 'cdash'); ?></p>
 					</div>
-				</div>				
-				<div class="return-to-dashboard">
-				<a href="<?php echo esc_url(admin_url('admin.php?page=chamber-dashboard-business-directory/options.php')); ?>"><?php _e( 'Go to Chamber Dashboard Settings', 'cdash' ); ?></a>
-			</div>
+				</div>								
 				
 			</div>
             </div>
@@ -117,12 +110,12 @@ function cdash_support_page_render(){
 	   <div class="changelog">
             <h3><?php _e('Chamber Dashboard Support', 'cdash'); ?></h3>
             <div class="feature-section col three-col">
-               <p>Please review the plugin documentation and troubleshooting guide first. If you still can't find the answer open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, you will not have access to email support.  </p> 
+                <p><?php _e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p> 
  
-                <p> Documentation - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a> <br />
-                    Troubleshooting - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a><br /> 
-                    Submit Ticket - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a><br /> 
-                    Premium Plugins - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a></p> 
+                <p> <?php _e('Documentation'); ?> - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a> <br />
+                    <?php _e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a><br /> 
+                    <?php _e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a><br /> 
+                    <?php _e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a></p> 
             </div>
         </div>
     </div>
