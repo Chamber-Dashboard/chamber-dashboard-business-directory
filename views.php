@@ -632,6 +632,12 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		$business_list .= get_the_content();
 
 			  	}
+        
+                /*if( "excerpt" == $text ) {
+			  		$business_list .= apply_filters('the_excerpt', get_the_excerpt()); //#GV#: fixed localization/internationalization issues
+			  	} elseif( "description" == $text ) {
+			  		$business_list .= apply_filters('the_content', get_the_content());  //#GV#: fixed localization/internationalization issues
+			  	}*/
 
 			  	$business_list .= "</div>";
 
