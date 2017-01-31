@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.single_addon{
+    border: #B2B2B2 5px solid;
+    float:left;
+    width:25%;
+    margin-right:10px;
+    padding-top:20px;
+}
+
+.single_addon img{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+}
+
+.single_addon h4, .single_addon p{
+    width:80%;
+    margin:0 auto;
+    padding-top:10px;
+}
+
+.single_addon p{
+    min-height: 40px;
+}
+
+.single_addon a.button-primary{
+    margin-left:15px;
+    margin-top: 10px;
+    margin-bottom:10px;
+}
