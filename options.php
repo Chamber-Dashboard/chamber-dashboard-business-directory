@@ -110,9 +110,9 @@ function cdash_render_form() {
 				<?php settings_fields('cdash_plugin_options'); ?>
 				<?php $options = get_option('cdash_directory_options'); ?>
 
-				<?php if ( cdash_bd()->is_paying() ) { ?>
-					<p><a href="https://chamberdashboard.com/professional-services-support/documentation/" target="_blank"><?php _e( 'Need help?  Take a look at our documentation!', 'cdash' ); ?></a></p>
-				<?php } ?>
+				<?php //if ( cdash_bd()->is_paying() ) { ?>
+					<!--<p><a href="https://chamberdashboard.com/professional-services-support/documentation/" target="_blank"><?php //_e( 'Need help?  Take a look at our documentation!', 'cdash' ); ?></a></p>-->
+				<?php //} ?>
 
 				<!-- Table Structure Containing Form Controls -->
 				<!-- Each Plugin Option Defined on a New Table Row -->

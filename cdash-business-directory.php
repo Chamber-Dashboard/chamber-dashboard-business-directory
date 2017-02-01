@@ -47,7 +47,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 
 // Create a helper function for easy SDK access.
-function cdash_bd() {
+/*function cdash_bd() {
 	global $cdash_bd;
 
 	if ( ! isset( $cdash_bd ) ) {
@@ -70,21 +70,21 @@ function cdash_bd() {
 	}
 
 	return $cdash_bd;
-}
+}*/
 
 // Init Freemius.
-cdash_bd();
+//cdash_bd();
 
 
 
-function cdash_show_contact_menu( $menu_id, $is_visible ) {
+/*function cdash_show_contact_menu( $menu_id, $is_visible ) {
 	if ('contact' !== $is_visible)
 		return $menu_id;
 
 	return cdash_bd()->is_paying();
 }
 
-cdash_bd()->add_filter('is_submenu_visible', 'cdash_show_contact_menu', 10, 2);
+cdash_bd()->add_filter('is_submenu_visible', 'cdash_show_contact_menu', 10, 2);*/
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:

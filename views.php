@@ -2107,6 +2107,10 @@ function cdash_show_edit_link(){
 // CHECK IF MEMBER UPDATER IS ACTIVE
 // ------------------------------------------------------------------------
 function cdash_is_member_updater_active(){
+    /**
+ * Detect plugin. For use on Front End only.
+ */
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
     if(is_plugin_active('chamber-dashboard-member-updater/cdash-member-updater.php')){
         return true;
     }else{
@@ -2123,24 +2127,7 @@ function cdash_display_edit_link($business_id)
     //$member_options = get_option('cdashmm_options');
     $member_updater = cdash_is_member_updater_active();    
     if($member_updater){
-        return cdashmu_display_business_edit_link($business_id);
-        /*if(is_user_logged_in()){
-            $user = wp_get_current_user();   
-            $user_id = $user->ID;        
-            //return $user_id;     
-            
-            $user_can_update = cdashmu_can_user_update_business($user_id, $business_id);
-            if(!$user_can_update){            
-                return null;
-            }else{
-                $link = cdashmu_get_business_edit_link();        
-                return $link;
-            }
-        }
-        else{
-            $login_link = "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
-            return $login_link;
-        }*/
+        return cdashmu_display_business_edit_link($business_id);        
     }
 }
 ?>
