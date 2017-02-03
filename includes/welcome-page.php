@@ -27,22 +27,17 @@ function cdash_about_screen()
 			?>
 			<?php  
             $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';  
+            
         ?>
 		</div>
-		<!--<p class="cdash-actions">
-			<a href="<?php echo esc_url(admin_url('admin.php?page=chamber-dashboard-business-directory/options.php')); ?>" class="button button-primary"><?php _e('Settings', 'cdash'); ?></a>
-			<a href="http://chamberdashboard.com/support/documentation/?utm_source=plugin&utm_medium=welcome-page&utm_campaign=business-directory" class="button button-primary" target="_blank"><?php _e('Documentation', 'cdash'); ?></a>
-		</p>-->
 		
 		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php if ($_GET['page'] == 'cdash-about') echo 'nav-tab-active'; ?>" href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'cdash-about', 'tab' => 'cdash-about'), 'admin.php'))); ?>">
 				<?php _e('About Chamber Dashboard', 'cdash'); ?>		
 			</a>
 			<a class="nav-tab <?php if ($_GET['page'] == 'chamber_dashboard_support') echo 'nav-tab-active'; ?>" href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber_dashboard_support'), 'admin.php'))); ?>">
-			
 				<?php _e('Support', 'cdash'); ?>		
-			</a>
-			
+			</a>		
 		</h2>
             
             <div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -51,9 +46,10 @@ function cdash_about_screen()
             {                
                 cdash_about_page_render();
                 
-            }elseif($active_tab == 'chamber_dashboard_support'){
-                cdash_support_page_render();
-            }
+            }else if($active_tab == 'chamber_dashboard_support'){
+                cdash_support_page_render();                                
+            }            
+                        
             ?>
             </div><!--end of #main-->           
 			

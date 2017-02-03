@@ -189,8 +189,7 @@ function cdash_single_business_map() {
 							}
 
 							if(!isset($icon)) {
-								//$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
-                                $icon = plugins_url( '/images/map_marker.png', __FILE__ );
+								$icon = plugins_url( '/images/map_marker.png', __FILE__ );
 							}
 
 							if(isset($location['altname'])) {
@@ -493,7 +492,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 		), $atts )
 
-	);
+	);   
 
 
 
@@ -562,18 +561,12 @@ function cdash_business_directory_shortcode( $atts ) {
 	
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
-
-
-
 	$businessquery = new WP_Query( $args );
-
-
-
 	// The Loop
 
 	if ( $businessquery->have_posts() ) :
-
-		$business_list = '';
+    
+		$business_list = '';        
 
 		$business_list .= "<div id='businesslist' class='" . $format . "'>";
 
@@ -751,7 +744,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 
 			  	$business_list .= "</div>";
-
+    
 			endwhile;
 
 
@@ -786,12 +779,9 @@ function cdash_business_directory_shortcode( $atts ) {
 
 		$business_list .= "</div>";
 
-		return $business_list;
-
+		return $business_list;           
 	endif;
-
 	wp_reset_postdata();
-
 }
 
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
@@ -854,9 +844,7 @@ function cdash_business_map_shortcode( $atts ) {
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&'></script>";
 	if( "yes" == $cluster ) {
-		/*$business_map .= "<script src='https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
-        
-        $business_map .= "<script src='https://github.com/googlemaps/js-marker-clusterer/blob/gh-pages/src/markerclusterer.js'></script>";*/        
+   
         $business_map .= "<script src='" . plugin_dir_url(__FILE__) . "js/markerclusterer.js'></script>"; 
 	}
 	$business_map .= "<script type='text/javascript'>";
@@ -908,7 +896,7 @@ function cdash_business_map_shortcode( $atts ) {
 								}
 
 								if(!isset($icon)) {
-									//$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+ 
                                     $icon = plugins_url( '/images/map_marker.png', __FILE__ );
 								}
 
@@ -996,7 +984,7 @@ function cdash_business_map_shortcode( $atts ) {
             
 		</script>";
 	return $business_map;
-
+    return "Testing";
 	wp_reset_postdata();
 }
 
@@ -2053,29 +2041,20 @@ function cdash_display_business_status( $id ) {
 
 
 function cdash_add_hide_lapsed_members_filter($args){
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    if(is_plugin_active('chamber-dashboard-member-manager/cdash-member-manager.php')){
+        $member_options = get_option('cdashmm_options');
 
-	$member_options = get_option('cdashmm_options');
-
-	if(isset($member_options['hide_lapsed_members'])){
-
-        $args['tax_query'][] = array(
-
-      		'taxonomy' => 'membership_status',
-
-		    'field' => 'slug',
-
-            'terms' => array('lapsed'),
-
-			'operator' => 'NOT IN'
-
-		);
-
-	}
-
-	
-
+        if(isset($member_options['hide_lapsed_members'])){
+            $args['tax_query'][] = array(
+                'taxonomy' => 'membership_status',
+                'field' => 'slug',
+                'terms' => array('lapsed'),
+                'operator' => 'NOT IN'
+            );
+        }
+    }
 	return $args;
-
 }
 
 // ------------------------------------------------------------------------

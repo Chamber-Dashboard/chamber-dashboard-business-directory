@@ -116,14 +116,11 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
 // Require extensions
 require_once( plugin_dir_path( __FILE__ ) . 'extensions.php' );
 
-
 // Initialize language so it can be translated
 function cdash_language_init() {
   load_plugin_textdomain( 'cdash', false, 'chamber-dashboard-business-directory/languages' );
 }
 add_action('init', 'cdash_language_init');
-
-
 
 // ------------------------------------------------------------------------
 // SET UP CUSTOM POST TYPES AND TAXONOMIES
