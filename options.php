@@ -81,6 +81,8 @@ function cdash_add_options_page() {
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Extensions', 'Extensions', 'manage_options', 'chamber-dashboard-extensions', 'chamber_dashboard_extensions_page_render' );
     
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
+    
+    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         
 	// this is a hidden submenu page for updating geolocation data
 	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );

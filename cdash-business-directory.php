@@ -115,6 +115,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
 // Require extensions
 require_once( plugin_dir_path( __FILE__ ) . 'extensions.php' );
+// Require licenses page
+require_once( plugin_dir_path( __FILE__ ) . 'license.php' );
 
 // Initialize language so it can be translated
 function cdash_language_init() {
