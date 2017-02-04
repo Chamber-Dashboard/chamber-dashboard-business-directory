@@ -57,10 +57,26 @@ function chamber_dashboard_extensions_page_render(){
                         );
                         
                         display_addons(                            
+                            'Chamber Dashboard Recurring Payments',
+                            'recurring_payments',
+                            'Offer your members the recurring payments option and genereate invoices automatically.',
+                            'https://chamberdashboard.com/downloads/recurring-payments/',
+                            '$79.00'
+                        );                            
+                        
+                        display_addons(                            
+                            'Chamber Dashboard Exporter',
+                            'exporter',
+                            'Export member businesses, contacts, paid or unpaid invoices.',
+                            'https://chamberdashboard.com/downloads/exporter',
+                            '$79.00'
+                        );
+                                                    
+                        display_addons(                            
                             'Chamber Dashboard Member Updater',
                             'member_updater',
-                            'Let Members update their listings by logging in from the front end.',                           
-                            'http://chamberdashboard.com/downloads/member-updater/',
+                            'Let Members update their listings by logging in from the front end.',                        
+                            'https://chamberdashboard.com/downloads/member-updater/',
                             '$65.00'
                         );
                             
