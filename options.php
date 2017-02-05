@@ -82,7 +82,10 @@ function cdash_add_options_page() {
     
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
     
-    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
+    $plugins = cdash_get_active_plugin_list();
+        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) ) {
+            add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
+        }
         
 	// this is a hidden submenu page for updating geolocation data
 	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
@@ -377,7 +380,7 @@ function cdash_export_form() {
 		<input type="hidden" name="cdash_export" value="cdash_do_export">
 		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
-		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="' . admin_url( 'admin.php?page=chamber-dashboard-business-directory/options.php-addons' ) . '" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="' . admin_url( 'admin.php?page=chamber-dashboard-extensions' ) . '" >Chamber Dashboard Exporter</a>.', 'cdash' );
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 

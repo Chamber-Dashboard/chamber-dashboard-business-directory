@@ -28,6 +28,9 @@ function chamber_dashboard_licenses_page_render(){
                 }
                 if( in_array( 'cdash-member-updater.php', $plugins ) ) {
                     cdash_mu_edd_license_page();
+                }
+                if( in_array( 'cdash-exporter.php', $plugins ) ) {
+                    cdexport_edd_license_page();
                 }                                                  
                 
             ?>
