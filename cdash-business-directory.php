@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.8.4
+Version: 2.8.4.1
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -44,47 +44,6 @@ function cdash_requires_wordpress_version() {
 	}
 }
 add_action( 'admin_init', 'cdash_requires_wordpress_version' );
-
-
-// Create a helper function for easy SDK access.
-/*function cdash_bd() {
-	global $cdash_bd;
-
-	if ( ! isset( $cdash_bd ) ) {
-		// Include Freemius SDK.
-		require_once dirname(__FILE__) . '/freemius/start.php';
-
-		$cdash_bd = fs_dynamic_init( array(
-				'id'                => '170',
-				'slug'              => 'chamber-dashboard-business-directory',
-				'public_key'        => 'pk_fb8be3233878561440e6781b2bda4',
-				'is_premium'        => false,
-				'has_addons'        => false,
-				'has_paid_plans'    => false,
-				'menu'              => array(
-						'slug'       => 'chamber-dashboard-business-directory/options.php',
-						'first-path' => 'index.php?page=cdash-about',
-						'support'    => false,
-				),
-		) );
-	}
-
-	return $cdash_bd;
-}*/
-
-// Init Freemius.
-//cdash_bd();
-
-
-
-/*function cdash_show_contact_menu( $menu_id, $is_visible ) {
-	if ('contact' !== $is_visible)
-		return $menu_id;
-
-	return cdash_bd()->is_paying();
-}
-
-cdash_bd()->add_filter('is_submenu_visible', 'cdash_show_contact_menu', 10, 2);*/
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:

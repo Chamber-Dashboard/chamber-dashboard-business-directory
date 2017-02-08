@@ -40,7 +40,8 @@ function cdash_add_defaults() {
 						"sm_icon_size"	 => "32px",
 						"currency_position" => "before",
 						"currency_symbol" => "$",
-						"currency" => "USD",                        
+						"currency" => "USD",
+                        "search_results_per_page"   =>  "5"                 
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -232,6 +233,14 @@ function cdash_render_form() {
 							<!-- Second radio button -->
 							<label><input name="cdash_directory_options[currency_position]" type="radio" value="after" <?php checked('after', $options['currency_position']); ?> /><?php _e( ' After the price', 'cdash' ); ?>
 							</label>
+						</td>
+					</tr>
+					
+					<tr>
+						<th scope="row"><?php _e('Search Results Per Page', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="35" name="cdash_directory_options[search_results_per_page]" value="<?php if(isset($options['search_results_per_page'])) { echo $options['search_results_per_page']; } ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the number of search results you would like to display per page.', 'cdash'); ?></span>
 						</td>
 					</tr>
 					<!-- Custom Fields -->

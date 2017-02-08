@@ -626,7 +626,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 			  	} 
 
-			  	if( "excerpt" == $text ) {
+			  	/*if( "excerpt" == $text ) {
 
 			  		$business_list .= get_the_excerpt();
 
@@ -634,13 +634,13 @@ function cdash_business_directory_shortcode( $atts ) {
 
 			  		$business_list .= get_the_content();
 
-			  	}
+			  	}*/
         
-                /*if( "excerpt" == $text ) {
+                if( "excerpt" == $text ) {
 			  		$business_list .= apply_filters('the_excerpt', get_the_excerpt()); //#GV#: fixed localization/internationalization issues
 			  	} elseif( "description" == $text ) {
 			  		$business_list .= apply_filters('the_content', get_the_content());  //#GV#: fixed localization/internationalization issues
-			  	}*/
+			  	}
 
 			  	$business_list .= "</div>";
 
@@ -1039,6 +1039,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 
 
 		// Set up a query with the search terms
+        $options = get_option('cdash_directory_options');
 
 		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
@@ -1046,7 +1047,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 
                 'post_type' => 'business',
 
-                'posts_per_page' => 3,  
+                'posts_per_page' => $options['search_results_per_page'],  
 
                 'paged' => $paged,
 
@@ -1094,7 +1095,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 
         $search_query = new WP_Query( $args );
 
-		if ( $search_query->have_posts() ) :
+		if ( $search_query->have_posts() ) {
 
 			// Display the search results
 
@@ -1270,10 +1271,16 @@ function cdash_business_search_results_shortcode( $atts ) {
 
 			$search_results .= "</div><!-- #search-results -->";
 
-		endif;
-
-
-
+		//endif;
+        }else{
+            //$search_results = "<h2>Search Results</h2>";
+        $search_results = "We're sorry, your search for <b>".$searchtext . "</b> did not produce any results.<br />";
+        $search_results .= "<h3>Search Suggestions</h3>";
+        $search_results .= "<ul><li>Try a different search term</li>";
+        $search_results .= "<li>Check for typos or spelling errors</li><ul>"; 
+   
+        }        
+        
 		// Reset Post Data
 
 		wp_reset_postdata();

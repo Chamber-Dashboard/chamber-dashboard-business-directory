@@ -68,8 +68,8 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard Exporter',
                             'exporter',
                             'Export member businesses, contacts, paid or unpaid invoices.',
-                            'https://chamberdashboard.com/downloads/exporter',
-                            '$79.00'
+                            'https://chamberdashboard.com/downloads/chamber-dashboard-exporter/',
+                            '$39.00'
                         );
                                                     
                         display_addons(                            
@@ -77,7 +77,7 @@ function chamber_dashboard_extensions_page_render(){
                             'member_updater',
                             'Let Members update their listings by logging in from the front end.',                        
                             'https://chamberdashboard.com/downloads/member-updater/',
-                            '$65.00'
+                            '$79.00'
                         );
                             
                     ?>                                

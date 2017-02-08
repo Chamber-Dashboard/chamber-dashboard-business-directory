@@ -1,10 +1,10 @@
 === Chamber Dashboard Business Directory ===
-Contributors: gwendydd, cguntur
+Contributors: gwendydd, cguntur, lisak.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 2.8.4
+Stable tag: 2.8.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,7 +85,16 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 == Screenshots ==
 1. Entering business information
 
+Add to next release
+== 2.8.5 ==
+* The number of business search results per page can be customized
+* Fixed the search results text
+
 == Changelog ==
+
+== 2.8.4.1 ==
+* Fixed the text on the extensions page
+
 == 2.8.4 ==
 * Removed Freemius code
 * It works with Chamber Dashboard Member Updater
