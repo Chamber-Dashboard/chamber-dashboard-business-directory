@@ -31,7 +31,10 @@ function chamber_dashboard_licenses_page_render(){
                 }
                 if( in_array( 'cdash-exporter.php', $plugins ) ) {
                     cdexport_edd_license_page();
-                }                                                  
+                }
+                if( in_array( 'cdash-crm-importer.php', $plugins ) ) {
+                    cdcrm_import_edd_license_page();
+                }
                 
             ?>
         </div>

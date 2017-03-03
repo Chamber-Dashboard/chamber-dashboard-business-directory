@@ -79,6 +79,14 @@ function chamber_dashboard_extensions_page_render(){
                             'https://chamberdashboard.com/downloads/member-updater/',
                             '$79.00'
                         );
+                        
+                        display_addons(                            
+                            'Chamber Dashboard CRM Importer',
+                            'crm_importer',
+                            'Import people associated with businesses.',                        
+                            'https://chamberdashboard.com/downloads/crm-importer/',
+                            '$39.00'
+                        );
                             
                     ?>                                
                 </ul>
