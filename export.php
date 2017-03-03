@@ -69,15 +69,24 @@ function cdash_simple_export() {
 // Loop through businesses and add a line to the CSV for each business
 	if ($exportquery->have_posts()) :
 		while ($exportquery->have_posts()) : $exportquery->the_post();
-			$cats = wp_get_post_terms($post->ID, 'business_category', array("fields" => "names"));
-			$catlist = implode(", ", $cats);
+			//$cats = wp_get_post_terms($post->ID, 'business_category', array('fields' => 'names'));
+            $cats = get_the_category($post->ID);
+            if(!empty($cats)){
+                $catlist = implode(", ", $cats);    
+            }
+            else{
+                $catlist = "No categories found";
+            }
+            
 			$levels = wp_get_post_terms($post->ID, 'membership_level', array("fields" => "names"));
 			$levellist = implode(", ", $levels);
 			$fields = array(
 				get_the_title(),
 				get_the_content(),
-				$catlist,
-				$levellist,
+                $catlist,
+                'Membership Level'
+				//$catlist,
+				//$levellist,
 			);
 			global $buscontact_metabox;
 			$contactmeta = $buscontact_metabox->the_meta();
