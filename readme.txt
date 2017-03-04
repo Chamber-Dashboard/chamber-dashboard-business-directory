@@ -89,6 +89,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 
 == 2.8.6 ==
 * Added CRM Importer information
+* Fixed the featured image linking to post when single_link is no.
 
 == 2.8.5 ==
 * The number of business search results per page can be customized

@@ -70,20 +70,18 @@ function cdash_simple_export() {
 	if ($exportquery->have_posts()) :
 		while ($exportquery->have_posts()) : $exportquery->the_post();
 			//$cats = wp_get_post_terms($post->ID, 'business_category', array('fields' => 'names'));
-            $cats = get_the_category($post->ID);
-            if(!empty($cats)){
-                $catlist = implode(", ", $cats);    
-            }
-            else{
-                $catlist = "No categories found";
-            }
+            $cats = get_the_terms($post->ID, 'business_category', array('fields' => 'names'));
+            /*foreach($cats as $single_category){
+				$catlist = $single_category->name;
+			}*/
             
 			$levels = wp_get_post_terms($post->ID, 'membership_level', array("fields" => "names"));
 			$levellist = implode(", ", $levels);
 			$fields = array(
 				get_the_title(),
 				get_the_content(),
-                $catlist,
+                //$catlist,
+				$cats[0],
                 'Membership Level'
 				//$catlist,
 				//$levellist,

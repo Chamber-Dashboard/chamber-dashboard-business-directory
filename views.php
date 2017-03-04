@@ -621,8 +621,17 @@ function cdash_business_directory_shortcode( $atts ) {
 						'class'	=> 'alignleft logo',
 
 					);
+					
+					if( $single_link == "yes" ) {
 
-			  		$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
+							$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
+						} else {
+
+							$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
+
+						}
+
+			  		
 
 			  	} 
 
