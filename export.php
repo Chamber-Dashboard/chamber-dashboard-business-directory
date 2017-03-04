@@ -69,22 +69,17 @@ function cdash_simple_export() {
 // Loop through businesses and add a line to the CSV for each business
 	if ($exportquery->have_posts()) :
 		while ($exportquery->have_posts()) : $exportquery->the_post();
-			//$cats = wp_get_post_terms($post->ID, 'business_category', array('fields' => 'names'));
-            $cats = get_the_terms($post->ID, 'business_category', array('fields' => 'names'));
-            /*foreach($cats as $single_category){
-				$catlist = $single_category->name;
-			}*/
-            
-			$levels = wp_get_post_terms($post->ID, 'membership_level', array("fields" => "names"));
+			$post_id = get_the_id();
+			$cats = wp_get_post_terms($post_id, 'business_category', array('fields' => 'names'));            
+            $catlist = implode(", ", $cats);
+			$levels = wp_get_post_terms($post_id, 'membership_level', array('fields' => 'names'));
 			$levellist = implode(", ", $levels);
 			$fields = array(
 				get_the_title(),
 				get_the_content(),
-                //$catlist,
-				$cats[0],
-                'Membership Level'
-				//$catlist,
-				//$levellist,
+                $catlist,
+				//'Membership Level'				
+				$levellist,
 			);
 			global $buscontact_metabox;
 			$contactmeta = $buscontact_metabox->the_meta();
