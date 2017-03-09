@@ -84,7 +84,7 @@ function cdash_add_options_page() {
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
     
     $plugins = cdash_get_active_plugin_list();
-        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) ) {
+        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins)) {
             add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         }
         
