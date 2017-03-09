@@ -3,7 +3,7 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: 2.8.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
