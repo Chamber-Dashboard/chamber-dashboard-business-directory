@@ -1454,7 +1454,6 @@ function cdash_business_categories_shortcode( $atts ) {
 
 		array(
 		
-		'format' => 'list',  // options: list, grid2, grid3, grid4
 		'orderby' => 'name', // options: date, modified, menu_order, rand
 		'order' => 'ASC',
 		'showcount' => 0,
@@ -1465,16 +1464,6 @@ function cdash_business_categories_shortcode( $atts ) {
 		), $atts )
 	);
 	
-	// Enqueue stylesheet if the display format is columns instead of list
-
-	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
-
-	if($format !== 'list') {
-
-		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );
-
-	}
-
 	$taxonomy = 'business_category';
 
 	$args = array(
@@ -1503,22 +1492,10 @@ function cdash_business_categories_shortcode( $atts ) {
 
 
 
-	//$categories = '<ul class="business-categories'. '  ' . $format . '">' . 	wp_list_categories($args) . '</ul>';
+	$categories = '<ul class="business-categories'. '  ' . $format . '">' . 	wp_list_categories($args) . '</ul>';
 	
-	$categories = get_categories($args);
 	
-	//$categories_result = array();
-	
-	foreach($categories as $cat){
-		
-		$category_link = get_category_link($cat->cat_ID);
- 		$categoryName = get_cat_name($cat->cat_ID);
-		$category_display .= '<div class="business-categories ' . $format .'">';
-		$category_display .= '<a href="<?php echo esc_url( $category_link ); ?>" title="Category Name">' . $categoryName . '</a></div>'; 
-		echo $category_display;
-	}
-	
-	//return $categories;
+	return $categories;
 
 }
 
