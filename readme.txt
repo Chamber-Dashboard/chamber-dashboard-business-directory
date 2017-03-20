@@ -88,7 +88,6 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 == Changelog ==
 
 == 2.8.6 ==
-* Added CRM Importer information
 * Fixed the featured image linking to post when single_link is no.
 
 == 2.8.5 ==
