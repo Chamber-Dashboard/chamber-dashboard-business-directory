@@ -56,10 +56,10 @@ function cdash_simple_export() {
 		'Phone',
 		'Email',
 	);
-
+	
 // Add location headers to the list of business headers
 	for ($i = 0; $i < $numberoflocations; $i++) {
-		$header = array_merge($header, $locationheaders);
+		$header = array_merge($header, $locationheaders );
 	}
 	unset($i);
 

@@ -4,7 +4,7 @@ Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 4.7.3
-Stable tag: 2.8.6
+Stable tag: 2.8.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -86,6 +86,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+
+== 2.8.7 ==
+* Modified the extensions page
+* Added width and height parameters to the business map shortcode
+* Search results with display in alphabetical order
 
 == 2.8.6 ==
 * Fixed the featured image linking to post when single_link is no.

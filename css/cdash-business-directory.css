@@ -130,16 +130,16 @@ clear: both;
 }
 
 @media screen and (max-width: 700px) {
-#businesslist.grid2 .business,
-#businesslist.grid3 .business,
-#businesslist.grid4 .business,
-#cdcrm-people.grid2 .cdcrm-person,
-#cdcrm-people.grid3 .cdcrm-person,
-#cdcrm-people.grid4 .cdcrm-person,
-#search-results.grid2 .business,
-#search-results.grid3 .business,
-#search-results.grid4 .business,{
-	width: 100%;
-	float: none;
+	#businesslist.grid2 .business,
+	#businesslist.grid3 .business,
+	#businesslist.grid4 .business,
+	#cdcrm-people.grid2 .cdcrm-person,
+	#cdcrm-people.grid3 .cdcrm-person,
+	#cdcrm-people.grid4 .cdcrm-person,
+	#search-results.grid2 .business,
+	#search-results.grid3 .business,
+	#search-results.grid4 .business{
+		width: 100%;
+		float: none;
 	}
 }

@@ -821,7 +821,9 @@ function cdash_business_map_shortcode( $atts ) {
 
 			'perpage' => '-1', // options: any number
 
-			'cluster' => 'no' // options: yes or no
+			'cluster' => 'no', // options: yes or no
+			'width'	  => '100%', //options - any number with % or px	
+			'height'  => '500px' // options - any number with px
 
 		), $atts )
 
@@ -850,7 +852,7 @@ function cdash_business_map_shortcode( $atts ) {
 	$args = cdash_add_hide_lapsed_members_filter($args);
 
 	$mapquery = new WP_Query( $args );
-	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
+	$business_map = "<div id='map-canvas' style='width:" . $width . "; height:" . $height . ";'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&'></script>";
 	if( "yes" == $cluster ) {
    
@@ -993,7 +995,7 @@ function cdash_business_map_shortcode( $atts ) {
             
 		</script>";
 	return $business_map;
-    return "Testing";
+    //return "Testing";
 	wp_reset_postdata();
 }
 
@@ -1055,12 +1057,10 @@ function cdash_business_search_results_shortcode( $atts ) {
 		$args = array( 
 
                 'post_type' => 'business',
-
                 'posts_per_page' => $options['search_results_per_page'],  
-
                 'paged' => $paged,
-
                 'order' => 'ASC',
+				'orderby' => 'title'
 
                 );
 
@@ -1323,6 +1323,7 @@ function cdash_business_search_form_shortcode( $atts ) {
 		array(
 
 			'results_page' => 'notset',  // options: any url
+			'class'		   => 'business_search_form'	
 
 		), $atts )
 
@@ -1332,7 +1333,7 @@ function cdash_business_search_form_shortcode( $atts ) {
 
 	// Search form
 
-	$search_form = "<div id='business-search'><h3>" . __('Search', 'cdash') . "</h3>";
+	$search_form = "<div id='business-search' class='" . $class . "'><h3>" . __('Search', 'cdash') . "</h3>";
 
 	if( $results_page == 'notset') {
 
@@ -1344,7 +1345,7 @@ function cdash_business_search_form_shortcode( $atts ) {
 
 	}
 
-	$search_form .= "<p><label id='business-search-term'>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
+	$search_form .= "<p class='business-search-term'><label id='business-search-term'>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
 
 	// $search_form .= "<p><label>Business Name</label><br /><input type='text' value='' name='business_name' id='business_name' /></p>";
 
@@ -1354,7 +1355,7 @@ function cdash_business_search_form_shortcode( $atts ) {
 
 		// I would really like to be able to search by city, but since WPAlchemy serializes the locations array, I don't think this is possible
     
-	$search_form .= "<p><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
+	$search_form .= "<p class='business-category-text'><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
 
 	$terms = get_terms( 'business_category', 'hide_empty=0' );
 
@@ -1783,7 +1784,7 @@ function cdash_display_phone_numbers( $phone_numbers ) {
 
 					if( isset( $phone['phonetype'] ) && '' !== $phone['phonetype'] ) {
 
-						$phones_content .= "&nbsp;(&nbsp;" . $phone['phonetype'] . "&nbsp;)";
+						$phones_content .= "<span class='phone_type'>&nbsp;(" . $phone['phonetype'] . ")</span>";
 
 					}
 
@@ -1841,7 +1842,7 @@ function cdash_display_email_addresses( $email_addresses ) {
 
 				if( isset( $email['emailtype'] ) && '' !== $email['emailtype']) {
 
-					$email_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+					$email_content .= "<span class='email_type'>&nbsp;(". $email['emailtype'] .")</span>";
 
 				}
 
