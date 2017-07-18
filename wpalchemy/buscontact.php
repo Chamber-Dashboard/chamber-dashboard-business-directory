@@ -103,7 +103,8 @@
 					<?php $mb->the_field('phonetype'); ?>
 					<?php $options = get_option('cdash_directory_options');
 				 	$phonetypes = $options['bus_phone_type'];
-				 	$typesarray = explode( ",", $phonetypes);
+					$typesarray = array_map('trim', explode(',', $phonetypes));
+				 	//$typesarray = explode( ",", $phonetypes);
 				 	foreach ($typesarray as $type) { ?>
 				 		<option value="<?php echo $type; ?>" <?php if ($mb->get_the_value() == $type) echo $selected; ?>><?php echo $type; ?></option>
 				 	<?php } ?>
@@ -135,7 +136,8 @@
 					<?php $mb->the_field('emailtype'); ?>
 					<?php $options = get_option('cdash_directory_options');
 				 	$emailtypes = $options['bus_email_type'];
-				 	$typesarray = explode( ",", $emailtypes);
+					$typesarray = array_map('trim', explode(',', $emailtypes));
+				 	//$typesarray = explode( ",", $emailtypes);
 				 	foreach ($typesarray as $type) { ?>
 				 		<option value="<?php echo $type; ?>" <?php if ($mb->get_the_value() == $type) echo $selected; ?>><?php echo $type; ?></option>
 				 	<?php } ?>

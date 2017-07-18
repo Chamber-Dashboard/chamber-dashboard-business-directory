@@ -22,8 +22,8 @@ function cdash_add_defaults() {
 	$tmp = get_option('cdash_directory_options');
     if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
-		$arr = array(	"bus_phone_type" => "Main,Office,Cell",
-						"bus_email_type" => "Main,Sales,Accounting,HR",
+		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
+						"bus_email_type" => "Main, Sales, Accounting, HR",
 						"sv_description" => "1",
 						"sv_name"		 => "1",
 						"sv_address"	 => "1",
@@ -408,7 +408,7 @@ function cdash_import_form() { ?>
 		<div class="icon32" id="icon-options-general"><br></div>
 			<h1><?php _e('Import', 'cdash'); ?></h1>
 			<h3><?php _e( 'Import Businesses', 'cdash' ); ?></h3>
-			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>Country</li><li>Business Hours</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li><li>Custom Field Name</li></ul>', 'cdash'); ?></p>
+			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>Country</li><li>Business Hours</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
 			<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly.', 'cdash' ); ?></p>
 			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
 			<?php wp_import_upload_form('admin.php?page=chamber-dashboard-import'); ?>
@@ -419,45 +419,7 @@ function cdash_import_form() { ?>
 		);
 		$query = new WP_Query($args);
 
-		//echo "Testing";
-		if($query->have_posts()){
-			//echo "Testing if it is going into the IF";
-			while($query->have_posts()){
-				echo "Testing the while loop <br />";
-				$query->the_post();
-				$title = get_the_title();
-				echo $title .  "<br />";
-				global $custom_metabox;
-				$custommeta = $custom_metabox->the_meta();
-        		$custom_fields = ''; 			  
-				if( isset( $customfields ) && is_array( $customfields ) ) {
-					foreach($customfields as $field) {
-						$fieldname = $field['name'];
-						if( isset( $custommeta[$fieldname] ) ) {
-
-							$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-
-						}elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
-
-							$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
-
-						}
-					}
-					//print_r($customfields);
-				}
-			}			
-			echo "At the end: ";
-			
-		}			  
-			
-				
-				
-				
-			?>
-			
-			
-			
-			
+		?>
 		</div> 
 
 	<?php $file = wp_import_handle_upload();
@@ -465,12 +427,13 @@ function cdash_import_form() { ?>
 	if(isset($file['file'])) {
 
 		$row = 0;
+		$header_row = [];
 		if (($handle = fopen($file['file'], "r")) !== FALSE) {
 		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+				 print_r($data);
 		    	
 		    	if($row == 0) {
 		    		// Don't do anything with the header row
-					$custom_meta_key = "custom_meta[" . $data[14] . "]";
 		    		$row++;
 		    		continue;
 		    	} else {
@@ -495,12 +458,6 @@ function cdash_import_form() { ?>
 						$levels = explode(';', $data[3]);
 						wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
 					}
-					
-					// Add custom field info
-					if(isset($data[14])){
-						$custom_field_value = $data[14];
-					}
-					update_post_meta($newbusiness, $custom_meta_key, $custom_field_value);
 					
 					// add a serialised array for wpalchemy to work - see http://www.2scopedesign.co.uk/wpalchemy-and-front-end-posts/
 					$fields = array('_cdash_location');

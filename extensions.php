@@ -3,9 +3,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-wp_enqueue_script( 'thickbox' );
-wp_enqueue_style( 'thickbox' );
-wp_enqueue_style( 'addons.css', plugins_url( 'includes/addons.css', __FILE__ ));
+add_action( 'wp_enqueue_scripts', 'cdash_extensions_enqueue_scripts' );
+function cdash_extensions_enqueue_scripts(){
+  // enqueue the thickbox scripts and styles
+  wp_enqueue_script( 'thickbox' );
+  wp_enqueue_style( 'thickbox' );
+
+  wp_enqueue_style( 'addons.css', plugins_url( 'includes/addons.css', __FILE__ ));  
+}
 
 function display_addons($title, $slug, $description, $link, $price, $type){
     $url = admin_url();
@@ -101,7 +106,7 @@ function chamber_dashboard_extensions_page_render(){
 						display_addons(                            
                             'Chamber Beautiful Theme',
                             'chamber_beautiful',
-                            '<b>Chamber Beautiful Theme</b> - Specifically designed to work beautifully with the Chamber Dashboard plugins.', 
+                            '<b>Chamber Beautiful Theme</b> - Designed to work beautifully with the Chamber Dashboard plugins.', 
                             'https://chamberdashboard.com/downloads/chamber-beautiful/',
                             '$49.00',
 							'theme'
