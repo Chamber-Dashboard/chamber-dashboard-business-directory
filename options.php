@@ -33,7 +33,7 @@ function cdash_add_defaults() {
 						"sv_category"	 => "1",
 						"tax_name"		 => "1",
 						"tax_address"	 => "1",
-                        "tax_hours"       => "1",
+                        "tax_hours"      => "1",
 						"tax_url" 		 => "1",
 						"tax_logo"		 => "1",
 						"sm_display"	 => "icons",
@@ -41,7 +41,7 @@ function cdash_add_defaults() {
 						"currency_position" => "before",
 						"currency_symbol" => "$",
 						"currency" => "USD",
-                        "search_results_per_page"   =>  "5"                 
+                        "search_results_per_page"   =>  "5"
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -67,27 +67,27 @@ function cdash_init(){
 
 // Add menu page
 function cdash_add_options_page() {
-	add_menu_page( 
-		'Chamber Dashboard', 
-		'Chamber Dashboard', 
-		'manage_options', 
-		'/chamber-dashboard-business-directory/options.php', 
-		'cdash_render_form', 
-		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png', 
-		85 
+	add_menu_page(
+		'Chamber Dashboard',
+		'Chamber Dashboard',
+		'manage_options',
+		'/chamber-dashboard-business-directory/options.php',
+		'cdash_render_form',
+		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png',
+		85
 	);
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
-    
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export Directory', 'Export Directory', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Import', 'Directory Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Extensions', 'Extensions', 'manage_options', 'chamber-dashboard-extensions', 'chamber_dashboard_extensions_page_render' );
-    
+
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
-    
+
     $plugins = cdash_get_active_plugin_list();
         if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins)) {
             add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         }
-        
+
 	// this is a hidden submenu page for updating geolocation data
 	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
 }
@@ -105,7 +105,7 @@ function cdash_add_options_page() {
 function cdash_render_form() {
 	?>
 	<div class="wrap">
-		
+
 		<!-- Display Plugin Icon, Header, and Description -->
 		<h1><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h1>
 
@@ -140,7 +140,7 @@ function cdash_render_form() {
 							<input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
 							<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.)', 'cdash'); ?></span>
 						</td>
-					</tr>	
+					</tr>
 
 					<!-- Single View Options -->
 					<tr valign="top">
@@ -182,7 +182,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_orderby_name]" type="checkbox" value="1"<?php if (isset($options['tax_orderby_name'])) { checked('1', $options['tax_orderby_name']); } ?> /><?php _e(' Order category pages by business name (default order is by publication date)', 'cdash'); ?></label><br />
 						</td>
-					</tr>				
+					</tr>
 
 					<!-- Social Media Options -->
 					<tr valign="top">
@@ -190,7 +190,7 @@ function cdash_render_form() {
 						<td>
 							<label><input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media as text links', 'cdash' ); ?></span></label><br />
 							<label><input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media links as icons', 'cdash' ); ?></span></label><br />
-							<label><?php _e('Icon Size: ', 'cdash'); ?></label>	
+							<label><?php _e('Icon Size: ', 'cdash'); ?></label>
 								<select name='cdash_directory_options[sm_icon_size]'>
 								<option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
 								<option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
@@ -235,7 +235,7 @@ function cdash_render_form() {
 							</label>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<th scope="row"><?php _e('Search Results Per Page', 'cdash'); ?></th>
 						<td>
@@ -256,19 +256,21 @@ function cdash_render_form() {
 										<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
 										<p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
 											<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
-										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>	
+										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>
 											<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
 												<option value=''></option>
 												<option value='text' <?php selected('text', $field['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
 												<option value='textarea' <?php selected('textarea', $field['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
 											</select>
-										<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>	
+										<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
+										<?php $field['display_dir'] = ""; ?>
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $field['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $field['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
 
 										<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+										<?php $field['display_single'] = ""; ?>
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />	
+											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
 										<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 									</div>
 									<?php $i++;
@@ -277,37 +279,37 @@ function cdash_render_form() {
 								<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
 									<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
 										<input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php echo $options['bus_custom'][1]['name']; ?>" />
-									<p><strong><?php _e('Custom Field Type'); ?></strong></p>	
+									<p><strong><?php _e('Custom Field Type'); ?></strong></p>
 										<select name='cdash_directory_options[bus_custom][1][type]'>
 											<option value=''></option>
 											<option value='text' <?php selected('one', $options['bus_custom'][1]['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
 											<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
 										</select>
-									<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>	
+									<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
 										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
 										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
 
 									<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
 										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> Yes', 'cdash'); ?></label><br />
-										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />	
+										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />
 									<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 								</div>
 							<?php } ?>
 							<p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
 						</td>
-					</tr>	
+					</tr>
 
 
 				</table>
 				<p class="submit">
 					<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'cdash') ?>" />
-				</p> 
+				</p>
 			</form>
 
 			<script type="text/javascript">
 			// Add a new repeating section
 			var attrs = ['for', 'id', 'name'];
-			function resetAttributeNames(section) { 
+			function resetAttributeNames(section) {
 			    var tags = section.find('input, label'), idx = section.index();
 			    tags.each(function() {
 			      var $this = jQuery(this);
@@ -319,11 +321,11 @@ function cdash_render_form() {
 			      })
 			    })
 			}
-			                   
+
 			jQuery('.repeat').click(function(e){
 			        e.preventDefault();
 			        var lastRepeatingGroup = jQuery('.repeating').last();
-			        var cloned = lastRepeatingGroup.clone(true)  
+			        var cloned = lastRepeatingGroup.clone(true)
 			        cloned.insertAfter(lastRepeatingGroup);
 			        cloned.find("input").val("");
 			        cloned.find("select").val("");
@@ -332,17 +334,17 @@ function cdash_render_form() {
 			    });
 
 			jQuery('.delete-this').click(function(e){
-				e.preventDefault(); 
+				e.preventDefault();
 			    jQuery(this).parent('div').remove();
 			});
 
 			</script>
-			
-			
+
+
 		</div><!-- #main -->
 	</div>
 
-	<?php	
+	<?php
 }
 
 
@@ -351,10 +353,10 @@ function cdash_render_form() {
 function cdash_validate_options($input) {
 	// delete the old custom fields
 	delete_option('cdash_directory_options');
-	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
+	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']);
 	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
 	if( isset( $input['currency_symbol'] ) ) {
-		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']); 
+		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']);
 	}
 	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
 	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
@@ -383,7 +385,7 @@ function cdash_watch_for_export() {
 }
 function cdash_export_form() {
 
-	$export_form = 
+	$export_form =
 		'<p>' . __( 'Click the button below to download a CSV of all of your businesses.', 'cdash' ) . '</p>
 		<form method="post" action="' . admin_url( 'admin.php?page=chamber-dashboard-export') . '">
 		<input type="hidden" name="cdash_export" value="cdash_do_export">
@@ -393,11 +395,11 @@ function cdash_export_form() {
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 
-	$export_page = 
+	$export_page =
 		'<div class="wrap">
 			<div class="icon32" id="icon-options-general"><br></div>
 			<h1>' . __( 'Export', 'cdash' ) . '</h1>' .
-			$export_form . 
+			$export_form .
 		'</div>';
 
 	echo $export_page;
@@ -414,13 +416,13 @@ function cdash_import_form() { ?>
 			<?php wp_import_upload_form('admin.php?page=chamber-dashboard-import'); ?>
 	<?php
 
-		$args =  array( 
-			'post_type' => 'business' 
+		$args =  array(
+			'post_type' => 'business'
 		);
 		$query = new WP_Query($args);
 
 		?>
-		</div> 
+		</div>
 
 	<?php $file = wp_import_handle_upload();
 
@@ -431,7 +433,7 @@ function cdash_import_form() { ?>
 		if (($handle = fopen($file['file'], "r")) !== FALSE) {
 		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 				 print_r($data);
-		    	
+
 		    	if($row == 0) {
 		    		// Don't do anything with the header row
 		    		$row++;
@@ -452,13 +454,13 @@ function cdash_import_form() { ?>
 						$categories = explode(';', $data[2]);
 						wp_set_object_terms( $newbusiness, $categories, 'business_category' );
 					}
-					
+
 					// Add membership levels
 					if(isset($data[3])) {
 						$levels = explode(';', $data[3]);
 						wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
 					}
-					
+
 					// add a serialised array for wpalchemy to work - see http://www.2scopedesign.co.uk/wpalchemy-and-front-end-posts/
 					$fields = array('_cdash_location');
 					$str = $fields;
@@ -504,7 +506,7 @@ function cdash_import_form() { ?>
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$latitude = $json['results'][0]['geometry']['location']['lat'];
-							$longitude = $json['results'][0]['geometry']['location']['lng']; 
+							$longitude = $json['results'][0]['geometry']['location']['lng'];
 						}
 					}
 
@@ -535,7 +537,7 @@ function cdash_import_form() { ?>
 		    fclose($handle);
 		}
 	}
-	
+
 	do_action( 'cdash_importer' );
 }
 

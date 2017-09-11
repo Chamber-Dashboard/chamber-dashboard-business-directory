@@ -37,8 +37,17 @@ class Cdash_Search_Widget extends WP_Widget {
 		extract( $args );
 
 		/* Our variables from the widget settings. */
-		$title = apply_filters('widget_title', $instance['title'] );
-		$results_page = $instance['results_page'];
+        $title_instance = '';
+        if(isset($instance['title'])){
+            $title_instance = apply_filters('widget_title', $instance['title'] );
+        }
+        $title = $title_instance;
+		//$title = apply_filters('widget_title', $instance['title'] );
+        $results_page = '';
+        if(isset($instance['results_page'])){
+            $results_page = $instance['results_page'];    
+        }
+		//$results_page = $instance['results_page'];
 
 		/* Before widget (defined by themes). */
 		echo $before_widget;
@@ -90,7 +99,7 @@ class Cdash_Search_Widget extends WP_Widget {
 			<select id="<?php echo $this->get_field_id( 'results_page' ); ?>" name="<?php echo $this->get_field_name( 'results_page' ); ?>" class="widefat" style="width:100%;">
 				<?php $pagelist = get_posts( 'post_type=page&posts_per_page=-1' );
 				foreach( $pagelist as $page ) { ?>
-					<option value="<?php echo $page->post_name; ?>" <?php if ( $page->post_name == $instance['results_page'] ) echo 'selected="selected"'; ?>><?php echo $page->post_title; ?></option>
+					<option value="<?php echo $page->post_name; ?>" <?php if ( (isset($instance['results_page'])) && ($page->post_name == $instance['results_page']) ) echo 'selected="selected"'; ?>><?php echo $page->post_title; ?></option>
 				<?php } ?>
 			</select>
 		</p>
@@ -320,7 +329,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		</p>
 
 		<h4><?php _e( 'Select Which Business(es) to Display', 'cdash' ); ?></h4>
-			<input class="radio" type="radio" <?php checked( $instance['select_method'], 'select-manual' ); ?> id="select-manual" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-manual" /> 
+			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-manual' ); ?> id="select-manual" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-manual" /> 
 			<label for="select-manual"><b><?php _e( 'Manually Select Business(es):', 'cdash' ); ?></b></label>
 			<div style="margin-left:2em;">
 	 			<?php // Select individual businesses
@@ -337,7 +346,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 				$businesses = get_posts( $args );
 	            foreach( $businesses as $business ) {
 	            	$selected = '';
-	            	if( is_array( $instance['business'] ) && in_array( $business->ID, $instance['business'] ) ) {
+	            	if( isset($instance['business']) && is_array( $instance['business'] ) && in_array( $business->ID, $instance['business'] ) ) {
 	            		$selected = 'selected="selected"';
 	            	}
 	                printf(
@@ -350,7 +359,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	            echo '</select>'; ?>
 			</div>
 
-			<input class="radio" type="radio" <?php checked( $instance['select_method'], 'select-criteria' ); ?> id="select-criteria" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-criteria" /> 
+			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-criteria' ); ?> id="select-criteria" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-criteria" /> 
 			<label for="select-criteria"><b><?php _e( 'Randomly Select Business(es) Based on These Criteria:', 'cdash' ); ?></b></label>
 			<div style="margin-left:2em;">
 				<p>
@@ -364,14 +373,34 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		            );
 					$category_list = get_terms( 'business_category', 'hide_empty=true' );
 					foreach( $category_list as $term ) {
+                        $selected ='';
+                        if( (isset($instance['term'])) && (is_array($instance['term'])) && (in_array($term->ID, $instance['term']))){
+                                $selected = 'selected="selected"';
+                            }
 		                printf(
 		                    '<option value="%s" %s>%s</option>',
 		                    $term->term_id,
-		                    in_array( $term->term_id, $instance['category'] ) ? 'selected="selected"' : '',
+                            $selected,
 		                    $term->name
 		                );
 		            }
-		            echo '</select>'; ?>
+		            echo '</select>';
+                    
+                    /*foreach( $category_list as $term ) {
+	            	$selected = '';
+	            	if( is_array( $instance['term'] ) && in_array( $term->ID, $instance['term'] ) ) {
+	            		$selected = 'selected="selected"';
+	            	}
+                        printf(
+                            '<option value="%s" %s>%s</option>',
+                            $term->ID,
+                            $selected,
+                            $term->name
+                        );
+	               }
+	            echo '</select>';*/
+                    
+                    ?>
 				</p>
 				<p>
 					<label for="<?php echo $this->get_field_id( 'private' ); ?>"><?php _e( 'Private Category:', 'cdash' ); ?></label> 
@@ -383,14 +412,26 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                __( 'Select Private Categories', 'cdash' )
 		            );
 					$category_list = get_terms( 'private_category', 'hide_empty=true' );
-					foreach( $category_list as $term ) {
+					/*foreach( $category_list as $term ) {
 		                printf(
 		                    '<option value="%s" %s>%s</option>',
 		                    $term->term_id,
 		                    in_array( $term->term_id, $instance['private']) ? 'selected="selected"' : '',
 		                    $term->name
 		                );
-		            }
+		            }*/
+                    foreach( $category_list as $term ) {
+	            	$selected = '';
+	            	if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['private'] ) ) {
+	            		$selected = 'selected="selected"';
+	            	}
+                        printf(
+                            '<option value="%s" %s>%s</option>',
+                            $term->ID,
+                            $selected,
+                            $term->name
+                        );
+	               }
 		            echo '</select>'; ?>
 				</p>
 				<p>
@@ -404,14 +445,26 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		            );
 					$category_list = get_terms( 'membership_level', 'hide_empty=true' );
 					if( is_array( $category_list ) && !empty( $category_list ) && isset( $instance['level'] ) ) {
-						foreach ($category_list as $term) {
+						/*foreach ($category_list as $term) {
 							printf(
 								'<option value="%s" %s>%s</option>',
 								$term->term_id,
 								in_array($term->term_id, $instance['level']) ? 'selected="selected"' : '',
 								$term->name
 							);
-						}
+						}*/
+                        foreach( $category_list as $term ) {
+                        $selected = '';
+                        if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['level'] ) ) {
+                            $selected = 'selected="selected"';
+                        }
+                            printf(
+                                '<option value="%s" %s>%s</option>',
+                                $term->ID,
+                                $selected,
+                                $term->name
+                            );
+                       }
 					}
 		            echo '</select>'; ?>
 				</p>
@@ -431,14 +484,26 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			                __( 'Select Membership Statuses', 'cdash' )
 			            );
 						$category_list = get_terms( 'membership_status', 'hide_empty=true' );
-						foreach( $category_list as $term ) {
+						/*foreach( $category_list as $term ) {
 			                printf(
 			                    '<option value="%s" %s>%s</option>',
 			                    $term->term_id,
 			                    in_array( $term->term_id, $instance['status']) ? 'selected="selected"' : '',
 			                    $term->name
 			                );
-			            }
+			            }*/
+                        foreach( $category_list as $term ) {
+                        $selected = '';
+                        if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['status'] ) ) {
+                            $selected = 'selected="selected"';
+                        }
+                            printf(
+                                '<option value="%s" %s>%s</option>',
+                                $term->ID,
+                                $selected,
+                                $term->name
+                            );
+                       }                                                     
 			            echo '</select>'; ?>
 					</p>
 			    <?php }?>
@@ -575,17 +640,43 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e('<b>Order by:</b>', 'cdash'); ?></label> 
 			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" class="widefat" style="width:100%;">
-				<option value="name" <?php if ( 'name' == $instance['orderby'] ) echo 'selected="selected"'; ?>><?php _e( 'Name', 'cdash' ); ?></option>
-				<option value="count" <?php if ( 'count' == $instance['orderby'] ) echo 'selected="selected"'; ?>><?php _e( 'Count', 'cdash' ); ?></option>
+				<option value="name" <?php if (isset($instance['orderby']) && ('name' == $instance['orderby'] )) echo 'selected="selected"'; ?>><?php _e( 'Name', 'cdash' ); ?></option>
+				<?php
+                    /*if(isset($instance['orderby']) && ('name' == $instance['orderby'])){
+                        $selected = 'selected';
+                ?>
+                        <option value="name" selected = "<?php echo $selected; ?>"><?php _e( 'Name', 'cdash' ); ?></option>
+                <?php        
+                    }*/
+                ?>
+                <?php
+                    /*if(isset($instance['orderby']) && ('count' == $instance['orderby'])){
+                        $selected = 'selected';
+                ?>
+                        <option value="count" selected = "<?php echo $selected; ?>"><?php _e( 'Count', 'cdash' ); ?></option>
+                <?php        
+                    }*/
+                ?>
+				
+				<option value="count" <?php if ((isset($instance['orderby'])) && ('count' == $instance['orderby'] )) echo 'selected="selected"'; ?>><?php _e( 'Count', 'cdash' ); ?></option>-->
 			</select>
-		</p>
+        </p>
 
 		<!-- Show Count: Select Box -->
 		<p>
 			<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e('<b>Show Number of Businesses in Category:</b>', 'cdash'); ?></label> 
 			<select id="<?php echo $this->get_field_id( 'showcount' ); ?>" name="<?php echo $this->get_field_name( 'showcount' ); ?>" class="widefat" style="width:100%;">
-				<option value="0" <?php if ( '0' == $instance['showcount'] ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
-				<option value="1" <?php if ( '1' == $instance['showcount'] ) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
+			<?php
+                /*if(isset($instance['showcount']) && ('0' == $instance['showcount'])){
+                    $selected = 'selected';
+            ?>
+                    <option value="0" selected="<?php echo $selected; ?>"><?php _e( 'No', 'cdash' ); ?></option>
+            <?php        
+                }*/
+            ?>
+				<option value="0" <?php if ((isset($instance['showcount'])) && ('0' == $instance['showcount']) ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
+				<!--<option value="1" <?php //if ( '1' == $instance['showcount'] ) echo 'selected="selected"'; ?>><?php //_e( 'Yes', 'cdash' ); ?></option>-->
+				<option value="1" <?php if ((isset($instance['showcount'])) && ('1' == $instance['showcount'] )) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
 			</select>
 		</p>
 
@@ -593,8 +684,10 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'hierarchical' ); ?>"><?php _e('<b>Display Hierarchy:</b>', 'cdash'); ?></label> 
 			<select id="<?php echo $this->get_field_id( 'hierarchical' ); ?>" name="<?php echo $this->get_field_name( 'hierarchical' ); ?>" class="widefat" style="width:100%;">
-				<option value="0" <?php if ( '0' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
-				<option value="1" <?php if ( '1' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
+				<!--<option value="0" <?php //if ( '0' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
+				<option value="1" <?php //if ( '1' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php //_e( 'Yes', 'cdash' ); ?></option>-->
+				<option value="0" <?php if ((isset($instance['hierarchical'])) && ('0' == $instance['hierarchical']) ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
+				<option value="1" <?php if ((isset($instance['hierarchical'])) && ('1' == $instance['hierarchical']) ) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
 			</select>
 		</p>
 
@@ -602,8 +695,10 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e('<b>Hide Empty Categories:</b>', 'cdash'); ?></label> 
 			<select id="<?php echo $this->get_field_id( 'hide_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty' ); ?>" class="widefat" style="width:100%;">
-				<option value="0" <?php if ( '0' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
-				<option value="1" <?php if ( '1' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
+				<!--<option value="0" <?php //if ( '0' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php //_e( 'No', 'cdash' ); ?></option>
+				<option value="1" <?php //if ( '1' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php //_e( 'Yes', 'cdash' ); ?></option>-->
+				<option value="0" <?php if ((isset($instance['hide_empty'])) && ('0' == $instance['hide_empty']) ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
+				<option value="1" <?php if ((isset($instance['hide_empty'])) && ('1' == $instance['hide_empty']) ) echo 'selected="selected"'; ?>><?php _e( 'Yes', 'cdash' ); ?></option>
 			</select>
 		</p>
 
@@ -614,7 +709,8 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 				<option value=""> </option>
 				<?php $termlist = get_terms( 'business_category', 'hide_empty=false' );
 				foreach( $termlist as $term ) { ?>
-					<option value="<?php echo $term->term_id; ?>" <?php if ( $term->term_id == $instance['child_of'] ) echo 'selected="selected"'; ?>><?php echo $term->name; ?></option>
+					<!--<option value="<?php //echo $term->term_id; ?>" <?php //if ( $term->term_id == $instance['child_of'] ) echo 'selected="selected"'; ?>><?php //echo $term->name; ?></option>-->
+					<option value="<?php echo $term->term_id; ?>" <?php if ((isset($instance['child_of'])) && ($term->term_id == $instance['child_of']) ) echo 'selected="selected"'; ?>><?php echo $term->name; ?></option>
 				<?php } ?>
 			</select>
 		</p>
@@ -626,7 +722,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 				<option value=""> </option>
 				<?php $termlist = get_terms( 'business_category', 'hide_empty=false' );
 				foreach( $termlist as $term ) { ?>
-					<option value="<?php echo $term->term_id; ?>" <?php if ( $term->term_id == $instance['exclude'] ) echo 'selected="selected"'; ?>><?php echo $term->name; ?></option>
+					<option value="<?php echo $term->term_id; ?>" <?php if ((isset($instance['exclude'])) && ($term->term_id == $instance['exclude']) ) echo 'selected="selected"'; ?>><?php echo $term->name; ?></option>
 				<?php } ?>
 			</select>
 		</p>

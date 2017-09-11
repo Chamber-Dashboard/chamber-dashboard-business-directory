@@ -3,7 +3,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-add_action( 'wp_enqueue_scripts', 'cdash_extensions_enqueue_scripts' );
+//add_action( 'wp_enqueue_scripts', 'cdash_extensions_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'cdash_extensions_enqueue_scripts' );
 function cdash_extensions_enqueue_scripts(){
   // enqueue the thickbox scripts and styles
   wp_enqueue_script( 'thickbox' );
@@ -22,7 +23,7 @@ function display_addons($title, $slug, $description, $link, $price, $type){
         <?php
             if($price == 'Free' && $type == 'plugin'){
             ?>    
-                <a href="<?php echo $link; ?>" class=" button-primary thickbox fs-overlay" aria-label="More information about <?php echo $title; ?>" data-title="<?php echo $title; ?>">Get this Addon</a>
+                <a href="<?php echo $url.$link; ?>" class=" button-primary thickbox fs-overlay" aria-label="More information about <?php echo $title; ?>" data-title="<?php echo $title; ?>">Get this Addon</a>
             <?php
             }elseif($price != 'Free' && $type == 'plugin'){
             ?>    
@@ -45,7 +46,7 @@ function chamber_dashboard_extensions_page_render(){
         <h2><?php _e('Chamber Dashboard Extensions'); ?></h2>
         <?php settings_errors(); ?>
         
-        <div id="main" style="min-width: 350px; float: left;">
+        <div id="main">
             <div id="addons_list">
                 <ul>
                     <?php 
@@ -53,7 +54,7 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard Member Manager',
                             'member_manager',
                             'Let Members join your organization right on your website!',
-                            $url . 'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-member-manager&amp;TB_iframe=true&amp;width=772&amp;height=700',
+                            'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-member-manager&amp;TB_iframe=true&amp;width=772&amp;height=700',
                             'Free',
 							'plugin'
                         );
@@ -62,7 +63,7 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard CRM',
                             'crm',
                             'Keep track of contacts connected to member businesses in your organization.',
-                            $url . 'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-crm&amp;TB_iframe=true&amp;width=772&amp;height=700',
+                            'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-crm&amp;TB_iframe=true&amp;width=772&amp;height=700',
                             'Free',
 							'plugin'
                         );
@@ -71,7 +72,7 @@ function chamber_dashboard_extensions_page_render(){
                             'Chamber Dashboard Events Calendar',
                             'events_calendar',
                             'Display upcoming events calendar on your website.', 
-                            $url . 'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-events-calendar&amp;TB_iframe=true&amp;width=772&amp;height=700',
+                            'plugin-install.php?tab=plugin-information&amp;parent_plugin_id=170&amp;plugin=chamber-dashboard-events-calendar&amp;TB_iframe=true&amp;width=772&amp;height=700',
                             'Free',
 							'plugin'
                         );								
@@ -106,7 +107,7 @@ function chamber_dashboard_extensions_page_render(){
 						display_addons(                            
                             'Chamber Beautiful Theme',
                             'chamber_beautiful',
-                            '<b>Chamber Beautiful Theme</b> - Designed to work beautifully with the Chamber Dashboard plugins.', 
+                            '<b>Chamber Beautiful Theme</b> - Integrates well with the Chamber Dashboard plugins.', 
                             'https://chamberdashboard.com/downloads/chamber-beautiful/',
                             '$49.00',
 							'theme'

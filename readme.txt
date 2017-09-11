@@ -3,8 +3,8 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.8
-Stable tag: 2.8.7
+Tested up to: 4.8.1
+Stable tag: 2.8.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ For full instructions about how to use the plugin, go to [Chamber Dashboard Docu
 * [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
 * [Chamber Dashboard Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) - Track membership levels and benefits, collect membership payments online
 
-= Contributors = 
+= Contributors =
 Several people have contributed to the development of Chamber Dashboard:
 * Jonathan Kay, jpkay
 * Mike Davis, jmdxsvhs15 - map clustering
@@ -69,10 +69,10 @@ Create a page, and insert the following shortcode:
 There are lots of options for this shortcode.  For a full description, see [Chamber Dashboard Documentation](http://chamberdashboard.com/document/displaying-business-directory-site/)
 
 = Will it work with my theme? =
-Probably!  It is designed to work with any theme that follows basic WordPress coding practices. 
+Probably!  It is designed to work with any theme that follows basic WordPress coding practices.
 
-= Can I see other sites that are using Chamber Dashboard? = 
-Yes!  We have a [map of organizations using Chamber Dashboard](https://chamberdashboard.com/chamber-dashboard-user-map/) 
+= Can I see other sites that are using Chamber Dashboard? =
+Yes!  We have a [map of organizations using Chamber Dashboard](https://chamberdashboard.com/chamber-dashboard-user-map/)
 
 = I want the plugin to do _____.  Can you make it do that? =
 Probably!  I am definitely interested in making this as useful as possible for chambers of commerce, so please let me know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
@@ -86,9 +86,10 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
-
 == 2.8.8 ==
 * Fixed the warnings showing up on plugin activation
+* Changed the name of export and import menus
+* HTML characters will be stripped out of the business description during export
 
 == 2.8.7 ==
 * Added width and height parameters to the business map shortcode
@@ -228,7 +229,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 * add option to change ordering of taxonomy archives
 * add option to allow comments on single business view
 * add parameters to business categories shortcode
-* add button to let users copy a location's information to the business contact 
+* add button to let users copy a location's information to the business contact
 * fixed bug that caused some custom fields to not display
 
 = 2.3.8 =
@@ -271,7 +272,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 * prevented empty fields from displaying
 * minor visual improvements
 
-= 2.2.1 = 
+= 2.2.1 =
 * added "membership status" parameter to business directory shortcode
 
 = 2.2 =
@@ -286,7 +287,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 = 2.0.1 =
 * minor fix to improve plugin compatibility
 
-= 2.0 = 
+= 2.0 =
 * added billing contact information to work with Member Manager plugin
 * minor bug fixes
 
@@ -353,13 +354,13 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 = 1.6.2 =
 * Small bug fixes
 
-= 1.6.1 = 
+= 1.6.1 =
 * Cleaned up some debugging code
 
-= 1.6 = 
+= 1.6 =
 * Added ability to import business from a CSV
 
-= 1.5 = 
+= 1.5 =
 * Fixed a bunch of debug errors
 * Added export capability
 
@@ -368,7 +369,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 * Added business search form
 * other small fixes
 
-= 1.3 = 
+= 1.3 =
 * Created filters to allow use of theme archive pages for business category and membership level
 * Other small fixes
 

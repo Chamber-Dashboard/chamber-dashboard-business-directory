@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -11,7 +11,7 @@ function cdash_simple_export() {
 	header("Expires: 0");
 	header("Pragma: public");
 
-//open the file 
+//open the file
 	$fh = @fopen('php://output', 'w');
 
 // Find all the businesses
@@ -50,35 +50,35 @@ function cdash_simple_export() {
 		'City',
 		'State',
 		'Zip',
-        'Country',
-        'Hours',
+    'Country',
+    'Hours',
 		'URL',
 		'Phone',
 		'Email',
 	);
-	
+
 // Add location headers to the list of business headers
 	for ($i = 0; $i < $numberoflocations; $i++) {
 		$header = array_merge($header, $locationheaders );
 	}
 	unset($i);
 
-// Add the headers to the CSV			
+// Add the headers to the CSV
 	fputcsv($fh, $header);
 
 // Loop through businesses and add a line to the CSV for each business
 	if ($exportquery->have_posts()) :
 		while ($exportquery->have_posts()) : $exportquery->the_post();
 			$post_id = get_the_id();
-			$cats = wp_get_post_terms($post_id, 'business_category', array('fields' => 'names'));            
+			$cats = wp_get_post_terms($post_id, 'business_category', array('fields' => 'names'));
             $catlist = implode(", ", $cats);
 			$levels = wp_get_post_terms($post_id, 'membership_level', array('fields' => 'names'));
 			$levellist = implode(", ", $levels);
 			$fields = array(
 				get_the_title(),
-				get_the_content(),
+				wp_strip_all_tags(get_the_content()),
                 $catlist,
-				//'Membership Level'				
+				//'Membership Level'
 				$levellist,
 			);
 			global $buscontact_metabox;

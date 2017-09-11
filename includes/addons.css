@@ -1,13 +1,20 @@
 @charset "utf-8";
 /* CSS Document */
 
+#addons_list ul{
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+}
 
 .single_addon{
     border: #B2B2B2 5px solid;
-    float:left;
+    /*float:left;
     width:25%;
     margin-right:10px;
-    padding-top:20px;
+    padding-top:20px;*/
 }
 
 .single_addon img{
