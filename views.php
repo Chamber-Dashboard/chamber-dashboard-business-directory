@@ -430,7 +430,9 @@ function cdash_business_directory_shortcode( $atts ) {
 		$business_list .= "<div id='businesslist' class='" . $format . "'>";
 		$count = 0;
 			while ( $businessquery->have_posts() ) : $businessquery->the_post();
-				$business_list .= "<div class='business post_class()'>";
+			//$postClass = post_class('business');
+				//$business_list .= "<div class='business'" . join( ' ', get_post_class() ) . "'>";
+				$business_list .= "<div class='business " . join( ' ', get_post_class() ) . "''>";
 				if($single_link == "yes") {
 					$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 				} else {
