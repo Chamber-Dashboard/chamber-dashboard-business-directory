@@ -3,8 +3,8 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.8.1
-Stable tag: 2.8.8
+Tested up to: 4.8.2
+Stable tag: 2.8.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+== 2.8.9 ==
+* Business listings can be styled based on membership level or category or alternate listings can be styled  differently.
+
 == 2.8.8 ==
 * Fixed the warnings showing up on plugin activation
 * Changed the name of export and import menus
