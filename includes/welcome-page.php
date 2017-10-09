@@ -5,16 +5,16 @@ function cdash_admin_menus() {
 	$about = add_dashboard_page($welcome_page_title, $welcome_page_title, 'manage_options', 'cdash-about', 'cdash_about_screen');
 }
 add_action('admin_menu', 'cdash_admin_menus');
-	
+
 // remove dashboard page links.
 function cdash_admin_head() {
 	remove_submenu_page( 'index.php', 'cdash-about' );
 }
 add_action('admin_head', 'cdash_admin_head');
 
-	
+
 // Display the welcome page
-function cdash_about_screen() 
+function cdash_about_screen()
 	{
 		?>
 		<div class="wrap about-wrap">
@@ -25,48 +25,48 @@ function cdash_about_screen()
 			<?php
 				_e('Power your Chamber of Commerce with Chamber Dashboard', 'cdash');
 			?>
-			<?php  
-            $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';  
-            
+			<?php
+            $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
+
         ?>
 		</div>
-		
+
 		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php if ($_GET['page'] == 'cdash-about') echo 'nav-tab-active'; ?>" href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'cdash-about', 'tab' => 'cdash-about'), 'admin.php'))); ?>">
-				<?php _e('About Chamber Dashboard', 'cdash'); ?>		
+				<?php _e('About Chamber Dashboard', 'cdash'); ?>
 			</a>
 			<a class="nav-tab <?php if ($_GET['page'] == 'chamber_dashboard_support') echo 'nav-tab-active'; ?>" href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber_dashboard_support'), 'admin.php'))); ?>">
-				<?php _e('Support', 'cdash'); ?>		
-			</a>		
+				<?php _e('Support', 'cdash'); ?>
+			</a>
 		</h2>
-            
+
             <div id="main" style="width: 70%; min-width: 350px; float: left;">
             <?php
-            if( $active_tab == 'cdash-about' ) 
-            {                
+            if( $active_tab == 'cdash-about' )
+            {
                 cdash_about_page_render();
-                
+
             }else if($active_tab == 'chamber_dashboard_support'){
-                cdash_support_page_render();                                
-            }            
-                        
+                cdash_support_page_render();
+            }
+
             ?>
-            </div><!--end of #main-->           
-			
+            </div><!--end of #main-->
+
 		</div>
 		<?php
 	}
-	
+
 function cdash_about_page_render() {
     ?>
     <div class="wrap">
 			<div class="changelog">
-                
-                <h3><?php _e('Core Plugins', 'cdash'); ?></h3>				
+
+                <h3><?php _e('Core Plugins', 'cdash'); ?></h3>
 
 				<div class="feature-section col three-col">
-                   
-                    <p><?php _e('Visit'); ?> <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-extensions'), 'admin.php'))); ?>">Extensions</a> <?php _e('page to install the full series of free core plugins.'); ?></p> 
+
+                    <p><?php _e('Visit'); ?> <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-addons'), 'admin.php'))); ?>">Addons</a> <?php _e('page to install the full series of free core plugins.'); ?></p> 
 
 					<div>
 					    <ul>
@@ -75,28 +75,28 @@ function cdash_about_page_render() {
                             <ol><h4><?php _e('Member Manager:', 'cdash'); ?></h4><p><?php _e('Let members join your organization right on your website!', 'cdash'); ?></p></ol>
                         </ul>
 					</div>
-					
+
                     <p>Get started right away with our <a href="https://chamberdashboard.com/5-min-getting-started-guide/" target="_blank">5 Min. Setup Guide</a><br />
-                    
+
                         Or go to <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-business-directory/options.php'), 'admin.php'))); ?>">Chamber Dashboard Settings</a>
-                    </p> 
-                    
+                    </p>
+
                     <h3><?php _e('Make your website even more dynamic!', 'cdash'); ?></h3>
 
 					<div>
 						<h4><?php _e('Member Updater', 'cdash'); ?></h4>
 						<p><?php _e('Give the ability for businesses to edit their own listings and keep them up to date.', 'cdash'); ?></p>
-					</div>	
-					
+					</div>
+
 					<div class="last-feature">
 						<h4><?php _e('Sign Up for Our Exceptional Support', 'cdash'); ?></h4>
 						<p><?php _e('We are here to answer your questions and help you get the most out of Chamber Dashboard!  Click on the support tab to get help with your Chamber Dashboard plugins.', 'cdash'); ?></p>
 					</div>
-				</div>								
-				
+				</div>
+
 			</div>
             </div>
-<?php        
+<?php
 }
 
 //Displaying the Support Page
@@ -106,12 +106,12 @@ function cdash_support_page_render(){
 	   <div class="changelog">
             <h3><?php _e('Chamber Dashboard Support', 'cdash'); ?></h3>
             <div class="feature-section col three-col">
-                <p><?php _e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p> 
- 
+                <p><?php _e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p>
+
                 <p> <?php _e('Documentation'); ?> - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a> <br />
-                    <?php _e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a><br /> 
-                    <?php _e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a><br /> 
-                    <?php _e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a></p> 
+                    <?php _e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a><br />
+                    <?php _e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a><br />
+                    <?php _e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a></p>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ function cdash_support_page_render(){
 }
 
 // Redirect to welcome page after activation
-function cdash_welcome() 
+function cdash_welcome()
 {
 
 	// Bail if no activation redirect transient is set
@@ -127,8 +127,8 @@ function cdash_welcome()
 		return;
 
 	// Delete the redirect transient
-	delete_transient('_cdash_activation_redirect');		
-	
+	delete_transient('_cdash_activation_redirect');
+
 	// Bail if activating from network, or bulk, or within an iFrame
 	if (is_network_admin() || isset($_GET['activate-multi']) || defined('IFRAME_REQUEST'))
 		return;
@@ -140,5 +140,5 @@ function cdash_welcome()
 	exit;
 }
 add_action('admin_init', 'cdash_welcome');
-	
+
 ?>

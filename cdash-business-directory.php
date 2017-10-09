@@ -72,8 +72,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
 // Require currency list
 require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
-// Require extensions
-require_once( plugin_dir_path( __FILE__ ) . 'extensions.php' );
+// Require Addons
+require_once( plugin_dir_path( __FILE__ ) . 'addons.php' );
 // Require licenses page
 require_once( plugin_dir_path( __FILE__ ) . 'license.php' );
 

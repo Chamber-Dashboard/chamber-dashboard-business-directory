@@ -79,7 +79,7 @@ function cdash_add_options_page() {
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export Directory', 'Export Directory', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Import', 'Directory Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 
-    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Extensions', 'Extensions', 'manage_options', 'chamber-dashboard-extensions', 'chamber_dashboard_extensions_page_render' );
+    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Addons', 'Addons', 'manage_options', 'chamber-dashboard-addons', 'chamber_dashboard_addons_page_render' );
 
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
 
@@ -391,7 +391,7 @@ function cdash_export_form() {
 		<input type="hidden" name="cdash_export" value="cdash_do_export">
 		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
-		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="' . admin_url( 'admin.php?page=chamber-dashboard-extensions' ) . '" >Chamber Dashboard Exporter</a>.', 'cdash' );
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="' . admin_url( 'admin.php?page=chamber-dashboard-addons' ) . '" >Chamber Dashboard Exporter</a>.', 'cdash' );
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 
