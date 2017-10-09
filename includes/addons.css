@@ -4,9 +4,9 @@
 #addons_list ul{
     display: grid;
     width: auto;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-row-gap: 60px;
-    grid-column-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 3fr));
+    grid-row-gap: 40px;
+    grid-column-gap: 5%;
 }
 
 .single_addon{
@@ -28,12 +28,12 @@
   min-height:50px;
 }
 
-.single_addon.theme{
-  /*padding-top:30px;*/
+.single_addon.theme h3{
+  padding:7px 0px 0px 0px;
 }
 
 .single_addon img{
-    width: 60%;
+    width: 45%;
     margin: 0 auto;
     display: block;
 }
