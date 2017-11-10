@@ -74,10 +74,15 @@ function cdash_simple_export() {
             $catlist = implode(", ", $cats);
 			$levels = wp_get_post_terms($post_id, 'membership_level', array('fields' => 'names'));
 			$levellist = implode(", ", $levels);
+			//$title = get_the_title();
+			$title = get_the_title();
+			//$title_export = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $title);
+			$title = utf8_decode(wp_specialchars_decode(html_entity_decode($title)));
+			$content = utf8_decode(wp_specialchars_decode(get_the_content() ));
 			$fields = array(
-				get_the_title(),
-				wp_strip_all_tags(get_the_content()),
-                $catlist,
+				$title,
+				$content,
+        $catlist,
 				//'Membership Level'
 				$levellist,
 			);
@@ -92,8 +97,8 @@ function cdash_simple_export() {
 						'city' => '',
 						'state' => '',
 						'zip' => '',
-                        'country' => '',
-                        'hours' => '',
+            'country' => '',
+            'hours' => '',
 						'url' => '',
 					);
 					foreach ($locationinfo as $key => $value) {

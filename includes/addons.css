@@ -33,13 +33,15 @@
 }
 
 .single_addon img{
-    width: 45%;
+    /*width: 45%;*/
+    width:40%;
     margin: 0 auto;
     display: block;
 }
 
 .single_addon.theme img{
-  width:90%;
+  /*width:90%;*/
+  width:81%;
 }
 
 .single_addon h4, .single_addon p{

@@ -66,13 +66,14 @@ function cdash_about_page_render() {
 
 				<div class="feature-section col three-col">
 
-                    <p><?php _e('Visit'); ?> <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-addons'), 'admin.php'))); ?>">Addons</a> <?php _e('page to install the full series of free core plugins.'); ?></p> 
+                    <p><?php _e('Visit'); ?> <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-addons'), 'admin.php'))); ?>">Addons</a> <?php _e('page to install the full series of core plugins for free.'); ?></p>
 
 					<div>
 					    <ul>
                             <ol><h4><?php _e('Business Directory:', 'cdash'); ?></h4><p><?php _e('Create a directory of member businesses on your WordPress website.', 'cdash'); ?></p></ol>
                             <ol><h4><?php _e('CRM:', 'cdash'); ?></h4><p><?php _e('Keep track of the people in your organization.', 'cdash'); ?></p></ol>
                             <ol><h4><?php _e('Member Manager:', 'cdash'); ?></h4><p><?php _e('Let members join your organization right on your website!', 'cdash'); ?></p></ol>
+														<ol><h4><?php _e('Events Calendar:', 'cdash'); ?></h4><p><?php _e('Add a community events calendar to your site in minutes.', 'cdash'); ?></p></ol>
                         </ul>
 					</div>
 
@@ -81,16 +82,17 @@ function cdash_about_page_render() {
                         Or go to <a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-business-directory/options.php'), 'admin.php'))); ?>">Chamber Dashboard Settings</a>
                     </p>
 
-                    <h3><?php _e('Make your website even more dynamic!', 'cdash'); ?></h3>
-
-					<div>
-						<h4><?php _e('Member Updater', 'cdash'); ?></h4>
-						<p><?php _e('Give the ability for businesses to edit their own listings and keep them up to date.', 'cdash'); ?></p>
-					</div>
+										<div>
+										<h3><?php _e('Make your website even more dynamic with our automation plugins!', 'cdash'); ?>
+										<a href="<?php echo esc_url(admin_url(add_query_arg( array( 'page' => 'chamber-dashboard-business-directory/options.php'), 'admin.php'))); ?>"><?php _e('Premium Addons', 'cdash'); ?></a></h3>
+									</div>
+									<?php
+										$support_tab_url = esc_url(admin_url(add_query_arg( array( 'page' => 'chamber_dashboard_support'), 'admin.php')));
+									?>
 
 					<div class="last-feature">
 						<h4><?php _e('Sign Up for Our Exceptional Support', 'cdash'); ?></h4>
-						<p><?php _e('We are here to answer your questions and help you get the most out of Chamber Dashboard!  Click on the support tab to get help with your Chamber Dashboard plugins.', 'cdash'); ?></p>
+						<p><?php _e('We are here to answer your questions and help you get the most out of Chamber Dashboard!  Click on the <a href="' . $support_tab_url . '">support</a> tab to get help with your Chamber Dashboard plugins.', 'cdash'); ?></p>
 					</div>
 				</div>
 
