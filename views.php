@@ -1,10 +1,5 @@
 <?php
-
-
-
 if ( ! defined( 'ABSPATH' ) ) exit;
-
-
 
 // ------------------------------------------------------------------------
 
@@ -877,7 +872,8 @@ function cdash_business_search_results_shortcode( $atts ) {
 					}
 				}
 
-				if( $options['bus_custom'] ) {
+				//if( $options['bus_custom'] ) {
+				if ( isset( $options['bus_custom'] ) && "1" == $options['bus_custom'] ) {
 					$search_results .= cdash_display_custom_fields( get_the_id() );
 				}
 

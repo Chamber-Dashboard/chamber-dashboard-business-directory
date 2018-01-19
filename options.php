@@ -61,6 +61,22 @@ function cdash_init(){
 	register_setting( 'cdash_plugin_version', 'cdash_directory_version', 'cdash_validate_options' );
 }
 
+//Check if license page exists in the CD admin menu
+function cdash_license_page_not_found(){
+		if ( empty ( $GLOBAL['admin_page_hooks']['chamber_dashboard_license'] ) ){
+			//page does not exist, so return false
+			return true;
+		}else{
+			//page exists, so return true
+			return false;
+		}
+}
+
+//Creating the custom hook for adding the license page
+function cdash_add_licence_page_menu_hook(){
+  do_action('cdash_add_licence_page_menu_hook');
+}
+
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: add_action('admin_menu', 'cdash_add_options_page');
 // ------------------------------------------------------------------------------
@@ -80,11 +96,13 @@ function cdash_add_options_page() {
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Import', 'Directory Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 
     add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Addons', 'Addons', 'manage_options', 'chamber-dashboard-addons', 'chamber_dashboard_addons_page_render' );
+		//add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
 
     $plugins = cdash_get_active_plugin_list();
-        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins)) {
+        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins) || in_array('cdash-member-manager-pro.php', $plugins) ) {
             add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         }
+				//cdash_add_licence_page_menu_hook();
 
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
 

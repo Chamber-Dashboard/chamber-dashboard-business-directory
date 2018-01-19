@@ -1,0 +1,13 @@
+/*Chamber Dashboard General Styles*/
+.notice.cdash_update_notice{
+  /*background-color:rgba(195, 105, 127, 1);*/
+  border:#B1304D 2px solid;
+}
+
+.notice.cdash_update_notice a{
+  font-weight: bold;
+}
+
+.notice.cdash_update_notice .notice-dismiss:before{
+  color:#fff;
+}

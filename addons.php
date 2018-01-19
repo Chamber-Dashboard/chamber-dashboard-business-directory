@@ -60,6 +60,15 @@ function chamber_dashboard_addons_page_render(){
                         );
 
                         display_addons(
+                          'Chamber Dashboard Member Manager Pro',
+                          'member_manager_pro',
+                          'Gives you the option to use alternative payment gateways to process membership payments.',
+                          'https://chamberdashboard.com/downloads/member-manager-pro/',
+                          '$39.00',
+  					              'plugin'
+                        );
+
+                        display_addons(
                           'Chamber Dashboard CRM',
                           'crm',
                           'Keep track of contacts connected to member businesses in your organization.',
