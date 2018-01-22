@@ -25,23 +25,23 @@ function cdash_add_defaults() {
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
 						"bus_email_type" => "Main, Sales, Accounting, HR",
 						"sv_description" => "1",
-						"sv_name"		 => "1",
-						"sv_address"	 => "1",
-                        "sv_hours"       => "1",
-						"sv_url"		 => "1",
-						"sv_logo"		 => "1",
-						"sv_category"	 => "1",
-						"tax_name"		 => "1",
-						"tax_address"	 => "1",
-                        "tax_hours"      => "1",
-						"tax_url" 		 => "1",
-						"tax_logo"		 => "1",
-						"sm_display"	 => "icons",
-						"sm_icon_size"	 => "32px",
+						"sv_name"		 	=> "1",
+						"sv_address"	=> "1",
+            "sv_hours"    => "1",
+						"sv_url"		 	=> "1",
+						"sv_logo"		 	=> "1",
+						"sv_category"	=> "1",
+						"tax_name"		=> "1",
+						"tax_address"	=> "1",
+            "tax_hours"   => "1",
+						"tax_url" 		=> "1",
+						"tax_logo"		=> "1",
+						"sm_display"	=> "icons",
+						"sm_icon_size"=> "32px",
 						"currency_position" => "before",
 						"currency_symbol" => "$",
 						"currency" => "USD",
-                        "search_results_per_page"   =>  "5"
+            "search_results_per_page"   =>  "5"
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -62,14 +62,10 @@ function cdash_init(){
 }
 
 //Check if license page exists in the CD admin menu
-function cdash_license_page_not_found(){
-		if ( empty ( $GLOBAL['admin_page_hooks']['chamber_dashboard_license'] ) ){
-			//page does not exist, so return false
-			return true;
-		}else{
-			//page exists, so return true
-			return false;
-		}
+function cdash_license_page(){
+	if ( empty ( $GLOBAL['admin_page_hooks']['chamber_dashboard_license'] ) ){
+		add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
+	}
 }
 
 //Creating the custom hook for adding the license page

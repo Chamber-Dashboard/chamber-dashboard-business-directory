@@ -23,7 +23,7 @@ function display_addons($title, $slug, $description, $link, $price, $type){
         <?php
             if($price == 'Free' && $type == 'plugin'){
             ?>
-                <a href="<?php echo $url.$link; ?>" class=" button-primary thickbox fs-overlay" aria-label="More information about <?php echo $title; ?>" data-title="<?php echo $title; ?>">Get this Addon</a>
+                <a href="<?php echo $url.$link; ?>" class=" button-primary thickbox fs-overlay" aria-label="More information about <?php echo $title; ?>" data-title="<?php echo $title; ?>">Get this Free Addon</a>
             <?php
             }elseif($price != 'Free' && $type == 'plugin'){
             ?>
@@ -64,7 +64,7 @@ function chamber_dashboard_addons_page_render(){
                           'member_manager_pro',
                           'Gives you the option to use alternative payment gateways to process membership payments.',
                           'https://chamberdashboard.com/downloads/member-manager-pro/',
-                          '$39.00',
+                          '$59.00',
   					              'plugin'
                         );
 
