@@ -6,22 +6,28 @@
 		<textarea name="<?php $metabox->the_name(); ?>" rows="3" id="billing-address"><?php $metabox->the_value(); ?></textarea>
 	</p>
 
-	<div class="third">
+	<div class="fourth">
 		<?php $mb->the_field('billing_city'); ?>
 		<label><?php _e('City', 'cdash'); ?></label>
-		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-city" /></p> 
+		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-city" /></p>
 	</div>
 
-	<div class="third">
+	<div class="fourth">
 		<?php $mb->the_field('billing_state'); ?>
 		<label><?php _e('State', 'cdash'); ?></label>
 		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-state" /></p>
 	</div>
 
-	<div class="third">
+	<div class="fourth">
 		<?php $mb->the_field('billing_zip'); ?>
 		<label><?php _e('Zip', 'cdash'); ?></label>
 		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-zip" /></p>
+	</div>
+
+	<div class="fourth">
+		<?php $mb->the_field('billing_country'); ?>
+		<label><?php _e('Country', 'cdash'); ?></label>
+		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-country" /></p>
 	</div>
 
 	<div class="half">
