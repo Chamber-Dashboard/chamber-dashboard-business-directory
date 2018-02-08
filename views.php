@@ -371,7 +371,11 @@ add_filter( 'the_content', 'cdash_taxonomy_filter' );
 // ------------------------------------------------------------------------
 
 function cdash_business_directory_shortcode( $atts ) {
+	$options = get_option('cdash_directory_options');
+	$member_options = get_option('cdashmm_options');
     global $post;
+		//global $business_list;
+		//$business_list = '';
 	// Set our default attributes
 	extract( shortcode_atts(
 		array(
@@ -382,15 +386,32 @@ function cdash_business_directory_shortcode( $atts ) {
 			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location hours
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
-			'orderby' => 'title', // options: date, modified, menu_order, rand, priority
+			'orderby' => 'title', // options: date, modified, menu_order, rand, membership_level
 			'order' => 'ASC', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '' // options: slug of any membership status
 		), $atts )
 	);
+
+	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
+	//Loop through the memberhsip levels
+
+	/*if(function_exists('cdashmm_requires_wordpress_version') && $orderby == 'membership_level'){
+		$membership_levels =	get_terms( array(
+		'taxonomy' => 'membership_level',
+		'hide_empty' => false,
+		'orderby'		=>	'term_order',
+		'order'			=>	'ASC'
+		) );
+
+		foreach( $membership_levels as $level ){
+			$level = $membership_level->slug;
+		}
+	}*/
+
 	// Enqueue stylesheet if the display format is columns instead of list
-    	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 	if($format !== 'list') {
+		wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );
 	}
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
@@ -435,6 +456,7 @@ function cdash_business_directory_shortcode( $atts ) {
 				} else {
 					$business_list .= "<h3>" . get_the_title() . "</h3>";
 				}
+				$business_list .= '<p>' . $level . '</p>';
 				$business_list .= "<div class='description'>";
 
 			  	if( "logo" == $image ) {
@@ -466,7 +488,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		$business_list .= get_the_content();
 			  	}*/
 
-                if( "excerpt" == $text ) {
+          if( "excerpt" == $text ) {
 			  		$business_list .= apply_filters('the_excerpt', get_the_excerpt()); //#GV#: fixed localization/internationalization issues
 			  	} elseif( "description" == $text ) {
 			  		$business_list .= apply_filters('the_content', get_the_content());  //#GV#: fixed localization/internationalization issues
@@ -489,7 +511,7 @@ function cdash_business_directory_shortcode( $atts ) {
 										$business_list .= cdash_display_address( $location );
 								  	}
 
-                                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
+                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
 										$business_list .= $location['hours'];
 								  	}
 
@@ -513,9 +535,11 @@ function cdash_business_directory_shortcode( $atts ) {
 			  			$business_list .= cdash_display_social_media( get_the_id() );
 			  		}
 
-			  		if(in_array("level", $displayopts)) {
-						$business_list .= cdash_display_membership_level( get_the_id() );
-				  	}
+			  		if(in_array("level", $displayopts)){
+							$business_list .= cdash_display_membership_level( get_the_id() );
+				  	}else if( isset( $options['tax_memberlevel'] ) && "1" == $options['tax_memberlevel'] ) {
+							$business_list .= cdash_display_membership_level( get_the_id() );
+						}
 
 			  		if( in_array( "category", $displayopts ) ) {
 						$business_list .= cdash_display_business_categories( get_the_id() );
@@ -549,61 +573,42 @@ function cdash_business_directory_shortcode( $atts ) {
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
+
+function cdash_display_business_listings($format, $category, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status){
+
+}
+
 // ------------------------------------------------------------------------
 // BUSINESS MAP SHORTCODE
 // ------------------------------------------------------------------------
 
 function cdash_business_map_shortcode( $atts ) {
-
 	// Set our default attributes
-
 	extract( shortcode_atts(
-
 		array(
-
 			'category' => '', // options: slug of any category
-
 			'level' => '', // options: slug of any membership level
-
 			'single_link' => 'yes', // options: yes, no
-
 			'perpage' => '-1', // options: any number
-
 			'cluster' => 'no', // options: yes or no
 			'width'	  => '100%', //options - any number with % or px
 			'height'  => '500px' // options - any number with px
-
 		), $atts )
-
 	);
-
-
 
 	$args = array(
-
 		'post_type' => 'business',
-
 		'posts_per_page' => $perpage,
-
-	    'business_category' => $category,
-
-	    'membership_level' => $level,
-
+    'business_category' => $category,
+    'membership_level' => $level,
 	);
-
-
-
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 
-
-
 	$args = cdash_add_hide_lapsed_members_filter($args);
-
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width:" . $width . "; height:" . $height . ";'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&'></script>";
 	if( "yes" == $cluster ) {
-
         $business_map .= "<script src='" . plugin_dir_url(__FILE__) . "js/markerclusterer.js'></script>";
 	}
 	$business_map .= "<script type='text/javascript'>";
@@ -611,7 +616,6 @@ function cdash_business_map_shortcode( $atts ) {
 				var locations = [";
 
 	// The Loop
-
 	if ( $mapquery->have_posts() ) :
 		while ( $mapquery->have_posts() ) : $mapquery->the_post();
 			global $buscontact_metabox;
@@ -623,17 +627,13 @@ function cdash_business_map_shortcode( $atts ) {
 						if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 							continue;
 						} elseif( isset( $location['address'] ) ) {
-
 							// Get the latitude and longitude from the address
-
 							if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
-
 								if( isset( $location['custom_latitude'] ) ) {
 									$lat = $location['custom_latitude'];
 								} else {
 									$lat = $location['latitude'];
 								}
-
 								if( isset( $location['custom_longitude'] ) ) {
 									$long = $location['custom_longitude'];
 								} else {
@@ -641,7 +641,6 @@ function cdash_business_map_shortcode( $atts ) {
 								}
 
 								// Get the map icon
-
 								$id = get_the_id();
 								$buscats = get_the_terms( $id, 'business_category');
 								if( isset( $buscats ) && is_array( $buscats ) ) {
@@ -653,10 +652,8 @@ function cdash_business_map_shortcode( $atts ) {
 										}
 									}
 								}
-
 								if(!isset($icon)) {
-
-                                    $icon = plugins_url( '/images/map_marker.png', __FILE__ );
+                	$icon = plugins_url( '/images/map_marker.png', __FILE__ );
 								}
 
 								// Create the pop-up info window
@@ -876,40 +873,22 @@ function cdash_business_search_results_shortcode( $atts ) {
 				if ( isset( $options['bus_custom'] ) && "1" == $options['bus_custom'] ) {
 					$search_results .= cdash_display_custom_fields( get_the_id() );
 				}
-
-
 				$search_results .= "</div><!-- .search-result -->";
-
 			endwhile;
-
 			$total_pages = $search_query->max_num_pages;
-
 			if ($total_pages > 1){
-
 				$current_page = max( 1, get_query_var( 'paged' ) );
-
 				$big = 999999999; // need an unlikely integer
-
    				$search_results .= "<div class='pagination'>";
-
 			  	$search_results .= paginate_links( array (
-
 			      'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-
 			      'format' => '?page=%#%',
-
 			      'current' => $current_page,
-
 			      'total' => $total_pages,
-
 			    ) );
-
 			    $search_results .= "</div>";
-
 			}
-
 			$search_results .= "</div><!-- #search-results -->";
-
 		//endif;
         }else{
             //$search_results = "<h2>Search Results</h2>";
@@ -925,15 +904,8 @@ function cdash_business_search_results_shortcode( $atts ) {
 		wp_reset_postdata();
 
 	}
-
-
-
-
-
 	return $search_results;
-
 }
-
 add_shortcode( 'business_search_results', 'cdash_business_search_results_shortcode' );
 
 // ------------------------------------------------------------------------
@@ -984,11 +956,8 @@ function cdash_business_search_shortcode( $atts ) {
 	);
 
 	$resultspage = str_replace( home_url('/'), "", get_the_permalink() );
-
 	$business_search = do_shortcode('[business_search_results format=' . $format . ']');
-
 	$business_search .= do_shortcode('[business_search_form results_page='.$resultspage.']');
-
 	return $business_search;
 }
 add_shortcode( 'business_search', 'cdash_business_search_shortcode' );

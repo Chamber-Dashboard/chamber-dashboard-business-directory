@@ -1,7 +1,7 @@
 #business img, .business-categories img,
 #businesslist img,
 #cdcrm-people img {
-max-width: 100%; 
+max-width: 100%;
 height: auto;
 }
 
@@ -26,16 +26,16 @@ width: auto; /* Prevent stretching of full-size images with height and width att
 max-width: 50%;
 }
 
-#business .membership span, 
+#business .membership span,
 #business .categories span,
-#businesslist .membership span, 
+#businesslist .membership span,
 #businesslist .categories span {
- font-weight: bold; 
+ font-weight: bold;
 }
 
 #business .membership,
 #businesslist .description {
- margin: 0; 
+ margin: 0;
  clear: both;
 }
 
@@ -53,22 +53,22 @@ max-width: 50%;
 
 #business .location p,
 #businesslist .location p {
- margin: 0; 
+ margin: 0;
 }
 
-#businesslist.list .business:after,
+/*#businesslist.list .business:after,
 #search-results .business:after {
 display: table;
 content: '';
 clear: both;
-}
+}*/
 
 #businesslist .business,
 #search-results .business {
 	margin-bottom: 15px;
 }
 
-#businesslist.grid2:after,
+/*#businesslist.grid2:after,
 #businesslist.grid3:after,
 #businesslist.grid4:after,
 #cdcrm-people.grid2:after,
@@ -80,7 +80,13 @@ clear: both;
 	display: table;
 content: '';
 clear: both;
-}
+}*/
+
+/*#businesslist{
+  display: grid;
+  grid-gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+}*/
 
 #businesslist.grid2 .business,
 #cdcrm-people.grid2 .cdcrm-person,
@@ -122,7 +128,7 @@ clear: both;
 	clear: both;
 }
 
-#map-canvas img { max-width: none !important; height: auto; } 
+#map-canvas img { max-width: none !important; height: auto; }
 
 #cdash-contacts p {
 	margin: 0;

@@ -380,8 +380,20 @@ if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
 // SET UP P2P IF OTHER PLUGINS NEED IT
 // ------------------------------------------------------------------------
 
-function cdash_p2p_check() {
+//Check if some of the plguins are installed and active
+
+function cdash_plugin_check(){
 	if( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function cdash_p2p_check() {
+	//if( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+	if(cdash_plugin_check()){
 		if ( !class_exists( 'P2P_Autoload' ) ) {
 			require_once dirname( __FILE__ ) . '/wpp2p/autoload.php';
 		}
@@ -397,7 +409,9 @@ function cdash_p2p_check() {
 add_action( 'admin_init', 'cdash_p2p_check' );
 
 function cdash_p2p_load() {
-	if ( !class_exists( 'P2P_Autoload' ) && ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) ) {
+	//if ( !class_exists( 'P2P_Autoload' ) && ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) ) {
+
+	if( !class_exists( 'P2P_Autoload' ) && cdash_plugin_check() ){
 		//load_plugin_textdomain( P2P_TEXTDOMAIN, '', basename( dirname( __FILE__ ) ) . '/languages' );
 		if ( !function_exists( 'p2p_register_connection_type' ) ) {
 			require_once dirname( __FILE__ ) . '/wpp2p/autoload.php';
@@ -415,7 +429,8 @@ function cdash_p2p_load() {
 }
 
 function cdash_load_admin() {
-	if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+	//if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+	if(cdash_plugin_check()){
 		P2P_Autoload::register( 'P2P_', dirname( __FILE__ ) . '/wpp2p/admin' );
 		new P2P_Box_Factory;
 		new P2P_Column_Factory;
@@ -425,7 +440,8 @@ function cdash_load_admin() {
 }
 
 function cdash_p2p_init() {
-	if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+	//if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') || defined('CDMMPRO_PATH') ) {
+	if(cdash_plugin_check()){
 		// Safe hook for calling p2p_register_connection_type()
 		do_action( 'p2p_init' );
 	}
