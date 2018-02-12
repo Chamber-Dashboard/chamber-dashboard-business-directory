@@ -153,6 +153,7 @@ function cdash_register_taxonomy_membership_level() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'show_in_rest'							 => true,
 		'rewrite' => array (
             'slug' => _x( 'membership_level', 'membership_level', 'cdash' )
         )
@@ -191,6 +192,7 @@ function cdash_register_taxonomy_private_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => false,
+		'show_in_rest'							 => true,
 		'rewrite' => array (
             'slug' => _x( 'private_category', 'private_category', 'cdash' )
         )
@@ -246,6 +248,7 @@ function cdash_register_cpt_business() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+		'show_in_rest'				=> true,
 		'rewrite' => array (
             'slug' => _x( 'business', 'business', 'cdash' )
         )
@@ -255,6 +258,8 @@ function cdash_register_cpt_business() {
 }
 
 add_action( 'init', 'cdash_register_cpt_business', 0 );
+
+//add_filter('gutenberg_can_edit_post_type', true, 'business');
 
 
 // ------------------------------------------------------------------------
