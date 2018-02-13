@@ -25,7 +25,7 @@ function chamber_dashboard_licenses_page_render(){
         <h2><?php _e('Chamber Dashboard Licenses'); ?></h2>
         <?php settings_errors(); ?>
 
-        <div id="main" style="min-width: 350px; float: left;">
+        <!--<div id="main" style="min-width: 350px; float: left;">-->
             <?php
             $plugins = cdash_get_active_plugin_list();
                 if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
@@ -53,7 +53,7 @@ function chamber_dashboard_licenses_page_render(){
               //}
 
             ?>
-        </div>
+        <!--</div>-->
     </div>
 <?php
 }

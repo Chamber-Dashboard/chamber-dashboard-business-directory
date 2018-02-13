@@ -3,15 +3,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-add_action( 'admin_enqueue_scripts', 'cdash_addons_enqueue_scripts' );
-function cdash_addons_enqueue_scripts(){
-  // enqueue the thickbox scripts and styles
-  wp_enqueue_script( 'thickbox' );
-  wp_enqueue_style( 'thickbox' );
-
-  wp_enqueue_style( 'addons.css', plugins_url( 'includes/addons.css', __FILE__ ));
-}
-
 function display_addons($title, $slug, $description, $link, $price, $type){
     $url = admin_url();
 ?>
@@ -41,12 +32,12 @@ function display_addons($title, $slug, $description, $link, $price, $type){
 
 function chamber_dashboard_addons_page_render(){
 ?>
-    <div class="wrap" style="width:70%;">
+    <div class="wrap" style="width:90%;">
         <div class="icon32" id="icon-options-general"><br></div>
         <h2><?php _e('Chamber Dashboard Addons'); ?></h2>
         <?php settings_errors(); ?>
 
-        <div id="main">
+        <!--<div id="main">-->
             <div id="addons_list">
                 <ul>
                     <?php
@@ -133,7 +124,7 @@ function chamber_dashboard_addons_page_render(){
                     ?>
                 </ul>
             </div><!-- end of addons_list-->
-        </div><!-- end of main-->
+        <!--</div>--><!-- end of main-->
     </div><!--end of wrap-->
 <?php
 }

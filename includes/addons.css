@@ -4,7 +4,7 @@
 #addons_list ul{
     display: grid;
     width: auto;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 3fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 3fr));
     grid-row-gap: 40px;
     grid-column-gap: 5%;
 }

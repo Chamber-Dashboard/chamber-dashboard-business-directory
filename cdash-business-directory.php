@@ -77,6 +77,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'addons.php' );
 // Require licenses page
 require_once( plugin_dir_path( __FILE__ ) . 'license.php' );
 
+// Require Getting started page
+require_once( plugin_dir_path( __FILE__ ) . 'getting_started.php' );
+
 // Initialize language so it can be translated
 function cdash_language_init() {
   load_plugin_textdomain( 'cdash', false, 'chamber-dashboard-business-directory/languages' );

@@ -2,6 +2,16 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+add_action( 'admin_enqueue_scripts', 'cdash_addons_enqueue_scripts' );
+function cdash_addons_enqueue_scripts(){
+  // enqueue the thickbox scripts and styles
+  wp_enqueue_script( 'thickbox' );
+  wp_enqueue_style( 'thickbox' );
+
+  wp_enqueue_style( 'addons.css', plugins_url( 'includes/addons.css', __FILE__ ));
+	wp_enqueue_style( 'Business directory admin styles', plugins_url( 'css/admin.css', __FILE__ ));
+}
+
 /* Options Page for Chamber Dashboard Business Directory */
 
 // --------------------------------------------------------------------------------------
