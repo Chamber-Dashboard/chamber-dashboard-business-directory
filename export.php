@@ -14,6 +14,9 @@ function cdash_simple_export() {
 //open the file
 	$fh = @fopen('php://output', 'w');
 
+//Add the UTF-8 BOM so that Excel knows how to deal with it
+fwrite($fh, chr(0xEF).chr(0xBB).chr(0xBF));
+
 // Find all the businesses
 	$args = array(
 		'post_type' => 'business',
@@ -71,15 +74,19 @@ function cdash_simple_export() {
 		while ($exportquery->have_posts()) : $exportquery->the_post();
 			$post_id = get_the_id();
 			$cats = wp_get_post_terms($post_id, 'business_category', array('fields' => 'names'));
-      $catlist = implode(", ", $cats);
+			if( isset( $cats ) && is_array( $cats ) ) {
+	      $cats_new = array_map('cdash_export_html_decode', $cats);
+	      $catlist = implode(", ", $cats_new);
+	    }
+      //$catlist = implode(", ", $cats);
 			$levels = wp_get_post_terms($post_id, 'membership_level', array('fields' => 'names'));
 			$levellist = implode(", ", $levels);
 			//$title = get_the_title();
 			$title = get_the_title();
 			//$title_export = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $title);
-			$title = utf8_decode(wp_specialchars_decode(html_entity_decode($title)));
+			$title = html_entity_decode($title);
 			//$fields[] = utf8_decode(wp_specialchars_decode(html_entity_decode(get_the_title() )));
-			$content = utf8_decode(wp_specialchars_decode(get_the_content() ));
+			$content = html_entity_decode(get_the_content() );
 			$fields = array(
 				$title,
 				$content,
@@ -158,5 +165,9 @@ function cdash_simple_export() {
 	wp_reset_postdata();
 // Close the file stream
 	fclose($fh);
+}
+
+function cdash_export_html_decode($cat_name){
+  return html_entity_decode($cat_name, ENT_HTML5);
 }
 ?>
