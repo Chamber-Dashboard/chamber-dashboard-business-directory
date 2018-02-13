@@ -86,61 +86,65 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
-== 2.9.2 ==
+= 2.9.3 =
+* Added information to the welcome page
+* Removed the weird characters from the data in export file
+
+= 2.9.2 =
 * Works with WordPress 4.9.2
 * Fixed some minor styling
 
-== 2.9.1 ==
+= 2.9.1 =
 * Fixed the errors with export feature
 
-== 2.9 ==
+= 2.9 =
 * Business listings can be styled based on membership level or category or alternate listings can be styled  differently.
 
-== 2.8.8 ==
+= 2.8.8 =
 * Fixed the warnings showing up on plugin activation
 * Changed the name of export and import menus
 * HTML characters will be stripped out of the business description during export
 
-== 2.8.7 ==
+= 2.8.7 =
 * Added width and height parameters to the business map shortcode
 * Search results display in alphabetical order
 
-== 2.8.6 ==
+= 2.8.6 =
 * Fixed the featured image linking to post when single_link is no.
 
-== 2.8.5 ==
+= 2.8.5 =
 * The number of business search results per page can be customized
 * Fixed the search results text
 
-== 2.8.4.1 ==
+= 2.8.4.1 =
 * Fixed the text on the extensions page
 
-== 2.8.4 ==
+= 2.8.4 =
 * Removed Freemius code
 * It works with Chamber Dashboard Member Updater
 
-== 2.8.3.4 ==
+= 2.8.3.4 =
 * Added Hours field to Businesses
 * Added Country and Hours to export and import functions
 * Changed the minimum required version of WordPress to 4.2
 
-== 2.8.3.3 ==
+= 2.8.3.3 =
 * Added 'Country' to the business import
 
-== 2.8.3.2 ==
+= 2.8.3.2 =
 * Now compatible with WordPress 4.7
 
-== 2.8.3.1 ==
+= 2.8.3.1 =
 * Fixed some theme compatibility issues
 
-==2.8.3==
+= 2.8.3 =
 * Fixed the map clusters link for displaying Google Map Clusters
 * Added tags to businesses
 
-==2.8.2 ==
+= 2.8.2 =
 * Added code to fix the Freemius licensing issue
 
-== 2.8.1 ==
+= 2.8.1 =
 * Updated Freemius to the latest version
 * Some minor image fixes
 
