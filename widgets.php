@@ -27,7 +27,7 @@ class Cdash_Search_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-search' );
 
 		/* Create the widget. */
-		parent::__construct( 'cdash-search', __('Business Directory Search', 'cdash'), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-search', __('CD Business Directory Search', 'cdash'), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Cdash_Search_Widget extends WP_Widget {
 		//$title = apply_filters('widget_title', $instance['title'] );
         $results_page = '';
         if(isset($instance['results_page'])){
-            $results_page = $instance['results_page'];    
+            $results_page = $instance['results_page'];
         }
 		//$results_page = $instance['results_page'];
 
@@ -95,7 +95,7 @@ class Cdash_Search_Widget extends WP_Widget {
 
 		<!-- Results Page: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'results_page' ); ?>"><?php _e('<b>Page to display search results:</b><br />(this page must contain the [business_search_results] shortcode)', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'results_page' ); ?>"><?php _e('<b>Page to display search results:</b><br />(this page must contain the [business_search_results] shortcode)', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'results_page' ); ?>" name="<?php echo $this->get_field_name( 'results_page' ); ?>" class="widefat" style="width:100%;">
 				<?php $pagelist = get_posts( 'post_type=page&posts_per_page=-1' );
 				foreach( $pagelist as $page ) { ?>
@@ -112,7 +112,7 @@ class Cdash_Search_Widget extends WP_Widget {
 // FEATURED BUSINESS WIDGET
 // ------------------------------------------------------------------------
 
-// enqueue scripts and styles this widget needs 
+// enqueue scripts and styles this widget needs
 function cdash_widget_enqueue_scripts( $hook ) {
     if ( 'widgets.php' == $hook ) {
         wp_enqueue_style( 'chosen', plugin_dir_url(__FILE__) . 'css/chosen.css' );
@@ -140,7 +140,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-featured' );
 
 		/* Create the widget. */
-		parent::__construct( 'cdash-featured', __( 'Featured Business', 'cdash' ), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-featured', __( 'CD Featured Business', 'cdash' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -161,7 +161,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 
 		/* Display widget */
 		// find the businesses
-		$args = array( 
+		$args = array(
 	        'post_type' => 'business',
 	        'posts_per_page' => $instance['how_many'],
 	        'orderby' => 'rand',
@@ -253,7 +253,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
         					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
                                 echo cdash_display_url( $location['url'] );
 					        }
-                    
+
                             if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
                                 echo cdash_display_phone_numbers( $location['phone'] );
                             }
@@ -275,7 +275,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 				</div>
 			<?php endwhile;
 		} else {
-			_e( 'No featured business found', 'cdash' ); 
+			_e( 'No featured business found', 'cdash' );
 		}
 
 		// Reset Post Data
@@ -313,7 +313,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	function form( $instance ) {
 
 		/* Set up some default widget settings. */
-		$defaults = array( 'title' => __( 'Featured Business', 'cdash' ), 'how_many' => 1, 'display' => array( 'address', 'url' ) );
+		$defaults = array( 'title' => __( 'CD Featured Business', 'cdash' ), 'how_many' => 1, 'display' => array( 'address', 'url' ) );
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<!-- Widget Title: Text Input -->
@@ -329,7 +329,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		</p>
 
 		<h4><?php _e( 'Select Which Business(es) to Display', 'cdash' ); ?></h4>
-			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-manual' ); ?> id="select-manual" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-manual" /> 
+			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-manual' ); ?> id="select-manual" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-manual" />
 			<label for="select-manual"><b><?php _e( 'Manually Select Business(es):', 'cdash' ); ?></b></label>
 			<div style="margin-left:2em;">
 	 			<?php // Select individual businesses
@@ -342,7 +342,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	            $args = array(
 					'post_type' => 'business',
 					'posts_per_page' => '-1',
-					); 
+					);
 				$businesses = get_posts( $args );
 	            foreach( $businesses as $business ) {
 	            	$selected = '';
@@ -359,11 +359,11 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	            echo '</select>'; ?>
 			</div>
 
-			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-criteria' ); ?> id="select-criteria" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-criteria" /> 
+			<input class="radio" type="radio" <?php if(isset($instance['select_method'])) checked( $instance['select_method'], 'select-criteria' ); ?> id="select-criteria" name="<?php echo $this->get_field_name( 'select_method' ); ?>" value="select-criteria" />
 			<label for="select-criteria"><b><?php _e( 'Randomly Select Business(es) Based on These Criteria:', 'cdash' ); ?></b></label>
 			<div style="margin-left:2em;">
 				<p>
-					<label for="<?php echo $this->get_field_id( 'category' ); ?>"><?php _e( 'Category:', 'cdash' ); ?></label> 
+					<label for="<?php echo $this->get_field_id( 'category' ); ?>"><?php _e( 'Category:', 'cdash' ); ?></label>
 					<?php // Select categories
 		            printf (
 		                '<select multiple name="%s[]" id="%s" class="cdash-select-category" data-placeholder="%s">',
@@ -385,7 +385,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                );
 		            }
 		            echo '</select>';
-                    
+
                     /*foreach( $category_list as $term ) {
 	            	$selected = '';
 	            	if( is_array( $instance['term'] ) && in_array( $term->ID, $instance['term'] ) ) {
@@ -399,11 +399,11 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
                         );
 	               }
 	            echo '</select>';*/
-                    
+
                     ?>
 				</p>
 				<p>
-					<label for="<?php echo $this->get_field_id( 'private' ); ?>"><?php _e( 'Private Category:', 'cdash' ); ?></label> 
+					<label for="<?php echo $this->get_field_id( 'private' ); ?>"><?php _e( 'Private Category:', 'cdash' ); ?></label>
 					<?php // Select private categories
 		            printf (
 		                '<select multiple name="%s[]" id="%s" class="cdash-select-private" data-placeholder="%s">',
@@ -435,7 +435,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		            echo '</select>'; ?>
 				</p>
 				<p>
-					<label for="<?php echo $this->get_field_id( 'level' ); ?>"><?php _e( 'Membership Level:', 'cdash' ); ?></label> 
+					<label for="<?php echo $this->get_field_id( 'level' ); ?>"><?php _e( 'Membership Level:', 'cdash' ); ?></label>
 					<?php // Select membership level
 		            printf (
 		                '<select multiple name="%s[]" id="%s" class="cdash-select-level" data-placeholder="%s">',
@@ -475,7 +475,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			    }
 			    if( in_array( 'cdash-member-manager.php', $plugin_names ) ) { ?>
 				    <p>
-						<label for="<?php echo $this->get_field_id( 'status' ); ?>"><?php _e( 'Membership Status:', 'cdash' ); ?></label> 
+						<label for="<?php echo $this->get_field_id( 'status' ); ?>"><?php _e( 'Membership Status:', 'cdash' ); ?></label>
 						<?php // Select membership status
 			            printf (
 			                '<select multiple name="%s[]" id="%s" class="cdash-select-status" data-placeholder="%s">',
@@ -503,7 +503,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
                                 $selected,
                                 $term->name
                             );
-                       }                                                     
+                       }
 			            echo '</select>'; ?>
 					</p>
 			    <?php }?>
@@ -515,7 +515,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 				'excerpt' => __( 'Excerpt', 'cdash' ),
 				'location_name' => __( 'Location Name', 'cdash' ),
 				'address' => __( 'Location Address', 'cdash' ),
-                'hours' =>  __('Business Hours', 'cdash'),        
+                'hours' =>  __('Business Hours', 'cdash'),
 				'url' => __( 'Web Address', 'cdash' ),
 				'phone' => __( 'Phone Number(s)', 'cdash' ),
 				'email' => __( 'Email Address(es)', 'cdash' ),
@@ -568,7 +568,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-business-categories' );
 
 		/* Create the widget. */
-		parent::__construct( 'cdash-business-categories', __('Business Categories', 'cdash'), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-business-categories', __('CD Business Categories', 'cdash'), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -627,7 +627,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 	function form( $instance ) {
 
 		/* Set up some default widget settings. */
-		$defaults = array( 'title' => __('Business Categories', 'cdash'), );
+		$defaults = array( 'title' => __('CD Business Categories', 'cdash'), );
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<!-- Widget Title: Text Input -->
@@ -638,7 +638,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Order By: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e('<b>Order by:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e('<b>Order by:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" class="widefat" style="width:100%;">
 				<option value="name" <?php if (isset($instance['orderby']) && ('name' == $instance['orderby'] )) echo 'selected="selected"'; ?>><?php _e( 'Name', 'cdash' ); ?></option>
 				<?php
@@ -646,7 +646,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
                         $selected = 'selected';
                 ?>
                         <option value="name" selected = "<?php echo $selected; ?>"><?php _e( 'Name', 'cdash' ); ?></option>
-                <?php        
+                <?php
                     }*/
                 ?>
                 <?php
@@ -654,24 +654,24 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
                         $selected = 'selected';
                 ?>
                         <option value="count" selected = "<?php echo $selected; ?>"><?php _e( 'Count', 'cdash' ); ?></option>
-                <?php        
+                <?php
                     }*/
                 ?>
-				
+
 				<option value="count" <?php if ((isset($instance['orderby'])) && ('count' == $instance['orderby'] )) echo 'selected="selected"'; ?>><?php _e( 'Count', 'cdash' ); ?></option>-->
 			</select>
         </p>
 
 		<!-- Show Count: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e('<b>Show Number of Businesses in Category:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e('<b>Show Number of Businesses in Category:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'showcount' ); ?>" name="<?php echo $this->get_field_name( 'showcount' ); ?>" class="widefat" style="width:100%;">
 			<?php
                 /*if(isset($instance['showcount']) && ('0' == $instance['showcount'])){
                     $selected = 'selected';
             ?>
                     <option value="0" selected="<?php echo $selected; ?>"><?php _e( 'No', 'cdash' ); ?></option>
-            <?php        
+            <?php
                 }*/
             ?>
 				<option value="0" <?php if ((isset($instance['showcount'])) && ('0' == $instance['showcount']) ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
@@ -682,7 +682,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Hierarchical: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'hierarchical' ); ?>"><?php _e('<b>Display Hierarchy:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'hierarchical' ); ?>"><?php _e('<b>Display Hierarchy:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'hierarchical' ); ?>" name="<?php echo $this->get_field_name( 'hierarchical' ); ?>" class="widefat" style="width:100%;">
 				<!--<option value="0" <?php //if ( '0' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php _e( 'No', 'cdash' ); ?></option>
 				<option value="1" <?php //if ( '1' == $instance['hierarchical'] ) echo 'selected="selected"'; ?>><?php //_e( 'Yes', 'cdash' ); ?></option>-->
@@ -693,7 +693,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Hide Empty: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e('<b>Hide Empty Categories:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e('<b>Hide Empty Categories:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'hide_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty' ); ?>" class="widefat" style="width:100%;">
 				<!--<option value="0" <?php //if ( '0' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php //_e( 'No', 'cdash' ); ?></option>
 				<option value="1" <?php //if ( '1' == $instance['hide_empty'] ) echo 'selected="selected"'; ?>><?php //_e( 'Yes', 'cdash' ); ?></option>-->
@@ -704,7 +704,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Child Of: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'child_of' ); ?>"><?php _e('<b>Display only children of:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'child_of' ); ?>"><?php _e('<b>Display only children of:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'child_of' ); ?>" name="<?php echo $this->get_field_name( 'child_of' ); ?>" class="widefat" style="width:100%;">
 				<option value=""> </option>
 				<?php $termlist = get_terms( 'business_category', 'hide_empty=false' );
@@ -717,7 +717,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Exclude: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'exclude' ); ?>"><?php _e('<b>Exclude:</b>', 'cdash'); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'exclude' ); ?>"><?php _e('<b>Exclude:</b>', 'cdash'); ?></label>
 			<select id="<?php echo $this->get_field_id( 'exclude' ); ?>" name="<?php echo $this->get_field_name( 'exclude' ); ?>" class="widefat" style="width:100%;">
 				<option value=""> </option>
 				<?php $termlist = get_terms( 'business_category', 'hide_empty=false' );
