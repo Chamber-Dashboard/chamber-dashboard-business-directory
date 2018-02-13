@@ -313,7 +313,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	function form( $instance ) {
 
 		/* Set up some default widget settings. */
-		$defaults = array( 'title' => __( 'Featured Business', 'cdash' ), 'how_many' => 1, 'display' => array( 'address', 'url' ) );
+		$defaults = array( 'title' => __( 'CD Featured Business', 'cdash' ), 'how_many' => 1, 'display' => array( 'address', 'url' ) );
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<!-- Widget Title: Text Input -->
@@ -627,7 +627,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 	function form( $instance ) {
 
 		/* Set up some default widget settings. */
-		$defaults = array( 'title' => __('Business Categories', 'cdash'), );
+		$defaults = array( 'title' => __('CD Business Categories', 'cdash'), );
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<!-- Widget Title: Text Input -->
