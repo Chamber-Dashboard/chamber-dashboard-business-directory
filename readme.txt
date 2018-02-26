@@ -4,38 +4,38 @@ Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 4.9.2
-Stable tag: 2.9.2
+Stable tag: 2.9.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Create a directory of businesses.  Specifically designed for chambers of commerce to store information about businesses and display them on a website.
+Create a directory of businesses. Although, the plugin was initially designed for chambers of commerce, an organization can use this plugin to store information about businesses and display them on a website.
 
 == Description ==
-Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins designed to meet the needs of chambers of commerce.
+Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins. It was initially designed to meet the needs of chambers of commerce, but can now be used by any organization to create a directory.
 
 = With Chamber Dashboard Business Directory, you can: =
 *   create a database of the businesses in your organization
 *   display a business directory on your website
 *   customize what information is displayed about the businesses
 *   export a CSV of the business in your directory
+*   display a featured business widget
+*   add custom fields to businesses
 
 
 You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
-For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](http://chamberdashboard.com/support/documentation)
+For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](https://chamberdashboard.com/document_category/business-directory-docs/)
 
 = Other Chamber Dashboard Plugins =
 * [Chamber Dashboard Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) - Display a calendar of your organization's events
 * [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
 * [Chamber Dashboard Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) - Track membership levels and benefits, collect membership payments online
 
-= Contributors =
-Several people have contributed to the development of Chamber Dashboard:
-* Jonathan Kay, jpkay
-* Mike Davis, jmdxsvhs15 - map clustering
-* Justin Ribeiro - business categories shortcode
+= Support =
 
+If you are using our free plugins, you can access our documentation <a href="https://chamberdashboard.com/chamber-dashboard-support/" target="_blank">here</a>
 
+If you have purchased any of our premium plugins or our support plan, you can open a <a href="https://chamberdashboard.com/submit-support-ticket/" target="_blank">support ticket</a>
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -75,15 +75,22 @@ Probably!  It is designed to work with any theme that follows basic WordPress co
 Yes!  We have a [map of organizations using Chamber Dashboard](https://chamberdashboard.com/chamber-dashboard-user-map/)
 
 = I want the plugin to do _____.  Can you make it do that? =
-Probably!  I am definitely interested in making this as useful as possible for chambers of commerce, so please let me know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
+Probably! We are definitely interested in making this as useful as possible for chambers of commerce, so please let us know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
 
 = Is it translation-ready? =
 Yes, the plugin is ready to be translated!  .po and .mo files are included.  If you translate the plugin, I would love to include your translation with future releases of the plugin.
 
-
-
 == Screenshots ==
 1. Entering business information
+2. Business Directory admin page
+3. Featured Business widget
+4. Business search widget
+
+= Contributors =
+Several people have contributed to the development of Chamber Dashboard:
+* Jonathan Kay, jpkay
+* Mike Davis, jmdxsvhs15 - map clustering
+* Justin Ribeiro - business categories shortcode
 
 == Changelog ==
 = 2.9.3 =

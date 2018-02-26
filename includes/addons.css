@@ -54,7 +54,7 @@
     min-height: 60px;
 }
 
-.single_addon a.button-primary{
+.single_addon a.button-primary, .cdash_admin.button-primary{
     margin-left:15px;
     margin-top: 10px;
     margin-bottom:10px;
@@ -62,9 +62,10 @@
     border-color: #B1304D;
     box-shadow: 0 1px #B1304D;
     text-shadow: 0 -1px 1px #B1304D, 1px 0 1px #B1304D, 0 1px 1px #B1304D, -1px 0 1px #B1304D;
+    color:#fff;
 }
 
-.single_addon a.button-primary:hover{
+.single_addon a.button-primary:hover, .cdash_admin.button-primary:hover{
   background:#fff;
   color:#B1304D;
   text-shadow:none;

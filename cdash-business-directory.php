@@ -3,9 +3,9 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.9.2
-Author: Morgan Kay
-Author URI: http://wpalchemists.com
+Version: 2.9.3
+Author: Morgan Kay, Chandrika Guntur
+Author URI: https://chamberdashboard.com/
 Text Domain: cdash
 */
 
@@ -64,21 +64,13 @@ require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 function cdash_activation_transient() {
 	set_transient('_cdash_activation_redirect', 1, 3600);
 }
-// Require welcome page
-require_once( plugin_dir_path( __FILE__ ) . 'includes/welcome-page.php' );
-// Require views
-require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
-// Require widgets
-require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
-// Require currency list
-require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
-// Require Addons
-require_once( plugin_dir_path( __FILE__ ) . 'addons.php' );
-// Require licenses page
-require_once( plugin_dir_path( __FILE__ ) . 'license.php' );
 
-// Require Getting started page
-require_once( plugin_dir_path( __FILE__ ) . 'getting_started.php' );
+//Inlcude the required pages
+require_once( plugin_dir_path( __FILE__ ) . 'require_pages.php' );
+
+
+
+
 
 // Initialize language so it can be translated
 function cdash_language_init() {
@@ -278,6 +270,8 @@ function cdash_admin_scripts_and_styles($hook)
     if ( is_admin() ) {
         //wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
+
+				wp_enqueue_script( 'admin-javascript', plugins_url( 'js/admin.js', __FILE__ ));
     }
 
     global $post;

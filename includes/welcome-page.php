@@ -20,6 +20,7 @@ function cdash_about_screen()
 		<div class="wrap">
 
 		<h1><?php _e('Welcome to Chamber Dashboard Business Directory', 'cdash'); ?></h1>
+		<?php cdash_email_subscribe(); ?>
 
 		<div class="cdash-about-text">
 			<h2>
@@ -28,7 +29,17 @@ function cdash_about_screen()
 			?>
 		</h2>
 			<?php
-            $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
+						$page = $_GET['page'];
+						$tab = $_GET['tab'];
+						if($page == 'chamber_dashboard_addons'){
+							$active_tab = 'chamber_dashboard_addons';
+						}else if($page == 'chamber_dashboard_license'){
+								$active_tab = 'chamber_dashboard_license';
+						}else{
+							$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
+						}
+            //$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
+
 
         ?>
 		</div>

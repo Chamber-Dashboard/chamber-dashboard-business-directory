@@ -21,7 +21,6 @@
 .cdash_admin_grid{
   display:grid;
   /*grid-template-columns: repeat(auto-fill, minmax(300px, 1fr) );*/
-
 }
 
 .cdash_wrapper{
@@ -33,6 +32,10 @@
 
 .cdash_admin_grid.one_col{
   grid-template-columns: 1fr;
+}
+
+.cdash_admin_grid.equal_col{
+  grid-template-columns: 1fr 1fr;
 }
 
 @media screen and (min-width:700px){
@@ -73,4 +76,61 @@
 
 p.right{
   text-align:right;
+}
+
+.cdash_admin_left_sidebar{
+  display:table;
+}
+
+.cdash_email_subscribe_div{
+  display:grid;
+}
+
+@media screen and (min-width:768px){
+  .cdash_email_popup{
+    width:50%;
+  }
+}
+
+@media screen and (min-width:992px){
+  .cdash_email_popup{
+    width:40%;
+  }
+}
+
+.cdash_email_popup{
+  display:none;
+  padding:3%;
+  border:#B1304D 3px solid;
+}
+
+/*.email_subscribe_form{
+  grid-column-end: span 2;
+  width: auto;
+}
+
+.email_subscribe_form > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr) );
+    align-items: center;
+}*/
+
+.cdash_email_popup label{
+  font-size:16px;
+  min-width: 100px;
+  width:auto;display:block;
+  margin-bottom:10px;
+}
+
+.cdash_email_popup input{
+  width:80%;
+  margin-bottom:10px;
+}
+
+.cdash_admin.close_button{
+  float:right;
+}
+
+.dashboard_page_cdash-about h1{
+  font-size:25px;
 }

@@ -101,12 +101,12 @@ function cdash_add_options_page() {
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export Directory', 'Export Directory', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Import', 'Directory Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 
-    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Addons', 'Addons', 'manage_options', 'chamber-dashboard-addons', 'chamber_dashboard_addons_page_render' );
+    add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Addons', 'Addons', 'manage_options', 'chamber_dashboard_addons', 'cdash_about_screen' );
 		//add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
-
+    $license_url = get_admin_url() . 'admin.php?page=cdash-about&tab=chamber_dashboard_license';
     $plugins = cdash_get_active_plugin_list();
         if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins) || in_array('cdash-member-manager-pro.php', $plugins) ) {
-            add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
+            add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'cdash_about_screen' );
         }
 				//cdash_add_licence_page_menu_hook();
 

@@ -17,7 +17,7 @@ foreach($customfields as $field) {
 		</p>
 
 	<?php } else {
-		_e('<p>The field ' . $field['name'] . ' does not have an assigned field type.  Please go to the <a href="' . home_url() . '/wp-admin/admin.php?page=cdash-business-directory/options.php">Chamber Dashboard settings page</a> and give this field a type so you can use it.</p>', 'cdash');
+		_e('<p>The field ' . $field['name'] . ' does not have an assigned field type.  Please go to the <a href="' . home_url() . '/wp-admin/admin.php?page=chamber-dashboard-business-directory/options.php">Chamber Dashboard settings page</a> and give this field a type so you can use it.</p>', 'cdash');
 	}
 
 } ?>
