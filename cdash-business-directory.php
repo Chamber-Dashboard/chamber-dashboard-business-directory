@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.9.3
+Version: 2.9.5
 Author: Morgan Kay, Chandrika Guntur
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -110,6 +110,7 @@ function cdash_register_taxonomy_business_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'show_in_rest'							 => true,
 		'rewrite' => array (
             'slug' => _x( 'business_category', 'business_category', 'cdash' )
         )
@@ -148,6 +149,7 @@ function cdash_register_taxonomy_membership_level() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'show_in_rest'							 => true,
 		'rewrite' => array (
             'slug' => _x( 'membership_level', 'membership_level', 'cdash' )
         )
@@ -186,6 +188,7 @@ function cdash_register_taxonomy_private_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => false,
+		'show_in_rest'							 => true,
 		'rewrite' => array (
             'slug' => _x( 'private_category', 'private_category', 'cdash' )
         )
@@ -233,6 +236,7 @@ function cdash_register_cpt_business() {
 		'show_in_menu'        => true,
 		'show_in_nav_menus'   => true,
 		'show_in_admin_bar'   => true,
+		'show_in_rest'				=> true,
 		'menu_position'       => 5,
 		//'menu_icon'           => 'dashicons-shop',
 		'menu_icon'           => plugin_dir_url( __FILE__ ) . '/images/cdash-business.png',

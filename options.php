@@ -51,7 +51,9 @@ function cdash_add_defaults() {
 						"currency_position" => "before",
 						"currency_symbol" => "$",
 						"currency" => "USD",
-            "search_results_per_page"   =>  "5"
+            "search_results_per_page"   =>  "5",
+            "business_listings_url"   =>  '',
+            'business_listings_url_text' => 'Return to Business Listings'
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -267,6 +269,20 @@ function cdash_render_form() {
 							<br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the number of search results you would like to display per page.', 'cdash'); ?></span>
 						</td>
 					</tr>
+          <tr>
+						<th scope="row"><?php _e('Business Listings URL', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="35" name="cdash_directory_options[business_listings_url]" value="<?php if(isset($options['business_listings_url'])) { echo $options['business_listings_url']; } ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the url for your business listings page here. It will be displayed on the single business pages so that users can navigate back to the business listings page.', 'cdash'); ?></span>
+						</td>
+					</tr>
+          <tr>
+            <th scope="row"><?php _e('Business Listings URL text', 'cdash'); ?></th>
+            <td>
+              <input type="text" size="35" name="cdash_directory_options[business_listings_url_text]" value="<?php if(isset($options['business_listings_url_text'])) { echo $options['business_listings_url_text']; } ?>" />
+              <br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the text you want to show for the Return to Business Listings link on the single business page.', 'cdash'); ?></span>
+            </td>
+          </tr>
 					<!-- Custom Fields -->
 					<tr>
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
@@ -542,8 +558,8 @@ function cdash_import_form() { ?>
 							'city'		=> $data[6],
 							'state'		=> $data[7],
 							'zip'		=> $data[8],
-                            'country'   => $data[9],
-                            'hours'     => $data[10],
+              'country'   => $data[9],
+              'hours'     => $data[10],
 							'latitude'	=> $latitude,
 							'longitude'	=> $longitude,
 							'url'		=> $data[11],

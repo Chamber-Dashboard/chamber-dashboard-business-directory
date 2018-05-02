@@ -12,6 +12,11 @@
   color:#fff;
 }
 
+.cdash_update_notice button.notice-dismiss{
+	background:#B1304D;
+  right:0;
+}
+
 .cdash_getting_started_docs{
   display:grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr) );

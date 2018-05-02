@@ -107,7 +107,7 @@ function cdash_about_page_render() {
         </div><!--cdash_wrapper-->
 
         <div id="cd_themes" class="cdash_wrapper cdash_admin_grid equal_col">
-          <h3>Give your site an amazing new look with a gorgeous theme from Chamber Dashboard</h3>
+          <h3>Give your site an amazing new look with the themes from Chamber Dashboard</h3>
           <br />
           <div class="cdash_admin_left_col">
             <p>Chamber Beautiful</p>
@@ -118,7 +118,7 @@ function cdash_about_page_render() {
           <div class="cdash_admin_right_col">
             <p>Chamber Inspired</p>
             <p><img src="<?php echo plugins_url( 'images/chamber_inspired_theme.png' , __FILE__ ); ?>" width="80%" /><br />
-              Coming Soon!
+              <a href="http://chamber-inspired.chamberdashboard.com/" target="_blank">See this theme in action</a>
             </p>
             <p class="right"><a href="#top">Top</a>
             </p>

@@ -2,9 +2,10 @@
 Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
-Requires at least: 4.2
-Tested up to: 4.9.2
-Stable tag: 2.9.3
+Requires at least: 4.6
+Tested up to: 4.9.5
+Requires PHP: 5.6
+Stable tag: 2.9.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -72,7 +73,7 @@ There are lots of options for this shortcode.  For a full description, see [Cham
 Probably!  It is designed to work with any theme that follows basic WordPress coding practices.
 
 = Can I see other sites that are using Chamber Dashboard? =
-Yes!  We have a [map of organizations using Chamber Dashboard](https://chamberdashboard.com/chamber-dashboard-user-map/)
+Yes!  We have a [list of organizations using Chamber Dashboard](https://chamberdashboard.com/user-showcase/)
 
 = I want the plugin to do _____.  Can you make it do that? =
 Probably! We are definitely interested in making this as useful as possible for chambers of commerce, so please let us know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
@@ -93,6 +94,12 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 2.9.5 =
+* Fixed the business listing css and the featured business widget issue.
+
+= 2.9.4 =
+* Fixed the error with business shortcode
+
 = 2.9.3 =
 * Added information to the welcome page
 * Removed the weird characters from the data in export file

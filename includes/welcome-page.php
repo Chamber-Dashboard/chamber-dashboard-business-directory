@@ -30,7 +30,9 @@ function cdash_about_screen()
 		</h2>
 			<?php
 						$page = $_GET['page'];
-						$tab = $_GET['tab'];
+						if(isset($_GET['tab'])){
+							$tab = $_GET['tab'];
+						}						
 						if($page == 'chamber_dashboard_addons'){
 							$active_tab = 'chamber_dashboard_addons';
 						}else if($page == 'chamber_dashboard_license'){

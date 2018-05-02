@@ -173,40 +173,40 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
         } elseif( 'select-criteria' == $instance['select_method'] ) {
         	// add taxonomies to args
         	$args['tax_query'] = array(
-		    	'relation' => 'AND'
-		    );
-			if( isset( $instance['category'] ) && !empty( $instance['category'] ) ) {
-				$args['tax_query'][] = array(
-			        'taxonomy' => 'business_category',
-			        'field' => 'id',
-			        'terms' => $instance['category'],
-			        'include_children' => false,
-			      );
-			}
-			if( isset( $instance['private'] ) && !empty( $instance['private'] ) ) {
-				$args['tax_query'][] = array(
-			        'taxonomy' => 'private_category',
-			        'field' => 'id',
-			        'terms' => $instance['private'],
-			        'include_children' => false,
-			      );
-			}
-			if( isset( $instance['level'] ) && !empty( $instance['level'] ) ) {
-				$args['tax_query'][] = array(
-			        'taxonomy' => 'membership_level',
-			        'field' => 'id',
-			        'terms' => $instance['level'],
-			        'include_children' => false,
-			      );
-			}
-			if( isset( $instance['status'] ) && !empty( $instance['status'] ) ) {
-				$args['tax_query'][] = array(
-			        'taxonomy' => 'membership_status',
-			        'field' => 'id',
-			        'terms' => $instance['status'],
-			        'include_children' => false,
-			      );
-			}
+		    		'relation' => 'AND'
+		    	);
+					if( isset( $instance['category'] ) && !empty( $instance['category'] ) ) {
+						$args['tax_query'][] = array(
+					        'taxonomy' => 'business_category',
+					        'field' => 'id',
+					        'terms' => $instance['category'],
+					        'include_children' => false,
+					      );
+					}
+					if( isset( $instance['private'] ) && !empty( $instance['private'] ) ) {
+						$args['tax_query'][] = array(
+					        'taxonomy' => 'private_category',
+					        'field' => 'id',
+					        'terms' => $instance['private'],
+					        'include_children' => false,
+					      );
+					}
+					if( isset( $instance['level'] ) && !empty( $instance['level'] ) ) {
+						$args['tax_query'][] = array(
+					        'taxonomy' => 'membership_level',
+					        'field' => 'id',
+					        'terms' => $instance['level'],
+					        'include_children' => false,
+					      );
+					}
+					if( isset( $instance['status'] ) && !empty( $instance['status'] ) ) {
+						$args['tax_query'][] = array(
+					        'taxonomy' => 'membership_status',
+					        'field' => 'id',
+					        'terms' => $instance['status'],
+					        'include_children' => false,
+					      );
+					}
         } else {
         	_e( 'You must choose whether to manually select businesses or randomly display businesses based on certain criteria.  Edit this widget to update these settings.', 'cdash' );
         }
@@ -247,20 +247,18 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 							if( in_array( 'address', $instance['display'] ) ) {
 								echo cdash_display_address( $location );
 							}
-                            if( in_array( 'hours', $instance['display'] ) && isset( $location['hours'] ) ) {
-                                echo $location['hours'] . '<br /><br />';
-					        }
-        					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
-                                echo cdash_display_url( $location['url'] );
-					        }
-
-                            if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
-                                echo cdash_display_phone_numbers( $location['phone'] );
-                            }
-                            if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
-                                echo cdash_display_email_addresses( $location['email'] );
-                            }
-
+              if( in_array( 'hours', $instance['display'] ) && isset( $location['hours'] ) ) {
+                  echo $location['hours'] . '<br /><br />';
+			        }
+    					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
+                            echo cdash_display_url( $location['url'] );
+			        }
+              if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
+                  echo cdash_display_phone_numbers( $location['phone'] );
+              }
+              if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
+                  echo cdash_display_email_addresses( $location['email'] );
+              }
 						}
 					}
 					if( in_array( 'social', $instance['display'] ) ) {
@@ -333,16 +331,16 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			<label for="select-manual"><b><?php _e( 'Manually Select Business(es):', 'cdash' ); ?></b></label>
 			<div style="margin-left:2em;">
 	 			<?php // Select individual businesses
-	            printf (
-	                '<select multiple name="%s[]" id="%s" class="cdash-select-business" data-placeholder="%s">',
-	                $this->get_field_name('business'),
-	                $this->get_field_id('business'),
-	                __( 'Select Business(es)', 'cdash' )
-	            );
-	            $args = array(
+        printf (
+            '<select multiple name="%s[]" id="%s" class="cdash-select-business" data-placeholder="%s">',
+            $this->get_field_name('business'),
+            $this->get_field_id('business'),
+            __( 'Select Business(es)', 'cdash' )
+        );
+	      $args = array(
 					'post_type' => 'business',
 					'posts_per_page' => '-1',
-					);
+				);
 				$businesses = get_posts( $args );
 	            foreach( $businesses as $business ) {
 	            	$selected = '';
@@ -371,16 +369,20 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                $this->get_field_id('category'),
 		                __( 'Select Categories', 'cdash' )
 		            );
-					$category_list = get_terms( 'business_category', 'hide_empty=true' );
+					//$category_list = get_terms( 'business_category', 'hide_empty=true' );
+					$category_list = get_terms( array(
+						'taxonomy'	 => 'business_category',
+						'hide_empty' => 'true'
+					) );
 					foreach( $category_list as $term ) {
                         $selected ='';
-                        if( (isset($instance['term'])) && (is_array($instance['term'])) && (in_array($term->ID, $instance['term']))){
+                        if( (isset($instance['category'])) && (is_array($instance['category'])) && (in_array($term->term_id, $instance['category']))){
                                 $selected = 'selected="selected"';
                             }
 		                printf(
 		                    '<option value="%s" %s>%s</option>',
 		                    $term->term_id,
-                            $selected,
+                        $selected,
 		                    $term->name
 		                );
 		            }
@@ -411,7 +413,10 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                $this->get_field_id('private'),
 		                __( 'Select Private Categories', 'cdash' )
 		            );
-					$category_list = get_terms( 'private_category', 'hide_empty=true' );
+					$category_list = get_terms( array(
+						'taxonomy'	=> 'private_category',
+						'hide_empty'=> 'true'
+					) );
 					/*foreach( $category_list as $term ) {
 		                printf(
 		                    '<option value="%s" %s>%s</option>',
@@ -420,14 +425,14 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                    $term->name
 		                );
 		            }*/
-                    foreach( $category_list as $term ) {
+                foreach( $category_list as $term ) {
 	            	$selected = '';
-	            	if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['private'] ) ) {
+	            	if( isset($instance['private']) && is_array( $instance['private'] ) && in_array( $term->term_id, $instance['private'] ) ) {
 	            		$selected = 'selected="selected"';
 	            	}
                         printf(
                             '<option value="%s" %s>%s</option>',
-                            $term->ID,
+                            $term->term_id,
                             $selected,
                             $term->name
                         );
@@ -443,7 +448,10 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                $this->get_field_id('level'),
 		                __( 'Select Membership Levels', 'cdash' )
 		            );
-					$category_list = get_terms( 'membership_level', 'hide_empty=true' );
+					$category_list = get_terms( array(
+						'taxonomy' => 'membership_level',
+						'hide_empty' => 'true'
+					) );
 					if( is_array( $category_list ) && !empty( $category_list ) && isset( $instance['level'] ) ) {
 						/*foreach ($category_list as $term) {
 							printf(
@@ -455,12 +463,12 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 						}*/
                         foreach( $category_list as $term ) {
                         $selected = '';
-                        if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['level'] ) ) {
+                        if( isset($instance['level']) && is_array( $instance['level'] ) && in_array( $term->term_id, $instance['level'] ) ) {
                             $selected = 'selected="selected"';
                         }
                             printf(
                                 '<option value="%s" %s>%s</option>',
-                                $term->ID,
+                                $term->term_id,
                                 $selected,
                                 $term->name
                             );
@@ -473,7 +481,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			    foreach( $active_plugins as $plugin ) {
 			        $plugin_names[] = substr($plugin, strrpos($plugin, '/') + 1);
 			    }
-			    if( in_array( 'cdash-member-manager.php', $plugin_names ) ) { ?>
+			    if( in_array( 'cdash-member-manager.php', $plugin_names ) || in_array('cdash-member-manager-pro.php', $plugin_names) ) { ?>
 				    <p>
 						<label for="<?php echo $this->get_field_id( 'status' ); ?>"><?php _e( 'Membership Status:', 'cdash' ); ?></label>
 						<?php // Select membership status
@@ -483,7 +491,10 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			                $this->get_field_id('status'),
 			                __( 'Select Membership Statuses', 'cdash' )
 			            );
-						$category_list = get_terms( 'membership_status', 'hide_empty=true' );
+						$category_list = get_terms( array(
+								'taxonomy' => 'membership_status',
+								'hide_empty' => 'true'
+						) );
 						/*foreach( $category_list as $term ) {
 			                printf(
 			                    '<option value="%s" %s>%s</option>',
@@ -494,12 +505,12 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 			            }*/
                         foreach( $category_list as $term ) {
                         $selected = '';
-                        if( isset($instance['term']) && is_array( $instance['term'] ) && in_array( $term->ID, $instance['status'] ) ) {
+                        if( isset($instance['status']) && is_array( $instance['status'] ) && in_array( $term->term_id, $instance['status'] ) ) {
                             $selected = 'selected="selected"';
                         }
                             printf(
                                 '<option value="%s" %s>%s</option>',
-                                $term->ID,
+                                $term->term_id,
                                 $selected,
                                 $term->name
                             );
@@ -515,7 +526,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 				'excerpt' => __( 'Excerpt', 'cdash' ),
 				'location_name' => __( 'Location Name', 'cdash' ),
 				'address' => __( 'Location Address', 'cdash' ),
-                'hours' =>  __('Business Hours', 'cdash'),
+        'hours' =>  __('Business Hours', 'cdash'),
 				'url' => __( 'Web Address', 'cdash' ),
 				'phone' => __( 'Phone Number(s)', 'cdash' ),
 				'email' => __( 'Email Address(es)', 'cdash' ),
@@ -530,7 +541,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
                     '<input type="checkbox" name="%s[]" id="%s" value="%s" %s>&nbsp;
                     <label for="%s">%s</label><br />',
                     $this->get_field_name('display'),
-			        $this->get_field_id('display'),
+			        			$this->get_field_id('display'),
                     $opt_val,
                     in_array( $opt_val, $instance['display'] ) ? 'checked="checked"' : '',
                     $this->get_field_id('display'),

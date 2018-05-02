@@ -79,7 +79,7 @@ function cdash_single_business($content) {
 						$business_content .= cdash_display_address( $location );
 					}
 
-                    if( isset($options['sv_hours'] ) && "1" == ( $options['sv_hours'] ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
+          if( isset($options['sv_hours'] ) && "1" == ( $options['sv_hours'] ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
 						$business_content .= $location['hours'];
 					}
 
@@ -122,11 +122,13 @@ function cdash_single_business($content) {
 				add_action('wp_footer', 'cdash_single_business_map');
 			}
 		}
-
-		}
+	}
 		$business_content .= "</div>";
         $business_content .= cdash_display_edit_link($post_id);
 
+				if(isset($options['business_listings_url']) ) {
+					$business_content .= cdash_back_to_bus_link();
+				}
 
 	$content = $business_content;
 	}
@@ -157,7 +159,7 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-                        if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
+              if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
 							if( isset( $location['custom_latitude'] ) ) {
 								$lat = $location['custom_latitude'];
 							} else {
@@ -332,7 +334,7 @@ function cdash_taxonomy_filter( $content ) {
 							$tax_content .= cdash_display_address( $location );
 						}
 
-                        if( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] ) {
+            if( isset( $options['tax_hours'] ) && "1" == $options['tax_hours'] ) {
 							$tax_content .= $location['hours'];
 						}
 
@@ -387,7 +389,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
 			'orderby' => 'title', // options: date, modified, menu_order, rand, membership_level
-			'order' => 'ASC', //options: asc, desc
+			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '' // options: slug of any membership status
 		), $atts )
@@ -419,22 +421,26 @@ function cdash_business_directory_shortcode( $atts ) {
   		$displayopts = explode( ", ", $display);
   	}
   	$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
+		// Calculate the offset
+		//$offset = ( $paged - 1 ) * $perpage;
+
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
 		'paged' => $paged,
-	    'order' => $order,
-	    'orderby' => $orderby,
-	    'business_category' => $category,
-	    'membership_level' => $level
+		'orderby' => $orderby,
+		'order' => $order,
+	  'business_category' => $category,
+	  'membership_level' => $level
 	);
 
 	if((isset($status)) && ($status != '')){
 		$args['tax_query'][] = array(
 			    'taxonomy' => 'membership_status',
-		        'field' => 'slug',
-                'terms' => array($status),
-				'operator' => 'IN'
+		      'field' => 'slug',
+          'terms' => array($status),
+				  'operator' => 'IN'
 			);
 	}
 
@@ -450,13 +456,13 @@ function cdash_business_directory_shortcode( $atts ) {
 			$count++;
 			//$postClass = post_class('business');
 				//$business_list .= "<div class='business'" . join( ' ', get_post_class() ) . "'>";
-				$business_list .= "<div class='". $add . " business " . join( ' ', get_post_class() ) . "''>";
+				$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
 				if($single_link == "yes") {
 					$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 				} else {
 					$business_list .= "<h3>" . get_the_title() . "</h3>";
 				}
-				$business_list .= '<p>' . $level . '</p>';
+				//$business_list .= '<p>' . $level . '</p>';
 				$business_list .= "<div class='description'>";
 
 			  	if( "logo" == $image ) {
@@ -554,7 +560,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			  	$business_list .= "</div>";
 			endwhile;
 			// pagination links
-			$total_pages = $businessquery->max_num_pages;
+			/*$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
 				$current_page = max(1, get_query_var('paged'));
    				$business_list .= "<div class='pagination'>";
@@ -565,8 +571,21 @@ function cdash_business_directory_shortcode( $atts ) {
 			      'total' => $total_pages,
 			    ) );
 			    $business_list .= "</div>";
-			}
+			}*/
 		$business_list .= "</div>";
+		// pagination links
+		$total_pages = $businessquery->max_num_pages;
+		if ($total_pages > 1){
+			$current_page = max(1, get_query_var('paged'));
+				$business_list .= "<div class='pagination'>";
+				$business_list .= paginate_links( array (
+					'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
+					'format' => '/page/%#%',
+					'current' => $current_page,
+					'total' => $total_pages,
+				) );
+				$business_list .= "</div>";
+		}
 		return $business_list;
 	endif;
 	wp_reset_postdata();
@@ -1006,7 +1025,7 @@ function cdash_display_address( $location ) {
 			$address .= str_replace("\n", '<br />', $street_address);
 		}
 
-        if( isset( $location['city'] ) && '' !== $location['city'] ) {
+    if( isset( $location['city'] ) && '' !== $location['city'] ) {
 			$address .= "<br />" . $location['city'] . ",&nbsp;";
 		}
 
@@ -1018,7 +1037,7 @@ function cdash_display_address( $location ) {
 			$address .= $location['zip'] . "&nbsp;";
 		}
 
-        if( isset( $location['country'] ) && '' !== $location['country'] ) {
+    if( isset( $location['country'] ) && '' !== $location['country'] ) {
 			$address .= $location['country'];
 		}
 	$address .= "</p>";
@@ -1316,4 +1335,17 @@ function cdash_display_edit_link($business_id)
         return cdashmu_display_business_edit_link($business_id);
     }
 }
+
+
+// ------------------------------------------------------------------------
+// DISPLAY THE BACK TO BUSINESS LINK ON THE SINGLE BUSINESS PAGE
+// ------------------------------------------------------------------------
+
+function cdash_back_to_bus_link(){
+	$options = get_option('cdash_directory_options');
+	$back_bus_link = "";
+	$back_bus_link = "<p><a href='" . $options['business_listings_url'] . "'></p>" . $options['business_listings_url_text'] . "</a>";
+	return $back_bus_link;
+}
+
 ?>
