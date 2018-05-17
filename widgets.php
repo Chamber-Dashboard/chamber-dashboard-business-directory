@@ -233,10 +233,17 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 						}
 					}
 					if( in_array( 'description', $instance['display'] ) ) {
-						the_content();
+						//the_content();
+						$featured_biz_content = get_the_content();
+						echo '<p>' . $featured_biz_content . '</p>';
+						//echo 'This is a test!!';
 					}
 					if( in_array( 'excerpt', $instance['display'] ) ) {
-						the_excerpt();
+						$featured_business_excerpt = get_the_excerpt();
+						//$featured_biz_content = get_the_content();
+						if( has_excerpt( $post_id )){
+							echo '<p>' . $featured_business_excerpt . '</p>';
+						}
 					}
 					if( isset( $contactmeta['location'] ) ) {
 						$locations = $contactmeta['location'];

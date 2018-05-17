@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.9.5
+Version: 2.9.6
 Author: Morgan Kay, Chandrika Guntur
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -334,6 +334,18 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
     'mode' => WPALCHEMY_MODE_EXTRACT,
     'prefix' => '_cdash_'
 ));
+
+// Create metabox for business referral
+$busreferral_metabox = new WPAlchemy_MetaBox(array
+(
+    'id' => 'busreferral_meta',
+    'title' => 'Business Referral',
+    'types' => array('business'),
+    'template' => CDASH_PATH . '/wpalchemy/busreferral.php',
+    'mode' => WPALCHEMY_MODE_EXTRACT,
+    'prefix' => '_cdash_'
+));
+
 
 $options = get_option('cdash_directory_options');
 if( !empty( $options['bus_custom'] ) ) {

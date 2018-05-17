@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 4.9.5
 Requires PHP: 5.6
-Stable tag: 2.9.5
+Stable tag: 2.9.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -94,6 +94,10 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 2.9.6 =
+* Fixed the logo issue with Featured Business Widget
+* Referral field added to Businesses
+
 = 2.9.5 =
 * Fixed the business listing css and the featured business widget issue.
 

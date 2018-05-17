@@ -16,7 +16,6 @@ function cdash_single_business_style() {
 add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 
 // Display single business (filter content)
-
 function cdash_single_business($content) {
 	if( is_singular('business') && is_main_query() ) {
 		$post_id = get_the_id();
@@ -132,9 +131,10 @@ function cdash_single_business($content) {
 
 	$content = $business_content;
 	}
+	wp_reset_postdata();
 	return $content;
-}
 
+}
 add_filter('the_content', 'cdash_single_business');
 
 
