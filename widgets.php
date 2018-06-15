@@ -222,6 +222,9 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 					global $buscontact_metabox;
 					$contactmeta = $buscontact_metabox->the_meta();
 					$post_id = get_the_id();
+					if(!is_array($instance['display'])){
+						return;
+					}
 					if( in_array( 'thumbnail', $instance['display'] ) ) {
 						the_post_thumbnail( 'thumbnail' );
 					}
@@ -229,7 +232,8 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 						global $buslogo_metabox;
 						$logometa = $buslogo_metabox->the_meta();
 						if( isset( $logometa['buslogo'] ) ) {
-							echo wp_get_attachment_image( $logometa['buslogo'], 'full' );
+							$business_logo = wp_get_attachment_image( $logometa['buslogo'], 'full' );
+							echo '<p>' . $business_logo . '</p>';
 						}
 					}
 					if( in_array( 'description', $instance['display'] ) ) {
@@ -241,9 +245,9 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 					if( in_array( 'excerpt', $instance['display'] ) ) {
 						$featured_business_excerpt = get_the_excerpt();
 						//$featured_biz_content = get_the_content();
-						if( has_excerpt( $post_id )){
+						//if( has_excerpt( $post_id )){
 							echo '<p>' . $featured_business_excerpt . '</p>';
-						}
+						//}
 					}
 					if( isset( $contactmeta['location'] ) ) {
 						$locations = $contactmeta['location'];

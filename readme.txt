@@ -3,9 +3,9 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Requires PHP: 5.6
-Stable tag: 2.9.6
+Stable tag: 2.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -94,6 +94,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+=2.9.7 =
+* Fixed the display options not showing up on business listings
+
 = 2.9.6 =
 * Fixed the logo issue with Featured Business Widget
 * Referral field added to Businesses

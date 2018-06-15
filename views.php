@@ -17,6 +17,9 @@ add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 
 // Display single business (filter content)
 function cdash_single_business($content) {
+	if(in_array('get_the_excerpt', $GLOBALS['wp_current_filter'])) {
+		return $content;
+	}
 	if( is_singular('business') && is_main_query() ) {
 		$post_id = get_the_id();
 		$meta = get_post_custom($post_id);
@@ -99,7 +102,7 @@ function cdash_single_business($content) {
 			}
 		}
 
-		if( $options['bus_custom'] ) {
+		if( isset($options['bus_custom'] )) {
 		 	$business_content .= cdash_display_custom_fields( get_the_id() );
 		}
 		$business_contacts = '';
@@ -131,9 +134,8 @@ function cdash_single_business($content) {
 
 	$content = $business_content;
 	}
-	wp_reset_postdata();
 	return $content;
-
+	//wp_reset_postdata();
 }
 add_filter('the_content', 'cdash_single_business');
 
@@ -283,6 +285,9 @@ function cdash_reorder_taxonomies( $query ) {
 add_action( 'pre_get_posts', 'cdash_reorder_taxonomies' );
 
 function cdash_taxonomy_filter( $content ) {
+	if(in_array('get_the_excerpt', $GLOBALS['wp_current_filter'])) {
+		return $content;
+	}
 	if( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) {
 		$options = get_option( 'cdash_directory_options' );
 
@@ -355,7 +360,7 @@ function cdash_taxonomy_filter( $content ) {
 			}
 		}
 
-		if( $options['bus_custom'] ) {
+		if( isset($options['bus_custom'] )) {
 		 	$tax_content .= cdash_display_custom_fields( get_the_id() );
 		}
 		$tax_contacts = '';
@@ -376,8 +381,8 @@ function cdash_business_directory_shortcode( $atts ) {
 	$options = get_option('cdash_directory_options');
 	$member_options = get_option('cdashmm_options');
     global $post;
-		//global $business_list;
-		//$business_list = '';
+		global $business_list;
+		$business_list = '';
 	// Set our default attributes
 	extract( shortcode_atts(
 		array(
@@ -385,7 +390,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'category' => '', // options: slug of any category
 			'level' => '', // options: slug of any membership level
 			'text' => 'excerpt', // options: excerpt, description, none
-			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location hours
+			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location, hours
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
 			'orderby' => 'title', // options: date, modified, menu_order, rand, membership_level
@@ -451,92 +456,91 @@ function cdash_business_directory_shortcode( $atts ) {
 		$business_list = '';
 		$business_list .= "<div id='businesslist' class='" . $format . "'>";
 		$count = 0;
-			while ( $businessquery->have_posts() ) : $businessquery->the_post();
-			$add = ( $count % 2 ) ? ' even_post' : ' odd_post';
-			$count++;
-			//$postClass = post_class('business');
-				//$business_list .= "<div class='business'" . join( ' ', get_post_class() ) . "'>";
-				$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
-				if($single_link == "yes") {
-					$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
-				} else {
-					$business_list .= "<h3>" . get_the_title() . "</h3>";
-				}
-				//$business_list .= '<p>' . $level . '</p>';
-				$business_list .= "<div class='description'>";
+			while ( $businessquery->have_posts() ) :
+				$businessquery->the_post();
+				$add = ( $count % 2 ) ? ' even_post' : ' odd_post';
+				$count++;
+				//$postClass = post_class('business');
+					//$business_list .= "<div class='business'" . join( ' ', get_post_class() ) . "'>";
+					$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
+					if($single_link == "yes") {
+						$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
+					} else {
+						$business_list .= "<h3>" . get_the_title() . "</h3>";
+					}
+					//$business_list .= '<p>' . $level . '</p>';
+					$business_list .= "<div class='description'>";
 
 			  	if( "logo" == $image ) {
 			  		global $buslogo_metabox;
-					$logometa = $buslogo_metabox->the_meta();
-					if( isset( $logometa['buslogo'] ) ) {
+						$logometa = $buslogo_metabox->the_meta();
+						if( isset( $logometa['buslogo'] ) ) {
 					  	$logoattr = array(
+							'class'	=> 'alignleft logo',
+							);
+							if( $single_link == "yes" ) {
+								$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
+							} else {
+								$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+							}
+						}
+			  	} elseif( "featured" == $image ) {
+			  		$thumbattr = array(
 							'class'	=> 'alignleft logo',
 						);
 						if( $single_link == "yes" ) {
-							$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
-						} else {
-							$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
-						}
-					}
-			  	} elseif( "featured" == $image ) {
-			  		$thumbattr = array(
-						'class'	=> 'alignleft logo',
-					);
-					if( $single_link == "yes" ) {
-						$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
+							$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
 				    } else {
-						$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
-					}
+							$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
+						}
 			  	}
-			  	/*if( "excerpt" == $text ) {
+					if( "excerpt" == $text ) {
 			  		$business_list .= get_the_excerpt();
 			  	} elseif( "description" == $text ) {
 			  		$business_list .= get_the_content();
-			  	}*/
+			  	}
 
-          if( "excerpt" == $text ) {
+          /*if( "excerpt" == $text ) {
 			  		$business_list .= apply_filters('the_excerpt', get_the_excerpt()); //#GV#: fixed localization/internationalization issues
 			  	} elseif( "description" == $text ) {
 			  		$business_list .= apply_filters('the_content', get_the_content());  //#GV#: fixed localization/internationalization issues
-			  	}
+			  	}*/
 			  	$business_list .= "</div>";
 			  	if( '' !== $display ) {
 			  		global $buscontact_metabox;
-					$contactmeta = $buscontact_metabox->the_meta();
-				  	if( isset( $contactmeta['location'] ) ) {
-				  		$locations = $contactmeta['location'];
-				  		if( is_array( $locations ) ) {
-							foreach( $locations as $location ) {
-								if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
-									continue;
-								} else {
-								  	if( in_array( "location_name", $displayopts ) && isset( $location['altname'] ) && '' !== $location['altname'] ) {
-								  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
-								  	}
-								  	if( in_array( "address", $displayopts ) ) {
-										$business_list .= cdash_display_address( $location );
-								  	}
+						$contactmeta = $buscontact_metabox->the_meta();
+				  		if( isset( $contactmeta['location'] ) ) {
+				  			$locations = $contactmeta['location'];
+				  			if( is_array( $locations ) ) {
+									foreach( $locations as $location ) {
+										if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
+											continue;
+										} else {
+								  		if( in_array( "location_name", $displayopts ) && isset( $location['altname'] ) && '' !== $location['altname'] ) {
+								  			$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
+								  		}
+									  	if( in_array( "address", $displayopts ) ) {
+												$business_list .= cdash_display_address( $location );
+									  	}
+	                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
+												$business_list .= $location['hours'];
+									  	}
 
-                    if( in_array( "hours", $displayopts ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
-										$business_list .= $location['hours'];
-								  	}
+									  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
+												$business_list .= cdash_display_phone_numbers( $location['phone'] );
+									  	}
 
-								  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
-										$business_list .= cdash_display_phone_numbers( $location['phone'] );
-								  	}
+									  	if( in_array( "email", $displayopts ) && isset( $location['email'] ) && '' !== $location['email'] ) {
+												$business_list .= cdash_display_email_addresses( $location['email'] );
+											}
 
-								  	if( in_array( "email", $displayopts ) && isset( $location['email'] ) && '' !== $location['email'] ) {
-										$business_list .= cdash_display_email_addresses( $location['email'] );
-									}
-							  	}
-
-							  	if( in_array( "url", $displayopts ) && isset( $location['url'] ) && '' !== $location['url'] ) {
-							  		$business_list .= cdash_display_url( $location['url'] );
+											if( in_array( "url", $displayopts ) && isset( $location['url'] ) && '' !== $location['url'] ) {
+									  		$business_list .= cdash_display_url( $location['url'] );
+									  	}
 							  	}
 					  		}
 					  	}
 				  	}
-
 			  		if( in_array( "social_media", $displayopts ) ) {
 			  			$business_list .= cdash_display_social_media( get_the_id() );
 			  		}
@@ -552,9 +556,9 @@ function cdash_business_directory_shortcode( $atts ) {
 				  	}
 			  	}
 			  	$options = get_option( 'cdash_directory_options' );
-			  	if( $options['bus_custom'] ) {
-					$business_list .= cdash_display_custom_fields( get_the_id() );
-				}
+			  	if( isset($options['bus_custom'] )) {
+						$business_list .= cdash_display_custom_fields( get_the_id() );
+					}
 				$business_contacts = '';
 				$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
 			  	$business_list .= "</div>";
@@ -593,9 +597,9 @@ function cdash_business_directory_shortcode( $atts ) {
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
 
-function cdash_display_business_listings($format, $category, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status){
+/*function cdash_display_business_listings($format, $category, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status){
 
-}
+}*/
 
 // ------------------------------------------------------------------------
 // BUSINESS MAP SHORTCODE
