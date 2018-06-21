@@ -149,3 +149,11 @@ clear: both;
 		float: none;
 	}
 }
+
+/* Responsive Grid Styles */
+#businesslist.responsive, #search-results.responsive{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, auto));
+  grid-gap: 2%;
+  grid-auto-columns: max-content;
+}

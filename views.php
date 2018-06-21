@@ -386,7 +386,7 @@ function cdash_business_directory_shortcode( $atts ) {
 	// Set our default attributes
 	extract( shortcode_atts(
 		array(
-			'format' => 'list',  // options: list, grid2, grid3, grid4
+			'format' => 'list',  // options: list, grid2, grid3, grid4, responsive
 			'category' => '', // options: slug of any category
 			'level' => '', // options: slug of any membership level
 			'text' => 'excerpt', // options: excerpt, description, none
@@ -775,7 +775,7 @@ add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
 function cdash_business_search_results_shortcode( $atts ) {
 	extract( shortcode_atts(
         array(
-			'format' => 'list',  // options: list, grid2, grid3, grid4
+			'format' => 'list',  // options: list, grid2, grid3, grid4, responsive
         ), $atts )
 	);
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
