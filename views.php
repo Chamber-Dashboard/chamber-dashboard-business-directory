@@ -79,6 +79,8 @@ function cdash_single_business($content) {
 					}
 					if( isset( $options['sv_address'] ) && "1" == $options['sv_address'] ) {
 						$business_content .= cdash_display_address( $location );
+						//$address_for_maps = cdash_display_address( $location );
+						$business_content .= cdash_display_google_map_link($location);
 					}
 
           if( isset($options['sv_hours'] ) && "1" == ( $options['sv_hours'] ) && isset( $location['hours'] ) && '' !== $location['hours'] ) {
@@ -1049,6 +1051,42 @@ function cdash_display_address( $location ) {
 	return $address;
 }
 
+// ------------------------------------------------------------------------
+// DISPLAY GOOGLE MAP LINK
+// ------------------------------------------------------------------------
+function cdash_display_google_map_link( $location ) {
+	$google_map_link = '';
+	$google_map_link .= "<p class='google_map_link'>";
+	$google_map_link .= "<a href='https://www.google.com/maps/search/?api=1&query=";
+		if( isset( $location['address'] ) && '' !== $location['address'] ) {
+			$street_address = $location['address'];
+			$street_address_array = explode(" ", $street_address);
+			$cdash_st_ad_array_len = count($street_address_array);
+			for($i=0; $i<count($street_address_array); $i++){
+				$google_map_link .= $street_address_array[$i] . "%20";
+			}
+		}
+
+    if( isset( $location['city'] ) && '' !== $location['city'] ) {
+			$google_map_link .= $location['city'] . "%20";
+		}
+
+		if( isset( $location['state'] ) && '' !== $location['state'] ) {
+			$google_map_link .= $location['state'] . "%20";
+		}
+
+		if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
+			$google_map_link .= $location['zip'] . "%20";
+		}
+
+    if( isset( $location['country'] ) && '' !== $location['country'] ) {
+			$google_map_link .= $location['country'];
+		}
+	$google_map_link .= "'>Link to Google Map</a></p><br />";
+	//$address = apply_filters( 'cdash_filter_address', $address, $location );
+	//return $address;*/
+	return $google_map_link;
+}
 
 
 
