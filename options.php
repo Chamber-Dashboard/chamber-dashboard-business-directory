@@ -542,7 +542,7 @@ function cdash_import_form() { ?>
 							$rawaddress .= ' ' . $data[8];
 						}
 						$address = urlencode( $rawaddress );
-						$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
+						$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAL547yG2qyUzKT9lLUXKypr6ScCvcBakY&address=" . $address . "&sensor=true" );
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$latitude = $json['results'][0]['geometry']['location']['lat'];
