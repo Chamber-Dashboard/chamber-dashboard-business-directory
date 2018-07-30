@@ -207,7 +207,7 @@ function cdash_single_business_map() {
 							$popstate = esc_html( $location['state'] );
 							?>
 
-							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?> </div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 							<?php
 						}
 					}
@@ -1056,8 +1056,8 @@ function cdash_display_address( $location ) {
 // ------------------------------------------------------------------------
 function cdash_display_google_map_link( $location ) {
 	$google_map_link = '';
-	$google_map_link .= "<p class='google_map_link'>";
-	$google_map_link .= "<a href='https://www.google.com/maps/search/?api=1&query=";
+	//$google_map_link .= "<p class='google_map_link'>";
+	$google_map_link .= "<a target='_blank' href='https://www.google.com/maps/search/?api=1&query=";
 		if( isset( $location['address'] ) && '' !== $location['address'] ) {
 			$street_address = $location['address'];
 			$street_address_array = explode(" ", $street_address);
@@ -1082,9 +1082,7 @@ function cdash_display_google_map_link( $location ) {
     if( isset( $location['country'] ) && '' !== $location['country'] ) {
 			$google_map_link .= $location['country'];
 		}
-	$google_map_link .= "'>Link to Google Map</a></p><br />";
-	//$address = apply_filters( 'cdash_filter_address', $address, $location );
-	//return $address;*/
+	$google_map_link .= "'>Get Directions</a><br /><br />";
 	return $google_map_link;
 }
 
