@@ -128,6 +128,7 @@ function cdash_single_business($content) {
 		}
 	}
 		$business_content .= "</div>";
+		//$business_content .= cdash_display_google_map_link($location);
         $business_content .= cdash_display_edit_link($post_id);
 
 				if(isset($options['business_listings_url']) ) {
