@@ -148,8 +148,8 @@ function chamber_dashboard_technical_details_page_render(){
 									cdash_display_plugin_version('cdash_crm_importer');
 									cdash_display_plugin_version('cdash_events_calendar');
 									cdash_display_plugin_version('cdash_exporter');
-									cdash_display_plugin_version('cdash_member_updater');
 									cdash_display_plugin_version('cdash_recurring_payments');
+									cdash_display_plugin_version('cdash_member_updater');									
 								?>
 
             </div>
@@ -196,7 +196,7 @@ function cdash_display_plugin_version($plugin_name){
 		}
 	}
 	if($plugin_name == 'cdash_recurring_payments'){
-		if( in_array( 'cdash-member-updater.php', $plugins ) ) {
+		if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
 			echo "<h4>Recurring Payments Version: " . CDASHRP_VERSION . "</h4>";
 		}
 	}
