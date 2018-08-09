@@ -3,9 +3,9 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 2.9.8
+Stable tag: 2.9.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -94,13 +94,17 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
-=2.9.8=
+
+= 2.9.9 =
+* Changed the Google maps API.
+
+= 2.9.8 =
 * Added responsive option to the business directory shortcode
 * Added technical details to the welcome page tab
 * Added Google map link to the single business listings
-* Fixed the Google maps API Key 
+* Fixed the Google maps API Key
 
-=2.9.7 =
+= 2.9.7 =
 * Fixed the display options not showing up on business listings
 
 = 2.9.6 =

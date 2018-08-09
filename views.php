@@ -152,7 +152,7 @@ function cdash_single_business_map() {
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location'];  ?>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAL547yG2qyUzKT9lLUXKypr6ScCvcBakY">
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU">
 		</script>
 		<script type="text/javascript">
 
@@ -632,7 +632,7 @@ function cdash_business_map_shortcode( $atts ) {
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width:" . $width . "; height:" . $height . ";'></div>";
-	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAL547yG2qyUzKT9lLUXKypr6ScCvcBakY'></script>";
+	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU'></script>";
 	if( "yes" == $cluster ) {
         $business_map .= "<script src='" . plugin_dir_url(__FILE__) . "js/markerclusterer.js'></script>";
 	}

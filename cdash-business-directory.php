@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 2.9.8
+Version: 2.9.9
 Author: Morgan Kay, Chandrika Guntur
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -26,7 +26,7 @@ Text Domain: cdash
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'CDASH_BUS_VER', '2.9.8' );
+define( 'CDASH_BUS_VER', '2.9.9' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -284,7 +284,7 @@ function cdash_admin_scripts_and_styles($hook)
     // business AJAX
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
-	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAL547yG2qyUzKT9lLUXKypr6ScCvcBakY&sensor=false' );
+	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&sensor=false' );
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		}
@@ -618,7 +618,8 @@ function cdash_store_geolocation_data( $post_id ) {
 						$rawaddress .= ' ' . $location['country'];
 					}
 					$address = urlencode( $rawaddress );
-					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAL547yG2qyUzKT9lLUXKypr6ScCvcBakY&address=" . $address . "&sensor=true" );
+					//$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address . "&sensor=true" );
+					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address );
 					$json = json_decode($json['body'], true);
 					if( is_array( $json ) && $json['status'] == 'OK') {
 						$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
