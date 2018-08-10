@@ -49,9 +49,6 @@ jQuery(document).ready(function ($) {
 	});
 
 // Preview Map
-
-
-
 	$(document).on( 'click', '.preview-map', function( evt ) {
 		evt.preventDefault();
 
@@ -70,8 +67,6 @@ jQuery(document).ready(function ($) {
 			var longitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.longitude').val());
 		}
 		var canvas = $( evt.target ).closest('.geolocation-data').children('.map-canvas');
-
-
 		initialize(latitude, longitude, canvas);
 
 		function initialize(latitude, longitude, canvas) {
