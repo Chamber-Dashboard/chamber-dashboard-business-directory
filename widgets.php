@@ -244,9 +244,13 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 					}
 					if( in_array( 'excerpt', $instance['display'] ) ) {
 						$featured_business_excerpt = get_the_excerpt();
+						if(has_excerpt($post_id)){
+							echo '<p>' . $featured_business_excerpt . '</p>';
+						}
 						//$featured_biz_content = get_the_content();
 						//if( has_excerpt( $post_id )){
-							echo '<p>' . $featured_business_excerpt . '</p>';
+
+							//echo "Test";
 						//}
 					}
 					if( isset( $contactmeta['location'] ) ) {
