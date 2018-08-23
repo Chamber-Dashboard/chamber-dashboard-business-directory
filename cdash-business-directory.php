@@ -380,14 +380,14 @@ function cdash_promote_member_manager() {
 }
 add_action( 'plugins_loaded', 'cdash_promote_member_manager' );
 
-/*$plugins = cdash_get_active_plugin_list();
+$plugins = cdash_get_active_plugin_list();
 if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
 	remove_action( 'plugins_loaded', 'cdash_promote_member_manager' );
-}*/
+}
 
-/*if(function_exists('cdashmm_requires_wordpress_version')){
+if(function_exists('cdashmm_requires_wordpress_version')){
 	remove_action( 'plugins_loaded', 'cdash_promote_member_manager' );
-}*/
+}
 
 
 // ------------------------------------------------------------------------

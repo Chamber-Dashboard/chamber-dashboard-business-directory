@@ -13,7 +13,6 @@ require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'addons.php' );
 // Require licenses page
 require_once( plugin_dir_path( __FILE__ ) . 'license.php' );
-
 // Require Getting started page
 require_once( plugin_dir_path( __FILE__ ) . 'getting_started.php' );
 

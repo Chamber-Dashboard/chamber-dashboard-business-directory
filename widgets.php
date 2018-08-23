@@ -243,15 +243,10 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 						//echo 'This is a test!!';
 					}
 					if( in_array( 'excerpt', $instance['display'] ) ) {
-						$featured_business_excerpt = get_the_excerpt();
 						if(has_excerpt($post_id)){
+							$featured_business_excerpt = get_the_excerpt();
 							echo '<p>' . $featured_business_excerpt . '</p>';
 						}
-						//$featured_biz_content = get_the_content();
-						//if( has_excerpt( $post_id )){
-
-							//echo "Test";
-						//}
 					}
 					if( isset( $contactmeta['location'] ) ) {
 						$locations = $contactmeta['location'];
@@ -266,7 +261,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
                   echo $location['hours'] . '<br /><br />';
 			        }
     					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
-                            echo cdash_display_url( $location['url'] );
+                  echo cdash_display_url( $location['url'] );
 			        }
               if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
                   echo cdash_display_phone_numbers( $location['phone'] );
