@@ -96,6 +96,7 @@ Several people have contributed to the development of Chamber Dashboard:
 == Changelog ==
 = 3.0 =
 * Fixed the Google maps in the admin.
+* Fixed the Featured Business widget
 
 = 2.9.9 =
 * Changed the Google maps API.
