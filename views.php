@@ -375,6 +375,13 @@ function cdash_taxonomy_filter( $content ) {
 add_filter( 'the_content', 'cdash_taxonomy_filter' );
 // add_filter( 'get_the_excerpt', 'cdash_taxonomy_filter' ); this won't retain formatting
 
+//Adding Business tags to the archive
+function cdash_business_tags( $query ) {
+    if ( $query->is_tag() && $query->is_main_query() ) {
+        $query->set( 'post_type', array( 'post', 'business' ) );
+    }
+}
+add_action( 'pre_get_posts', 'cdash_business_tags' );
 // ------------------------------------------------------------------------
 // BUSINESS DIRECTORY SHORTCODE
 // ------------------------------------------------------------------------
