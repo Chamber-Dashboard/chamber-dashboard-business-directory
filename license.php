@@ -24,11 +24,20 @@ function chamber_dashboard_licenses_page_render(){
         <div class="icon32" id="icon-options-general"><br></div>
         <h2><?php _e('Chamber Dashboard Licenses'); ?></h2>
         <?php settings_errors(); ?>
+        <table>
+          <tr>
+            <td>
+              <?php
+                cdash_licence_page_hook();
+              ?>
+            </td>
+          </tr>
+        </table>
 
         <!--<div id="main" style="min-width: 350px; float: left;">-->
             <?php
-            $plugins = cdash_get_active_plugin_list();
-                if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
+            //$plugins = cdash_get_active_plugin_list();
+                /*if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
                   if ( version_compare(CDASHRP_VERSION, "1.5.3", "<" ) ) {
                     cdashrp_edd_license_page();
                   }
@@ -48,8 +57,8 @@ function chamber_dashboard_licenses_page_render(){
                   if ( version_compare(CDCRM_IMPORT_VERSION, "1.1", "<" ) ) {
                     cdcrm_import_edd_license_page();
                   }
-                }
-                cdash_licence_page_hook();
+                }*/
+
               //}
 
             ?>

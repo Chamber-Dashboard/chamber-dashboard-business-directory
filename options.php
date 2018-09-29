@@ -76,7 +76,7 @@ function cdash_init(){
 //Check if license page exists in the CD admin menu
 function cdash_license_page(){
 	if ( empty ( $GLOBAL['admin_page_hooks']['chamber_dashboard_license'] ) ){
-		add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
+		add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'cdash_about_screen' );
 	}
 }
 

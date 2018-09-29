@@ -146,10 +146,10 @@ function chamber_dashboard_technical_details_page_render(){
 									cdash_display_plugin_version('cdash_member_manager_pro');
 									cdash_display_plugin_version('cdash_crm');
 									cdash_display_plugin_version('cdash_crm_importer');
-									cdash_display_plugin_version('cdash_events_calendar');
 									cdash_display_plugin_version('cdash_exporter');
 									cdash_display_plugin_version('cdash_recurring_payments');
-									cdash_display_plugin_version('cdash_member_updater');									
+									cdash_display_plugin_version('cdash_member_updater');
+									cdash_technical_details_hook();
 								?>
 
             </div>
@@ -180,11 +180,6 @@ function cdash_display_plugin_version($plugin_name){
 			echo "<h4>CRM Importer Version: " . CDCRM_IMPORT_VERSION . "</h4>";
 		}
 	}
-	if($plugin_name == 'cdash_events_calendar'){
-		if( in_array( 'cdash-event-calendar.php', $plugins ) ) {
-			echo "<h4>Event Calendar Version: " . CDASH_EVENTS_UPDATE_VERSION_1 . "</h4>";
-		}
-	}
 	if($plugin_name == 'cdash_exporter'){
 		if( in_array( 'cdash-exporter.php', $plugins ) ) {
 			echo "<h4>Chamber Dashboard Exporter Version: " . CDEXPORT_VERSION . "</h4>";
@@ -200,6 +195,11 @@ function cdash_display_plugin_version($plugin_name){
 			echo "<h4>Recurring Payments Version: " . CDASHRP_VERSION . "</h4>";
 		}
 	}
+}
+
+//Creating the custom hook for displaying license form
+function cdash_technical_details_hook(){
+  do_action('cdash_technical_details_hook');
 }
 
 ?>

@@ -102,12 +102,21 @@ jQuery(document).ready(function ($) {
 		evt.preventDefault();
 		$( evt.target ).closest('.update-preview').children('.update-reminder').show();
 
-		var newlatitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-latitude').val());
-		var newlongitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-longitude').val());
+		//var newlatitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-latitude').val());
+		var newlatitude = parseFloat($( evt.target ).parent('.custom-coords-fields').children('.custom-latitude').val());
 
+		//ar newlongitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-longitude').val());
+		var newlongitude = parseFloat($( evt.target ).parent('.custom-coords-fields').children('.custom-longitude').val());
 		var newLatLng = new google.maps.LatLng(newlatitude, newlongitude);
-		marker.setPosition(newLatLng)
-		map.panTo( newLatLng );
+		if((!newlatitude) || (!newlongitude)){
+			alert("Pleae enter a value for latitude and longitude");
+		}else{
+			marker.setPosition(newLatLng)
+			map.panTo( newLatLng );
+		}
+		//}
+		//marker.setPosition(newLatLng)
+		//map.panTo( newLatLng );
 
 	});
 
