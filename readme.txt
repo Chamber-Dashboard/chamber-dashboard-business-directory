@@ -97,8 +97,8 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
-=3.0.2=
-* Compatible with WC Payments addon
+= 3.0.2 =
+* Custom Google maps api key enabled
 
 = 3.0.1 =
 * Businesses will now show up in the tags archive

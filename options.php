@@ -53,7 +53,8 @@ function cdash_add_defaults() {
 						"currency" => "USD",
             "search_results_per_page"   =>  "5",
             "business_listings_url"   =>  '',
-            'business_listings_url_text' => 'Return to Business Listings'
+            'business_listings_url_text' => 'Return to Business Listings',
+            'google_maps_api' =>  ''
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -281,6 +282,13 @@ function cdash_render_form() {
             <td>
               <input type="text" size="35" name="cdash_directory_options[business_listings_url_text]" value="<?php if(isset($options['business_listings_url_text'])) { echo $options['business_listings_url_text']; } ?>" />
               <br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the text you want to show for the Return to Business Listings link on the single business page.', 'cdash'); ?></span>
+            </td>
+          </tr>
+          <tr id="google_maps_api">
+            <th scope="row"><?php _e('Google Maps API Key', 'cdash'); ?></th>
+            <td>
+              <input type="text" size="35" name="cdash_directory_options[google_maps_api]" value="<?php if(isset($options['google_maps_api'])) { echo $options['google_maps_api']; } ?>" />
+              <br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the Google Maps API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash'); ?></span>
             </td>
           </tr>
 					<!-- Custom Fields -->
@@ -542,8 +550,8 @@ function cdash_import_form() { ?>
 							$rawaddress .= ' ' . $data[8];
 						}
 						$address = urlencode( $rawaddress );
-						//$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address . "&sensor=true" );
-            $json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address );
+						//$json = wp_remote_get("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDAh8Bc9eoDDifM5TKtnNgpWEHd1jIUa2U&address=" . $address . "&sensor=true");
+            $json = wp_remote_get(cdash_get_google_map_url($address));
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$latitude = $json['results'][0]['geometry']['location']['lat'];

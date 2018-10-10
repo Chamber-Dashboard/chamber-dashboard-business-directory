@@ -149,7 +149,7 @@ function chamber_dashboard_technical_details_page_render(){
 									cdash_display_plugin_version('cdash_exporter');
 									cdash_display_plugin_version('cdash_recurring_payments');
 									cdash_display_plugin_version('cdash_member_updater');
-									cdash_technical_details_hook();
+									//cdash_technical_details_hook();
 								?>
 
             </div>

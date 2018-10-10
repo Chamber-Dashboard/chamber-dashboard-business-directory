@@ -53,6 +53,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
 register_activation_hook(__FILE__, 'cdash_activation_transient');
+//register_activation_hook(__FILE__, 'cdash_update_message');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
@@ -284,7 +285,10 @@ function cdash_admin_scripts_and_styles($hook)
     // business AJAX
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
-	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&sensor=false' );
+				$google_map_api_key = cdash_get_google_maps_api_key();
+
+	    	//wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&sensor=false' );
+				wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		}
@@ -595,40 +599,20 @@ function cdash_run_that_action_last() {  // add the action now, with lowest prio
 }
 
 function cdash_store_geolocation_data( $post_id ) {
-
 	// get the addresses
 	$locations = get_post_meta( $post_id, '_cdash_location', true );
-
 	if( !empty( $locations ) && is_array( $locations ) ) {
 		foreach( $locations as $key => $location ) {
 			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				if( isset( $location['city'] ) ) {
-					// ask Google for the latitude and longitude
-					$rawaddress = $location['address'];
-					if( isset( $location['city'] ) ) {
-						$rawaddress .= ' ' . $location['city'];
-					}
-					if( isset( $location['state'] ) ) {
-						$rawaddress .= ' ' . $location['state'];
-					}
-					if( isset( $location['zip'] ) ) {
-						$rawaddress .= ' ' . $location['zip'];
-					}
-					if( isset( $location['country'] ) ) {
-						$rawaddress .= ' ' . $location['country'];
-					}
-					$address = urlencode( $rawaddress );
-					//$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address . "&sensor=true" );
-					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&address=" . $address );
-					$json = json_decode($json['body'], true);
-					if( is_array( $json ) && $json['status'] == 'OK') {
-						$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
-						$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng'];
-					} else {
-						$locations[$key]['latitude'] = '0';
-						$locations[$key]['longitude'] = '0';
-					}
+					list($lat,$lng) = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
+					$locations[$key]['latitude'] = $lat;
+					$locations[$key]['longitude'] = $lng;
+				} else {
+					cd_info("City is not set. Not updating post $post_id");
 				}
+			} else {
+				cd_info("LatLong set to " . $location['latitude'] . ", " . $location['longitude'] . ". Not updating post $post_id");
 			}
 		}
 		// save the latitude and longitude

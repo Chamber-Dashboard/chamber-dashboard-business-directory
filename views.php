@@ -151,8 +151,12 @@ function cdash_single_business_map() {
 	if( is_singular('business') && isset($options['sv_map']) && $options['sv_map'] == "1" ) {
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
-		$locations = $contactmeta['location'];  ?>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU">
+		$locations = $contactmeta['location'];
+		$google_map_api_key = cdash_get_google_maps_api_key();
+		?>
+		<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU">
+		</script>-->
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $google_map_api_key; ?>">
 		</script>
 		<script type="text/javascript">
 
@@ -207,7 +211,7 @@ function cdash_single_business_map() {
 							$popstate = esc_html( $location['state'] );
 							?>
 
-							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?> </div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location['state']; ?> <?php echo $location['zip']; ?> </div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 							<?php
 						}
 					}
@@ -263,7 +267,7 @@ function cdash_single_business_map() {
 
 function cdash_info_window() {
 	global $post;
-	$output = "<div style=\x22width: 200px; height: 150px\x22>";
+	$output = "<div style='width: 200px; height: 150px'>";
 	$output .= $location['altname'];
 	$output .= "</div>";
 	return $output;
@@ -635,11 +639,13 @@ function cdash_business_map_shortcode( $atts ) {
     'membership_level' => $level,
 	);
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+	$google_map_api_key = cdash_get_google_maps_api_key();
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width:" . $width . "; height:" . $height . ";'></div>";
-	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU'></script>";
+	//$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU></script>";
+	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key='.$google_map_api_key.'></script>";
 	if( "yes" == $cluster ) {
         $business_map .= "<script src='" . plugin_dir_url(__FILE__) . "js/markerclusterer.js'></script>";
 	}
@@ -707,11 +713,8 @@ function cdash_business_map_shortcode( $atts ) {
 					}
 				}
 			}
-
 		endwhile;
-
 	endif;
-
 	$business_map .= "];
 
 					var bounds = new google.maps.LatLngBounds();
