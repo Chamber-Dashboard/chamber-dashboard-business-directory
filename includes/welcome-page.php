@@ -142,14 +142,50 @@ function chamber_dashboard_technical_details_page_render(){
 								<h3>Chamber Dashboard Plugins</h3>
 								<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
 								<?php
-									cdash_display_plugin_version('cdash_member_manager');
-									cdash_display_plugin_version('cdash_member_manager_pro');
-									cdash_display_plugin_version('cdash_crm');
-									cdash_display_plugin_version('cdash_crm_importer');
-									cdash_display_plugin_version('cdash_exporter');
-									cdash_display_plugin_version('cdash_recurring_payments');
-									cdash_display_plugin_version('cdash_member_updater');
-									//cdash_technical_details_hook();
+								$plugins = cdash_get_active_plugin_list();
+								if( in_array( 'cdash-member-manager.php', $plugins ) ) {
+									if ( version_compare(CDASHMM_VERSION, "2.3.7", "<" ) ) {
+										//cdash_display_plugin_version('cdash_member_manager');
+										echo "<h4>Member Manager Version: " . CDASHMM_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
+									if ( version_compare(CDASHMM_PRO_VERSION, "1.3.6", "<" ) ) {
+										//cdash_display_plugin_version('cdash_member_manager_pro');
+										echo "<h4>Member Manager Version: " . CDASHMM_PRO_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-crm.php', $plugins ) ) {
+									if ( version_compare(CDASHMM_CRM_VERSION, "1.5.0", "<" ) ) {
+										//cdash_display_plugin_version('cdash_crm');
+										echo "<h4>CRM Version: " . CDASHMM_CRM_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-crm-importer.php', $plugins ) ) {
+									if ( version_compare(CDCRM_IMPORT_VERSION, "1.1", "<" ) ) {
+										//cdash_display_plugin_version('cdash_crm_importer');
+										echo "<h4>CRM Importer Version: " . CDCRM_IMPORT_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-exporter.php', $plugins ) ) {
+									if ( version_compare(CDEXPORT_VERSION, "1.2.2", "<" ) ) {
+										//cdash_display_plugin_version('cdash_exporter');
+										echo "<h4>Chamber Dashboard Exporter Version: " . CDEXPORT_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
+									if ( version_compare(CDASHRP_VERSION, "1.5.6", "<" ) ) {
+										//cdash_display_plugin_version('cdash_recurring_payments');
+										echo "<h4>Recurring Payments Version: " . CDASHRP_VERSION . "</h4>";
+									}
+								}
+								if( in_array( 'cdash-member-updater.php', $plugins ) ) {
+									if ( version_compare(CDASHMU_VERSION, "1.3.6", "<" ) ) {
+										//cdash_display_plugin_version('cdash_member_updater');
+										echo "<h4>Member Updater Version: " . CDASHMU_VERSION . "</h4>";
+									}
+								}
+								cdash_technical_details_hook();
 								?>
 
             </div>
@@ -201,5 +237,4 @@ function cdash_display_plugin_version($plugin_name){
 function cdash_technical_details_hook(){
   do_action('cdash_technical_details_hook');
 }
-
 ?>
