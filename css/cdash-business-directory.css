@@ -151,9 +151,17 @@ clear: both;
 }
 
 /* Responsive Grid Styles */
-#businesslist.responsive, #search-results.responsive{
+#businesslist.responsive, #search-results.responsive, .business_category.responsive{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, auto));
   grid-gap: 2%;
   grid-auto-columns: max-content;
+}
+
+.cdash_parent_category{
+  padding:25px;
+}
+
+.cdash_pc_link{
+  display:block;
 }

@@ -31,18 +31,14 @@ define( 'CDASH_BUS_VER', '3.0.2' );
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
 // ------------------------------------------------------------------------
-
 function cdash_requires_wordpress_version() {
-	global $wp_version;
-	$plugin = plugin_basename( __FILE__ );
-	$plugin_data = get_plugin_data( __FILE__, false );
+  $plugin_path = plugin_basename( __FILE__ );
+  $plugin_data = get_plugin_data( __FILE__, false );
+  $plugin_name = $plugin_data['Name'];
 
-	if ( version_compare($wp_version, "4.6", "<" ) ) {
-		if( is_plugin_active($plugin) ) {
-			deactivate_plugins( $plugin );
-			wp_die( "'".$plugin_data['Name']."' requires WordPress 4.6 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
-		}
-	}
+  if (function_exists('cdash_plugins_requires_wordpress_version')){
+    cdash_plugins_requires_wordpress_version($plugin_name, $plugin_path);
+  }
 }
 add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
@@ -69,10 +65,6 @@ function cdash_activation_transient() {
 
 //Inlcude the required pages
 require_once( plugin_dir_path( __FILE__ ) . 'require_pages.php' );
-
-
-
-
 
 // Initialize language so it can be translated
 function cdash_language_init() {
@@ -670,8 +662,8 @@ function cdash_check_geolocation() {
 function cdash_ask_to_update_geolocation() {
 	?>
     <div class="update-nag">
-        <p><?php _e( 'Chamber Dashboard needs to update your database to ensure that your maps display correctly.', 'cdash' ); ?></p>
-        <p><a class="button submit-button" href="<?php echo admin_url( 'admin.php?page=chamber-dashboard-update-geolocation' ); ?>"><?php _e( 'Update Now', 'cdash' ); ?></a></p>
+        <p><?php esc_attr_e( 'Chamber Dashboard needs to update your database to ensure that your maps display correctly.', 'cdash' ); ?></p>
+        <p><a class="button submit-button" href="<?php echo admin_url( 'admin.php?page=chamber-dashboard-update-geolocation' ); ?>"><?php esc_attr_e( 'Update Now', 'cdash' ); ?></a></p>
     </div>
     <?php
 }
@@ -682,13 +674,13 @@ function cdash_update_geolocation_data_page() {
 
 	<div class="wrap">
 
-		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory', 'cdash'); ?></h2>
+		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php esc_attr_e('Chamber Dashboard Business Directory', 'cdash'); ?></h2>
 
 		<?php
 		// make sure we haven't done this before
 		$options = get_option('cdash_directory_options');
 		if( "yes" == $options['geolocation_updated'] ) { ?>
-			<p><?php _e( 'Your businesses are already up to date!', 'cdash' ); ?></p>
+			<p><?php esc_attr_e('Your businesses are already up to date!', 'cdash' ); ?></p>
 		<?php } else {
 				$number = cdash_find_and_update_all_business_geolocation( 'return' );
 			 ?>

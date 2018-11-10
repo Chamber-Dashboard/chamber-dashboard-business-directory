@@ -39,4 +39,10 @@ jQuery(document).ready(function($){
   $(window).resize(function(){
     equalheight('#businesslist .business');
   });
+
+  $('#cat').change(function(){
+    if (this.selectedIndex !== 0) {
+        window.location.href = this.value;
+    }
+ }) 
 });

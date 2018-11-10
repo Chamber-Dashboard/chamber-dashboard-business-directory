@@ -91,6 +91,28 @@ function cdash_add_licence_page_menu_hook(){
 // ------------------------------------------------------------------------------
 
 // Add menu page
+/*function cdash_add_options_page(){
+  add_menu_page(
+		'Chamber Dashboard',
+		'Chamber Dashboard',
+		'manage_options',
+		'/chamber-dashboard-business-directory/options.php',
+		'cdash_render_form',
+		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png',
+		85
+	);
+
+  add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Addons', 'Addons', 'manage_options', 'chamber_dashboard_addons', 'cdash_about_screen' );
+
+  $license_url = get_admin_url() . 'admin.php?page=cdash-about&tab=chamber_dashboard_license';
+  $plugins = cdash_get_active_plugin_list();
+      if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins) || in_array('cdash-member-manager-pro.php', $plugins) || in_array( 'cdash-wc-payments.php', $plugins ) ) {
+          add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'cdash_about_screen' );
+      }
+      add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Support', 'Support', 'manage_options', 'chamber_dashboard_support', 'cdash_about_screen' );
+}*/
+
+
 function cdash_add_options_page() {
 	add_menu_page(
 		'Chamber Dashboard',
@@ -480,7 +502,7 @@ function cdash_import_form() { ?>
 		$header_row = [];
 		if (($handle = fopen($file['file'], "r")) !== FALSE) {
 		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-				 print_r($data);
+				 //print_r($data);
 
 		    	if($row == 0) {
 		    		// Don't do anything with the header row
@@ -491,7 +513,7 @@ function cdash_import_form() { ?>
 					// Get the post data
 					$businessinfo = array (
 						'post_type'     => 'business',
-						'post_title'    => $data[0],
+						'post_title'    => sanitize_text_field($data[0]),
 						'post_content' 	=> $data[1],
 						'post_status'   => 'publish',
 						);

@@ -1005,9 +1005,10 @@ function cdash_business_categories_shortcode( $atts ) {
 		'order' => 'ASC',
 		'showcount' => 0,
 		'hierarchical' => 1,
-		'hide_empty' => 1,
+		'hide_empty' => 1, //can be 0
 		'child_of' => 0,
 		'exclude' => '',
+		'format' 	=> 'list', //options are list, grid
 		), $atts )
 	);
 
@@ -1025,10 +1026,21 @@ function cdash_business_categories_shortcode( $atts ) {
 		'title_li' => '',
 	);
 
-	$categories = '<ul class="business-categories">' . 	wp_list_categories($args) . '</ul>';
+	$taxonomies = get_terms( $args );
+
+	if($format == 'list'){
+		$categories = '<ul class="business-categories">' . 	wp_list_categories($args) . '</ul>';
+	}else if($format == 'grid'){
+		wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+		//$taxonomies = get_terms( $args );
+		$categories = display_categories_grid($taxonomies);
+	}
 	return $categories;
 }
 add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
+
+
+
 
 // ------------------------------------------------------------------------
 // DISPLAY ADDRESS
