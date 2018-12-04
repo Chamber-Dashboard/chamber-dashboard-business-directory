@@ -130,31 +130,80 @@ add_action('admin_init', 'cdash_welcome');
 function chamber_dashboard_technical_details_page_render(){
 ?>
     <div class="wrap">
-	   <div class="changelog">
-            <h2><?php _e('Chamber Dashboard Status', 'cdash'); ?></h2>
-            <div class="feature-section col three-col">
-							<?php
-								global $wp_version;
-								$php_version = phpversion();
-							?>
-                <h4>Current WP Version:</b> <?php echo $wp_version; ?></h4>
-								<h4>Current PHP Version:</b> <?php echo $php_version;  ?></h4>
-								<h3>Chamber Dashboard Plugins</h3>
-								<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
-								<?php
-									cdash_display_plugin_version('cdash_member_manager');
-									cdash_display_plugin_version('cdash_member_manager_pro');
-									cdash_display_plugin_version('cdash_crm');
-									cdash_display_plugin_version('cdash_crm_importer');
-									cdash_display_plugin_version('cdash_exporter');
-									cdash_display_plugin_version('cdash_recurring_payments');
-									cdash_display_plugin_version('cdash_member_updater');
-									//cdash_technical_details_hook();
-								?>
+	  	<div class="changelog">
+      	<h2><?php _e('Chamber Dashboard Status', 'cdash'); ?></h2>
+        <div class="feature-section col three-col">
+					<?php
+						global $wp_version;
+						$php_version = phpversion();
+					?>
+	          <h4>Current WP Version:</b> <?php echo $wp_version; ?></h4>
+						<h4>Current PHP Version:</b> <?php echo $php_version;  ?></h4>
+						<h3>Chamber Dashboard Plugins</h3>
+						<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
+						<?php
+						$plugins = cdash_get_active_plugin_list();
+						//Member Manager
+						if( in_array( 'cdash-member-manager.php', $plugins ) ) {
+	            if ( version_compare(CDASHMM_VERSION, "2.3.7", "<" ) ) {
+	              cdash_display_plugin_version('cdash_member_manager');
+	            }
+	          }
 
-            </div>
-        </div>
-    </div>
+						//Member Manager Pro
+						if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
+	            if ( version_compare(CDASHMM_PRO_VERSION, "1.3.7", "<" ) ) {
+	              cdash_display_plugin_version('cdash_member_manager_pro');
+	            }
+	          }
+
+						//CRM
+						if( in_array( 'cdash-crm.php', $plugins ) ) {
+	            if ( version_compare(CDASHMM_CRM_VERSION, "1.5.0", "<" ) ) {
+	              cdash_display_plugin_version('cdash_crm');
+	            }
+	          }
+
+						//CRM	IMPORTER
+						if( in_array( 'cdash-crm-importer.php', $plugins ) ) {
+	            if ( version_compare(CDCRM_IMPORT_VERSION, "1.1", "<" ) ) {
+	              cdash_display_plugin_version('cdash_crm_importer');
+	            }
+	          }
+
+						//EXPORTER
+						if( in_array( 'cdash-exporter.php', $plugins ) ) {
+	            if ( version_compare(CDEXPORT_VERSION, "1.2.2", "<" ) ) {
+	              cdash_display_plugin_version('cdash_exporter');
+	            }
+	          }
+
+						//RECURRING PAYMENTS
+						if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
+	            if ( version_compare(CDASHRP_VERSION, "1.5.7", "<" ) ) {
+	              cdash_display_plugin_version('cdash_recurring_payments');
+	            }
+	          }
+
+						//MEMBER UPDATER
+						if( in_array( 'cdash-member-updater.php', $plugins ) ) {
+	            if ( version_compare(CDASHMU_VERSION, "1.3.6", "<" ) ) {
+	              cdash_display_plugin_version('cdash_member_updater');
+	            }
+	          }
+
+						//EVENTS CALENDAR
+						if( in_array( 'cdash-event-calendar.php', $plugins ) ) {
+	            if ( version_compare(CDASH_EVENTS_UPDATE_VERSION_1, "2.2.7", "<" ) ) {
+	              cdash_display_plugin_version('cdash_events_calendar');
+	            }
+	          }
+							cdash_technical_details_hook();
+						?>
+
+	      </div>
+	  </div>
+  </div>
 <?php
 }
 
@@ -167,7 +216,7 @@ function cdash_display_plugin_version($plugin_name){
 	}
 	if($plugin_name == 'cdash_member_manager_pro'){
 		if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
-			echo "<h4>Member Manager Version: " . CDASHMM_PRO_VERSION . "</h4>";
+			echo "<h4>Member Manager Pro Version: " . CDASHMM_PRO_VERSION . "</h4>";
 		}
 	}
 	if($plugin_name == 'cdash_crm'){
@@ -193,6 +242,11 @@ function cdash_display_plugin_version($plugin_name){
 	if($plugin_name == 'cdash_recurring_payments'){
 		if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
 			echo "<h4>Recurring Payments Version: " . CDASHRP_VERSION . "</h4>";
+		}
+	}
+	if($plugin_name == 'cdash_events_calendar'){
+		if( in_array( 'cdash-event-calendar.php', $plugins ) ) {
+			echo "<h4>Events Calendar Version: " . CDASH_EVENTS_UPDATE_VERSION_1 . "</h4>";
 		}
 	}
 }
