@@ -27,7 +27,7 @@ function cdash_update_message(){
         $user_id = $current_user->ID;
         /* Check that the user hasn't already clicked to ignore the message */
 	if ( ! get_user_meta($user_id, 'cdash_update_message_ignore') ) {
-    echo '<div class="notice notice is-dismissible cdash_update_notice"><p>'. __('If you’d like to display maps in your Directory, you’ll need to generate a new Google Maps API Key and add it in the <a href="'.$settings_url.'">settings</a> page.') .' <a href="?cdash_update_message_dismissed">Hide Notice</a></p></div>';
+    echo '<div class="notice notice is-dismissible cdash_update_notice"><p>'. esc_html__('If you’d like to display maps in your Directory, you’ll need to generate a new Google Maps API Key and add it in the <a href="'.$settings_url.'">settings</a> page.') .' <a href="?cdash_update_message_dismissed">Hide Notice</a></p></div>';
 	}
 }
 
@@ -45,19 +45,22 @@ add_action('admin_init', 'cdash_update_message_ignore');
 //Get the Google Maps API Key
 function cdash_get_google_maps_api_key(){
   $options = get_option( 'cdash_directory_options' );
+  //$google_map_api_key = $options['google_maps_api'];
   if($options['google_maps_api'] == ''){
-    $google_map_api_key = 'AIzaSyDAh8Bc9eoDDifM5TKtnNgpWEHd1jIUa2U';
-    //$google_map_api_key = '';
-  }else{
+    $google_map_api_key = 'AIzaSyAoqmdfczTk4HY0qqDtQQJjRN4mhf9e7hE';
+    cd_debug("Google maps api key from CD: " . $google_map_api_key);
+  }
+  else{
     $google_map_api_key = $options['google_maps_api'];
-    //$google_map_api_key = 'AIzaSyDAh8Bc9eoDDifM5TKtnNgpWEHd1jIUa2U';
+    cd_debug("Custom Google maps api key: " . $google_map_api_key);
   }
   return $google_map_api_key;
 }
 
 function cdash_get_google_map_url($address) {
   $google_map_api_key = cdash_get_google_maps_api_key();
-  return "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $google_map_api_key;
+    return "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $google_map_api_key;
+    cd_debug("Google maps api key 1: " . $google_map_api_key);
 }
 
 // ask Google for the latitude and longitude
@@ -78,6 +81,7 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
   cd_debug("Constructed raw address $rawaddress from $address, $city, $state, $zip, $country");
   $address = urlencode( $rawaddress );
   $url = cdash_get_google_map_url($address);
+  cd_debug("Google maps url: " . $url);
   $response = wp_remote_get($url);
   $lat = 0;
   $lng = 0;

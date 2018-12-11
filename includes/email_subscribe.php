@@ -8,48 +8,32 @@ function cdash_email_subscribe(){
   <div class="cdash_email_subscribe_div">
     <div>
       <h3>Be the first to know about updates and new features.</h3>
-      <button type="button" name="cdash_email_subscribe" class="cdash_admin email_signup button-primary" title="Sign up for updates" aria-label="Sign up for updates">Stay Up-to-Date</button>
+      <button type="button" name="cdash_email_subscribe" class="cdash_admin email_signup button-primary" title="Sign up for updates" aria-label="Sign up for updates"><?php esc_html_e('Stay Up-to-Date'); ?></button>
     </div>
     <div class="cdash_email_popup cdash_wrapper">
       <button type="button" class="close_button cdash_admin" title="close" aria-label="Close">X</button>
       <form action="" method="post" name="cdash_email_subscribe" class="email_subscribe_form">
           <div>
-            <label for="First Name">First Name</label>
+            <label for="First Name"><?php esc_html_e('First Name'); ?></label>
             <input type="text" name="first_name" />
           </div>
           <div>
-            <label for="Last Name">Last Name</label>
+            <label for="Last Name"><?php esc_html_e('Last Name'); ?></label>
             <input type="text" name="last_name" />
           </div>
           <div>
-            <label for="Email">Email</label>
+            <label for="Email"><?php esc_html_e('Email'); ?></label>
             <input type="email" name="cdash_email" />
           </div>
           <div class="actions">
-            <button type="submit" name="cdash_ac_email_subscribe" class="button-primary cdash_form cdash_admin" title="Subscribe" aria-label="Subscribe">Subscribe</button>
+            <button type="submit" name="cdash_ac_email_subscribe" class="button-primary cdash_form cdash_admin" title="Subscribe" aria-label="Subscribe"><?php esc_html_e('Subscribe'); ?></button>
           </div>
       </form>
-
-      <!--<button type="button" class="close_button cdash_admin" title="close" aria-label="Close">X</button>-->
-      <!--<form action="https://chamberdashboard.activehosted.com/admin/api.php?api_action=contact_add" method="post" name="cdash_email_subscribe">-->
-      <!--<form action="" method="post" name="cdash_email_subscribe">
-        <label>First Name</label>
-        <input type="text" name="first_name" /><br />
-        <label>Last Name</label>
-        <input type="text" name="last_name" /><br />
-        <label>Email</label>
-        <input type="email" name="cdash_email" /><br />
-        <button type="submit" name="cdash_ac_email_subscribe" class="button-primary cdash_form cdash_admin" title="Subscribe" aria-label="Subscribe">Subscribe</button>
-      </form>-->
-
       <?php
         if(isset($_POST['cdash_ac_email_subscribe'])){
           $firstname = $_POST['first_name'];
           $lastname = $_POST['last_name'];
           $email = $_POST['cdash_email'];
-
-          //echo $firstname .'<br />' . $lastname . '<br />' .$email . '<br />';
-
           $url = 'https://chamberdashboard.activehosted.com';
 
           $params = array(

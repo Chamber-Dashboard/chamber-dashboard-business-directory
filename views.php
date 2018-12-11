@@ -153,9 +153,13 @@ function cdash_single_business_map() {
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location'];
 		$google_map_api_key = cdash_get_google_maps_api_key();
+		cd_debug("Google maps api key 2: " . $google_map_api_key);
 		?>
 		<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU">
 		</script>-->
+		<!--Testing
+		<?php echo "Google maps api key: " . $google_map_api_key; ?>
+		-->
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $google_map_api_key; ?>">
 		</script>
 		<script type="text/javascript">

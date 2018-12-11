@@ -602,9 +602,14 @@ function cdash_store_geolocation_data( $post_id ) {
 	// get the addresses
 	$locations = get_post_meta( $post_id, '_cdash_location', true );
 	if( !empty( $locations ) && is_array( $locations ) ) {
+		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
+			cd_debug("Latitude 1: " . $location['latitude']);
+			cd_debug("Longitude 1: " . $location['longitude']);
 			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
+				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
+					cd_debug("City is set to " . $location['city']);
 					list($lat,$lng) = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
 					$locations[$key]['latitude'] = $lat;
 					$locations[$key]['longitude'] = $lng;
