@@ -34,7 +34,7 @@ function chamber_dashboard_addons_page_render(){
 ?>
     <div class="wrap" style="width:90%;">
         <div class="icon32" id="icon-options-general"><br></div>
-        <h2><?php _e('Chamber Dashboard Addons'); ?></h2>
+        <h2><?php esc_attr_e('Chamber Dashboard Addons'); ?></h2>
         <?php settings_errors(); ?>
 
         <!--<div id="main">-->

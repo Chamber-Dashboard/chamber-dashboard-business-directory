@@ -20,6 +20,7 @@ function cdash_about_screen()
 		<div class="wrap">
 
 		<h1><?php esc_html_e('Welcome to Chamber Dashboard Business Directory', 'cdash'); ?></h1>
+better security
 		<?php cdash_email_subscribe(); ?>
 
 		<div class="cdash-about-text">
@@ -47,6 +48,7 @@ function cdash_about_screen()
 		</div>
 
 		<h2 class="nav-tab-wrapper">
+<<<<<<< HEAD
 			<a href="?page=cdash-about&tab=cdash-about" class="nav-tab <?php echo $active_tab == 'cdash-about' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Getting Started', 'cdash' ); ?></a>
 
 			<a href="?page=cdash-about&tab=chamber_dashboard_addons" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_addons' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Addons', 'cdash' ); ?></a>
@@ -56,7 +58,6 @@ function cdash_about_screen()
 			<a href="?page=cdash-about&tab=chamber_dashboard_support" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_support' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Support', 'cdash' ); ?></a>
 
 			<a href="?page=cdash-about&tab=chamber_dashboard_technical_details" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_technical_details' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Technical Details', 'cdash' ); ?></a>
-
 		</h2>
 
             <div id="main" style="width: 100%; float: left;">
@@ -89,6 +90,7 @@ function cdash_support_page_render(){
 ?>
     <div class="wrap">
 	   <div class="changelog">
+<<<<<<< HEAD
             <h3><?php esc_html_e('Chamber Dashboard Support', 'cdash'); ?></h3>
             <div class="feature-section col three-col">
                 <p><?php esc_html_e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p>
@@ -255,5 +257,4 @@ function cdash_display_plugin_version($plugin_name){
 function cdash_technical_details_hook(){
   do_action('cdash_technical_details_hook');
 }
-
 ?>

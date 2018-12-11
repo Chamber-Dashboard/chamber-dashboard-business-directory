@@ -99,7 +99,7 @@ Several people have contributed to the development of Chamber Dashboard:
 == Changelog ==
 = 3.0.3 =
 * Fixed a few issues with the admin pages of the plugin
-* Business categories can now be displayed in a grid format 
+* Business categories can now be displayed in a grid format
 
 = 3.0.2 =
 * Custom Google maps api key enabled

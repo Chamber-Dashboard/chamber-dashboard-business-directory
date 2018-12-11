@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function cdash_about_page_render() {
     ?>
     <div class="wrap">
-      <h3><?php _e('Chamber Dashboard plugins give you all the tools you need to manage your members, plus add awesome features to your WordPress website.', 'cdash'); ?></h3>
+      <h3><?php esc_attr_e('Chamber Dashboard plugins give you all the tools you need to manage your members, plus add awesome features to your WordPress website.', 'cdash'); ?></h3>
 
       <h3>Let's get started!</h3>
       <div id="top" class="cdash_getting_started_docs cdash_admin_page">

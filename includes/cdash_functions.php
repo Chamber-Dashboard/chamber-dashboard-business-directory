@@ -5,20 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
 // ------------------------------------------------------------------------
 function cdash_plugins_requires_wordpress_version($plugin_name, $plugin_path) {
-    //cdash_requires_wordpress_version(PLUGIN_NAME);
     global $wp_version;
-  	//$plugin = plugin_basename( __FILE__ );
-    //$plugin = $plugin_path;
-  	//$plugin_data = get_plugin_data( __FILE__, false );
 
-  	if ( version_compare($wp_version, "4.9", "<" ) ) {
+  	if ( version_compare($wp_version, "4.6", "<" ) ) {
   		if( is_plugin_active($plugin_path) ) {
   			deactivate_plugins( $plugin_path );
-  			wp_die( "'".$plugin_name."' requires WordPress 4.9 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
+  			wp_die( "'".$plugin_name."' requires WordPress 4.6 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."plugins.php'>WordPress admin</a>." );
   		}
   	}
 }
-//add_action( 'admin_init', 'cdash_plugins_requires_wordpress_version' );
 
 //Plugin Update Message
 function cdash_update_message(){
@@ -123,4 +118,44 @@ function cd_log_message($level, $message) {
     }
   }
 }
+
+function display_categories_grid($taxonomies){
+if ( !empty($taxonomies) ) :
+    $output = '<div class="business_category responsive">';
+    foreach( $taxonomies as $category ) {
+        if( $category->parent == 0 ) {
+            $output.= '<div class="cdash_parent_category"><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a>';
+            foreach( $taxonomies as $subcategory ) {
+                if($subcategory->parent == $category->term_id) {
+                $output.= '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
+                    '. esc_html( $subcategory->name ) .'</a></span>, ';
+                }
+            }
+            $output.='</div>';
+        }
+    }
+    $output.='</div>';
+    return $output;
+endif;
+}
+
+function cdash_display_categories_dropdown($args){
+  //if ( !empty($taxonomies) ) :
+
+    //$output = '<li id="categories">';
+    $output = '';
+    $output .= wp_dropdown_categories( $args );
+    ?>
+    
+      <?php
+    //$output .= '</li>';
+
+    return $output;
+//endif;
+?>
+
+<?php
+}
+
+
 ?>

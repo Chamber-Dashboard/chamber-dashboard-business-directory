@@ -5,6 +5,7 @@ function cdash_settings_sidebar(){
 ?>
 
 <div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
+<<<<<<< HEAD
 	<h3><?php esc_html_e('We\'re here to help!', 'cdash'); ?></h3>
 	<ul>
 		<li><a href="https://chamberdashboard.com/document/installing-chamber-dashboard-business-directory/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Business Directory Documentation', 'cdashmm'); ?></a></li>
@@ -20,7 +21,6 @@ function cdash_settings_sidebar(){
 	<h3><?php esc_html_e('Connect', 'cdashmm'); ?></h3>
 	<p><?php esc_html_e('<a href="https://chamberdashboard.com/chamber-dashboard-user-map/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank">Get On the Map</a> – We have users around the world!  We\'d love to link to your site too.', 'cdashmm'); ?></p>
 	<p><?php esc_html_e('<a href="https://www.linkedin.com/groups?gid=6931264&mostPopular=&trk=tyah&trkInfo=tarId%3A1420845022267%2Ctas%3Achamber%20dashboard%2Cidx%3A2-1-2" target="_blank">Join the User Group</a> – Gain perspective, share best practices, and find solutions to problems with experienced Chamber leaders.', 'cdashmm'); ?></p>
-
 </div>
 <?php
 }
