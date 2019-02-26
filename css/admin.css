@@ -139,3 +139,19 @@ p.right{
 .dashboard_page_cdash-about h1{
   font-size:25px;
 }
+
+/*Demo Content Modal Styles*/
+.ui-dialog .ui-dialog-titlebar{
+  display:none;
+}
+
+.cdash_demo_content_modal.ui-widget.ui-widget-content{
+  width:400px;
+  height:300px;
+  text-align:center;
+}
+
+.dashboard_page_cdash-about .ui-widget-overlay{
+  background:#443e3e;
+  opacity:0.5;
+}

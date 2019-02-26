@@ -3,9 +3,9 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 4.9.8
+Tested up to: 5.0.3
 Requires PHP: 7.0
-Stable tag: 3.0.3
+Stable tag: 3.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -97,6 +97,31 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.0 =
+* Added a new parameter to the business directory shortcode to display full width images
+* Fixed the show count for business category grid format
+
+= 3.0.9 =
+* Issues with customizer fixed
+
+= 3.0.8 =
+* Fixed some CSS for business listings and a few errors and warnings
+
+= 3.0.7 =
+* Fixed a couple of CSS issues for the admin settings
+
+= 3.0.6 =
+* Adjusted CSS for the business grid layout
+
+= 3.0.5 =
+* Current active theme added to the technical details tab
+* Option to show tags on single business view and category view added
+* Fixed the issue of country field not getting updated on the backend
+* Demo data now available for first time installs
+
+= 3.0.4 =
+* Map markers are now displaying properly for new and updated businesses
+
 = 3.0.3 =
 * Fixed a few issues with the admin pages of the plugin
 * Business categories can now be displayed in a grid format

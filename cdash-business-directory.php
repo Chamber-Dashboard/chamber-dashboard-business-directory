@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.0.3
+Version: 3.1.0
 Author: Morgan Kay, Chandrika Guntur
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -26,7 +26,7 @@ Text Domain: cdash
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define( 'CDASH_BUS_VER', '3.0.3' );
+define( 'CDASH_BUS_VER', '3.1.0' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -49,6 +49,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
 register_activation_hook(__FILE__, 'cdash_activation_transient');
+//register_activation_hook(__FILE__, 'cdash_set_plgin_update_transient');
 //register_activation_hook(__FILE__, 'cdash_update_message');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
@@ -192,7 +193,6 @@ function cdash_register_taxonomy_private_category() {
 }
 
 add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
-
 
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
@@ -506,7 +506,9 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 					$phones = $location['phone'];
 					if(is_array($phones)) {
 						foreach($phones as $phone) {
-							$phonenumbers .= $phone['phonenumber'];
+              if(isset($phone['phonenumber'])){
+                $phonenumbers .= $phone['phonenumber'];
+              }
 							if(isset($phone['phonetype'])) {
 								$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
 							}
@@ -596,8 +598,8 @@ function cdash_store_geolocation_data( $post_id ) {
 	if( !empty( $locations ) && is_array( $locations ) ) {
 		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
-			cd_debug("Latitude 1: " . $location['latitude']);
-			cd_debug("Longitude 1: " . $location['longitude']);
+			//cd_debug("Latitude 1: " . $location['latitude']);
+			//cd_debug("Longitude 1: " . $location['longitude']);
 			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
@@ -623,6 +625,26 @@ function cdash_store_geolocation_data( $post_id ) {
 
 // make activation hook that checks for existence of businesses, updates geolocation data, and saves geolocation_updated option
 register_activation_hook(__FILE__, 'cdash_activation_geolocation_check');
+register_activation_hook(__FILE__, 'cdash_assign_alpha_category');
+
+//create array from existing posts
+function cdash_assign_alpha_category(){
+    if ( false === get_transient( 'cdash_assign_alpha_category' ) ) {
+        $taxonomy = 'alpha_index';
+        $alphabet = array();
+        //$posts = get_posts(array('numberposts' => -1) );
+        $args = array(
+        	'post_type'        => 'business',
+          'numberposts'      => -1,
+        );
+        $posts = get_posts( $args );
+        foreach( $posts as $p ) :
+        //set term as first letter of post title, lower case
+        wp_set_object_terms( $p->ID, strtolower(substr($p->post_title, 0, 1)), $taxonomy );
+        endforeach;
+        set_transient( 'cdash_assign_alpha_category', 'true' );
+    }
+}
 
 function cdash_activation_geolocation_check() {
 	// if we have stored the geolocation option, we don't need to do this

@@ -13,6 +13,8 @@ jQuery(document).ready(function ($) {
 		$("#billing-state").val(state);
 		var zip = $( evt.target ).closest('.location').children('.address-data').children('.zip-wrapper').children('p').children('.zip').val();
 		$("#billing-zip").val(zip);
+		var country = $( evt.target ).closest('.location').children('.address-data').children('.country-wrapper').children('p').children('.country').val();
+		$("#billing-country").val(country);
 		var email = $( evt.target ).closest('.location').children('.email-fieldset').children('.wpa_loop-email').children('.first').children('p').children('.email').val();
 		$("#billing-email").val(email);
 		var phone = $( evt.target ).closest('.location').children('.phone-fieldset').children('.wpa_loop-phone').children('.first').children('p').children('.phone').val();

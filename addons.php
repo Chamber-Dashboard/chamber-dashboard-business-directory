@@ -55,7 +55,7 @@ function chamber_dashboard_addons_page_render(){
                           'member_manager_pro',
                           'Gives you the option to use alternative payment gateways to process membership payments.',
                           'https://chamberdashboard.com/downloads/member-manager-pro/',
-                          '$39.00',
+                          '$49.00',
   					              'plugin'
                         );
 
@@ -87,20 +87,29 @@ function chamber_dashboard_addons_page_render(){
                         );
 
                         display_addons(
-                          'Chamber Dashboard Exporter',
-                          'exporter',
-                          'Export member businesses, contacts, paid or unpaid invoices.',
-                          'https://chamberdashboard.com/downloads/chamber-dashboard-exporter/',
-                          '$39.00',
-  					              'plugin'
-                        );
-
-                        display_addons(
                           'Chamber Dashboard Member Updater',
                           'member_updater',
                           'Let Members update their listings by logging in from the front end.',
                           'https://chamberdashboard.com/downloads/member-updater/',
                           '$79.00',
+  					              'plugin'
+                        );
+
+                        display_addons(
+                          'Chamber Dashboard Mailchimp Addon',
+                          'mailchimp',
+                          'Add your members to your mailchimp list automatically',
+                          'https://chamberdashboard.com/downloads/cd-mailchimp-addon/',
+                          '$29.00',
+  					              'plugin'
+                        );
+
+                        display_addons(
+                          'Chamber Dashboard Exporter',
+                          'exporter',
+                          'Export member businesses, contacts, paid or unpaid invoices.',
+                          'https://chamberdashboard.com/downloads/chamber-dashboard-exporter/',
+                          '$39.00',
   					              'plugin'
                         );
 

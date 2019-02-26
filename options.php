@@ -41,11 +41,14 @@ function cdash_add_defaults() {
 						"sv_url"		 	=> "1",
 						"sv_logo"		 	=> "1",
 						"sv_category"	=> "1",
+            "sv_tags"     => "1",
 						"tax_name"		=> "1",
 						"tax_address"	=> "1",
             "tax_hours"   => "1",
 						"tax_url" 		=> "1",
 						"tax_logo"		=> "1",
+            "tax_category"	=> "1",
+            "tax_tags"     => "1",
 						"sm_display"	=> "icons",
 						"sm_icon_size"=> "32px",
 						"currency_position" => "before",
@@ -200,14 +203,15 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[sv_name]" type="checkbox" value="1" <?php if (isset($options['sv_name'])) { checked('1', $options['sv_name']); } ?> /><?php _e(' Location Name <em>Note: you can hide individual locations in the "edit business" view</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_address]" type="checkbox" value="1" <?php if (isset($options['sv_address'])) { checked('1', $options['sv_address']); } ?> /><?php _e(' Location Address', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_hours]" type="checkbox" value="1" <?php if (isset($options['sv_hours'])) { checked('1', $options['sv_hours']); } ?> /><?php _e(' Location Hours', 'cdash'); ?></label><br />
-							<label><input name="cdash_directory_options[sv_map]" type="checkbox" value="1" <?php if (isset($options['sv_map'])) { checked('1', $options['sv_map']); } ?> /><?php _e(' Map', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_map]" type="checkbox" value="1" <?php if (isset($options['sv_map'])) { checked('1', $options['sv_map']); } ?> /><?php _e(' Map <em><small>To display maps in your Directory, you’ll need to generate a new Google Maps API Key, scroll down for details.</small></em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_url]" type="checkbox" value="1" <?php if (isset($options['sv_url'])) { checked('1', $options['sv_url']); } ?> /><?php _e(' Location Web Address', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_phone]" type="checkbox" value="1" <?php if (isset($options['sv_phone'])) { checked('1', $options['sv_phone']); } ?> /><?php _e(' Phone Number(s)', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_email]" type="checkbox" value="1" <?php if (isset($options['sv_email'])) { checked('1', $options['sv_email']); } ?> /><?php _e(' Email Address(es)', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_logo]" type="checkbox" value="1" <?php if (isset($options['sv_logo'])) { checked('1', $options['sv_logo']); } ?> /><?php _e(' Logo', 'cdash'); ?></label><br />
-							<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /><?php _e(' Featured Image <em><small>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</small></em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /><?php _e(' Membership Level', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+              <label><input name="cdash_directory_options[sv_tags]" type="checkbox" value="1" <?php if (isset($options['sv_tags'])) { checked('1', $options['sv_tags']); } ?> /><?php _e(' Business Tags', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_social]" type="checkbox" value="1" <?php if (isset($options['sv_social'])) { checked('1', $options['sv_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_comments]" type="checkbox" value="1" <?php if (isset($options['sv_comments'])) { checked('1', $options['sv_comments']); } ?> /><?php _e(' Comments', 'cdash'); ?></label><br />
 						</td>
@@ -228,6 +232,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[tax_thumb]" type="checkbox" value="1" <?php if (isset($options['tax_thumb'])) { checked('1', $options['tax_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> /><?php _e(' Membership Leve', 'cdash'); ?>l</label><br />
 							<label><input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+              <label><input name="cdash_directory_options[tax_tags]" type="checkbox" value="1" <?php if (isset($options['tax_tags'])) { checked('1', $options['tax_tags']); } ?> /><?php _e(' Business Tags', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_orderby_name]" type="checkbox" value="1"<?php if (isset($options['tax_orderby_name'])) { checked('1', $options['tax_orderby_name']); } ?> /><?php _e(' Order category pages by business name (default order is by publication date)', 'cdash'); ?></label><br />
 						</td>
@@ -318,7 +323,8 @@ function cdash_render_form() {
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
 						<td>
 							<p><span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span></p><br />
-							<?php if(!empty($options['bus_custom'])) {
+							<?php
+              if(!empty($options['bus_custom'])) {
 								$customfields = $options['bus_custom'];
 								$i = 1;
 								foreach($customfields as $field) { ?>
@@ -356,12 +362,12 @@ function cdash_render_form() {
 											<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
 										</select>
 									<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
-										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('No', 'cdash'); ?></label><br />
 
 									<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
-										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> Yes', 'cdash'); ?></label><br />
-										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e('Yes', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e('No', 'cdash'); ?></label><br />
 									<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 								</div>
 							<?php } ?>

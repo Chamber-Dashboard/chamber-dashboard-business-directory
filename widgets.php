@@ -19,7 +19,8 @@ class Cdash_Search_Widget extends WP_Widget {
 	/**
 	 * Widget setup.
 	 */
-	function Cdash_Search_Widget() {
+
+	function __construct(){
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => 'cdash', 'description' => __('Display a search form for the business directory', 'cdash') );
 
@@ -28,6 +29,9 @@ class Cdash_Search_Widget extends WP_Widget {
 
 		/* Create the widget. */
 		parent::__construct( 'cdash-search', __('CD Business Directory Search', 'cdash'), $widget_ops, $control_ops );
+	}
+	function Cdash_Search_Widget() {
+		self::__construct();
 	}
 
 	/**
@@ -132,7 +136,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 	/**
 	 * Widget setup.
 	 */
-	function Cdash_Featured_Business_Widget() {
+	function __construct(){
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => 'cdash', 'description' => __( 'Display featured businesses from the Chamber Dashboard business directory.', 'cdash' ) );
 
@@ -141,6 +145,9 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 
 		/* Create the widget. */
 		parent::__construct( 'cdash-featured', __( 'CD Featured Business', 'cdash' ), $widget_ops, $control_ops );
+	}
+	function Cdash_Featured_Business_Widget() {
+		self::__construct();
 	}
 
 	/**
@@ -581,7 +588,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 	/**
 	 * Widget setup.
 	 */
-	function Cdash_Business_Categories_Widget() {
+	function __construct(){
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => 'cdash', 'description' => __('Display a list of business categories', 'cdash') );
 
@@ -590,6 +597,9 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		/* Create the widget. */
 		parent::__construct( 'cdash-business-categories', __('CD Business Categories', 'cdash'), $widget_ops, $control_ops );
+	}
+	function Cdash_Business_Categories_Widget() {
+		self::__construct();
 	}
 
 	/**
@@ -659,7 +669,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Order By: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e('<b>Order by:</b>', 'cdash'); ?></label>
+			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><b><?php _e('Order by:', 'cdash'); ?></b></label>
 			<select id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>" class="widefat" style="width:100%;">
 				<option value="name" <?php if (isset($instance['orderby']) && ('name' == $instance['orderby'] )) echo 'selected="selected"'; ?>><?php _e( 'Name', 'cdash' ); ?></option>
 				<?php
@@ -685,7 +695,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 
 		<!-- Show Count: Select Box -->
 		<p>
-			<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><?php _e('<b>Show Number of Businesses in Category:</b>', 'cdash'); ?></label>
+			<label for="<?php echo $this->get_field_id( 'showcount' ); ?>"><b><?php _e('Show Number of Businesses in Category:', 'cdash'); ?></b></label>
 			<select id="<?php echo $this->get_field_id( 'showcount' ); ?>" name="<?php echo $this->get_field_name( 'showcount' ); ?>" class="widefat" style="width:100%;">
 			<?php
                 /*if(isset($instance['showcount']) && ('0' == $instance['showcount'])){

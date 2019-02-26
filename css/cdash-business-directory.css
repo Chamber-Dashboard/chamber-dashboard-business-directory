@@ -23,7 +23,13 @@ width: auto; /* Prevent stretching of full-size images with height and width att
 
 #business img.logo,
 #businesslist img.logo {
-max-width: 50%;
+  max-width:50%;
+  height:auto;
+}
+
+#businesslist.full_width img.logo{
+  max-width:100%;
+  width:100%;
 }
 
 #business .membership span,
@@ -106,6 +112,7 @@ clear: both;
 
 #businesslist.grid3 .business .logo.alignleft,
 #businesslist.grid4 .business .logo.alignleft,
+#businesslist.responsive .business .logo.alignleft,
 #search-results.grid3 .business .logo.alignleft,
 #search-results.grid4 .business .logo.alignleft{
 	width: 100%;
@@ -154,7 +161,7 @@ clear: both;
 #businesslist.responsive, #search-results.responsive, .business_category.responsive{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, auto));
-  grid-gap: 2%;
+  column-gap: 2%;
   grid-auto-columns: max-content;
 }
 

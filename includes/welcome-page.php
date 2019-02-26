@@ -20,9 +20,7 @@ function cdash_about_screen()
 		<div class="wrap">
 
 		<h1><?php esc_html_e('Welcome to Chamber Dashboard Business Directory', 'cdash'); ?></h1>
-better security
 		<?php cdash_email_subscribe(); ?>
-
 		<div class="cdash-about-text">
 			<h2>
 			<?php
@@ -48,7 +46,6 @@ better security
 		</div>
 
 		<h2 class="nav-tab-wrapper">
-<<<<<<< HEAD
 			<a href="?page=cdash-about&tab=cdash-about" class="nav-tab <?php echo $active_tab == 'cdash-about' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Getting Started', 'cdash' ); ?></a>
 
 			<a href="?page=cdash-about&tab=chamber_dashboard_addons" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_addons' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Addons', 'cdash' ); ?></a>
@@ -64,6 +61,7 @@ better security
             <?php
             if( $active_tab == 'cdash-about' )
             {
+							  cdash_show_demo_buttons();
                 cdash_about_page_render();
             }else if($active_tab == 'chamber_dashboard_support'){
 								cdash_support_page_render();
@@ -74,10 +72,7 @@ better security
             }else if($active_tab == 'chamber_dashboard_technical_details'){
 								chamber_dashboard_technical_details_page_render();
             }
-
-
-
-            ?>
+          ?>
             </div><!--end of #main-->
 
 		</div>
@@ -90,7 +85,6 @@ function cdash_support_page_render(){
 ?>
     <div class="wrap">
 	   <div class="changelog">
-<<<<<<< HEAD
             <h3><?php esc_html_e('Chamber Dashboard Support', 'cdash'); ?></h3>
             <div class="feature-section col three-col">
                 <p><?php esc_html_e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p>
@@ -141,6 +135,7 @@ function chamber_dashboard_technical_details_page_render(){
 					?>
 	          <h4>Current WP Version:</b> <?php echo $wp_version; ?></h4>
 						<h4>Current PHP Version:</b> <?php echo $php_version;  ?></h4>
+						<br />
 						<h3>Chamber Dashboard Plugins</h3>
 						<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
 						<?php
@@ -201,6 +196,12 @@ function chamber_dashboard_technical_details_page_render(){
 	            }
 	          }
 							cdash_technical_details_hook();
+							$theme = wp_get_theme();
+								?>
+								<br />
+								<h3>Active Theme</h3>
+								<?php
+								echo $theme . " " . $theme->get( 'Version' );
 						?>
 
 	      </div>

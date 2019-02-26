@@ -18,11 +18,14 @@ function cdash_plugins_requires_wordpress_version($plugin_name, $plugin_path) {
 //Plugin Update Message
 function cdash_update_message(){
   $settings_url = get_admin_url() . 'admin.php?page=chamber-dashboard-business-directory/options.php#google_maps_api';
+  $hide_notice_url = get_admin_url() . 'plugins.php?cdash_update_message_ignore=0';
   global $current_user ;
         $user_id = $current_user->ID;
         /* Check that the user hasn't already clicked to ignore the message */
 	if ( ! get_user_meta($user_id, 'cdash_update_message_ignore') ) {
-    echo '<div class="notice notice is-dismissible cdash_update_notice"><p>'. esc_html__('If you’d like to display maps in your Directory, you’ll need to generate a new Google Maps API Key and add it in the <a href="'.$settings_url.'">settings</a> page.') .' <a href="?cdash_update_message_dismissed">Hide Notice</a></p></div>';
+    echo '<div class="notice notice is-dismissible cdashrc_update cdash_update_notice"><p>';
+    printf(__('If you’d like to display maps in your Directory, you’ll need to generate a new Google Maps API Key and add it in the <a href="' . $settings_url . '">settings</a> page. | <a href="' . $hide_notice_url . '">Hide Notice</a>'));
+    echo "</p></div>";
 	}
 }
 
@@ -30,25 +33,28 @@ add_action( 'admin_notices', 'cdash_update_message' );
 
 function cdash_update_message_ignore() {
 	global $current_user;
-        $user_id = $current_user->ID;
-        /* If user clicks to ignore the notice, add that to their user meta */
-        if ( isset( $_GET['cdash_update_message_dismissed'] ) )
-            add_user_meta($user_id, 'cdash_update_message_ignore', 'true', true );
+    $user_id = $current_user->ID;
+    /* If user clicks to ignore the notice, add that to their user meta */
+    if ( isset($_GET['cdash_update_message_ignore']) && '0' == $_GET['cdash_update_message_ignore'] ) {
+         add_user_meta($user_id, 'cdash_update_message_ignore', 'true', true);
+    }
 }
 add_action('admin_init', 'cdash_update_message_ignore');
 
 //Get the Google Maps API Key
 function cdash_get_google_maps_api_key(){
   $options = get_option( 'cdash_directory_options' );
+  $google_map_api_key = $options['google_maps_api'];
+  cd_debug("Custom Google maps api key: " . $google_map_api_key);
   //$google_map_api_key = $options['google_maps_api'];
-  if($options['google_maps_api'] == ''){
+  /*if($options['google_maps_api'] == ''){
     $google_map_api_key = 'AIzaSyAoqmdfczTk4HY0qqDtQQJjRN4mhf9e7hE';
     cd_debug("Google maps api key from CD: " . $google_map_api_key);
   }
   else{
     $google_map_api_key = $options['google_maps_api'];
     cd_debug("Custom Google maps api key: " . $google_map_api_key);
-  }
+  }*/
   return $google_map_api_key;
 }
 
@@ -119,16 +125,21 @@ function cd_log_message($level, $message) {
   }
 }
 
-function display_categories_grid($taxonomies){
+function display_categories_grid($taxonomies, $showcount){
 if ( !empty($taxonomies) ) :
     $output = '<div class="business_category responsive">';
     foreach( $taxonomies as $category ) {
+      if($showcount == 1){
+        $num_posts = " (" . $category->count . ")";
+      }else{
+        $num_posts = '';
+      }
         if( $category->parent == 0 ) {
-            $output.= '<div class="cdash_parent_category"><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a>';
+            $output.= '<div class="cdash_parent_category"><div><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a><span class="number_posts">' . $num_posts . '</span></div>';
             foreach( $taxonomies as $subcategory ) {
                 if($subcategory->parent == $category->term_id) {
-                $output.= '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
-                    '. esc_html( $subcategory->name ) .'</a></span>, ';
+                  $output.= '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
+                    '. esc_html( $subcategory->name ) .'</a>' . $num_posts . '</span>, ';
                 }
             }
             $output.='</div>';
@@ -146,7 +157,7 @@ function cdash_display_categories_dropdown($args){
     $output = '';
     $output .= wp_dropdown_categories( $args );
     ?>
-    
+
       <?php
     //$output .= '</li>';
 
@@ -157,5 +168,49 @@ function cdash_display_categories_dropdown($args){
 <?php
 }
 
+// ------------------------------------------------------------------------
+// CHECK IF MEMBER UPDATER IS ACTIVE
+// ------------------------------------------------------------------------
+function cdash_is_member_updater_active(){
+    /**
+ * Detect plugin. For use on Front End only.
+ */
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    if(is_plugin_active('chamber-dashboard-member-updater/cdash-member-updater.php')){
+        return true;
+    }else{
+        return false;
+    }
+}
 
+function cdash_enqueue_styles(){
+  wp_enqueue_style( 'cdash-business-directory', plugins_url( 'css/cdash-business-directory.css', dirname(__FILE__) ) );
+}
+
+function cdash_enqueue_scripts(){
+  wp_enqueue_script( 'cdash-business-directory', plugins_url( 'js/cdash-business-directory.js', dirname(__FILE__) ) );
+}
+
+function cdash_admin_scripts() {
+	wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+  wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__) ) );
+}
+
+add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
+
+function cdash_demo_content_styles(){
+	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+}
+
+global $pagenow;
+if(isset($_GET['page'])){
+  $page = $_GET['page'];
+}
+if(isset($_GET['tab'])){
+  $tab = $_GET['tab'];
+}
+
+if($pagenow == 'admin.php' && $page == 'cdash-about' && $tab == 'cdash-about'){
+  add_action('admin_enqueue_styles', 'cdash_demo_content_styles');
+}
 ?>
