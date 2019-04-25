@@ -71,7 +71,7 @@ function cdash_display_google_map_link( $location ) {
     if( isset( $location['country'] ) && '' !== $location['country'] ) {
 			$google_map_link .= $location['country'];
 		}
-	$google_map_link .= "'>Get Directions</a><br /><br />";
+	$google_map_link .= "'>". __('Get Directions', 'cdash') . "</a><br /><br />";
 	return $google_map_link;
 }
 
