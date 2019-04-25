@@ -4,16 +4,15 @@
 function cdash_settings_sidebar(){
 ?>
 
-<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
-<<<<<<< HEAD
-	<h3><?php esc_html_e('We\'re here to help!', 'cdash'); ?></h3>
+<div id="sidebar">
+	<h2><?php esc_html_e('We\'re here to help!', 'cdash'); ?></h2>
 	<ul>
 		<li><a href="https://chamberdashboard.com/document/installing-chamber-dashboard-business-directory/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Business Directory Documentation', 'cdashmm'); ?></a></li>
 		<li><a href="https://chamberdashboard.com/professional-services-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#installation" target="_blank"><?php esc_html_e('Installation and Configuration:', 'cdashmm'); ?></a> <?php esc_html_e(' sit back and let experienced pros configure Chamber Dashboard to do just what you need', 'cdashmm'); ?></li>
 		<li><a href="https://chamberdashboard.com/downloads/priority-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Priority Support:', 'cdashmm'); ?></a><?php esc_html_e(' get access to our expertise', 'cdashmm'); ?></li>
 		<li><a href="https://chamberdashboard.com/professional-services-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#maintenance" target="_blank"><?php esc_html_e('Worry-Free Maintenance:', 'cdashmm'); ?></a><?php esc_html_e(' let us take care of maintaining your site, so you can focus on what you do best!', 'cdashmm'); ?></li>
 
-	<h3><?php esc_html_e('More Amazing Plugins', 'cdashmm'); ?></h3>
+	<h2><?php esc_html_e('More Amazing Plugins', 'cdashmm'); ?></h2>
 	<p><?php esc_html_e('Engage your community in local events, with our <a href="https://chamberdashboard.com/features/chamber-dashboard-events-calendar/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank">event calendar</a> plugin.', 'cdashmm'); ?></p>
     <p><?php esc_html_e('Accept <a href="https://chamberdashboard.com/features/chamber-dashboard-member-manager/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank">Member Payments</a> and invoice your members, straight from your site.  Save staff time with auto-invoicing.', 'cdashmm'); ?></p>
 	<p><?php esc_html_e('<a href="https://chamberdashboard.com/features/crm/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank">Track and Catalog your Contacts</a> – Trade your collection of Excel spreadsheets for a CRM that lets you track calls and meeting attendance, categorize your contacts, gives your staff shared access to the same data and more.', 'cdashmm'); ?></p>

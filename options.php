@@ -239,7 +239,18 @@ function cdash_options_init(){
 		'cdash_plugin_options',
 		'cdash_options_single_view_section',
 		array(
-			__( 'When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.', 'cdash' )
+			__( '', 'cdash' )
+		)
+	);
+
+  add_settings_field(
+		'sv_name',
+		__( 'Location Name', 'cdash' ),
+		'cdash_sv_name_render',
+		'cdash_plugin_options',
+		'cdash_options_single_view_section',
+		array(
+			__( 'Note: you can hide individual locations in the "edit business" view.', 'cdash' )
 		)
 	);
 
@@ -271,6 +282,14 @@ function cdash_sv_description_render($args){
   $options = get_option('cdash_directory_options');
   ?>
   <input name="cdash_directory_options[sv_description]" type="checkbox" value="1" <?php if (isset($options['sv_description'])) { checked('1', $options['sv_description']); } ?> />
+  <?php
+}
+
+function cdash_sv_name_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_name]" type="checkbox" value="1" <?php if (isset($options['sv_name'])) { checked('1', $options['sv_name']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
   <?php
 }
 
@@ -370,7 +389,7 @@ function cdash_render_form() {
 
 
 		<div id="main" style="width:90%; min-width:350px; float:left;">
-      <div class="cdash_coloumn_left">
+      <div class="cdash_column_left">
         <form method="post" action="options.php">
   				<?php settings_fields('cdash_plugin_options');
                 do_settings_sections('cdash_plugin_options');
@@ -381,7 +400,9 @@ function cdash_render_form() {
   			</form>
       </div><!--end of left_column-->
       <div class="cdash_sidebar">
-        Sidebar info goes here.
+        <?php cdash_settings_sidebar();
+
+         ?>
       </div><!--end of sidebar-->
 			<!-- Beginning of the Plugin Options Form -->
 
