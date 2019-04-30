@@ -1362,7 +1362,8 @@ class WPAlchemy_MetaBox
 		// consider giving a developer access to change this via hooks/callbacks
 
 		// include javascript for special functionality
-		?><style type="text/css"> .wpa_group.tocopy { display:none; } </style>
+		?>
+		<style type="text/css"> .wpa_group.tocopy { display:none; } </style>
 		<script type="text/javascript">
 		/* <![CDATA[ */
 		jQuery(function($)
@@ -1427,7 +1428,6 @@ class WPAlchemy_MetaBox
 				//var the_group = $('.wpa_group-'+ the_name +'.tocopy:first', p);
 
 				var the_clone = the_group.clone().removeClass('tocopy last');
-
 				var the_props = ['name', 'id', 'for', 'class'];
 
 				the_group.find('*').each(function(i, elem)
