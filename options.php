@@ -54,16 +54,32 @@ function cdash_add_defaults() {
     $tmp['sv_hours'] = '1';
   }
 
-  if(!isset($tmp['sv_address'])){
-    $tmp['sv_address'] = '1';
+  if(!isset($tmp['sv_map'])){
+    $tmp['sv_map'] = '1';
   }
 
   if(!isset($tmp['sv_url'])){
     $tmp['sv_url'] = '1';
   }
 
+  if(!isset($tmp['sv_phone'])){
+    $tmp['sv_phone'] = '1';
+  }
+
+  if(!isset($tmp['sv_email'])){
+    $tmp['sv_email'] = '1';
+  }
+
   if(!isset($tmp['sv_logo'])){
     $tmp['sv_logo'] = '1';
+  }
+
+  if(!isset($tmp['sv_thumb'])){
+    $tmp['sv_thumb'] = '1';
+  }
+
+  if(!isset($tmp['sv_memberlevel'])){
+    $tmp['sv_memberlevel'] = '1';
   }
 
   if(!isset($tmp['sv_category'])){
@@ -72,6 +88,14 @@ function cdash_add_defaults() {
 
   if(!isset($tmp['sv_tags'])){
     $tmp['sv_tags'] = '1';
+  }
+
+  if(!isset($tmp['sv_social'])){
+    $tmp['sv_social'] = '1';
+  }
+
+  if(!isset($tmp['sv_comments'])){
+    $tmp['sv_comments'] = '1';
   }
 
   if(!isset($tmp['tax_name'])){
@@ -90,8 +114,20 @@ function cdash_add_defaults() {
     $tmp['tax_url'] = '1';
   }
 
+  if(!isset($tmp['tax_phone'])){
+    $tmp['tax_phone'] = '1';
+  }
+
+  if(!isset($tmp['tax_email'])){
+    $tmp['tax_email'] = '1';
+  }
+
   if(!isset($tmp['tax_logo'])){
     $tmp['tax_logo'] = '1';
+  }
+
+  if(!isset($tmp['tax_thumb'])){
+    $tmp['tax_thumb'] = '1';
   }
 
   if(!isset($tmp['tax_category'])){
@@ -102,8 +138,12 @@ function cdash_add_defaults() {
     $tmp['tax_tags'] = '1';
   }
 
-  if(!isset($tmp['sm_display'])){
-    $tmp['sm_display'] = '1';
+  if(!isset($tmp['tax_social'])){
+    $tmp['tax_social'] = '1';
+  }
+
+  if(!isset($tmp['tax_orderby_name'])){
+    $tmp['tax_orderby_name'] = '1';
   }
 
   if(!isset($tmp['sm_display'])){
@@ -114,16 +154,16 @@ function cdash_add_defaults() {
     $tmp['sm_icon_size'] = '32px';
   }
 
-  if(!isset($tmp['currency_position'])){
-    $tmp['currency_position'] = 'before';
+  if(!isset($tmp['currency'])){
+    $tmp['currency'] = 'USD';
   }
 
   if(!isset($tmp['currency_symbol'])){
     $tmp['currency_symbol'] = '$';
   }
 
-  if(!isset($tmp['currency'])){
-    $tmp['currency'] = 'USD';
+  if(!isset($tmp['currency_position'])){
+    $tmp['currency_position'] = 'before';
   }
 
   if(!isset($tmp['search_results_per_page'])){
@@ -140,6 +180,14 @@ function cdash_add_defaults() {
 
   if(!isset($tmp['google_maps_api'])){
     $tmp['google_maps_api'] = '';
+  }
+
+  if(!isset($tmp['default_bus_thumb'])){
+    $tmp['default_bus_thumb'] = '';
+  }
+
+  if(!isset($tmp['bus_custom'])){
+    $tmp['bus_custom'][] = '';
   }
   /*if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
@@ -198,7 +246,7 @@ function cdash_options_init(){
 
   add_settings_section(
     'cdash_options_main_section',
-    __('Business Directory Settings', 'cdash'),
+    __('General Directory Settings', 'cdash'),
     '',
     'cdash_plugin_options'
   );
@@ -206,75 +254,480 @@ function cdash_options_init(){
   add_settings_section(
     'cdash_options_single_view_section',
     __('Single Business View Options', 'cdash'),
-    'single_business_view_text_callback',
+    'cdash_single_business_view_text_callback',
+    'cdash_plugin_options'
+  );
+
+  add_settings_section(
+    'cdash_options_tax_view_section',
+    __('Category/Membership Level View Options', 'cdash'),
+    'cdash_taxonomy_view_text_callback',
+    'cdash_plugin_options'
+  );
+
+  add_settings_section(
+    'cdash_options_misc_view_section',
+    __('Other Settings', 'cdash'),
+    'cdash_options_misc_view_text_callback',
     'cdash_plugin_options'
   );
 
   add_settings_field(
-		'bus_phone_type',
-		__( 'Phone Number Types', 'cdash' ),
-		'cdash_bus_phone_type_render',
-		'cdash_plugin_options',
-		'cdash_options_main_section',
-		array(
-			__( 'When you enter a phone number for a business, you can choose what type of phone number it is.  The default options are "Main, Office, Cell".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or office and/or cell, you will need to enter them.', 'cdash' )
-		)
-	);
+    'bus_phone_type',
+    __( 'Phone Number Types', 'cdash' ),
+    'cdash_bus_phone_type_render',
+    'cdash_plugin_options',
+    'cdash_options_main_section',
+    array(
+      __( 'When you enter a phone number for a business, you can choose what type of phone number it is.  The default options are "Main, Office, Cell".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or office and/or cell, you will need to enter them.', 'cdash' )
+    )
+  );
 
   add_settings_field(
-		'bus_email_type',
-		__( 'Email Types', 'cdash' ),
-		'cdash_bus_email_type_render',
-		'cdash_plugin_options',
-		'cdash_options_main_section',
-		array(
-			__( 'When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.', 'cdash' )
-		)
-	);
+    'bus_email_type',
+    __( 'Email Types', 'cdash' ),
+    'cdash_bus_email_type_render',
+    'cdash_plugin_options',
+    'cdash_options_main_section',
+    array(
+      __( 'When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.', 'cdash' )
+    )
+  );
 
   add_settings_field(
-		'sv_description',
-		__( 'Description', 'cdash' ),
-		'cdash_sv_description_render',
-		'cdash_plugin_options',
-		'cdash_options_single_view_section',
-		array(
-			__( '', 'cdash' )
-		)
-	);
+    'sv_description',
+    __( 'Description', 'cdash' ),
+    'cdash_sv_description_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
 
   add_settings_field(
-		'sv_name',
-		__( 'Location Name', 'cdash' ),
-		'cdash_sv_name_render',
-		'cdash_plugin_options',
-		'cdash_options_single_view_section',
-		array(
-			__( 'Note: you can hide individual locations in the "edit business" view.', 'cdash' )
-		)
-	);
+    'sv_name',
+    __( 'Location Name', 'cdash' ),
+    'cdash_sv_name_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( 'Note: you can hide individual locations in the "edit business" view.', 'cdash' )
+    )
+  );
 
+  add_settings_field(
+    'sv_address',
+    __( 'Location Address', 'cdash' ),
+    'cdash_sv_address_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_hours',
+    __( 'Location Hours', 'cdash' ),
+    'cdash_sv_hours_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_map',
+    __( 'Map', 'cdash' ),
+    'cdash_sv_map_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( 'To display maps in your Directory, you’ll need to generate a new Google Maps API Key, scroll down for details.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_url',
+    __( 'Location Web Address', 'cdash' ),
+    'cdash_sv_url_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_phone',
+    __( 'Phone Number(s)', 'cdash' ),
+    'cdash_sv_phone_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_email',
+    __( 'Email Address(es)', 'cdash' ),
+    'cdash_sv_email_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_logo',
+    __( 'Logo', 'cdash' ),
+    'cdash_sv_logo_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_thumb',
+    __( 'Featured Image', 'cdash' ),
+    'cdash_sv_thumb_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( 'Your theme might already display the featured image.  If it does not, you can check this box to display the featured image', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_memberlevel',
+    __( 'Membership Level', 'cdash' ),
+    'cdash_sv_memberlevel_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_category',
+    __( 'Membership Level', 'cdash' ),
+    'cdash_sv_category_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_tags',
+    __( 'Business Tags', 'cdash' ),
+    'cdash_sv_tags_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_social',
+    __( 'Social Media Links', 'cdash' ),
+    'cdash_sv_social_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sv_comments',
+    __( 'Comments', 'cdash' ),
+    'cdash_sv_comments_render',
+    'cdash_plugin_options',
+    'cdash_options_single_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_name',
+    __( 'Location Name', 'cdash' ),
+    'cdash_tax_name_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( 'Note: you can hide individual locations in the "edit business" view.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_address',
+    __( 'Location Address', 'cdash' ),
+    'cdash_tax_address_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_hours',
+    __( 'Location Hours', 'cdash' ),
+    'cdash_tax_hours_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_url',
+    __( 'Location Web Address', 'cdash' ),
+    'cdash_tax_url_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_phone',
+    __( 'Phone Number(s)', 'cdash' ),
+    'cdash_tax_phone_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_email',
+    __( 'Email Address(es)', 'cdash' ),
+    'cdash_tax_email_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_logo',
+    __( 'Logo', 'cdash' ),
+    'cdash_tax_logo_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_thumb',
+    __( 'Featured Image', 'cdash' ),
+    'cdash_tax_thumb_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( 'Your theme might already display the featured image.  If it does not, you can check this box to display the featured image.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_memberlevel',
+    __( 'Membership Level', 'cdash' ),
+    'cdash_tax_memberlevel_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_category',
+    __( 'Business Categories', 'cdash' ),
+    'cdash_tax_category_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_tags',
+    __( 'Business Tags', 'cdash' ),
+    'cdash_tax_tags_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_social',
+    __( 'Socail Media Links', 'cdash' ),
+    'cdash_tax_social_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'tax_orderby_name',
+    __( 'Order category pages by business name (default order is by publication date)', 'cdash' ),
+    'cdash_tax_orderby_name_render',
+    'cdash_plugin_options',
+    'cdash_options_tax_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'sm_display',
+    __( 'Social Media Display', 'cdash' ),
+    'cdash_sm_display_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'currency',
+    __( 'Currency', 'cdash' ),
+    'cdash_currency_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Select the currency that will be used on invoices.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'currency_symbol',
+    __( 'Currency Symbol', 'cdash' ),
+    'cdash_currency_symbol_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the symbol that should appear next to all currency.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'currency_position',
+    __( 'Currency Position', 'cdash' ),
+    'cdash_currency_position_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( '', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'search_results_per_page',
+    __( 'Search Results Per Page', 'cdash' ),
+    'cdash_search_results_per_page_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the number of search results you would like to display per page.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'business_listings_url',
+    __( 'Business Listings URL', 'cdash' ),
+    'cdash_business_listings_url_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the url for your business listings page here. It will be displayed on the single business pages so that users can navigate back to the business listings page.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'business_listings_url_text',
+    __( 'Business Listings URL text', 'cdash' ),
+    'cdash_business_listings_url_text_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the text you want to show for the Return to Business Listings link on the single business page.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'google_maps_api',
+    __( 'Google Maps API Key', 'cdash' ),
+    'cdash_google_maps_api_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the Google Maps API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'cdash_custom_fields',
+    __( 'Custom Fields', 'cdash' ),
+    'cdash_custom_fields_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'If you need to store additional information about businesses, you can create custom fields here.', 'cdash' )
+    )
+  );
 
 }
 
-function single_business_view_text_callback(){
+function cdash_single_business_view_text_callback(){
   echo __('What information would you like to display on the single business view?', 'cdash');
 }
 
-function cdash_bus_phone_type_render( $args ) {
+function cdash_taxonomy_view_text_callback(){
+  echo __('What information would you like to display on the category/membership level view?  Note: Chamber Dashboard might not be able to over-ride all of your theme settings (for instance, your theme might show the featured image on category pages).  If you don\'t like how your theme displays category and membership level pages, you might want to create custom pages using the [business_directory] shortcode.  This is more labor-intensive, but gives you more control over appearance.', 'cdash');
+}
 
+function cdash_options_misc_view_text_callback(){
+
+}
+
+function cdash_bus_phone_type_render( $args ) {
 	$options = get_option('cdash_directory_options');
 	?>
   <input type='text' name='cdash_directory_options[bus_phone_type]' value='<?php echo $options['bus_phone_type']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
-
 }
 
 function cdash_bus_email_type_render($args){
   $options = get_option('cdash_directory_options');
   ?>
   <input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
 <?php
 }
 
@@ -292,6 +745,362 @@ function cdash_sv_name_render($args){
   <br /><span class="description"><?php echo $args[0]; ?></span>
   <?php
 }
+
+function cdash_sv_address_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_address]" type="checkbox" value="1" <?php if (isset($options['sv_address'])) { checked('1', $options['sv_address']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_hours_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_hours]" type="checkbox" value="1" <?php if (isset($options['sv_hours'])) { checked('1', $options['sv_hours']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_map_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_map]" type="checkbox" value="1" <?php if (isset($options['sv_map'])) { checked('1', $options['sv_map']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_url_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_url]" type="checkbox" value="1" <?php if (isset($options['sv_url'])) { checked('1', $options['sv_url']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_phone_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_phone]" type="checkbox" value="1" <?php if (isset($options['sv_phone'])) { checked('1', $options['sv_phone']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_email_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_email]" type="checkbox" value="1" <?php if (isset($options['sv_email'])) { checked('1', $options['sv_email']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_logo_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_logo]" type="checkbox" value="1" <?php if (isset($options['sv_logo'])) { checked('1', $options['sv_logo']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_thumb_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_memberlevel_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+
+function cdash_sv_category_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_tags_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_tags]" type="checkbox" value="1" <?php if (isset($options['sv_tags'])) { checked('1', $options['sv_tags']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_social_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_social]" type="checkbox" value="1" <?php if (isset($options['sv_social'])) { checked('1', $options['sv_social']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sv_comments_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sv_comments]" type="checkbox" value="1" <?php if (isset($options['sv_comments'])) { checked('1', $options['sv_comments']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_name_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_name]" type="checkbox" value="1" <?php if (isset($options['tax_name'])) { checked('1', $options['tax_name']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_address_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_address]" type="checkbox" value="1" <?php if (isset($options['tax_address'])) { checked('1', $options['tax_address']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_hours_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_hours]" type="checkbox" value="1" <?php if (isset($options['tax_hours'])) { checked('1', $options['tax_hours']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_url_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_url]" type="checkbox" value="1" <?php if (isset($options['tax_url'])) { checked('1', $options['tax_url']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_phone_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_phone]" type="checkbox" value="1" <?php if (isset($options['tax_phone'])) { checked('1', $options['tax_phone']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_email_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_email]" type="checkbox" value="1" <?php if (isset($options['tax_email'])) { checked('1', $options['tax_email']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+
+function cdash_tax_logo_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_logo]" type="checkbox" value="1" <?php if (isset($options['tax_logo'])) { checked('1', $options['tax_logo']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_thumb_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_thumb]" type="checkbox" value="1" <?php if (isset($options['tax_thumb'])) { checked('1', $options['tax_thumb']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_memberlevel_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_category_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_tags_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_tags]" type="checkbox" value="1" <?php if (isset($options['tax_tags'])) { checked('1', $options['tax_tags']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_social_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_tax_orderby_name_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[tax_orderby_name]" type="checkbox" value="1"<?php if (isset($options['tax_orderby_name'])) { checked('1', $options['tax_orderby_name']); } ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_sm_display_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><?php _e( '(Display social media as text links)', 'cdash' ); ?><br /><br />
+
+  <input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><?php _e( '(Display social media links as icons)', 'cdash' ); ?>
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <label><?php _e('Icon Size: ', 'cdash'); ?></label>
+  <select name='cdash_directory_options[sm_icon_size]'>
+  <option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
+  <option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
+  <option value='64px' <?php selected('64px', $options['sm_icon_size']); ?>>64px</option>
+  <option value='128px' <?php selected('128px', $options['sm_icon_size']); ?>>128px</option>
+</select>
+<br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_currency_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <select name='cdash_directory_options[currency]'>
+  <?php global $currencies;
+  foreach($currencies['codes'] as $code => $currency)
+  {
+    echo '<option value="'.esc_attr($code).'"'.selected($options['currency'], $code, false).'>'.esc_html($currency).'</option>';
+  } ?>
+</select>
+<br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_currency_symbol_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input type="text" size="35" name="cdash_directory_options[currency_symbol]" value="<?php if(isset($options['currency_symbol'])) { echo $options['currency_symbol']; } ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_currency_position_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[currency_position]" type="radio" value="before" <?php checked('before', $options['currency_position']); ?> /><?php _e( ' Before the price', 'cdash' ); ?><br />
+  <input name="cdash_directory_options[currency_position]" type="radio" value="after" <?php checked('after', $options['currency_position']); ?> /><?php _e( ' After the price', 'cdash' ); ?>
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_search_results_per_page_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input name="cdash_directory_options[currency_position]" type="radio" value="before" <?php checked('before', $options['currency_position']); ?> />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_business_listings_url_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input type="text" size="35" name="cdash_directory_options[business_listings_url]" value="<?php if(isset($options['business_listings_url'])) { echo $options['business_listings_url']; } ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_business_listings_url_text_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input type="text" size="35" name="cdash_directory_options[business_listings_url_text]" value="<?php if(isset($options['business_listings_url_text'])) { echo $options['business_listings_url_text']; } ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_google_maps_api_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input type="text" size="35" name="cdash_directory_options[google_maps_api]" value="<?php if(isset($options['google_maps_api'])) { echo $options['google_maps_api']; } ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_custom_fields_render($args){
+  $options = get_option('cdash_directory_options');
+  if(isset($options['bus_custom']) && is_array($options['bus_custom'])) {
+  	$customfields = $options['bus_custom'];
+  	$i = 1;
+		foreach($customfields as $field) { ?>
+      <div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+				<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+        <p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
+        <!--<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][$i]['name']; }  ?>" />-->
+
+        <input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($field['name'])){ echo $options['bus_custom'][$i]['name']; }  ?>" />
+
+        <p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>
+        <?php if(!isset($field['type'])){
+          $field['type'] = "";
+        }
+        ?>
+        <select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
+          <option value=''></option>
+          <option value='text' <?php selected('text', $field['type']); ?> ><?php _e('Short Text Field', 'cdash'); ?></option>
+          <option value='textarea' <?php selected('textarea', $field['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+				</select>
+        <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
+				<?php $field['display_dir'] = ""; ?>
+					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $field['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $field['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
+
+				<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+				<?php $field['display_single'] = ""; ?>
+					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
+				<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
+			</div>
+			<?php $i++;
+		}
+  } else {
+    $options['bus_custom'][] = '';
+   ?>
+  	<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+  		<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+  			<input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php echo $options['bus_custom'][1]['name']; ?>" />
+  		<p><strong><?php _e('Custom Field Type'); ?></strong></p>
+  			<select name='cdash_directory_options[bus_custom][1][type]'>
+  				<option value=''></option>
+  				<option value='text' <?php selected('one', $options['bus_custom'][1]['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
+  				<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+  			</select>
+  		<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
+  			<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+  			<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('No', 'cdash'); ?></label><br />
+
+  		<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+  			<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e('Yes', 'cdash'); ?>
+        </label><br />
+  			<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e('No', 'cdash'); ?>
+        </label><br />
+  		<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
+  	</div>
+  <?php } ?>
+		<p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
+<?php
+}
+
 
 function cdash_options_section_callback(  ) {
 
@@ -352,6 +1161,7 @@ function cdash_add_options_page() {
 		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png',
 		85
 	);
+  add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Settings', 'Directory Settings', 'manage_options', 'chamber-dashboard-business-directory/options.php', 'cdash_render_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export Directory', 'Export Directory', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Directory Import', 'Directory Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 
