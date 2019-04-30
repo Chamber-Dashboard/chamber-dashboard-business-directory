@@ -270,6 +270,7 @@ function cdash_admin_scripts_and_styles($hook)
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
 
 				wp_enqueue_script( 'admin-javascript', plugins_url( 'js/admin.js', __FILE__ ));
+        wp_enqueue_media();
     }
 
     global $post;

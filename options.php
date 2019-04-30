@@ -38,6 +38,10 @@ function cdash_add_defaults() {
     $tmp['bus_email_type'] = 'Main, Sales, Accounting, HR';
   }
 
+  if(!isset($tmp['cdash_default_thumb'])){
+    $tmp['cdash_default_thumb'] = '';
+  }
+
   if(!isset($tmp['sv_description'])){
     $tmp['sv_description'] = '1';
   }
@@ -182,10 +186,6 @@ function cdash_add_defaults() {
     $tmp['google_maps_api'] = '';
   }
 
-  if(!isset($tmp['default_bus_thumb'])){
-    $tmp['default_bus_thumb'] = '';
-  }
-
   if(!isset($tmp['bus_custom'])){
     $tmp['bus_custom'][] = '';
   }
@@ -235,6 +235,8 @@ function cdash_add_defaults() {
 function cdash_init(){
 	register_setting( 'cdash_plugin_options', 'cdash_directory_options', 'cdash_validate_options' );
 	register_setting( 'cdash_plugin_version', 'cdash_directory_version', 'cdash_validate_options' );
+  //register_setting( 'cdash_plugin_options', 'cdash_directory_options', 'cdash_handle_file_upload' );
+
 }
 
 // ------------------------------------------------------------------------------
@@ -291,6 +293,17 @@ function cdash_options_init(){
     'cdash_options_main_section',
     array(
       __( 'When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'cdash_default_thumb',
+    __( 'Default Featured Image for businesses', 'cdash' ),
+    'cdash_default_thumb_render',
+    'cdash_plugin_options',
+    'cdash_options_main_section',
+    array(
+      __( 'This image will show up as the default featured image for any business that does not have a featured image.', 'cdash' )
     )
   );
 
@@ -729,6 +742,16 @@ function cdash_bus_email_type_render($args){
   <input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
   <br /><span class="description"><?php echo $args[0]; ?></span>
 <?php
+}
+
+function cdash_default_thumb_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input id="cdash_default_thumb" type="text" name="cdash_directory_options['cdash_default_thumb']" value="<?php if(isset($options['cdash_default_thumb'])){ echo $options['cdash_default_thumb']; } ?>" />
+
+  <input id="cdash_default_thumb_button" type="button" class="button-primary" value="Upload Image" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
 }
 
 function cdash_sv_description_render($args){
@@ -1269,9 +1292,31 @@ function cdash_validate_options($input) {
 	if( isset( $input['currency_symbol'] ) ) {
 		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']);
 	}
+  /*if( isset( $input['cdash_default_thumb'] ) ){
+    $input['cdash_default_thumb'] = esc_url_raw( my_sanitize_image( $input['cdash_default_thumb'] ) );
+  }*/
+
+
 	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
 	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
 	return $input;
+}
+
+function cdash_sanitize_image( $input ){
+
+    /* default output */
+    $output = '';
+
+    /* check file type */
+    $filetype = wp_check_filetype( $input );
+    $mime_type = $filetype['type'];
+
+    /* only mime type "image" allowed */
+    if ( strpos( $mime_type, 'image' ) !== false ){
+        $output = $input;
+    }
+
+    return $output;
 }
 
 // Display a Settings link on the main Plugins page
