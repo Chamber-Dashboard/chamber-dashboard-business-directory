@@ -39,8 +39,8 @@ function cdash_single_business($content) {
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) {
 			if(has_post_thumbnail()){
 				$business_content .= get_the_post_thumbnail( $post_id, 'full' );
-			}elseif(isset($options['cdash_default_bus_thumb'])){
-				$default_featured_image = $options['cdash_default_bus_thumb'];
+			}elseif(isset($options['cdash_default_thumb'])){
+				$default_featured_image = $options['cdash_default_thumb'];
 				$business_content .= "Default featured image url: " . $default_featured_image;
 			}else{
 				$business_content .= "No featured image available";

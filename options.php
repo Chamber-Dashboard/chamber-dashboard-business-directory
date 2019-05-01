@@ -747,7 +747,7 @@ function cdash_bus_email_type_render($args){
 function cdash_default_thumb_render($args){
   $options = get_option('cdash_directory_options');
   ?>
-  <input id="cdash_default_thumb" type="text" name="cdash_directory_options['cdash_default_thumb']" value="<?php if(isset($options['cdash_default_thumb'])){ echo $options['cdash_default_thumb']; } ?>" />
+  <input id="cdash_default_thumb" type="text" name="cdash_directory_options[cdash_default_thumb]" value="<?php if(isset($options['cdash_default_thumb'])){ echo $options['cdash_default_thumb']; } ?>" />
 
   <input id="cdash_default_thumb_button" type="button" class="button-primary" value="Upload Image" />
   <br /><span class="description"><?php echo $args[0]; ?></span>
