@@ -27,6 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BUS_VER', '3.1.0' );
+define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:

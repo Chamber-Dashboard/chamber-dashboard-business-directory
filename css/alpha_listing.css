@@ -1,0 +1,12 @@
+.alpha_listings ul li{
+  float:left;
+  list-style-type: none;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.alpha_listings{
+  margin-bottom:100px;
+}
