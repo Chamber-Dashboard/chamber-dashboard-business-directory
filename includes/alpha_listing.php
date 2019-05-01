@@ -16,57 +16,69 @@ function cdash_business_taxonomy_bus_alpha_index(){
 	),
 	array( 'hierarchical' => false,
 		'label' => 'Alpha Index',
-		'show_ui' => false,
-		'query_var' => true,
-		'show_admin_column' => false,
+    'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => true,
+		'show_tagcloud'              => true,
 	) );
 }
-//add_action('init', 'cdash_business_taxonomy_bus_alpha_index', 0);
+add_action('init', 'cdash_business_taxonomy_bus_alpha_index', 0);
 
+/* When the post is saved, saves our custom data */
 function cdash_business_save_alpha( $post_id ) {
-  global $post;
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-	return;
-	//only run for businesses
-	$slug = 'business';
-	$letter = '';
-	// If this isn't a 'business' post, don't update it.
-	if ( isset( $_POST['post_type'] ) && ( $slug != $_POST['post_type'] ) )
-	return;
-	// Check permissions
-	if ( !current_user_can( 'edit_post', $post_id ) )
-	return;
-	// OK, we're authenticated: we need to find and save the data
-	$taxonomy = 'alpha_index';
-  //set term as first letter of post title, lower case
-    wp_set_object_terms( $post_id, strtolower(substr($_POST['post_title'], 0, 1)), $taxonomy );
+    // verify if this is an auto save routine.
+    // If it is our form has not been submitted, so we dont want to do anything
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+        return $post_id;
 
+    //check location (only run for posts)
+    $limitPostTypes = array('post');
+    if (!in_array($_POST['post_type'], $limitPostTypes))
+        return $post_id;
 
-	/*if ( isset( $_POST['post_type'] ) ) {
-		// Get the title of the post
-		$title = strtolower( $_POST['post_title'] );
+    // Check permissions
+    if ( !current_user_can( 'edit_post', $post_id ) )
+        return $post_id;
 
-		// The next few lines remove A, An, or The from the start of the title
-		$splitTitle = explode(" ", $title);
-		$blacklist = array("an","a","the");
-		$splitTitle[0] = str_replace($blacklist,"",strtolower($splitTitle[0]));
-		$title = implode("", $splitTitle);
+    // OK, we're authenticated: we need to find and save the data
+    $taxonomy = 'alpha_index';
 
-		// Get the first letter of the title
-		$letter = substr( $title, 0, 1 );
+    //set term as first letter of post title, lower case
+    wp_set_post_terms( $post_id, strtolower(substr($_POST['post_title'], 0, 1)), $taxonomy );
 
-		// Set to 0-9 if it's a number
-		if ( is_numeric( $letter ) ) {
-			$letter = '0-9';
-		}
-	}*/
-	//set term as first letter of post title, lower case
-	//wp_set_post_terms( $post_id, $letter, $taxonomy );
+    //delete the transient that is storing the alphabet letters
+    //delete_transient( 'kia_archive_alphabet');
 }
-//add_action( 'save_post', 'cdash_business_save_alpha' );
-//add_action( 'post_updated', 'cdash_business_save_alpha');
+add_action( 'save_post', 'cdash_business_save_alpha' );
 
-function cdash_business_alpha_listing(){
+//add_action( 'save_post', 'cdash_business_save_alpha' );
+add_action( 'post_updated', 'cdash_business_save_alpha');
+
+//create array from existing posts
+function cdash_alpha_run_once(){
+
+    if ( false === get_transient( 'cdash_alpha_run_once' ) ) {
+
+        $taxonomy = 'alpha_index';
+        $alphabet = array();
+
+        $posts = get_posts(array('numberposts' => -1) );
+
+        foreach( $posts as $p ) :
+        //set term as first letter of post title, lower case
+        wp_set_post_terms( $p->ID, strtolower(substr($p->post_title, 0, 1)), $taxonomy );
+        endforeach;
+
+        set_transient( 'cdash_alpha_run_once', 'true' );
+
+    }
+
+}
+add_action('init','cdash_alpha_run_once');
+
+
+function cdash_business_alpha_listing($atts){
   // Set our default attributes
 	extract( shortcode_atts(
 		array(
@@ -106,6 +118,6 @@ function cdash_business_alpha_listing(){
 	}
 	return $categories;
 }
-//add_shortcode( 'business_alpha_index', 'cdash_business_alpha_listing' );
+add_shortcode( 'business_alpha_index', 'cdash_business_alpha_listing' );
 
 ?>
