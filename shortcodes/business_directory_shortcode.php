@@ -125,9 +125,11 @@ function cdash_business_directory_shortcode( $atts ) {
 							'class'	=> $image_class,
 						);
 						if( $single_link == "yes" ) {
-							$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
+							$business_list .= cdash_display_featured_image($post->ID, true, get_the_permalink(), 'thumb', $thumbattr);
+							//$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
 				    } else {
-							$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
+							$business_list .= cdash_display_featured_image($post->ID, false, '', 'thumb', $thumbattr);
+							//$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
 						}
 			  	}
 					if( "excerpt" == $text ) {

@@ -37,14 +37,7 @@ function cdash_single_business($content) {
 			$business_content .= "This business is not a current member.";
 		}else{
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) {
-			if(has_post_thumbnail()){
-				$business_content .= get_the_post_thumbnail( $post_id, 'full' );
-			}elseif(isset($options['cdash_default_thumb'])){
-				$default_featured_image = $options['cdash_default_thumb'];
-				$business_content .= "Default featured image url: " . $default_featured_image;
-			}else{
-				$business_content .= "No featured image available";
-			}
+			$business_content .= cdash_display_featured_image($post_id, false, '', 'full', '');
 		}
 
 		if( isset( $options['sv_logo'] ) && isset( $logometa['buslogo'] ) && "1" == $options['sv_logo'] ) {
