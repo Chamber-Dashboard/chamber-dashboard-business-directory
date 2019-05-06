@@ -1,4 +1,19 @@
 /*Chamber Dashboard General Styles*/
+.cdash_column_left{
+  float:left;
+  width:75%;
+}
+
+.cdash_sidebar{
+  float:right;
+  padding:2%;
+  width:20%;
+}
+
+.cdash_sidebar h2{
+  color:#B1304D;
+}
+
 .notice.cdash_update_notice{
   /*background-color:rgba(195, 105, 127, 1);*/
   border:#B1304D 2px solid;

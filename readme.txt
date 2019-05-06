@@ -3,9 +3,9 @@ Contributors: gwendydd, cguntur, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.0.3
-Requires PHP: 7.0
-Stable tag: 3.1.0
+Tested up to: 5.2
+Requires PHP: 7.3
+Stable tag: 3.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -97,6 +97,13 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.2 =
+* Option for default featured image for businesses added
+* Directories can now be sorted by alphabet
+
+= 3.1.1 =
+* The plugin is now compatible with WPML
+
 = 3.1.0 =
 * Added a new parameter to the business directory shortcode to display full width images
 * Fixed the show count for business category grid format

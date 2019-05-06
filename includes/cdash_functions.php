@@ -211,6 +211,6 @@ if(isset($_GET['tab'])){
 }
 
 if($pagenow == 'admin.php' && $page == 'cdash-about' && $tab == 'cdash-about'){
-  add_action('admin_enqueue_styles', 'cdash_demo_content_styles');
+  add_action('admin_enqueue_scripts', 'cdash_demo_content_styles');
 }
 ?>

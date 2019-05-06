@@ -31,9 +31,11 @@ function cdash_taxonomy_filter( $content ) {
 		global $buslogo_metabox;
 		$logometa = $buslogo_metabox->the_meta();
 		global $post;
+
 		$tax_content = '';
 		if( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) {
-			$tax_content .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
+			//$tax_content .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
+			$tax_content .= cdash_display_featured_image($post->ID, true, get_the_permalink(), 'full', '');
 		}
 		if( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) {
 			$attr = array(
