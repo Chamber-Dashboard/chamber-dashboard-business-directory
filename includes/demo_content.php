@@ -39,6 +39,7 @@ function cdash_add_demo_data(){
   if ( ($demo_post_id != 0) || $demo_page_id !=0 )
     {
         $response = 'Demo data successfully added.';
+        flush_rewrite_rules();
     }
     else {
         $response = 'The data already exists.';

@@ -71,7 +71,7 @@ function cdash_display_google_map_link( $location ) {
     if( isset( $location['country'] ) && '' !== $location['country'] ) {
 			$google_map_link .= $location['country'];
 		}
-	$google_map_link .= "'>Get Directions</a><br /><br />";
+	$google_map_link .= "'>". __('Get Directions', 'cdash') . "</a><br /><br />";
 	return $google_map_link;
 }
 
@@ -387,4 +387,30 @@ function cdash_back_to_bus_link(){
 	return $back_bus_link;
 }
 
+// ------------------------------------------------------------------------
+// DISPLAY FEATURED IMAGE
+// ------------------------------------------------------------------------
+
+function cdash_display_featured_image($post_id, $is_single_link, $permalink, $image_size, $thumbattr){
+  global $post;
+  $featured_image = '';
+  $options = get_option('cdash_directory_options');
+  if(!has_post_thumbnail()){
+    if(isset($options['cdash_default_thumb']) && $options['cdash_default_thumb'] != ''){
+      $default_featured_image = $options['cdash_default_thumb'];
+      if($is_single_link){
+        $featured_image .= '<div class="featured_image"><a href="' . $permalink . '"><img src="' . $default_featured_image .'" /></a></div><br />';
+      }else{
+        $featured_image .= "<div class='featured_image'><img src='" . $default_featured_image . "' /></div><br />";
+      }
+    }
+  }else{
+    if($is_single_link){
+      $featured_image .= '<a href="' . $permalink . '">' . get_the_post_thumbnail( $post->ID, $image_size, $thumbattr) . '</a>';
+    }else{
+      $featured_image .= get_the_post_thumbnail( $post_id, $image_size, $thumbattr );
+    }
+  }
+  return $featured_image;
+}
 ?>

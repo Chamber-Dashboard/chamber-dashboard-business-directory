@@ -187,23 +187,22 @@ function cdash_business_search_form_shortcode( $atts ) {
 	$search_form = "<div id='business-search' class='" . $class . "'><h3>" . __('Search', 'cdash') . "</h3>";
 	if( $results_page == 'notset') {
 		$search_form .= __( 'You must enter a results page!', 'cdash' );
+		//return;
 	} else {
 		$search_form .= "<form id='business-search-form' method='get' action='" . home_url('/') . $results_page . "'>";
-	}
-	$search_form .= "<p class='business-search-term'><label id='business-search-term'>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
-	// $search_form .= "<p><label>Business Name</label><br /><input type='text' value='' name='business_name' id='business_name' /></p>";
-		// searching by business name seems like a good idea, but you can only query the slug, so if the name isn't exactly like the slug, it won't find anything
-	// $search_form .= "<p><label>City</label><br /><input type='text' value='' name='city' id='city' /></p>";
+		$search_form .= "<p class='business-search-term'><label id='business-search-term'>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
 		// I would really like to be able to search by city, but since WPAlchemy serializes the locations array, I don't think this is possible
-	$search_form .= "<p class='business-category-text'><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
+		$search_form .= "<p class='business-category-text'><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
 
-	$terms = get_terms( 'business_category', 'hide_empty=0' );
-        foreach ($terms as $term) {
-            $search_form .= "<option value='" . $term->slug . "'>" . $term->name;
-        }
-    $search_form .= "</select></p>";
-	$search_form .= "<input type='submit' value='" . __('Search', 'cdash') . "'>";
-	$search_form .= "</form>";
+		$terms = get_terms( 'business_category', 'hide_empty=0' );
+	        foreach ($terms as $term) {
+	            $search_form .= "<option value='" . $term->slug . "'>" . $term->name;
+	        }
+	  $search_form .= "</select></p>";
+		$search_form .= "<input type='submit' value='" . __('Search', 'cdash') . "'>";
+		$search_form .= "</form>";
+
+	}
 	$search_form .= "</div>";
 	return $search_form;
 }
