@@ -24,7 +24,8 @@ function cdash_business_directory_shortcode( $atts ) {
 			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '', // options: slug of any membership status
-			'image_size'	=> '' //options: full_width
+			'image_size'	=> '', //options: full_width
+			'alpha'	=> 'no'	//options: yes, no
 		), $atts )
 	);
 
@@ -77,11 +78,22 @@ function cdash_business_directory_shortcode( $atts ) {
 			);
 	}
 
+	if(isset($_GET['starts_with'])){
+		$args['starts_with'] = $_GET['starts_with'];
+	}
+
+	$business_list = '';
+	if($alpha == 'yes'){
+		$business_list = cdash_list_alphabet();
+	}
+
+
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$businessquery = new WP_Query( $args );
+
 	// The Loop
 	if ( $businessquery->have_posts() ) :
-		$business_list = '';
+		//$business_list = '';
 		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . "'>";
 		$count = 0;
 			while ( $businessquery->have_posts() ) :
@@ -239,6 +251,50 @@ function cdash_business_directory_shortcode( $atts ) {
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
+
+//Display the list of alphabet
+function cdash_list_alphabet(){
+	//$ajax_url = admin_url( 'admin-ajax.php' );
+	global $wpdb;
+	global $wp;
+
+  $query = "SELECT DISTINCT(SUBSTRING(post_title, 1, 1)) AS first_char
+      FROM $wpdb->posts
+      WHERE post_status = 'publish'
+      AND post_type = 'business'
+      ORDER BY first_char ASC";
+
+  $results = $wpdb -> get_results($query);
+
+	$alpha = '';
+	$alpha .= "<div class='alpha_listings'>";
+	$alpha .= "<ul>";
+	foreach($results as $result) {
+		$alpha .= "<li><a href='";
+		$alpha .= add_query_arg('starts_with', $result->first_char);
+		$alpha .= "'>" . $result->first_char;
+		//$alpha .= cdash_business_listing_for_alpha($result->first_char);
+		$alpha .= "</a></li>";
+	}
+	$current_url = home_url( add_query_arg( array(), $wp->request ) );
+	$alpha .= "<li><a href='" . $current_url . "'>View All</a></li>";
+	$alpha .= "</ul></div>";
+
+	return $alpha;
+}
+
+function cdash_starts_with_query_filter( $where, $query ) {
+    global $wpdb;
+
+    $starts_with = $query->get( 'starts_with' );
+
+    if ( $starts_with ) {
+        $where .= " AND $wpdb->posts.post_title LIKE '$starts_with%'";
+    }
+
+    return $where;
+}
+add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
 
 /*function cdash_display_business_listings($format, $category, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status){
 
