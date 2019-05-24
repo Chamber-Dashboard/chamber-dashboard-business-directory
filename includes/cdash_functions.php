@@ -191,12 +191,19 @@ function cdash_enqueue_scripts(){
   wp_enqueue_script( 'cdash-business-directory', plugins_url( 'js/cdash-business-directory.js', dirname(__FILE__) ) );
 }
 
+//TODO: remove the current time from the script before plugin release
 function cdash_admin_scripts() {
-	wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
-  wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__) ) );
+  //wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+  wp_enqueue_script('jquery-ui');
+  wp_enqueue_script( 'jquery-ui-dialog' );
+  wp_enqueue_script(' jquery-ui-draggable');
+
+  //wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__) ) );
+  wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__)), 'jquery-ui', filemtime(dirname(__FILE__). '/../js/cdash_demo_content.js') );
 }
 
 add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
+//add_action( 'admin_init', 'cdash_admin_scripts' );
 
 function cdash_demo_content_styles(){
 	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
@@ -212,5 +219,26 @@ if(isset($_GET['tab'])){
 
 if($pagenow == 'admin.php' && $page == 'cdash-about' && $tab == 'cdash-about'){
   add_action('admin_enqueue_scripts', 'cdash_demo_content_styles');
+  //add_action( 'admin_init', 'cdash_demo_content_styles' );
+}
+
+function cdash_check_license_message($license_validity, $site_count, $license_limit, $license_expiry_date){
+  $message = '';
+  if($license_validity == 'valid'){
+    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_active_license" style="color:green;">';
+    $message .= __( 'Your license key is active. ' );
+    $message .= '</span>';
+
+    if(isset($license_expiry_date) && $license_expiry_date != 'lifetime'){
+      $message .= __( 'It expires on ' . date_i18n( get_option( 'date_format' ), strtotime( $license_expiry_date, current_time( 'timestamp' ) ) ) );
+    }
+     $message .=  __(' You have ' . $site_count .'/' .$license_limit . ' sites active.' );
+     $message .= '</p>';
+  }elseif($license_validity == 'invalid'){
+    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_inactive_license" style="color:red;">';
+    $message .= __( 'Your license key is not active.' );
+    $message .= '</span></p>';
+  }
+  return $message;
 }
 ?>
