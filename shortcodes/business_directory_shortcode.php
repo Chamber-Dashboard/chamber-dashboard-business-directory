@@ -246,8 +246,11 @@ function cdash_business_directory_shortcode( $atts ) {
 				$business_list .= "</div>";
 		}
 		wp_reset_postdata();
-		return $business_list;
+	else:
+		$business_list .= __("No businesses found.");
+		//return $business_list;
 	endif;
+	return $business_list;
 	//Moved the reset_postdata to above the return $business_list so that it works properly with elementor
 	//wp_reset_postdata();
 }
@@ -257,24 +260,26 @@ add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 //Display the list of alphabet
 function cdash_list_alphabet(){
 	//$ajax_url = admin_url( 'admin-ajax.php' );
-	global $wpdb;
+	//global $wpdb;
 	global $wp;
 
-  $query = "SELECT DISTINCT(SUBSTRING(post_title, 1, 1)) AS first_char
+  /*$query = "SELECT DISTINCT(SUBSTRING(post_title, 1, 1)) AS first_char
       FROM $wpdb->posts
       WHERE post_status = 'publish'
       AND post_type = 'business'
       ORDER BY first_char ASC";
 
   $results = $wpdb -> get_results($query);
-
+*/
+	$results = str_split("0ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	$alpha = '';
 	$alpha .= "<div class='alpha_listings'>";
 	$alpha .= "<ul>";
 	foreach($results as $result) {
 		$alpha .= "<li><a href='";
-		$alpha .= add_query_arg('starts_with', $result->first_char);
-		$alpha .= "'>" . $result->first_char;
+		$alpha .= add_query_arg('starts_with', $result);
+		$alpha .= "'>";
+		$alpha .= ($result == '0') ? "0-9" : $result;
 		//$alpha .= cdash_business_listing_for_alpha($result->first_char);
 		$alpha .= "</a></li>";
 	}
@@ -290,9 +295,11 @@ function cdash_starts_with_query_filter( $where, $query ) {
 
     $starts_with = $query->get( 'starts_with' );
 
-    if ( $starts_with ) {
-        $where .= " AND $wpdb->posts.post_title LIKE '$starts_with%'";
-    }
+			if($starts_with === '0'){
+				$where .= " AND $wpdb->posts.post_title regexp '^[0-9].*'";
+			}elseif($starts_with){
+				$where .= " AND $wpdb->posts.post_title LIKE '$starts_with%'";
+			}
 
     return $where;
 }

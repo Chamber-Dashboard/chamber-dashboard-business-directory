@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
   $("#demo_content_buttons").dialog({
+    dialogClass: 'wp-dialog',
     modal: true,
     dialogClass: "cdash_demo_content_modal",
     buttons: [
@@ -20,7 +21,6 @@ jQuery(document).ready(function($){
   $(".dashboard_page_cdash-about .ui-dialog-buttonpane").hide();
 
   $(".demo_content.button").click(function(event){
-    //alert("Hello");
     event.preventDefault();
     $.ajax({
       url: ajaxurl,
@@ -37,7 +37,6 @@ jQuery(document).ready(function($){
          $(".dashboard_page_cdash-about .ui-dialog-buttonpane").show();
       },
       success: function(response){
-        //alert(response);
         $(".cdash_demo_success_message").html(response);
       },
     });

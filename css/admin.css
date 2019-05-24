@@ -170,3 +170,16 @@ p.right{
   background:#443e3e;
   opacity:0.5;
 }
+
+.license_information{
+  font-style: italic;
+  font-size:12px;
+}
+
+.cdash_active_license{
+  color:green;
+}
+
+.cdash_inactive_license{
+  color:red;
+}

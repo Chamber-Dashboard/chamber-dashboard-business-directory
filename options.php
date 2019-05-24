@@ -1,5 +1,4 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 add_action( 'admin_enqueue_scripts', 'cdash_addons_enqueue_scripts' );
@@ -186,9 +185,9 @@ function cdash_add_defaults() {
     $tmp['google_maps_api'] = '';
   }
 
-  if(!isset($tmp['bus_custom'])){
+  /*if(!isset($tmp['bus_custom'])){
     $tmp['bus_custom'][] = '';
-  }
+  }*/
   /*if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
@@ -1031,7 +1030,7 @@ function cdash_currency_position_render($args){
 function cdash_search_results_per_page_render($args){
   $options = get_option('cdash_directory_options');
   ?>
-  <input name="cdash_directory_options[currency_position]" type="radio" value="before" <?php checked('before', $options['currency_position']); ?> />
+  <input type="text" size="35" name="cdash_directory_options[search_results_per_page]" value="<?php if(isset($options['search_results_per_page'])) { echo $options['search_results_per_page']; } ?>" />
   <br /><span class="description"><?php echo $args[0]; ?></span>
   <?php
 }
@@ -1062,65 +1061,44 @@ function cdash_google_maps_api_render($args){
 
 function cdash_custom_fields_render($args){
   $options = get_option('cdash_directory_options');
-  if(isset($options['bus_custom']) && is_array($options['bus_custom'])) {
+  if(isset($options['bus_custom']) && is_array($options['bus_custom']) && array_filter($options['bus_custom']) != [] ) {
+    //echo "Inside the if condition<br />";
+    //print_r($options['bus_custom']);
+    //var_dump($options['bus_custom']);
+    //echo "<br />";
+    $field_set = true;
   	$customfields = $options['bus_custom'];
   	$i = 1;
-		foreach($customfields as $field) { ?>
-      <div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-				<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
-        <p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
-        <!--<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][$i]['name']; }  ?>" />-->
-
-        <input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($field['name'])){ echo $options['bus_custom'][$i]['name']; }  ?>" />
-
-        <p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>
-        <?php if(!isset($field['type'])){
-          $field['type'] = "";
-        }
+  	foreach($customfields as $field) {
+      //echo "i = $i";
+       ?>
+  		<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+  			<?php cdash_custom_fields_name($field_set, $options, $i);
+              cdash_custom_fields_type($field_set, $options, $i);
+              cdash_custom_fields_display_dir($field_set, $options, $i);
+              cdash_custom_fields_display_single($field_set, $options, $i);
         ?>
-        <select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
-          <option value=''></option>
-          <option value='text' <?php selected('text', $field['type']); ?> ><?php _e('Short Text Field', 'cdash'); ?></option>
-          <option value='textarea' <?php selected('textarea', $field['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
-				</select>
-        <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
-				<?php $field['display_dir'] = ""; ?>
-					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $field['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $field['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
-
-				<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
-				<?php $field['display_single'] = ""; ?>
-					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-					<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
-				<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
-			</div>
-			<?php $i++;
-		}
+        <br />
+        <a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
+  		</div>
+  		<?php $i++;
+      //echo "i after the increment: $i";
+  	}
   } else {
-    $options['bus_custom'][] = '';
-   ?>
+    //echo "Inside the else condition<br />";
+    //print_r($options['bus_custom']);
+    ?>
   	<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-  		<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
-  			<input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php echo $options['bus_custom'][1]['name']; ?>" />
-  		<p><strong><?php _e('Custom Field Type'); ?></strong></p>
-  			<select name='cdash_directory_options[bus_custom][1][type]'>
-  				<option value=''></option>
-  				<option value='text' <?php selected('one', $options['bus_custom'][1]['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
-  				<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
-  			</select>
-  		<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
-  			<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
-  			<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e('No', 'cdash'); ?></label><br />
-
-  		<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
-  			<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e('Yes', 'cdash'); ?>
-        </label><br />
-  			<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e('No', 'cdash'); ?>
-        </label><br />
+  		<?php cdash_custom_fields_name(false, $options, '');
+            cdash_custom_fields_type(false, $options, '');
+            cdash_custom_fields_display_dir(false, $options, '');
+            cdash_custom_fields_display_single(false, $options, '');
+       ?>
+       <br />
   		<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
   	</div>
   <?php } ?>
-		<p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
+  <p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
 <?php
 }
 
@@ -1129,6 +1107,80 @@ function cdash_options_section_callback(  ) {
 
 	//echo __( 'Chamber Dashboard Business Directory Settings', 'cdash' );
 
+}
+
+function cdash_custom_fields_name($field_set, $options, $i){
+  //$options = get_option('cdash_directory_options');
+  ?>
+  <p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+  <p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
+  <?php
+  //echo "i inside the name function: $i";
+  if($field_set){
+  ?>
+    <input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][$i]['name']; } ?>" />
+  <?php
+  }else{
+  ?>
+    <input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][1]['name']; } ?>" />
+  <?php
+  }
+}
+
+function cdash_custom_fields_type($field_set, $options, $i){
+  if($field_set){
+    ?>
+    <p><strong><?php _e('Custom Field Type'); ?></strong></p>
+      <select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
+        <option value=''></option>
+        <option value='text' <?php selected('text', $options['bus_custom'][$i]['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
+        <option value='textarea' <?php selected('textarea', $options['bus_custom'][$i]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+      </select>
+    <?php
+  }else{
+    ?>
+    <p><strong><?php _e('Custom Field Type'); ?></strong></p>
+      <select name='cdash_directory_options[bus_custom][1][type]'>
+        <option value=''></option>
+        <option value='text' <?php if(isset($options['bus_custom'][1]['type']) == "text" ){echo "selected='selected'";}  ?>><?php _e('Short Text Field', 'cdash'); ?></option>
+        <option value='textarea' <?php if(isset($options['bus_custom'][1]['type']) == "textarea" ){echo "selected='selected'";} ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+      </select>
+    <?php
+  }
+}
+
+function cdash_custom_fields_display_dir($field_set, $options, $i){
+  if($field_set){
+    ?>
+    <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
+    <?php $field['display_dir'] = ""; ?>
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php if(isset($options['bus_custom'][$i]['display_dir'])) {echo "checked='checked'";} ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php if(isset($options['bus_custom'][$i]['display_dir'])) {echo "checked='checked'";} ?> /><?php _e(' No', 'cdash'); ?></label><br />
+    <?php
+  }else{
+    ?>
+    <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
+      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_dir']) && $options['bus_custom'][1]['display_dir'] == 'yes') {echo "checked='checked'";} ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php if(isset($options['bus_custom'][1]['display_dir']) && $options['bus_custom'][1]['display_dir'] == 'no') {echo "checked='checked'";} ?> /><?php _e('No', 'cdash'); ?></label><br />
+    <?php
+  }
+}
+
+function cdash_custom_fields_display_single($field_set, $options, $i){
+  if($field_set){
+    ?>
+    <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+    <?php $field['display_single'] = ""; ?>
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][$i]['display_single'])) {echo "checked='checked'";} ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php if(isset($options['bus_custom'][$i]['display_single']) ) {echo "checked='checked'";} ?> /><?php _e(' No', 'cdash'); ?></label><br />
+    <?php
+  }else{
+    ?>
+    <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_single']) && $options['bus_custom'][1]['display_single'] == 'yes') {echo "checked='checked'";} ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_single']) && $options['bus_custom'][1]['display_single'] == 'no') {echo "checked='checked'";} ?> /><?php _e('No', 'cdash'); ?></label><br />
+    <?php
+  }
 }
 
 
@@ -1243,12 +1295,17 @@ function cdash_render_form() {
 			<script type="text/javascript">
 			// Add a new repeating section
 			var attrs = ['for', 'id', 'name'];
-			function resetAttributeNames(section) {
-			    var tags = section.find('input, label'), idx = section.index();
+			function resetAttributeNames(section, idx) {
+			    //var tags = section.find('input, label, select'), idx = section.index();
+          var tags = section.find('input, label, select');
+          //alert("Section Index idx: " + idx);
 			    tags.each(function() {
 			      var $this = jQuery(this);
 			      jQuery.each(attrs, function(i, attr) {
 			        var attr_val = $this.attr(attr);
+              /*if (attr_val) {
+			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx)+'\]\['))
+			        }*/
 			        if (attr_val) {
 			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx + 1)+'\]\['))
 			        }
@@ -1259,12 +1316,29 @@ function cdash_render_form() {
 			jQuery('.repeat').click(function(e){
 			        e.preventDefault();
 			        var lastRepeatingGroup = jQuery('.repeating').last();
-			        var cloned = lastRepeatingGroup.clone(true)
+              var idx = jQuery('.repeating').length;
+
+              //Saving the value of the radio buttons from the last repeating section
+              var displayDirName = "cdash_directory_options[bus_custom]["+idx+"][display_dir]";
+              var display_dir = jQuery("input[name='"+displayDirName+"']:checked").val();
+
+              var displaySingleName = "cdash_directory_options[bus_custom]["+idx+"][display_single]";
+              var display_single = jQuery("input[name='"+displaySingleName+"']:checked").val();
+
+              //Clone the lastRepeatingGroup
+              var cloned = lastRepeatingGroup.clone(true);
+
 			        cloned.insertAfter(lastRepeatingGroup);
+
+              //Clearing out the values in the newly cloned section
 			        cloned.find("input").val("");
 			        cloned.find("select").val("");
-			        cloned.find("input:radio").attr("checked", false);
-			        resetAttributeNames(cloned)
+              cloned.find('input[type=radio]').removeAttr('checked');
+			        resetAttributeNames(cloned, idx);
+
+              //Resetting the values of the radio buttons in the previous section
+              jQuery("input[name='"+displayDirName+"']").filter("[value="+display_dir+"]").attr("checked", true);
+              jQuery("input[name='"+displaySingleName+"']").filter("[value="+display_single+"]").attr("checked", true);
 			    });
 
 			jQuery('.delete-this').click(function(e){
@@ -1292,13 +1366,18 @@ function cdash_validate_options($input) {
 	if( isset( $input['currency_symbol'] ) ) {
 		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']);
 	}
-  /*if( isset( $input['cdash_default_thumb'] ) ){
-    $input['cdash_default_thumb'] = esc_url_raw( my_sanitize_image( $input['cdash_default_thumb'] ) );
-  }*/
 
+  if( isset( $input['business_listings_url'] ) ) {
+		$input['business_listings_url'] =  esc_url_raw($input['business_listings_url']);
+	}
 
-	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
-	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
+  if( isset( $input['business_listings_url_text'] ) ) {
+		$input['business_listings_url_text'] =  wp_filter_nohtml_kses($input['business_listings_url_text']);
+	}
+
+  if( isset( $input['cdash_default_thumb'] ) ){
+    $input['cdash_default_thumb'] = esc_url_raw( cdash_sanitize_image( $input['cdash_default_thumb'] ) );
+  }
 	return $input;
 }
 
