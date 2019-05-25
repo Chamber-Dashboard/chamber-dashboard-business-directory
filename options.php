@@ -1154,14 +1154,14 @@ function cdash_custom_fields_display_dir($field_set, $options, $i){
     ?>
     <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
     <?php $field['display_dir'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php if(isset($options['bus_custom'][$i]['display_dir'])) {echo "checked='checked'";} ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php if(isset($options['bus_custom'][$i]['display_dir'])) {echo "checked='checked'";} ?> /><?php _e(' No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_dir'], true ); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_dir'], true); ?> /><?php _e(' No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>
     <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
-      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_dir']) && $options['bus_custom'][1]['display_dir'] == 'yes') {echo "checked='checked'";} ?> /><?php _e('Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php if(isset($options['bus_custom'][1]['display_dir']) && $options['bus_custom'][1]['display_dir'] == 'no') {echo "checked='checked'";} ?> /><?php _e('No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" /> <?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }
 }
@@ -1171,14 +1171,14 @@ function cdash_custom_fields_display_single($field_set, $options, $i){
     ?>
     <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
     <?php $field['display_single'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][$i]['display_single'])) {echo "checked='checked'";} ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php if(isset($options['bus_custom'][$i]['display_single']) ) {echo "checked='checked'";} ?> /><?php _e(' No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>
     <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
-      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_single']) && $options['bus_custom'][1]['display_single'] == 'yes') {echo "checked='checked'";} ?> /><?php _e('Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php if(isset($options['bus_custom'][1]['display_single']) && $options['bus_custom'][1]['display_single'] == 'no') {echo "checked='checked'";} ?> /><?php _e('No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }
 }
@@ -1303,11 +1303,8 @@ function cdash_render_form() {
 			      var $this = jQuery(this);
 			      jQuery.each(attrs, function(i, attr) {
 			        var attr_val = $this.attr(attr);
-              /*if (attr_val) {
-			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx)+'\]\['))
-			        }*/
 			        if (attr_val) {
-			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx + 1)+'\]\['))
+			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx + 1)+'\]\['));
 			        }
 			      })
 			    })
@@ -1331,7 +1328,7 @@ function cdash_render_form() {
 			        cloned.insertAfter(lastRepeatingGroup);
 
               //Clearing out the values in the newly cloned section
-			        cloned.find("input").val("");
+			        cloned.find("input[type=text]").val("");
 			        cloned.find("select").val("");
               cloned.find('input[type=radio]').removeAttr('checked');
 			        resetAttributeNames(cloned, idx);
