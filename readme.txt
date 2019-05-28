@@ -1,9 +1,9 @@
 === Chamber Dashboard Business Directory ===
-Contributors: gwendydd, cguntur, LisaK.social
-Tags: Chamber of Commerce, business directory, businesses
+Contributors: cguntur, gwendydd, LisaK.social
+Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.2
+Tested up to: 5.2.1
 Requires PHP: 7.0
 Stable tag: 3.1.2
 License: GPLv3
@@ -14,10 +14,12 @@ Business Directory gives you tools to manage your members and run any membership
 == Description ==
 The Chamber Dashboard Business Directory makes it quick and easy to add a Business Directory to your site. The Directory integrates seamlessly with WordPress, is mobile-friendly and picks up its formatting from your existing theme, giving you design freedom. Learn more at [chamberdashboard.com] (https://chamberdashboard.com/features/).
 
-Used by chambers of commerce, visitor bureaus, professional associations, neighborhood guides and more. Chamber Dashboard plugins give you the tools you need to increase visitor engagement on your site and streamline member management, including 24/7 online payments, automated renewals, featured events, and of course a searchable Business Directory!
+Used by chambers of commerce, visitor bureaus, professional associations, neighborhood guides and other membership organizations. Chamber Dashboard plugins give you the tools you need to build a powerful membership site, increase visitor engagement on your site and streamline member management. It includes 24/7 online payments, automated renewals, featured events, and of course a searchable Business Directory!
 
 = Build a community resource to increase traffic to your site  =
 *  	Add a searchable Business Directory to your site
+*   Search businesses by categories
+*   A-Z directory listings
 *   Import existing listings via CSV
 *   Customize directory information
 *   Display featured member listings
@@ -89,6 +91,8 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 2. Business Directory admin page
 3. Featured Business widget
 4. Business search widget
+5. Map of Business listings
+6. A-Z Directory listings
 
 = Contributors =
 Several people have contributed to the development of Chamber Dashboard:
