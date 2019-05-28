@@ -136,12 +136,14 @@ if ( !empty($taxonomies) ) :
       }
         if( $category->parent == 0 ) {
             $output.= '<div class="cdash_parent_category"><div><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a><span class="number_posts">' . $num_posts . '</span></div>';
+            $taxonomy_output = array();
             foreach( $taxonomies as $subcategory ) {
                 if($subcategory->parent == $category->term_id) {
-                  $output.= '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
-                    '. esc_html( $subcategory->name ) .'</a>' . $num_posts . '</span>, ';
+                  $taxonomy_output[] = '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
+                    '. esc_html( $subcategory->name ) .'</a>' . $num_posts . '</span>';
                 }
             }
+            $output .= join($taxonomy_output, ", ");
             $output.='</div>';
         }
     }

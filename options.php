@@ -1062,31 +1062,24 @@ function cdash_google_maps_api_render($args){
 function cdash_custom_fields_render($args){
   $options = get_option('cdash_directory_options');
   if(isset($options['bus_custom']) && is_array($options['bus_custom']) && array_filter($options['bus_custom']) != [] ) {
-    //echo "Inside the if condition<br />";
-    //print_r($options['bus_custom']);
-    //var_dump($options['bus_custom']);
-    //echo "<br />";
     $field_set = true;
   	$customfields = $options['bus_custom'];
   	$i = 1;
   	foreach($customfields as $field) {
-      //echo "i = $i";
        ?>
   		<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-  			<?php cdash_custom_fields_name($field_set, $options, $i);
-              cdash_custom_fields_type($field_set, $options, $i);
-              cdash_custom_fields_display_dir($field_set, $options, $i);
-              cdash_custom_fields_display_single($field_set, $options, $i);
+  			<?php
+        cdash_custom_fields_name($field_set, $options, $i);
+        cdash_custom_fields_type($field_set, $options, $i);
+        cdash_custom_fields_display_dir($field_set, $options, $i);
+        cdash_custom_fields_display_single($field_set, $options, $i);
         ?>
         <br />
         <a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
   		</div>
   		<?php $i++;
-      //echo "i after the increment: $i";
   	}
   } else {
-    //echo "Inside the else condition<br />";
-    //print_r($options['bus_custom']);
     ?>
   	<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
   		<?php cdash_custom_fields_name(false, $options, '');
@@ -1110,12 +1103,10 @@ function cdash_options_section_callback(  ) {
 }
 
 function cdash_custom_fields_name($field_set, $options, $i){
-  //$options = get_option('cdash_directory_options');
   ?>
   <p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
   <p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
   <?php
-  //echo "i inside the name function: $i";
   if($field_set){
   ?>
     <input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][$i]['name']; } ?>" />
@@ -1125,6 +1116,14 @@ function cdash_custom_fields_name($field_set, $options, $i){
     <input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php if(isset($options['bus_custom'])){ echo $options['bus_custom'][1]['name']; } ?>" />
   <?php
   }
+}
+
+function cdash_custom_fields_name_new($i, $value){
+  ?>
+  <p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+  <p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
+  <input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $value; ?>" />
+  <?php
 }
 
 function cdash_custom_fields_type($field_set, $options, $i){
