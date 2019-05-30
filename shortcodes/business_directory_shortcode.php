@@ -52,17 +52,18 @@ function cdash_business_directory_shortcode( $atts ) {
 	}
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
-  		$displayopts = explode( ", ", $display);
-  	}
-  	$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+  	$displayopts = explode( ", ", $display);
+  }
 
-		// Calculate the offset
-		//$offset = ( $paged - 1 ) * $perpage;
+	$paged = (int)get_query_var('page');
+	// Calculate the offset
+	$offset = ( $paged - 1 ) * $perpage;
 
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
 		'paged' => $paged,
+		'offset' =>  $offset,
 		'orderby' => $orderby,
 		'order' => $order,
 	  'business_category' => $category,
@@ -90,6 +91,10 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$businessquery = new WP_Query( $args );
+
+	$total_business_posts = $businessquery->found_posts;
+  //$total_business_pages = ceil($total_business_posts / $perpage);
+	$total_business_pages = $businessquery->max_num_pages;
 
 	// The Loop
 	if ( $businessquery->have_posts() ) :
@@ -216,35 +221,25 @@ function cdash_business_directory_shortcode( $atts ) {
 					}
 				$business_contacts = '';
 				$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
-			  	$business_list .= "</div>";
+			  $business_list .= "</div>";
 			endwhile;
+
 			// pagination links
-			/*$total_pages = $businessquery->max_num_pages;
+			$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
-				$current_page = max(1, get_query_var('paged'));
+				$current_page = max(1, get_query_var('page'));
    				$business_list .= "<div class='pagination'>";
 			  	$business_list .= paginate_links( array (
 			      'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
 			      'format' => '/page/%#%',
 			      'current' => $current_page,
 			      'total' => $total_pages,
+						'prev_text'    => __('« prev'),
+            'next_text'    => __('next »'),
 			    ) );
 			    $business_list .= "</div>";
-			}*/
+			}
 		$business_list .= "</div>";
-		// pagination links
-		$total_pages = $businessquery->max_num_pages;
-		if ($total_pages > 1){
-			$current_page = max(1, get_query_var('paged'));
-				$business_list .= "<div class='pagination'>";
-				$business_list .= paginate_links( array (
-					'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
-					'format' => '/page/%#%',
-					'current' => $current_page,
-					'total' => $total_pages,
-				) );
-				$business_list .= "</div>";
-		}
 		wp_reset_postdata();
 	else:
 		$business_list .= __("No businesses found.");
@@ -255,7 +250,6 @@ function cdash_business_directory_shortcode( $atts ) {
 	//wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
-
 
 //Display the list of alphabet
 function cdash_list_alphabet(){
