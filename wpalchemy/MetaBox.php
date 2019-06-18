@@ -2097,9 +2097,11 @@ class WPAlchemy_MetaBox
 			// use as stdClass object
 			$options = (object)$options;
 
-			$length = @$options->length;
+			//$length = @$options->length;
+			$length = $options->length;
 
-			$this->_loop_data->limit = @$options->limit;
+			//$this->_loop_data->limit = @$options->limit;
+			$this->_loop_data->limit = $options->limit;
 		}
 		else
 		{
@@ -2658,7 +2660,7 @@ class WPAlchemy_MetaBox
 		unset($arr[$last]);
 		$meta = $this->get_meta_by_array($arr);
 		//return count($meta);
-		is_array($meta) ? count($meta): $meta;
+		return is_array($meta) ? count($meta): $meta;
 	}
 
 	function increment_current_loop()

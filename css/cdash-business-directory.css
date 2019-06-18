@@ -129,7 +129,7 @@ clear: both;
 	float: left;
 }
 
-#businesslist .pagination {
+.cdash_bus_directory.pagination {
 	text-align: center;
 	margin: 20px 0;
 	clear: both;
