@@ -1,11 +1,11 @@
 === Chamber Dashboard Business Directory ===
 Contributors: cguntur, gwendydd, LisaK.social
-Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses
+Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses, gutenberg ready
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.2.1
+Tested up to: 5.2.2
 Requires PHP: 7.0
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

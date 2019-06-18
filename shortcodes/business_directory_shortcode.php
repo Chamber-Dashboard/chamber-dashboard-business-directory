@@ -56,14 +56,10 @@ function cdash_business_directory_shortcode( $atts ) {
   }
 
 	$paged = (int)get_query_var('page');
-	// Calculate the offset
-	$offset = ( $paged - 1 ) * $perpage;
-
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
 		'paged' => $paged,
-		'offset' =>  $offset,
 		'orderby' => $orderby,
 		'order' => $order,
 	  'business_category' => $category,
@@ -79,15 +75,14 @@ function cdash_business_directory_shortcode( $atts ) {
 			);
 	}
 
-	if(isset($_GET['starts_with'])){
-		$args['starts_with'] = $_GET['starts_with'];
-	}
-
 	$business_list = '';
 	if($alpha == 'yes'){
 		$business_list = cdash_list_alphabet();
 	}
 
+  if(isset($_GET['starts_with'])) {
+		$args['starts_with'] = $_GET['starts_with'];
+	}
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$businessquery = new WP_Query( $args );
@@ -223,23 +218,32 @@ function cdash_business_directory_shortcode( $atts ) {
 				$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
 			  $business_list .= "</div>";
 			endwhile;
-
+			$business_list .= "</div><!--end of businesslist-->";
 			// pagination links
 			$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
 				$current_page = max(1, get_query_var('page'));
-   				$business_list .= "<div class='pagination'>";
+   				$business_list .= "<div class='cdash_bus_directory pagination'>";
+					$url_parts = explode("?", get_pagenum_link(1));
+					$base_url = rtrim($url_parts[0], "/");
+					$format = '/page/%#%';
+					$add_args = array();
+					if (count($url_parts) > 1) {
+						$starts_with_args = explode("=", $url_parts[1]);
+						$add_args[$starts_with_args[0]] = $starts_with_args[1];
+					}
 			  	$business_list .= paginate_links( array (
-			      'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
-			      'format' => '/page/%#%',
+			      'base' => $base_url . '%_%',
+			      'format' => $format,
 			      'current' => $current_page,
 			      'total' => $total_pages,
 						'prev_text'    => __('« prev'),
             'next_text'    => __('next »'),
+						'add_args' => $add_args
 			    ) );
 			    $business_list .= "</div>";
 			}
-		$business_list .= "</div>";
+		//$business_list .= "</div>";
 		wp_reset_postdata();
 	else:
 		$business_list .= __("No businesses found.");
@@ -253,32 +257,21 @@ add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
 //Display the list of alphabet
 function cdash_list_alphabet(){
-	//$ajax_url = admin_url( 'admin-ajax.php' );
-	//global $wpdb;
 	global $wp;
-
-  /*$query = "SELECT DISTINCT(SUBSTRING(post_title, 1, 1)) AS first_char
-      FROM $wpdb->posts
-      WHERE post_status = 'publish'
-      AND post_type = 'business'
-      ORDER BY first_char ASC";
-
-  $results = $wpdb -> get_results($query);
-*/
 	$results = str_split("0ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	$alpha = '';
 	$alpha .= "<div class='alpha_listings'>";
 	$alpha .= "<ul>";
+	$url_parts = explode("?", get_pagenum_link(1));
+	$base_url = $url_parts[0];
 	foreach($results as $result) {
 		$alpha .= "<li><a href='";
-		$alpha .= add_query_arg('starts_with', $result);
+		$alpha .= $base_url . "?starts_with=" . $result;
 		$alpha .= "'>";
 		$alpha .= ($result == '0') ? "0-9" : $result;
-		//$alpha .= cdash_business_listing_for_alpha($result->first_char);
 		$alpha .= "</a></li>";
 	}
-	$current_url = home_url( add_query_arg( array(), $wp->request ) );
-	$alpha .= "<li><a href='" . $current_url . "'>View All</a></li>";
+	$alpha .= "<li><a href='" . $base_url . "'>View All</a></li>";
 	$alpha .= "</ul></div>";
 
 	return $alpha;
@@ -289,17 +282,12 @@ function cdash_starts_with_query_filter( $where, $query ) {
 
     $starts_with = $query->get( 'starts_with' );
 
-			if($starts_with === '0'){
+		if($starts_with === '0'){
 				$where .= " AND $wpdb->posts.post_title regexp '^[0-9].*'";
-			}elseif($starts_with){
+		} elseif($starts_with){
 				$where .= " AND $wpdb->posts.post_title LIKE '$starts_with%'";
-			}
-
+		}
     return $where;
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
-
-/*function cdash_display_business_listings($format, $category, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status){
-
-}*/
 ?>
