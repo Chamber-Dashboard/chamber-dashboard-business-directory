@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.2.2
 Requires PHP: 7.0
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -101,6 +101,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.4 =
+* Fixed the bug with pagination in the business directory shortcode
+
 = 3.1.3 =
 * Fixed the pagination links for the business directory shortcode
 * Fixed the repeating fields issue on the business edit page
