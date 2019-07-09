@@ -101,6 +101,10 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.3 =
+* Fixed the pagination links for the business directory shortcode
+* Fixed the repeating fields issue on the business edit page
+
 = 3.1.2 =
 * Option for default featured image for businesses added
 * Directories can now be sorted by alphabet

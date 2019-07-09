@@ -193,7 +193,6 @@ function cdash_enqueue_scripts(){
   wp_enqueue_script( 'cdash-business-directory', plugins_url( 'js/cdash-business-directory.js', dirname(__FILE__) ) );
 }
 
-//TODO: remove the current time from the script before plugin release
 function cdash_admin_scripts() {
   //wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
   wp_enqueue_script('jquery-ui');
