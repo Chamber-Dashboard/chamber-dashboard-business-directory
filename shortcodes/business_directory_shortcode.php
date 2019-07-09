@@ -54,8 +54,11 @@ function cdash_business_directory_shortcode( $atts ) {
 	if($display !== '') {
   	$displayopts = explode( ", ", $display);
   }
-
-	$paged = (int)get_query_var('page');
+	if(is_front_page()){
+		$paged = (int)get_query_var('page');
+	}else{
+		$paged = (int)get_query_var('paged');
+	}
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
@@ -222,7 +225,12 @@ function cdash_business_directory_shortcode( $atts ) {
 			// pagination links
 			$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
-				$current_page = max(1, get_query_var('page'));
+				if(is_front_page()){
+					$current_page = max(1, get_query_var('page'));
+				}else{
+					$current_page = max(1, get_query_var('paged'));
+				}
+				//$current_page = max(1, get_query_var('page'));
    				$business_list .= "<div class='cdash_bus_directory pagination'>";
 					$url_parts = explode("?", get_pagenum_link(1));
 					$base_url = rtrim($url_parts[0], "/");
