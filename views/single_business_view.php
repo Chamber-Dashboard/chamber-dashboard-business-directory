@@ -154,11 +154,6 @@ function cdash_single_business_map() {
 		$google_map_api_key = cdash_get_google_maps_api_key();
 		cd_debug("Google maps api key 2: " . $google_map_api_key);
 		?>
-		<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU">
-		</script>-->
-		<!--Testing
-		<?php echo "Google maps api key: " . $google_map_api_key; ?>
-		-->
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $google_map_api_key; ?>">
 		</script>
 		<script type="text/javascript">
@@ -176,12 +171,14 @@ function cdash_single_business_map() {
 							} else {
 								$lat = $location['latitude'];
 							}
+							cd_debug("Latitude inside the single business map code: " . $lat);
 
 							if( isset( $location['custom_longitude'] ) ) {
 								$long = $location['custom_longitude'];
 							} else {
 								$long = $location['longitude'];
 							}
+							cd_debug("Longitude inside the single business map code: " . $long);
 
 							// get the map icon
 							$id = get_the_id();

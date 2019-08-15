@@ -583,10 +583,12 @@ function cdash_get_latest_priority( $filter ) // figure out what priority the ge
     return "$last-z";
 }
 add_action( 'save_post', 'cdash_run_that_action_last', 0 );
+//add_action( 'save_post_business', 'cdash_run_that_action_last', 0 );
 
 function cdash_run_that_action_last() {  // add the action now, with lowest priority so it runs after meta data has been saved
     add_action(
         'save_post',
+        //'save_post_business',
         'cdash_store_geolocation_data',
         cdash_get_latest_priority( current_filter() ),
         2
@@ -600,8 +602,15 @@ function cdash_store_geolocation_data( $post_id ) {
 	if( !empty( $locations ) && is_array( $locations ) ) {
 		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
-			//cd_debug("Latitude 1: " . $location['latitude']);
-			//cd_debug("Longitude 1: " . $location['longitude']);
+            if(isset($location['latitude'])){
+                cd_debug("Latitude 1: " . $location['latitude']);
+            }else{
+                cd_debug("Latitude 1 not set");
+            }
+			if(isset($location['longitude'])){
+                cd_debug("longitude 1 not set");
+            }
+
 			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
@@ -611,6 +620,7 @@ function cdash_store_geolocation_data( $post_id ) {
 					$locations[$key]['longitude'] = $lng;
 				} else {
 					cd_info("City is not set. Not updating post $post_id");
+                    cd_debug("City is not set. Not updating post $post_id");
 				}
 			} else {
 				cd_info("LatLong set to " . $location['latitude'] . ", " . $location['longitude'] . ". Not updating post $post_id");
