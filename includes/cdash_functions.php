@@ -93,10 +93,10 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
       $lng = $json['results'][0]['geometry']['location']['lng'];
       cd_info("Got lat long ($lat, $lng) for $url");
     } else {
-      cd_warn("Google Maps response body is not an array or does not have OK: $json");
+      //cd_warn("Google Maps response body is not an array or does not have OK: $json");
     }
   } else {
-    cd_warn("Got $response from google maps for $url");
+    //cd_warn("Got $response from google maps for $url");
   }
   return array($lat, $lng);
 }
@@ -241,5 +241,32 @@ function cdash_check_license_message($license_validity, $site_count, $license_li
     $message .= '</span></p>';
   }
   return $message;
+}
+
+function cdash_display_page_select_dropdown($name, $id, $option_name){
+    $select_dropdown = '';
+    $select_dropdown .= '<select name="' . $name . '" id="' . $id . '">
+      <option value="">' . esc_attr( __( 'Select page' ) ) . '</option>';
+          $selected_page = $option_name;
+          $pages = get_pages();
+          foreach ( $pages as $page ) {
+              $select_dropdown .= '<option value="' . $page->ID . '" ';
+              $select_dropdown .= ( $page->ID == $selected_page ) ? 'selected="selected"' : '';
+              $select_dropdown .= '>';
+              $select_dropdown .= $page->post_title;
+              $select_dropdown .= '</option>';
+              //echo $option;
+          }
+    $select_dropdown .= '</select>';
+    return $select_dropdown;
+}
+
+//Check if Member Updater is active
+function cdash_check_mu_active(){
+  if(function_exists('cdashmu_requires_wordpress_version')){
+    return true;
+  }else{
+    return false;
+  }
 }
 ?>
