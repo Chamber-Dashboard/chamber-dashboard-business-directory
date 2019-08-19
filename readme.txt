@@ -101,6 +101,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.5 =
+* Created a logo_gllery option in the business directory shortcode.
+
 = 3.1.4 =
 * Fixed the bug with pagination in the business directory shortcode
 
