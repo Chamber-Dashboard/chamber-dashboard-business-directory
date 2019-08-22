@@ -191,6 +191,6 @@ clear: both;
 .alpha_listings{
   margin-bottom:100px;
 }
-#loader, #business_listings_format{
+#loader, #business_listings_format, #cdash_bus_list_page{
   display:none;
 }

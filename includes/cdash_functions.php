@@ -200,7 +200,7 @@ function cdash_admin_scripts() {
   wp_enqueue_script(' jquery-ui-draggable');
 
   //wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__) ) );
-  wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__)), 'jquery-ui', filemtime(dirname(__FILE__). '/../js/cdash_demo_content.js') );
+  wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__)), 'jquery-ui');
 }
 
 add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
@@ -208,6 +208,11 @@ add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
 
 function cdash_demo_content_styles(){
 	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+}
+
+//TODO: Remove the file time from the script before releasing update
+function cdash_frontend_scripts(){
+    wp_enqueue_script( 'cdash-bus-category-filter', plugins_url( 'js/cdash_bus_category_filter.js', dirname(__FILE__)), 'jquery-ui', filemtime(dirname(__FILE__). '/../js/cdash_bus_category_filter.js') );
 }
 
 global $pagenow;
@@ -269,4 +274,5 @@ function cdash_check_mu_active(){
     return false;
   }
 }
+
 ?>
