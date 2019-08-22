@@ -4,6 +4,7 @@
 // ------------------------------------------------------------------------
 
 function cdash_business_directory_shortcode( $atts ) {
+	global $wp;
 	$options = get_option('cdash_directory_options');
 	$member_options = get_option('cdashmm_options');
     global $post;
@@ -27,6 +28,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'image_size'	=> '', //options: full_width
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
+			'show_category_filter' => 'no', //options: yes, no
 		), $atts )
 	);
 
@@ -51,6 +53,11 @@ function cdash_business_directory_shortcode( $atts ) {
 		cdash_enqueue_styles();
 		cdash_enqueue_scripts();
 	}
+
+	if($show_category_filter == 'yes'){
+		cdash_frontend_scripts();
+	}
+
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
   		$displayopts = explode( ", ", $display);
@@ -60,14 +67,19 @@ function cdash_business_directory_shortcode( $atts ) {
 	}else{
 		$paged = (int)get_query_var('paged');
 	}
+
+	if(isset($_GET['bus_category'])){
+		$category = $_GET['bus_category'];
+	}
+
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
 		'paged' => $paged,
 		'orderby' => $orderby,
 		'order' => $order,
-	  'business_category' => $category,
-	  'membership_level' => $level
+	  	'business_category' => $category,
+	  	'membership_level' => $level
 	);
 
 	if((isset($status)) && ($status != '')){
@@ -84,8 +96,17 @@ function cdash_business_directory_shortcode( $atts ) {
 		$business_list = cdash_list_alphabet();
 	}
 
-  if(isset($_GET['starts_with'])) {
+  	if(isset($_GET['starts_with'])) {
 		$args['starts_with'] = $_GET['starts_with'];
+	}
+
+	if($show_category_filter == 'yes'){
+		$business_list .= '<p>' . cdash_bus_cat_dropdown() . '</p>';
+		// remove pagination from url
+		$pattern = "/page(\/)*([0-9\/])*/i";
+		$current_url = home_url( add_query_arg( array(), $wp->request ) );
+		$url = preg_replace($pattern, '', $current_url);
+		$business_list .= '<p id="cdash_bus_list_page">'.$url.'</p>';
 	}
 
 	$args = cdash_add_hide_lapsed_members_filter($args);

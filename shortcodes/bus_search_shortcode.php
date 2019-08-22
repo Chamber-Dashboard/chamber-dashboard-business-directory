@@ -38,9 +38,10 @@ function cdash_business_search_results_shortcode( $atts ) {
                 'operator' => 'IN',
             );
             $args['tax_query'] = array(
-            $buscat_params,
-         );
+            	$buscat_params,
+         	);
         }
+
         if ( $searchtext ) {
         	$args['s'] = $searchtext;
         }
