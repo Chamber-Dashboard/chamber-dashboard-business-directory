@@ -165,7 +165,7 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-              if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
+              			if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
 							if( isset( $location['custom_latitude'] ) ) {
 								$lat = $location['custom_latitude'];
 							} else {
@@ -222,7 +222,7 @@ function cdash_single_business_map() {
 
 				var bounds = new google.maps.LatLngBounds();
 				var mapOptions = {
-				    // zoom: 13,
+				    //zoom: 13
 				}
 				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 				<?php

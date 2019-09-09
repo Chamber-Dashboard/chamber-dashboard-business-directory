@@ -46,15 +46,6 @@ function cdash_get_google_maps_api_key(){
   $options = get_option( 'cdash_directory_options' );
   $google_map_api_key = $options['google_maps_api'];
   cd_debug("Custom Google maps api key: " . $google_map_api_key);
-  //$google_map_api_key = $options['google_maps_api'];
-  /*if($options['google_maps_api'] == ''){
-    $google_map_api_key = 'AIzaSyAoqmdfczTk4HY0qqDtQQJjRN4mhf9e7hE';
-    cd_debug("Google maps api key from CD: " . $google_map_api_key);
-  }
-  else{
-    $google_map_api_key = $options['google_maps_api'];
-    cd_debug("Custom Google maps api key: " . $google_map_api_key);
-  }*/
   return $google_map_api_key;
 }
 

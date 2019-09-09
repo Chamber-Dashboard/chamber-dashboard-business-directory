@@ -61,7 +61,9 @@ function cdash_business_directory_shortcode( $atts ) {
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
   		$displayopts = explode( ", ", $display);
-  	}
+  	}else{
+		$displayopts = '';
+	}
 	if(is_front_page()){
 		$paged = (int)get_query_var('page');
 	}else{
@@ -84,12 +86,14 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	if((isset($status)) && ($status != '')){
 		$args['tax_query'][] = array(
-			    'taxonomy' => 'membership_status',
-		      'field' => 'slug',
-          'terms' => array($status),
-				  'operator' => 'IN'
+			'taxonomy' => 'membership_status',
+		    'field' => 'slug',
+            'terms' => array($status),
+			'operator' => 'IN'
 			);
 	}
+
+
 
 	$business_list = '';
 	if($alpha == 'yes'){
@@ -101,12 +105,21 @@ function cdash_business_directory_shortcode( $atts ) {
 	}
 
 	if($show_category_filter == 'yes'){
-		$business_list .= '<p>' . cdash_bus_cat_dropdown() . '</p>';
 		// remove pagination from url
 		$pattern = "/page(\/)*([0-9\/])*/i";
 		$current_url = home_url( add_query_arg( array(), $wp->request ) );
 		$url = preg_replace($pattern, '', $current_url);
+		$business_list .= '<p>' . cdash_bus_cat_dropdown();
+		if(isset($_GET['bus_category'])){
+			$business_list.= '<a href="'.$url.'">Clear Filter</a>';
+		}
+		$business_list .= '</p>';
 		$business_list .= '<p id="cdash_bus_list_page">'.$url.'</p>';
+		if(isset($_GET['bus_category'])){
+			$bus_cat_slug = $_GET['bus_category'];
+			$bus_cat_name = get_term_by('slug', $bus_cat_slug, 'business_category');
+			$business_list .= '<p>Category: ' . $bus_cat_name->name . '</p>';
+		}
 	}
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
@@ -145,7 +158,6 @@ function cdash_business_directory_shortcode( $atts ) {
 				if($logo_gallery == "no"){
 					$business_list .= cdash_bus_directory_display_content($text);
 				}
-
 
 			  	$business_list .= "</div>";
 
@@ -257,18 +269,18 @@ function cdash_bus_directory_display_image($image, $image_class, $single_link, $
 	}
 	if( "logo" == $image ) {
 		global $buslogo_metabox;
-			$logometa = $buslogo_metabox->the_meta();
-			if( isset( $logometa['buslogo'] ) ) {
-			$logoattr = array(
-				//'class'	=> 'alignleft logo',
-				'class'	=> $image_class,
-				);
-				if( $single_link == "yes" ) {
-					$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
-				} else {
-					$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
-				}
+		$logometa = $buslogo_metabox->the_meta();
+		if( isset( $logometa['buslogo'] ) ) {
+		$logoattr = array(
+			//'class'	=> 'alignleft logo',
+			'class'	=> $image_class,
+			);
+			if( $single_link == "yes" ) {
+				$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
+			} else {
+				$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
 			}
+		}
 	} elseif( "featured" == $image ) {
 		if($logo_gallery == "no"){
 			$thumbattr = array(
@@ -362,5 +374,15 @@ function cdash_bus_directory_display_meta_fields($display, $displayopts){
 	}
 
 	return $business_list;
+}
+
+function cdash_bus_logo_exists(){
+	global $buslogo_metabox;
+	$logometa = $buslogo_metabox->the_meta();
+	if( isset( $logometa['buslogo'] ) ) {
+		return true;
+	}else{
+		return false;
+	}
 }
 ?>

@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.1.4
+Version: 3.1.5
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.1.4' );
+define( 'CDASH_BUS_VER', '3.1.5' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -280,8 +280,6 @@ function cdash_admin_scripts_and_styles($hook)
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
 				$google_map_api_key = cdash_get_google_maps_api_key();
-
-	    	//wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDFRfRx6O8MXVOofzkaSgyV41ntNtNuiFU&sensor=false' );
 				wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -608,6 +606,8 @@ function cdash_store_geolocation_data( $post_id ) {
                 cd_debug("Latitude 1 not set");
             }
 			if(isset($location['longitude'])){
+                cd_debug("Longitude 1: " . $location['longitude']);
+            }else{
                 cd_debug("longitude 1 not set");
             }
 
