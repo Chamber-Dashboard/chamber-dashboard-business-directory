@@ -3,9 +3,9 @@ Contributors: cguntur, gwendydd, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses, gutenberg ready
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Requires PHP: 7.0
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,7 +33,7 @@ Used by chambers of commerce, visitor bureaus, professional associations, neighb
 *   Display upcoming events with the free [Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) plugin.
 *   Let members update their own listings, automate your renewal process, create a board or staff profile pages, change payment gateways and more with [addons](https://chamberdashboard.com/add-ons/) for Chamber Dashboard.
 
-For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](https://chamberdashboard.com/document_category/business-directory-docs/)
+For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
 
 = Give your site a modern, professional look =
 Chamber Dashboard plugins work out of the box with any theme in the WordPress Theme Repository. Or save time and energy with a [premium theme](https://chamberdashboard.com/wordpress-themes/) to give your site a fresh new look, plus includes specially designed pages to show off your business directory. [See live demo](http://chamber-beautiful.chamberdashboard.com/).
@@ -102,7 +102,7 @@ Several people have contributed to the development of Chamber Dashboard:
 
 == Changelog ==
 = 3.1.5 =
-* Created a logo_gllery option in the business directory shortcode.
+* Businesses can now be filtered by category in the business directory shortcode
 
 = 3.1.4 =
 * Fixed the bug with pagination in the business directory shortcode

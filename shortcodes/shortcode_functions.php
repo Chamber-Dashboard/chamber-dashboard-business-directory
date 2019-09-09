@@ -12,7 +12,7 @@ function cdash_bus_cat_dropdown(){
 		'echo' => 0,
 		'title_li' => '',
         'id' => 'cdash_select_bus_category',
-        'show_option_none'  => 'Select a Business Category',
+        'show_option_none'  => __('Filter by Category', 'cdash'),
         'value_field'      => 'slug'
 	);
 
