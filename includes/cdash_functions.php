@@ -52,7 +52,8 @@ function cdash_get_google_maps_api_key(){
 function cdash_get_google_map_url($address) {
   $google_map_api_key = cdash_get_google_maps_api_key();
     return "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $google_map_api_key;
-    cd_debug("Google maps api key 1: " . $google_map_api_key);
+    //return "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=AIzaSyCbIovxdMP6G18nU3Ayf5s91l-Pyo08-8A";
+    //cd_debug("Google maps api key 1: " . $google_map_api_key);
 }
 
 // ask Google for the latitude and longitude

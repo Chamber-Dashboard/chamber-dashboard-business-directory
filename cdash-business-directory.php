@@ -281,6 +281,7 @@ function cdash_admin_scripts_and_styles($hook)
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
 				$google_map_api_key = cdash_get_google_maps_api_key();
 				wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
+                //wp_enqueue_script( 'google-maps-geocode' , 'https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=AIzaSyC0uxZyaN_zTxePIhNvBYgtZeI7zeoYUFU' );
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		}
@@ -600,18 +601,18 @@ function cdash_store_geolocation_data( $post_id ) {
 	if( !empty( $locations ) && is_array( $locations ) ) {
 		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
-            if(isset($location['latitude'])){
+            if(isset($location['latitude']) ){
                 cd_debug("Latitude 1: " . $location['latitude']);
             }else{
                 cd_debug("Latitude 1 not set");
             }
-			if(isset($location['longitude'])){
+			if(isset($location['longitude']) ){
                 cd_debug("Longitude 1: " . $location['longitude']);
             }else{
                 cd_debug("longitude 1 not set");
             }
 
-			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
+			if( !isset( $location['latitude']) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
 					cd_debug("City is set to " . $location['city']);
@@ -646,8 +647,8 @@ function cdash_assign_alpha_category(){
         $alphabet = array();
         //$posts = get_posts(array('numberposts' => -1) );
         $args = array(
-        	'post_type'        => 'business',
-          'numberposts'      => -1,
+            'post_type'        => 'business',
+            'numberposts'      => -1,
         );
         $posts = get_posts( $args );
         foreach( $posts as $p ) :
