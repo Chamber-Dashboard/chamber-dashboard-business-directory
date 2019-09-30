@@ -20,8 +20,8 @@ function cdash_business_map_shortcode( $atts ) {
 	$args = array(
 		'post_type' => 'business',
 		'posts_per_page' => $perpage,
-    'business_category' => $category,
-    'membership_level' => $level,
+    	'business_category' => $category,
+    	'membership_level' => $level,
 	);
 	cdash_enqueue_styles();
 	$google_map_api_key = cdash_get_google_maps_api_key();
