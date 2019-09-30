@@ -155,7 +155,6 @@ function cdash_insert_demo_business(){
         $rawaddress .= ' ' . $zip;
       }
       $bus_address = urlencode( $rawaddress );
-      //$json = wp_remote_get("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDAh8Bc9eoDDifM5TKtnNgpWEHd1jIUa2U&address=" . $address . "&sensor=true");
       $json = wp_remote_get(cdash_get_google_map_url($bus_address));
       $json = json_decode($json['body'], true);
       if( is_array( $json ) && $json['status'] == 'OK') {

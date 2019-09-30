@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.2.3
 Requires PHP: 7.0
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -101,6 +101,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.6 =
+* Server api key added for Google maps
+
 = 3.1.5 =
 * Businesses can now be filtered by category in the business directory shortcode
 

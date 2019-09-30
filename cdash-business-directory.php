@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.1.5
+Version: 3.1.6
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.1.5' );
+define( 'CDASH_BUS_VER', '3.1.6' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -279,11 +279,11 @@ function cdash_admin_scripts_and_styles($hook)
     // business AJAX
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
-				$google_map_api_key = cdash_get_google_maps_api_key();
-				wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
-                wp_enqueue_script( 'google-maps-geocode' , 'https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=AIzaSyC0uxZyaN_zTxePIhNvBYgtZeI7zeoYUFU' );
-		        wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
-				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+			$google_map_api_key = cdash_get_google_maps_api_key();
+            $google_maps_server_api_key = cdash_get_google_maps_server_api_key();
+			wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
+            //wp_enqueue_script( 'google-maps-geocode' , 'https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=' . $google_maps_server_api_key );
+	        wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 		}
 	}
 }
