@@ -281,8 +281,8 @@ function cdash_admin_scripts_and_styles($hook)
 	    if ( isset( $post ) && 'business' === $post->post_type ) {
 				$google_map_api_key = cdash_get_google_maps_api_key();
 				wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key='. $google_map_api_key.'&sensor=false' );
-                //wp_enqueue_script( 'google-maps-geocode' , 'https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=AIzaSyC0uxZyaN_zTxePIhNvBYgtZeI7zeoYUFU' );
-		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
+                wp_enqueue_script( 'google-maps-geocode' , 'https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=AIzaSyC0uxZyaN_zTxePIhNvBYgtZeI7zeoYUFU' );
+		        wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ), null );
 				//wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		}
 	}
@@ -601,18 +601,18 @@ function cdash_store_geolocation_data( $post_id ) {
 	if( !empty( $locations ) && is_array( $locations ) ) {
 		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
-            if(isset($location['latitude']) ){
+            if(isset($location['latitude']) && $location['latitude'] != 0 ){
                 cd_debug("Latitude 1: " . $location['latitude']);
             }else{
                 cd_debug("Latitude 1 not set");
             }
-			if(isset($location['longitude']) ){
+			if(isset($location['longitude']) && $location['longitude'] != 0 ){
                 cd_debug("Longitude 1: " . $location['longitude']);
             }else{
                 cd_debug("longitude 1 not set");
             }
 
-			if( !isset( $location['latitude']) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
+			if( !isset( $location['latitude']) && !isset( $location['longitude'] ) || $location['latitude'] == 0 && $location['longitude'] == 0 ) { // don't do this if we already have lat and long
 				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
 					cd_debug("City is set to " . $location['city']);
@@ -637,27 +637,7 @@ function cdash_store_geolocation_data( $post_id ) {
 // ------------------------------------------------------------------------
 
 // make activation hook that checks for existence of businesses, updates geolocation data, and saves geolocation_updated option
-register_activation_hook(__FILE__, 'cdash_activation_geolocation_check');
-register_activation_hook(__FILE__, 'cdash_assign_alpha_category');
-
-//create array from existing posts
-function cdash_assign_alpha_category(){
-    if ( false === get_transient( 'cdash_assign_alpha_category' ) ) {
-        $taxonomy = 'alpha_index';
-        $alphabet = array();
-        //$posts = get_posts(array('numberposts' => -1) );
-        $args = array(
-            'post_type'        => 'business',
-            'numberposts'      => -1,
-        );
-        $posts = get_posts( $args );
-        foreach( $posts as $p ) :
-        //set term as first letter of post title, lower case
-        wp_set_object_terms( $p->ID, strtolower(substr($p->post_title, 0, 1)), $taxonomy );
-        endforeach;
-        set_transient( 'cdash_assign_alpha_category', 'true' );
-    }
-}
+//register_activation_hook(__FILE__, 'cdash_activation_geolocation_check');
 
 function cdash_activation_geolocation_check() {
 	// if we have stored the geolocation option, we don't need to do this
@@ -680,7 +660,7 @@ function cdash_activation_geolocation_check() {
 }
 
 // add admin_init that checks for geolocation_updated option and displays "need update" message
-add_action( 'admin_init', 'cdash_check_geolocation' );
+//add_action( 'admin_init', 'cdash_check_geolocation' );
 
 function cdash_check_geolocation() {
 	// if we have stored the geolocation option, we don't need to do this

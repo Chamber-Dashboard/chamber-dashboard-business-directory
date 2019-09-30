@@ -185,40 +185,10 @@ function cdash_add_defaults() {
     $tmp['google_maps_api'] = '';
   }
 
-  /*if(!isset($tmp['bus_custom'])){
-    $tmp['bus_custom'][] = '';
-  }*/
-  /*if(!is_array($tmp)) {
-		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
-		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
-						"bus_email_type" => "Main, Sales, Accounting, HR",
-						"sv_description" => "1",
-						"sv_name"		 	=> "1",
-						"sv_address"	=> "1",
-            "sv_hours"    => "1",
-						"sv_url"		 	=> "1",
-						"sv_logo"		 	=> "1",
-						"sv_category"	=> "1",
-            "sv_tags"     => "1",
-						"tax_name"		=> "1",
-						"tax_address"	=> "1",
-            "tax_hours"   => "1",
-						"tax_url" 		=> "1",
-						"tax_logo"		=> "1",
-            "tax_category"	=> "1",
-            "tax_tags"     => "1",
-						"sm_display"	=> "icons",
-						"sm_icon_size"=> "32px",
-						"currency_position" => "before",
-						"currency_symbol" => "$",
-						"currency" => "USD",
-            "search_results_per_page"   =>  "5",
-            "business_listings_url"   =>  '',
-            'business_listings_url_text' => 'Return to Business Listings',
-            'google_maps_api' =>  ''
-		);
-		update_option('cdash_directory_options', $arr);
-	}*/
+  if(!isset($tmp['google_maps_server_api'])){
+    $tmp['google_maps_server_api'] = '';
+  }
+
   update_option('cdash_directory_options', $tmp);
 }
 
@@ -693,12 +663,23 @@ function cdash_options_init(){
 
   add_settings_field(
     'google_maps_api',
-    __( 'Google Maps API Key', 'cdash' ),
+    __( 'Google Maps Browser API Key', 'cdash' ),
     'cdash_google_maps_api_render',
     'cdash_plugin_options',
     'cdash_options_misc_view_section',
     array(
       __( 'Enter the Google Maps API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
+    )
+  );
+
+  add_settings_field(
+    'google_maps_server_api',
+    __( 'Google Maps Server API Key', 'cdash' ),
+    'cdash_google_maps_server_api_render',
+    'cdash_plugin_options',
+    'cdash_options_misc_view_section',
+    array(
+      __( 'Enter the Google Maps Server API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
     )
   );
 
@@ -1055,6 +1036,14 @@ function cdash_google_maps_api_render($args){
   $options = get_option('cdash_directory_options');
   ?>
   <input type="text" size="35" name="cdash_directory_options[google_maps_api]" value="<?php if(isset($options['google_maps_api'])) { echo $options['google_maps_api']; } ?>" />
+  <br /><span class="description"><?php echo $args[0]; ?></span>
+  <?php
+}
+
+function cdash_google_maps_server_api_render($args){
+  $options = get_option('cdash_directory_options');
+  ?>
+  <input type="text" size="35" name="cdash_directory_options[google_maps_server_api]" value="<?php if(isset($options['google_maps_server_api'])) { echo $options['google_maps_server_api']; } ?>" />
   <br /><span class="description"><?php echo $args[0]; ?></span>
   <?php
 }
@@ -1534,7 +1523,7 @@ function cdash_import_form() { ?>
 						}
 						$address = urlencode( $rawaddress );
 						//$json = wp_remote_get("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDAh8Bc9eoDDifM5TKtnNgpWEHd1jIUa2U&address=" . $address . "&sensor=true");
-            $json = wp_remote_get(cdash_get_google_map_url($address));
+                        $json = wp_remote_get(cdash_get_google_map_url($address));
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$latitude = $json['results'][0]['geometry']['location']['lat'];
