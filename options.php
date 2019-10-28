@@ -668,7 +668,7 @@ function cdash_options_init(){
     'cdash_plugin_options',
     'cdash_options_misc_view_section',
     array(
-      __( 'Enter the Google Maps API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
+      __( 'Enter the Google Maps API Key. You can find the instructions <a href="https://chamberdashboard.com/docs/plugin-features/business-directory/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
     )
   );
 
@@ -679,7 +679,7 @@ function cdash_options_init(){
     'cdash_plugin_options',
     'cdash_options_misc_view_section',
     array(
-      __( 'Enter the Google Maps Server API Key. You can find the instructions <a href="https://chamberdashboard.com/document/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
+      __( 'Enter the Google Maps Server API Key. You can find the instructions <a href="https://chamberdashboard.com/docs/plugin-features/business-directory/google-maps-api-key/" target="_blank">here</a>.', 'cdash' )
     )
   );
 
@@ -1142,8 +1142,8 @@ function cdash_custom_fields_display_dir($field_set, $options, $i){
     ?>
     <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
     <?php $field['display_dir'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_dir'], true ); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_dir'], true); ?> /><?php _e(' No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_dir'], true ); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_dir'], true); ?> /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>
@@ -1159,8 +1159,8 @@ function cdash_custom_fields_display_single($field_set, $options, $i){
     ?>
     <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
     <?php $field['display_single'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_single']); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_single']); ?> /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>
