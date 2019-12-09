@@ -40,6 +40,37 @@ function cdash_update_message_ignore() {
     }
 }
 add_action('admin_init', 'cdash_update_message_ignore');
+//TODO: add this function only when the users update the plugin to version 3.1.7
+function cdash_provide_review_existing(){
+    global $current_user ;
+    global $pagenow;
+    $user_id = $current_user->ID;
+    $reviewurl = 'https://wordpress.org/support/plugin/chamber-dashboard-business-directory/reviews/#new-post';
+    $hide_notice_url = get_admin_url() . 'plugins.php?cdash_update_review_message_ignore=0';
+    if ( ! get_user_meta($user_id, 'cdash_update_review_message_ignore') ) {
+        //if($pagenow == 'plugins.php' || $pagenow == 'chamber-dashboard-business-directory/options.php'){
+            echo '<div class="notice notice is-dismissible cdashrc_update cdash_update_notice"><p>';
+            printf(__('Thanks for using the Business Directory plugin by Chamber Dashboard. We would really appreciate it if you could give us a great rating. It only takes a moment and will help new users find us and encourage us to keep creating more awesome themes & plugins! <a href="'. $reviewurl .'">Rate Now</a> | <a href="' . $hide_notice_url . '">I already Rated it</a> | <a href="' . $hide_notice_url .'">Dismiss Notice</a>'));
+            echo "</p></div>";
+        //}
+    }
+}
+global $pagenow;
+if($pagenow == 'plugins.php'){
+    add_action('admin_init', 'cdash_provide_review_existing');
+}
+
+function cdash_update_review_message_ignore() {
+	global $current_user;
+    $user_id = $current_user->ID;
+    /* If user clicks to ignore the notice, add that to their user meta */
+    if ( isset($_GET['cdash_update_review_message_ignore']) && '0' == $_GET['cdash_update_review_message_ignore'] ) {
+         add_user_meta($user_id, 'cdash_update_review_message_ignore', 'true', true);
+    }
+}
+add_action('admin_init', 'cdash_update_review_message_ignore');
+
+//TODO: Add the review function after 30 days of initial activation
 
 //Get the Google Maps API Key
 function cdash_get_google_maps_api_key(){
@@ -233,9 +264,8 @@ function cdash_demo_content_styles(){
 	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
 }
 
-//TODO: Remove the file time from the script before releasing update
 function cdash_frontend_scripts(){
-    wp_enqueue_script( 'cdash-bus-category-filter', plugins_url( 'js/cdash_bus_category_filter.js', dirname(__FILE__)), 'jquery-ui', filemtime(dirname(__FILE__). '/../js/cdash_bus_category_filter.js') );
+    wp_enqueue_script( 'cdash-bus-category-filter', plugins_url( 'js/cdash_bus_category_filter.js', dirname(__FILE__)), 'jquery-ui');
 }
 
 global $pagenow;

@@ -7,7 +7,7 @@ function cdash_settings_sidebar(){
 <div id="sidebar">
 	<h2><?php esc_html_e('We\'re here to help!', 'cdash'); ?></h2>
 	<ul>
-		<li><a href="https://chamberdashboard.com/document/installing-chamber-dashboard-business-directory/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Business Directory Documentation', 'cdash'); ?></a></li>
+		<li><a href="https://chamberdashboard.com/docs/plugin-features/business-directory/" target="_blank"><?php esc_html_e('Business Directory Documentation', 'cdash'); ?></a></li>
 
 		<!--<li><a href="https://chamberdashboard.com/dashboard-installer/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#installation" target="_blank"><?php esc_html_e('Installation and Configuration:', 'cdash'); ?></a> <?php esc_html_e(' sit back and let experienced pros configure Chamber Dashboard to do just what you need', 'cdash'); ?></li>-->
 

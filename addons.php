@@ -136,7 +136,7 @@ function chamber_dashboard_addons_page_render(){
                           'chamber_inspired',
                           '<b>Chamber Inspired Theme</b> - Integrates well with the Chamber Dashboard plugins.',
                           'https://chamberdashboard.com/downloads/chamber-inspired/',
-                          '$79.00',
+                          '$59.00',
                          'theme'
                         );
                     ?>

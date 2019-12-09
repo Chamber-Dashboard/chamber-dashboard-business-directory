@@ -108,7 +108,7 @@ function cdash_register_taxonomy_business_category() {
 		'show_tagcloud'              => true,
 		'show_in_rest'							 => true,
 		'rewrite' => array (
-    'slug' => _x( 'business_category', 'business_category', 'cdash' )
+        'slug' => _x( 'business_category', 'business_category', 'cdash' )
         )
 	);
 	register_taxonomy( 'business_category', array( 'business' ), $args );
@@ -184,20 +184,17 @@ function cdash_register_taxonomy_private_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => false,
 		'show_tagcloud'              => false,
-		'show_in_rest'							 => true,
+		'show_in_rest'				 => true,
 		'rewrite' => array (
-            'slug' => _x( 'private_category', 'private_category', 'cdash' )
+        'slug' => _x( 'private_category', 'private_category', 'cdash' )
         )
 	);
 	register_taxonomy( 'private_category', array( 'business' ), $args );
-
 }
-
 add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
 
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
-
 	$options = get_option( 'cdash_directory_options' );
 	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'author', 'tags' );
 	if( isset( $options['sv_comments'] ) && "1" == $options['sv_comments'] ) {
@@ -241,7 +238,7 @@ function cdash_register_cpt_business() {
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
 		'rewrite' => array (
-    'slug' => _x( 'business', 'business', 'cdash' )
+            'slug' => _x( 'business', 'business', 'cdash' ),
         )
 	);
 	register_post_type( 'business', $args );
@@ -254,6 +251,8 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 // ------------------------------------------------------------------------
 // SET UP METABOXES
 // ------------------------------------------------------------------------
+//Moving on to CMB2
+require_once __DIR__ . '/cmb2/init.php';
 
 if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another plugin hasn't done it
 	include_once 'wpalchemy/MetaBox.php';
@@ -385,7 +384,6 @@ if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
 if(function_exists('cdashmm_requires_wordpress_version')){
 	remove_action( 'plugins_loaded', 'cdash_promote_member_manager' );
 }
-
 
 // ------------------------------------------------------------------------
 // SET UP P2P IF OTHER PLUGINS NEED IT

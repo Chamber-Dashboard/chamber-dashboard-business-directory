@@ -139,40 +139,16 @@ function cdash_business_directory_shortcode( $atts ) {
 				$add = ( $count % 2 ) ? ' even_post' : ' odd_post';
 				$count++;
 				$post_id = $post->ID;
-				$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
-				if($logo_gallery == "no"){
-					$business_list .= cdash_bus_directory_display_title($single_link);
-				}
-
-				if($image_size != ""){
-					$image_class = "logo";
-				}else{
-					$image_class = "alignleft logo";
-				}
-
-				$business_list .= "<div class='description'>";
-
-
-				$business_list .= cdash_bus_directory_display_image($image, $image_class, $single_link, $post_id, $logo_gallery);
-
-				if($logo_gallery == "no"){
-					$business_list .= cdash_bus_directory_display_content($text);
-				}
-
-			  	$business_list .= "</div>";
-
-				if($logo_gallery == "no"){
-					$business_list .= cdash_bus_directory_display_meta_fields($display, $displayopts);
-					$options = get_option( 'cdash_directory_options' );
-				  	if( isset($options['bus_custom'] )) {
-						$business_list .= cdash_display_custom_fields( get_the_id() );
+				global $buslogo_metabox;
+				$logometa = $buslogo_metabox->the_meta();
+				if($logo_gallery == "yes"){
+					if( isset( $logometa['buslogo'] ) ) {
+						//$business_list .= cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts);
+						$business_list .= cdash_bus_directory_display_image($image, '', $single_link, $post_id, $logo_gallery);
 					}
-					$business_contacts = '';
-					$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
+				}else{
+					$business_list .= cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts);
 				}
-
-
-			  	$business_list .= "</div>";
 			endwhile;
 			$business_list .= "</div><!--end of businesslist-->";
 			// pagination links
@@ -249,6 +225,49 @@ function cdash_starts_with_query_filter( $where, $query ) {
     return $where;
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
+
+function cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts){
+	if(!isset($business_list)){
+		$business_list = '';
+	}
+	$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
+
+	if($logo_gallery == "no"){
+		$business_list .= cdash_bus_directory_display_title($single_link);
+	}
+
+	if($image_size != ""){
+		$image_class = "logo";
+	}else{
+		$image_class = "alignleft logo";
+	}
+
+	$business_list .= "<div class='description'>";
+
+
+	$business_list .= cdash_bus_directory_display_image($image, $image_class, $single_link, $post_id, $logo_gallery);
+
+	if($logo_gallery == "no"){
+		$business_list .= cdash_bus_directory_display_content($text);
+	}
+
+	$business_list .= "</div>";
+
+	if($logo_gallery == "no"){
+		$business_list .= cdash_bus_directory_display_meta_fields($display, $displayopts);
+		$options = get_option( 'cdash_directory_options' );
+		if( isset($options['bus_custom'] )) {
+			$business_list .= cdash_display_custom_fields( get_the_id() );
+		}
+		$business_contacts = '';
+		$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
+	}
+
+
+	$business_list .= "</div>";
+
+	return $business_list;
+}
 
 function cdash_bus_directory_display_title($single_link){
 	if(!isset($business_list)){
