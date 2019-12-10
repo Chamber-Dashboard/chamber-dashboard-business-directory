@@ -94,6 +94,10 @@ clear: both;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
 }*/
 
+#businesslist .business{
+    border:#000 thin solid;
+}
+
 #businesslist.grid2 .business,
 #cdcrm-people.grid2 .cdcrm-person,
 #search-results.grid2 .business {

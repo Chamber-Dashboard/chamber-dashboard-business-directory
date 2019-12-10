@@ -143,11 +143,11 @@ function cdash_business_directory_shortcode( $atts ) {
 				$logometa = $buslogo_metabox->the_meta();
 				if($logo_gallery == "yes"){
 					if( isset( $logometa['buslogo'] ) ) {
-						//$business_list .= cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts);
-						$business_list .= cdash_bus_directory_display_image($image, '', $single_link, $post_id, $logo_gallery);
+						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts);
 					}
 				}else{
-					$business_list .= cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts);
+					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts);
+					cd_debug("Logo: " . print_r($logometa, true));
 				}
 			endwhile;
 			$business_list .= "</div><!--end of businesslist-->";
@@ -226,7 +226,7 @@ function cdash_starts_with_query_filter( $where, $query ) {
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
 
-function cdash_display_business_listings($add, $single_link, $image, $post_id, $logo_gallery, $text, $display, $displayopts){
+function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts){
 	if(!isset($business_list)){
 		$business_list = '';
 	}
