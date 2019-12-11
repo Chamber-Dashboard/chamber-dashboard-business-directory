@@ -16,6 +16,11 @@ The Chamber Dashboard Business Directory makes it quick and easy to add a Busine
 
 Used by chambers of commerce, visitor bureaus, professional associations, neighborhood guides and other membership organizations. Chamber Dashboard plugins give you the tools you need to build a powerful membership site, increase visitor engagement on your site and streamline member management. It includes 24/7 online payments, automated renewals, featured events, and of course a searchable Business Directory!
 
+= Get started with our quick 5 minute setup guide =
+
+* [5 Minute Getting Started Guide](https://chamberdashboard.com/docs/workflows/5-minute-setup-guide/)
+* [Complete Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
+
 = Build a community resource to increase traffic to your site  =
 *  	Add a searchable Business Directory to your site
 *   Search businesses by categories

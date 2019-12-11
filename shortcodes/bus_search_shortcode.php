@@ -191,9 +191,9 @@ function cdash_business_search_form_shortcode( $atts ) {
 		//return;
 	} else {
 		$search_form .= "<form id='business-search-form' method='get' action='" . home_url('/') . $results_page . "'>";
-		$search_form .= "<p class='business-search-term'><label id='business-search-term'>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
+		$search_form .= "<p class='business-search-term'><label id='business-search-term' aria-label='search-term'>" . __('Search Term', 'cdash') . "</label><br /><input aria-label='search-text' type='text' value='' name='searchtext' id='searchtext' /></p>";
 		// I would really like to be able to search by city, but since WPAlchemy serializes the locations array, I don't think this is possible
-		$search_form .= "<p class='business-category-text'><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
+		$search_form .= "<p class='business-category-text'><label id='business-category-text'>" . __('Business Category', 'cdash') . "</label><br /><select aria-label='select a business category' name='buscat'><option value=''>";
 
 		$terms = get_terms( 'business_category', 'hide_empty=0' );
 	        foreach ($terms as $term) {
