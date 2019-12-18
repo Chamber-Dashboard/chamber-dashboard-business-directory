@@ -98,6 +98,22 @@ clear: both;
     border:#000 thin solid;
 }
 
+/*#businesslist.responsive.logo_gallery{
+    display:block;
+    grid-template-columns:auto;
+    text-align:center;
+}
+
+#businesslist.logo_gallery .business{
+    border:none;
+    display:inline-block;
+    padding:2%;
+}*/
+
+#businesslist.logo_gallery .business{
+    border:none;
+}
+
 #businesslist.grid2 .business,
 #cdcrm-people.grid2 .cdcrm-person,
 #search-results.grid2 .business {

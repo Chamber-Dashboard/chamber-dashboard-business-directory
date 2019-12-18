@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.1.6
+Version: 3.1.7
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.1.6' );
+define( 'CDASH_BUS_VER', '3.1.7' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -50,8 +50,6 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
 register_activation_hook(__FILE__, 'cdash_activation_transient');
-//register_activation_hook(__FILE__, 'cdash_set_plgin_update_transient');
-//register_activation_hook(__FILE__, 'cdash_update_message');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
@@ -252,7 +250,7 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 // SET UP METABOXES
 // ------------------------------------------------------------------------
 //Moving on to CMB2
-require_once __DIR__ . '/cmb2/init.php';
+//require_once __DIR__ . '/cmb2/init.php';
 
 if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another plugin hasn't done it
 	include_once 'wpalchemy/MetaBox.php';

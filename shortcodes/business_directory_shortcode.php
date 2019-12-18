@@ -129,10 +129,16 @@ function cdash_business_directory_shortcode( $atts ) {
   //$total_business_pages = ceil($total_business_posts / $perpage);
 	$total_business_pages = $businessquery->max_num_pages;
 
+	if($logo_gallery == "yes"){
+		$logo_class = "logo_gallery";
+	}else{
+		$logo_class = "";
+	}
+
 	// The Loop
 	if ( $businessquery->have_posts() ) :
 		//$business_list = '';
-		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . "'>";
+		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class ."'>";
 		$count = 0;
 			while ( $businessquery->have_posts() ) :
 				$businessquery->the_post();
@@ -236,12 +242,11 @@ function cdash_display_business_listings($add, $single_link, $image, $image_size
 		$business_list .= cdash_bus_directory_display_title($single_link);
 	}
 
-	if($image_size != ""){
-		$image_class = "logo";
+	if(isset($image_size) && $image_size !=""){
+		$image_class = $image_size;
 	}else{
 		$image_class = "alignleft logo";
 	}
-
 	$business_list .= "<div class='description'>";
 
 
