@@ -88,28 +88,6 @@ clear: both;
   clear: both;
 }
 
-/*#businesslist{
-  display: grid;
-  grid-gap: 30px;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-}*/
-
-#businesslist .business{
-    border:#000 thin solid;
-}
-
-/*#businesslist.responsive.logo_gallery{
-    display:block;
-    grid-template-columns:auto;
-    text-align:center;
-}
-
-#businesslist.logo_gallery .business{
-    border:none;
-    display:inline-block;
-    padding:2%;
-}*/
-
 #businesslist.logo_gallery .business{
     border:none;
 }

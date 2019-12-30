@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.1.7
+Version: 3.1.8
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.1.7' );
+define( 'CDASH_BUS_VER', '3.1.8' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -595,29 +595,21 @@ function cdash_store_geolocation_data( $post_id ) {
 	// get the addresses
 	$locations = get_post_meta( $post_id, '_cdash_location', true );
 	if( !empty( $locations ) && is_array( $locations ) ) {
-		cd_debug("Locations exists and is an array.");
 		foreach( $locations as $key => $location ) {
             if(isset($location['latitude']) && $location['latitude'] != 0 ){
-                cd_debug("Latitude 1: " . $location['latitude']);
             }else{
-                cd_debug("Latitude 1 not set");
             }
 			if(isset($location['longitude']) && $location['longitude'] != 0 ){
-                cd_debug("Longitude 1: " . $location['longitude']);
             }else{
-                cd_debug("longitude 1 not set");
             }
 
 			if( !isset( $location['latitude']) && !isset( $location['longitude'] ) || $location['latitude'] == 0 && $location['longitude'] == 0 ) { // don't do this if we already have lat and long
-				cd_debug("Latitude and longitude are not set.");
 				if( isset( $location['city'] ) ) {
-					cd_debug("City is set to " . $location['city']);
 					list($lat,$lng) = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
 					$locations[$key]['latitude'] = $lat;
 					$locations[$key]['longitude'] = $lng;
 				} else {
 					cd_info("City is not set. Not updating post $post_id");
-                    cd_debug("City is not set. Not updating post $post_id");
 				}
 			} else {
 				cd_info("LatLong set to " . $location['latitude'] . ", " . $location['longitude'] . ". Not updating post $post_id");

@@ -353,8 +353,7 @@ function cdash_show_edit_link(){
             echo '<p><a href="' . $member_options['user_registration_page'] . '">Register</a></p><br />';
             return;
 
-        }
-        else{
+        }else{
             //Check if the person (people post type) connected to this user is published. If the person is still pending, take the user to the business, but display a message saying that they need to be approved in order to edit they business listing.
             $edit_post_link = esc_url( add_query_arg( 'post_id', get_the_ID(), home_url('/edit-post/') ) );
             $business_edit .= "<a href='" . $edit_post_link . "'>Edit Your Business Listing</a><br />";

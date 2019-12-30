@@ -153,7 +153,6 @@ function cdash_business_directory_shortcode( $atts ) {
 					}
 				}else{
 					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts);
-					cd_debug("Logo: " . print_r($logometa, true));
 				}
 			endwhile;
 			$business_list .= "</div><!--end of businesslist-->";

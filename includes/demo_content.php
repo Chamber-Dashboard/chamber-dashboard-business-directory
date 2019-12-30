@@ -55,9 +55,7 @@ function cdash_demo_bus_categories(){
   $taxonomy = 'business_category';
   //Create Taxonomy Terms
   $term_one = term_exists( 'Restaurants', $taxonomy );
-  cd_debug("Term One: " . $term_one);
   if ( 0 == $term_one || null == $term_one ) {
-    cd_debug($term_one . " does not exist");
     wp_insert_term( 'Restaurants', $taxonomy );
   }
 
@@ -112,10 +110,8 @@ function cdash_insert_demo_business(){
 
   foreach ($demo_bus_data as $bus_demo) {
     if ( post_exists( $bus_demo['title'] ) ) {
-      cd_debug("The post exists");
       $demo_post_id = 0;
     }else{
-      cd_debug("The post does not exist. Adding now.");
       //post exists
       $add_pages = array(
           'post_title' => $bus_demo['title'],
@@ -186,14 +182,9 @@ function cdash_insert_demo_business(){
       //attach the image files as featured image for each post
       $getImageFile = plugins_url( $bus_demo['featured_image'], dirname(__FILE__) );
       $url = $getImageFile;
-      cd_debug("Image Path: " . $url);
-
       $attach_id = cdash_insert_attachment_from_url($url, $demo_post_id);
-      cd_debug("Attach ID 1: " . $attach_id);
-
       set_post_thumbnail( $demo_post_id, $attach_id );
 
-      cd_debug("Demo Post ID: " . $demo_post_id);
     }
   }
   return $demo_post_id;
@@ -205,24 +196,17 @@ function cdash_insert_attachment_from_url($url, $parent_post_id) {
 		include_once( ABSPATH . WPINC . '/class-http.php' );
 	$http = new WP_Http();
 	$response = $http->request( $url );
-  cd_debug("Response: " . $response);
 	if( $response['response']['code'] != 200 ) {
-    cd_debug("Response Code: " . $response['response']['code']);
 		return false;
 	}
 	$upload = wp_upload_bits( basename($url), null, $response['body'] );
 	if( !empty( $upload['error'] ) ) {
-    cd_debug("Upload Error: " . $upload['error']);
 		return false;
 	}
 	$file_path = $upload['file'];
-  cd_debug("File Path: " . $file_path);
 	$file_name = basename( $file_path );
-  cd_debug("File Name: " . $file_name);
 	$file_type = wp_check_filetype( $file_name, null );
-  cd_debug("File Type: " . $file_type);
 	$attachment_title = sanitize_file_name( pathinfo( $file_name, PATHINFO_FILENAME ) );
-  cd_debug("Attachment Title: " . $attachment_title);
 	$wp_upload_dir = wp_upload_dir();
 	$post_info = array(
 		'guid'           => $wp_upload_dir['url'] . '/' . $file_name,
@@ -233,12 +217,10 @@ function cdash_insert_attachment_from_url($url, $parent_post_id) {
 	);
 	// Create the attachment
 	$attach_id = wp_insert_attachment( $post_info, $file_path, $parent_post_id );
-  cd_debug("Attach ID 2: " . $attach_id);
 	// Include image.php
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
 	// Define attachment metadata
 	$attach_data = wp_generate_attachment_metadata( $attach_id, $file_path );
-  cd_debug("Attach Data: " . $attach_data);
 	// Assign metadata to attachment
 	wp_update_attachment_metadata( $attach_id,  $attach_data );
 	return $attach_id;
@@ -263,10 +245,8 @@ function cdash_add_demo_pages(){
 
   foreach ($demo_bus_pages as $demo_page) {
     if ( post_exists( $demo_page['title'] ) ) {
-      cd_debug("The post exists");
       $demo_page_id = 0;
     }else{
-      cd_debug("The post does not exist. Adding now.");
       //post exists
       $add_pages = array(
           'post_title' => $demo_page['title'],

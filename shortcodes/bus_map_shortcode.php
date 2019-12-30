@@ -25,7 +25,6 @@ function cdash_business_map_shortcode( $atts ) {
 	);
 	cdash_enqueue_styles();
 	$google_map_api_key = cdash_get_google_maps_api_key();
-	cd_debug("Google api key inside business map shortcode: " . $google_map_api_key);
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
 	$mapquery = new WP_Query( $args );

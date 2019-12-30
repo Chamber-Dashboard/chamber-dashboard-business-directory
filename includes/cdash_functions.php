@@ -45,7 +45,6 @@ add_action('admin_init', 'cdash_update_message_ignore');
 function cdash_get_google_maps_api_key(){
   $options = get_option( 'cdash_directory_options' );
   $google_map_api_key = $options['google_maps_api'];
-  cd_debug("Custom Google maps api key: " . $google_map_api_key);
   return $google_map_api_key;
 }
 
@@ -57,15 +56,12 @@ function cdash_get_google_maps_server_api_key(){
   if(!$google_maps_server_api_key || $google_maps_server_api_key == ''){
       $google_maps_server_api_key = $google_map_api_key;
   }
-  cd_debug("Custom Google maps api key: " . $google_map_api_key);
-  cd_debug("Google maps server api key: " . $google_maps_server_api_key);
   return $google_maps_server_api_key;
 }
 
 function cdash_get_google_map_url($address) {
   $google_maps_server_api_key = cdash_get_google_maps_server_api_key();
     return "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $google_maps_server_api_key;
-    cd_debug("Google maps server api key 1: " . $google_maps_server_api_key);
 }
 
 // ask Google for the latitude and longitude
@@ -83,18 +79,14 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
   if( isset( $country ) ) {
     $rawaddress .= ' ' . $country;
   }
-  cd_debug("Constructed raw address inside cdash_get_lat_long function: $rawaddress from $address, $city, $state, $zip, $country");
   $address = urlencode( $rawaddress );
   $url = cdash_get_google_map_url($address);
-  cd_debug("Google maps url: " . $url);
   $response = wp_remote_get($url);
-  //cd_debug("wp_remote_get returns: " . var_dump ($response));
   if( is_wp_error( $response ) ) {
 	return false; // Bail early
   }
   $body = wp_remote_retrieve_body( $response );
   $data = json_decode( $body, true );
-  //cd_debug("wp_remote_get returns: " . var_dump ($body));
   $lat = 0;
   $lng = 0;
   if(!empty($data)){
@@ -104,23 +96,9 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
         //$lat = $data['results'][0]['geometry']['location']['lat'];
         //$lng = $data['results'][0]['geometry']['location']['lng'];
       }else{
-        cd_debug("the result of json_decode is not an array.");
       }
   }else{
-      cd_debug("No results found");
   }
-  /*if(is_array($response)) {
-    $json = json_decode($response['body'], true);
-    if( is_array( $json ) && $json['status'] == 'OK') {
-      $lat = $json['results'][0]['geometry']['location']['lat'];
-      $lng = $json['results'][0]['geometry']['location']['lng'];
-      cd_info("Got lat long inside cdash_get_lat_long function: ($lat, $lng) for $url");
-    } else {
-      cd_debug("Google Maps response body is not an array or does not have OK: $json");
-    }
-  } else {
-    cd_debug("Got $response from google maps for $url");
-}*/
   return array($lat, $lng);
 }
 

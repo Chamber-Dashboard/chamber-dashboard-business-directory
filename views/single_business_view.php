@@ -152,7 +152,6 @@ function cdash_single_business_map() {
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location'];
 		$google_map_api_key = cdash_get_google_maps_api_key();
-		cd_debug("Google maps api key 2: " . $google_map_api_key);
 		?>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $google_map_api_key; ?>">
 		</script>
@@ -171,21 +170,13 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-						cd_debug("Location should be displayed.");
 						if(!isset($location['latitude']) || !isset($location['custom_latitude']) || $location['latitude'] == 0 && !isset($location['longitude']) || !isset($location['custom_longitude']) || $location['longitude'] == 0 ){
 							//Get lat and long from address
-							cd_debug("Get lat and long from the address.");
 							$latLng = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
-							//list($lat,$lng) = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
-							cd_debug("Latitude from address: " .$latLng[0]);
-							cd_debug("Longitude from address: " .$latLng[1]);
-							//$location['latitude'] = $lat;
-							//$location['longitude'] = $lng;
 							$lat = $latLng[0];
 							$long = $latLng[1];
 						}else{
 							//Get the lat and long values from the backend
-							cd_debug("get lat and long from the backend.");
 							if( isset( $location['custom_latitude'] ) ) {
 								$lat = $location['custom_latitude'];
 							} else {
@@ -197,27 +188,6 @@ function cdash_single_business_map() {
 								$long = $location['longitude'];
 							}
 						}
-						/*if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
-							if( isset( $location['custom_latitude'] ) ) {
-								$lat = $location['custom_latitude'];
-							} else {
-								$lat = $location['latitude'];
-							}
-
-							if( isset( $location['custom_longitude'] ) ) {
-								$long = $location['custom_longitude'];
-							} else {
-								$long = $location['longitude'];
-							}
-
-						}else{
-							cd_debug("Custom latitude and longitude are not set");
-							list($lat,$lng) = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
-							$location['latitude'] = $lat;
-							$location['longitude'] = $lng;
-						}*/
-						cd_debug("Latitude inside the single business map code: " . $lat);
-						cd_debug("Longitude inside the single business map code: " . $long);
 
 							// get the map icon
 							$id = get_the_id();
