@@ -5,30 +5,35 @@ function cdash_settings_sidebar(){
 ?>
 
 <div id="sidebar">
-	<h2><?php esc_html_e('We\'re here to help!', 'cdash'); ?></h2>
-	<ul>
-		<li><a href="https://chamberdashboard.com/docs/plugin-features/business-directory/" target="_blank"><?php esc_html_e('Business Directory Documentation', 'cdash'); ?></a></li>
-
-		<!--<li><a href="https://chamberdashboard.com/dashboard-installer/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#installation" target="_blank"><?php esc_html_e('Installation and Configuration:', 'cdash'); ?></a> <?php esc_html_e(' sit back and let experienced pros configure Chamber Dashboard to do just what you need', 'cdash'); ?></li>-->
-
-		<li><a href="https://chamberdashboard.com/downloads/support-updates/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Priority Support:', 'cdash'); ?></a><?php esc_html_e(' get access to our expertise', 'cdash'); ?></li>
-
-		<li><a href="https://chamberdashboard.com/downloads/support-updates/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#maintenance" target="_blank"><?php esc_html_e('Worry-Free Maintenance:', 'cdash'); ?></a><?php esc_html_e(' let us take care of maintaining your site, so you can focus on what you do best!', 'cdash'); ?></li>
-	</ul>
-
-	<h2><?php esc_html_e('More Amazing Plugins', 'cdash'); ?></h2>
-
-	<p><a href="https://chamberdashboard.com/features/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Events Calendar Plugin', 'cdash'); ?></a><?php esc_html_e(' - Engage your community in local events.', 'cdash'); ?></p>
-
-  <p><a href="https://chamberdashboard.com/features/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Member Payments', 'cdash'); ?></a><?php esc_html_e(' - Accept and invoice your members, straight from your site. Save staff time with auto-invoicing.', 'cdash'); ?></p>
-
-	<p><a href="https://chamberdashboard.com/features/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Track and Catalog your Contacts', 'cdash'); ?></a><?php esc_html_e(' – Trade your collection of Excel spreadsheets for a CRM that lets you track calls and meeting attendance, categorize your contacts, gives your staff shared access to the same data and more.', 'cdash'); ?></p>
-
-	<h2><?php esc_html_e('Connect', 'cdash'); ?></h2>
-
-	<p><a href="https://chamberdashboard.com/user-showcase/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php esc_html_e('Get On the Map', 'cdash'); ?></a><?php esc_html_e(' – We have users around the world!  We\'d love to link to your site too.', 'cdash'); ?></p>
-
-	<!--<p><a href="https://www.linkedin.com/groups?gid=6931264&mostPopular=&trk=tyah&trkInfo=tarId%3A1420845022267%2Ctas%3Achamber%20dashboard%2Cidx%3A2-1-2" target="_blank"><?php esc_html_e('Join the User Group', 'cdash'); ?></a><?php esc_html_e(' – Gain perspective, share best practices, and find solutions to problems with experienced Chamber leaders.', 'cdash'); ?></p>-->
+	<div class="cdash_top_blocks">
+		<div class="cdash_block">
+			<h3><?php echo __('Display Business Directory', 'cdash'); ?></h3>
+			<p><span class="bold">[business_directory]</span> - <?php echo __('Displays the directory listings', 'cdash'); ?><br />
+				<span class="bold"><?php echo __('Acepted Parameters:', 'cdash');?></span> Format, category, tags, level, text, display, single_link, perpage, orderby, order
+			</p>
+			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/business-directory/display-directory-shortcode/"><?php echo __('Directory Shortcode Docs', 'cdash');?></a></p>
+		</div>
+		<div class="cdash_block">
+			<h3><?php echo __('Display Business Categories', 'cdash');?></h3>
+			<p><span class="bold">[business_categories]</span> - <?php echo __('Displays a list of business categories', 'cdash'); ?><br />
+				<span class="bold"><?php echo __('Acepted Parameters:', 'cdash'); ?></span> Orderby, order, showcount, hierarchical, hide_empty, child_of, exclude, format
+			</p>
+			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/business-directory/category-pages/"><?php echo __('Category Shortcode Docs', 'cdash'); ?></a></p>
+		</div>
+		<div class="cdash_block">
+			<h3><?php echo __('Display Maps', 'cdash'); ?></h3>
+			<p><span class="bold">[business_map]</span> - <?php echo __('Displays the directory listings in a map', 'cdash'); ?><br />
+				<span class="bold"><?php echo __('Acepted Parameters:', 'cdash'); ?></span> Category, level, single_link, perpage, cluster, width, height
+			</p>
+			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/business-directory/maps-display/"><?php echo __('Maps Shortcode Docs', 'cdash'); ?></a></p>
+		</div>
+		<div class="cdash_block">
+			<h3><?php echo __('Setup Business Search Page', 'cdash'); ?></h3>
+			<p><span class="bold">[business_search_form] & [business_search_results]</span> - <?php echo __('Displays a business directory search form and the search results page', 'cdash'); ?><br />
+			</p>
+			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/business-directory/add-search-feature/"><?php echo __('Business Search Shortcode Docs', 'cdash'); ?></a></p>
+		</div>
+	</div>
 </div>
 <?php
 }

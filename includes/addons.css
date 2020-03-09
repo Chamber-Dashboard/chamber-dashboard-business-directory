@@ -54,7 +54,7 @@
     min-height: 60px;
 }
 
-.single_addon a.button-primary, .cdash_admin.button-primary{
+.single_addon a.button-primary, .cdash_admin.button-primary, .cdash_admin.button-secondary:hover{
     margin-left:15px;
     margin-top: 10px;
     margin-bottom:10px;
@@ -65,9 +65,13 @@
     color:#fff;
 }
 
-.single_addon a.button-primary:hover, .cdash_admin.button-primary:hover{
+.single_addon a.button-primary:hover, .cdash_admin.button-primary:hover, .cdash_admin.button-secondary{
   background:#fff;
   color:#B1304D;
   text-shadow:none;
   border-color: #B1304D;
+}
+
+.cdash_admin.button-secondary:hover{
+    margin:0px;
 }

@@ -140,6 +140,11 @@ if ( !empty($taxonomies) ) :
             $taxonomy_output = array();
             foreach( $taxonomies as $subcategory ) {
                 if($subcategory->parent == $category->term_id) {
+                    if($showcount == 1){
+                      $num_posts = " (" . $subcategory->count . ")";
+                    }else{
+                      $num_posts = '';
+                    }
                   $taxonomy_output[] = '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
                     '. esc_html( $subcategory->name ) .'</a>' . $num_posts . '</span>';
                 }
@@ -218,6 +223,8 @@ function cdash_frontend_scripts(){
 global $pagenow;
 if(isset($_GET['page'])){
   $page = $_GET['page'];
+}else{
+    $page = '';
 }
 if(isset($_GET['tab'])){
   $tab = $_GET['tab'];

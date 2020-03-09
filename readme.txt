@@ -3,9 +3,9 @@ Contributors: cguntur, gwendydd, LisaK.social
 Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses, gutenberg ready
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 3.1.8
+Stable tag: 3.1.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.1.9 =
+* Created a new layout to the settings pages
+* Fixed the category count for the grid category display
+* Fixed a few issues in the admin settings
+
 = 3.1.8 =
 * Fixed some display issues for business listings
 

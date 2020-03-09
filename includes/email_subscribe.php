@@ -7,7 +7,7 @@ function cdash_email_subscribe(){
   ?>
   <div class="cdash_email_subscribe_div">
     <div>
-      <h3>Be the first to know about updates and new features.</h3>
+      <h2>Be the first to know about updates and new features.</h2>
       <button type="button" name="cdash_email_subscribe" class="cdash_admin email_signup button-primary" title="Sign up for updates" aria-label="Sign up for updates"><?php esc_html_e('Stay Up-to-Date'); ?></button>
     </div>
     <div class="cdash_email_popup cdash_wrapper">

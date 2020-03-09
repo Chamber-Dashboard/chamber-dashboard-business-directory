@@ -1603,6 +1603,7 @@ class WPAlchemy_MetaBox
 				global $post;
 
 				$post_id = $post->ID;
+				//$post_id = $post['ID'];
 			}
 		}
 

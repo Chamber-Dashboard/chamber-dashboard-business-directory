@@ -18,65 +18,78 @@ function cdash_about_screen()
 	{
 		?>
 		<div class="wrap">
-
-		<h1><?php esc_html_e('Welcome to Chamber Dashboard Business Directory', 'cdash'); ?></h1>
-		<?php cdash_email_subscribe(); ?>
-		<div class="cdash-about-text">
-			<h2>
-			<?php
-				esc_html_e('Power your membership organization with WordPress plugins and themes', 'cdash');
-			?>
-		</h2>
-			<?php
-						$page = $_GET['page'];
-						if(isset($_GET['tab'])){
-							$tab = $_GET['tab'];
-						}
-						if($page == 'chamber_dashboard_addons'){
-							$active_tab = 'chamber_dashboard_addons';
-						}else if($page == 'chamber_dashboard_license'){
-								$active_tab = 'chamber_dashboard_license';
-						}else{
-							$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
-						}
-            //$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'chamber_dashboard_support';
-
-
-        ?>
-		</div>
-
-		<h2 class="nav-tab-wrapper">
-			<a href="?page=cdash-about&tab=cdash-about" class="nav-tab <?php echo $active_tab == 'cdash-about' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Getting Started', 'cdash' ); ?></a>
-
-			<a href="?page=cdash-about&tab=chamber_dashboard_addons" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_addons' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Addons', 'cdash' ); ?></a>
-
-			<a href="?page=cdash-about&tab=chamber_dashboard_license" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_license' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Licenses', 'cdash' ); ?></a>
-
-			<a href="?page=cdash-about&tab=chamber_dashboard_support" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_support' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Support', 'cdash' ); ?></a>
-
-			<a href="?page=cdash-about&tab=chamber_dashboard_technical_details" class="nav-tab <?php echo $active_tab == 'chamber_dashboard_technical_details' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Technical Details', 'cdash' ); ?></a>
-		</h2>
-
-            <div id="main" style="width: 100%; float: left;">
-            <?php
-            if( $active_tab == 'cdash-about' )
-            {
-							  cdash_show_demo_buttons();
-                cdash_about_page_render();
-            }else if($active_tab == 'chamber_dashboard_support'){
-								cdash_support_page_render();
-            }else if($active_tab == 'chamber_dashboard_addons'){
-								chamber_dashboard_addons_page_render();
-            }else if($active_tab == 'chamber_dashboard_license'){
-								chamber_dashboard_licenses_page_render();
-            }else if($active_tab == 'chamber_dashboard_technical_details'){
-								chamber_dashboard_technical_details_page_render();
-            }
-          ?>
-            </div><!--end of #main-->
-
-		</div>
 		<?php
+			cdash_welcome_page();
+		?>
+		</div>
+		<!--</div>-->
+		<?php
+	}
+
+	function cdash_welcome_page(){
+	?>
+		<!--<div class="wrap">-->
+			<h1><?php esc_html_e('Welcome to Chamber Dashboard Business Directory', 'cdash'); ?></h1>
+			<?php //cdash_email_subscribe();
+			cdash_getting_started_blocks();
+			?>
+			<div class="cdash-about-text">
+				<h2>
+				<?php
+					esc_html_e('Power your membership organization with WordPress plugins and themes', 'cdash');
+				?>
+				</h2>
+			</div>
+			<?php
+			/*$page = $_GET['page'];
+			if(isset($_GET['tab'])){
+				$tab = $_GET['tab'];
+			}
+			if(isset($_GET['section'])){
+				$section = $_GET['section'];
+			}else{
+				$section = "getting_started";
+			}*/
+			?>
+			<div id="main" class="cd_settings_tab_group" style="width: 100%; float: left;">
+				<!--<div class="section_group">
+					<ul>
+						<?php
+						if($section == 'getting_started')
+						?>
+						<li class="<?php echo $section == 'getting_started' ? 'section_active' : ''; ?>">
+							<a href="?page=cd-settings&tab=welcome&section=getting_started" class="<?php echo $section == 'getting_started' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Getting Started', 'cdash' ); ?></a>
+						</li>
+						<li class="<?php echo $section == 'cd_addons' ? 'section_active' : ''; ?>">
+							<a href="?page=cd-settings&tab=welcome&section=cd_addons" class="<?php echo $section == 'cd_addons' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Addons', 'cdash' ); ?></a>
+						</li>
+						<li class="<?php echo $section == 'cd_support' ? 'section_active' : ''; ?>">
+							<a href="?page=cd-settings&tab=welcome&section=cd_support" class="<?php echo $section == 'cd_support' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Support', 'cdash' ); ?></a>
+						</li>
+						<li class="<?php echo $section == 'cd_technical_details' ? 'section_active' : ''; ?>">
+							<a href="?page=cd-settings&tab=welcome&section=cd_technical_details" class="<?php echo $section == 'cd_technical_details' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Technical Details', 'cdash' ); ?></a>
+						</li>
+					</ul>
+				</div>-->
+				<div class="cdash_section_content">
+					<?php
+					cdash_show_demo_buttons();
+					cdash_about_page_render();
+		            /*if( $section == 'getting_started' )
+		            {
+						cdash_show_demo_buttons();
+		                cdash_about_page_render();
+		            }else if($section == 'cd_support'){
+						cdash_support_page_render();
+		            }else if($section == 'cd_addons'){
+						chamber_dashboard_addons_page_render();
+		            }else if($section == 'cd_technical_details'){
+						chamber_dashboard_technical_details_page_render();
+		            }*/
+		          ?>
+				</div>
+            </div><!--end of #main-->
+	<?php
 	}
 
 
@@ -84,17 +97,40 @@ function cdash_about_screen()
 function cdash_support_page_render(){
 ?>
     <div class="wrap">
-	   <div class="changelog">
-            <h3><?php esc_html_e('Chamber Dashboard Support', 'cdash'); ?></h3>
-            <div class="feature-section col three-col">
-                <p><?php esc_html_e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </p>
-
-                <p> <?php esc_html_e('Documentation'); ?> - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a> <br />
-                    <?php esc_html_e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a><br />
-                    <?php esc_html_e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a><br />
-                    <?php esc_html_e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a></p>
+		<?php
+        $page = $_GET['page'];
+        if(isset($_GET['tab'])){
+            $tab = $_GET['tab'];
+        }
+        if(isset($_GET['section'])){
+            $section = $_GET['section'];
+        }else{
+            $section = "support";
+        }
+        ?>
+        <h1><?php esc_html_e('Chamber Dashboard Support', 'cdash'); ?></h1>
+		<div id="main" class="cd_settings_tab_group" style="width: 100%; float: left;">
+            <div class=" cdash section_group">
+                <ul>
+                    <li class="<?php echo $section == 'support' ? 'section_active' : ''; ?>">
+                        <a href="?page=cd-settings&tab=support&section=support" class="<?php echo $section == 'support' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Contact Support', 'cdash' ); ?></a><span>|</span>
+                    </li>
+                    <li class="<?php echo $section == 'tech_details' ? 'section_active' : ''; ?>">
+                        <a href="?page=cd-settings&tab=support&section=tech_details" class="<?php echo $section == 'tech_details' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Technical Details', 'cdash' ); ?></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="cdash_section_content support">
+                <?php
+                if( $section == 'support' ){
+                    cdash_support_page();
+                }else if($section == 'tech_details'){
+                    chamber_dashboard_technical_details_page_render();
+                }
+              ?>
             </div>
         </div>
+
     </div>
 <?php
 }
@@ -117,95 +153,83 @@ function cdash_welcome()
 	if ((isset($_GET['action']) && 'upgrade-plugin' == $_GET['action']) && (isset($_GET['plugin']) && strstr($_GET['plugin'], 'cdash-business-directory.php')))
 		return;
 
-	wp_safe_redirect(admin_url(add_query_arg( array( 'page' => 'cdash-about', 'tab' => 'cdash-about'), 'admin.php')));
+	//wp_safe_redirect(admin_url(add_query_arg( array( 'page' => 'cdash-about', 'tab' => 'cdash-about'), 'admin.php')));
+
+	wp_safe_redirect(admin_url(add_query_arg( array( 'page' => 'cd-welcome'), 'admin.php')));
 	exit;
 }
 add_action('admin_init', 'cdash_welcome');
+
+function cdash_support_page(){
+	?>
+	<div class="cd_support_page">
+		<h4><?php esc_html_e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </h4>
+		<ul>
+			<li>
+				<?php esc_html_e('Documentation'); ?> - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a>
+			</li>
+			<li>
+				<?php esc_html_e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a>
+			</li>
+			<li>
+				<?php esc_html_e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a>
+			</li>
+			<li>
+				<?php esc_html_e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a>
+			</li>
+		</ul>
+	</div>
+	<?php
+}
 
 //Displaying the Technical Details
 function chamber_dashboard_technical_details_page_render(){
 ?>
     <div class="wrap">
-	  	<div class="changelog">
-      	<h2><?php esc_html_e('Chamber Dashboard Status', 'cdash'); ?></h2>
-        <div class="feature-section col three-col">
-					<?php
-						global $wp_version;
-						$php_version = phpversion();
+		<div class="cdash_technical_details">
+			<div class="cdash_sub_section">
+				<?php $site_name = get_bloginfo('name'); ?>
+				<h3><?php esc_html_e($site_name . ' Status', 'cdash'); ?></h3>
+				<?php
+					global $wp_version;
+					$php_version = phpversion();
+				?>
+		  <h4>Current WP Version:</b> <?php echo $wp_version; ?></h4>
+					<h4>Current PHP Version:</b> <?php echo $php_version;  ?></h4>
+			</div>
+
+			<div class="cdash_sub_section">
+				<?php
+				$theme = wp_get_theme();
 					?>
-	          <h4>Current WP Version:</b> <?php echo $wp_version; ?></h4>
-						<h4>Current PHP Version:</b> <?php echo $php_version;  ?></h4>
-						<br />
-						<h3>Chamber Dashboard Plugins</h3>
-						<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
-						<?php
-						$plugins = cdash_get_active_plugin_list();
-						//Member Manager
-						if( in_array( 'cdash-member-manager.php', $plugins ) ) {
-	            if ( version_compare(CDASHMM_VERSION, "2.3.7", "<" ) ) {
-	              cdash_display_plugin_version('cdash_member_manager');
-	            }
-	          }
+					<br />
+					<h3>Active Theme</h3>
+					<?php
+					echo $theme . " " . $theme->get( 'Version' );
+					?>
+			</div>
 
-						//Member Manager Pro
-						if( in_array( 'cdash-member-manager-pro.php', $plugins ) ) {
-	            if ( version_compare(CDASHMM_PRO_VERSION, "1.3.7", "<" ) ) {
-	              cdash_display_plugin_version('cdash_member_manager_pro');
-	            }
-	          }
+			<div class="cdash_sub_section">
+				<h3>Chamber Dashboard Plugins</h3>
+				<h4>Business Directory Version: <?php echo CDASH_BUS_VER; ?></h4>
 
-						//CRM
-						if( in_array( 'cdash-crm.php', $plugins ) ) {
-	            if ( version_compare(CDASHMM_CRM_VERSION, "1.5.0", "<" ) ) {
-	              cdash_display_plugin_version('cdash_crm');
-	            }
-	          }
+				<?php
+				$plugins = cdash_get_active_plugin_list();
+				cdash_technical_details_hook();
+				?>
+			</div>
 
-						//CRM	IMPORTER
-						if( in_array( 'cdash-crm-importer.php', $plugins ) ) {
-	            if ( version_compare(CDCRM_IMPORT_VERSION, "1.1", "<" ) ) {
-	              cdash_display_plugin_version('cdash_crm_importer');
-	            }
-	          }
+			<div class="cdash_sub_section">
+				<h3>Other Details</h3>
 
-						//EXPORTER
-						if( in_array( 'cdash-exporter.php', $plugins ) ) {
-	            if ( version_compare(CDEXPORT_VERSION, "1.2.2", "<" ) ) {
-	              cdash_display_plugin_version('cdash_exporter');
-	            }
-	          }
-
-						//RECURRING PAYMENTS
-						if( in_array( 'cdash-recurring-payments.php', $plugins ) ) {
-	            if ( version_compare(CDASHRP_VERSION, "1.5.7", "<" ) ) {
-	              cdash_display_plugin_version('cdash_recurring_payments');
-	            }
-	          }
-
-						//MEMBER UPDATER
-						if( in_array( 'cdash-member-updater.php', $plugins ) ) {
-	            if ( version_compare(CDASHMU_VERSION, "1.3.6", "<" ) ) {
-	              cdash_display_plugin_version('cdash_member_updater');
-	            }
-	          }
-
-						//EVENTS CALENDAR
-						if( in_array( 'cdash-event-calendar.php', $plugins ) ) {
-	            if ( version_compare(CDASH_EVENTS_UPDATE_VERSION_1, "2.2.7", "<" ) ) {
-	              cdash_display_plugin_version('cdash_events_calendar');
-	            }
-	          }
-							cdash_technical_details_hook();
-							$theme = wp_get_theme();
-								?>
-								<br />
-								<h3>Active Theme</h3>
-								<?php
-								echo $theme . " " . $theme->get( 'Version' );
-						?>
-
-	      </div>
-	  </div>
+				<?php
+				global $woocommerce;
+				if ( defined( 'WOOCOMMERCE_VERSION' )){
+					echo 'Woocommerce Version: ' .  WOOCOMMERCE_VERSION;
+				}
+				?>
+			</div>
+		</div><!--end of cdash_technical_details-->
   </div>
 <?php
 }

@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.1.8
+Version: 3.1.9
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.1.8' );
+define( 'CDASH_BUS_VER', '3.1.9' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -43,6 +43,18 @@ function cdash_requires_wordpress_version() {
 }
 add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
+//Adding settings link on the plugins page
+function cdash_plugin_action_links( $links ) {
+  //Check transient. If it is available, display the settings and license link
+  //if(get_transient('cdashmm_active')){
+    $settings_url = get_admin_url() . 'admin.php?page=cd-settings';
+    $settings_link = '<a href="' . $settings_url . '">' . __('Settings', 'cdashrp') . '</a>';
+    array_unshift( $links, $settings_link );
+  //}
+  return $links;
+}
+add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'cdash_plugin_action_links' );
+
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
 // ------------------------------------------------------------------------
@@ -53,7 +65,7 @@ register_activation_hook(__FILE__, 'cdash_activation_transient');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
-add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
+add_action('admin_menu', 'cdash_options_page');
 
 // Require options stuff
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
@@ -104,7 +116,7 @@ function cdash_register_taxonomy_business_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
-		'show_in_rest'							 => true,
+		'show_in_rest'				 => true,
 		'rewrite' => array (
         'slug' => _x( 'business_category', 'business_category', 'cdash' )
         )
@@ -266,9 +278,24 @@ function cdash_admin_scripts_and_styles($hook)
     if ( is_admin() ) {
         //wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
+        wp_enqueue_style('jquery-ui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+        if(isset($_GET['page'])){
+            $page = $_GET['page'];
+        }else{
+            $page = '';
+        }
 
-				wp_enqueue_script( 'admin-javascript', plugins_url( 'js/admin.js', __FILE__ ));
+        if(isset($page) && $page == 'cd-settings' || $page == 'cd-welcome'){
+        //if($pagenow == 'cd-settings'){
+            wp_enqueue_script( 'admin-javascript', plugins_url( 'js/admin.js', __FILE__ ));
+        }
         wp_enqueue_media();
+
+        wp_enqueue_script('jquery-ui-core');
+        wp_enqueue_script('jquery-ui-datepicker');
+        wp_enqueue_style('jquery-ui-datepicker');
+
+
     }
 
     global $post;
