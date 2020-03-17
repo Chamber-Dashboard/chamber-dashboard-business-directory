@@ -40,52 +40,11 @@ function cdash_about_screen()
 				?>
 				</h2>
 			</div>
-			<?php
-			/*$page = $_GET['page'];
-			if(isset($_GET['tab'])){
-				$tab = $_GET['tab'];
-			}
-			if(isset($_GET['section'])){
-				$section = $_GET['section'];
-			}else{
-				$section = "getting_started";
-			}*/
-			?>
 			<div id="main" class="cd_settings_tab_group" style="width: 100%; float: left;">
-				<!--<div class="section_group">
-					<ul>
-						<?php
-						if($section == 'getting_started')
-						?>
-						<li class="<?php echo $section == 'getting_started' ? 'section_active' : ''; ?>">
-							<a href="?page=cd-settings&tab=welcome&section=getting_started" class="<?php echo $section == 'getting_started' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Getting Started', 'cdash' ); ?></a>
-						</li>
-						<li class="<?php echo $section == 'cd_addons' ? 'section_active' : ''; ?>">
-							<a href="?page=cd-settings&tab=welcome&section=cd_addons" class="<?php echo $section == 'cd_addons' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Addons', 'cdash' ); ?></a>
-						</li>
-						<li class="<?php echo $section == 'cd_support' ? 'section_active' : ''; ?>">
-							<a href="?page=cd-settings&tab=welcome&section=cd_support" class="<?php echo $section == 'cd_support' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Support', 'cdash' ); ?></a>
-						</li>
-						<li class="<?php echo $section == 'cd_technical_details' ? 'section_active' : ''; ?>">
-							<a href="?page=cd-settings&tab=welcome&section=cd_technical_details" class="<?php echo $section == 'cd_technical_details' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Technical Details', 'cdash' ); ?></a>
-						</li>
-					</ul>
-				</div>-->
 				<div class="cdash_section_content">
 					<?php
 					cdash_show_demo_buttons();
 					cdash_about_page_render();
-		            /*if( $section == 'getting_started' )
-		            {
-						cdash_show_demo_buttons();
-		                cdash_about_page_render();
-		            }else if($section == 'cd_support'){
-						cdash_support_page_render();
-		            }else if($section == 'cd_addons'){
-						chamber_dashboard_addons_page_render();
-		            }else if($section == 'cd_technical_details'){
-						chamber_dashboard_technical_details_page_render();
-		            }*/
 		          ?>
 				</div>
             </div><!--end of #main-->
