@@ -106,6 +106,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.2.0 =
+* Fixed the business import button link 
+
 = 3.1.9 =
 * Created a new layout to the settings pages
 * Fixed the category count for the grid category display
