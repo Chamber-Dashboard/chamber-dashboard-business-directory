@@ -99,11 +99,14 @@ function cdash_import_form() { ?>
 							$rawaddress .= ' ' . $data[8];
 						}
 						$address = urlencode( $rawaddress );
-                        $json = wp_remote_get(cdash_get_google_map_url($address));
+						$json = wp_remote_get(cdash_get_google_map_url($address));
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$latitude = $json['results'][0]['geometry']['location']['lat'];
 							$longitude = $json['results'][0]['geometry']['location']['lng'];
+						}else{
+							$latitude = '';
+							$longitude = '';
 						}
 					}
 
@@ -115,8 +118,8 @@ function cdash_import_form() { ?>
 							'city'		=> $data[6],
 							'state'		=> $data[7],
 							'zip'		=> $data[8],
-              'country'   => $data[9],
-              'hours'     => $data[10],
+              				'country'   => $data[9],
+              				'hours'     => $data[10],
 							'latitude'	=> $latitude,
 							'longitude'	=> $longitude,
 							'url'		=> $data[11],

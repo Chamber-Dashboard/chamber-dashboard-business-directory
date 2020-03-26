@@ -96,6 +96,8 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
         //$lat = $data['results'][0]['geometry']['location']['lat'];
         //$lng = $data['results'][0]['geometry']['location']['lng'];
       }else{
+        $lat = '';
+        $lng = '';
       }
   }else{
   }

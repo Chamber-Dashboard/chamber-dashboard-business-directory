@@ -46,17 +46,18 @@ function cdash_display_address( $location ) {
 function cdash_display_google_map_link( $location ) {
 	$google_map_link = '';
 	//$google_map_link .= "<p class='google_map_link'>";
-	$google_map_link .= "<a target='_blank' href='https://www.google.com/maps/search/?api=1&query=";
-		if( isset( $location['address'] ) && '' !== $location['address'] ) {
+	if( isset( $location['address'] ) && '' !== $location['address'] ) {
+		$google_map_link .= "<p><a target='_blank' href='https://www.google.com/maps/search/?api=1&query=";
+		//if( isset( $location['address'] ) && '' !== $location['address'] ) {
 			$street_address = $location['address'];
 			$street_address_array = explode(" ", $street_address);
 			$cdash_st_ad_array_len = count($street_address_array);
 			for($i=0; $i<count($street_address_array); $i++){
 				$google_map_link .= $street_address_array[$i] . "%20";
 			}
-		}
+		//}
 
-    if( isset( $location['city'] ) && '' !== $location['city'] ) {
+    	if( isset( $location['city'] ) && '' !== $location['city'] ) {
 			$google_map_link .= $location['city'] . "%20";
 		}
 
@@ -68,10 +69,15 @@ function cdash_display_google_map_link( $location ) {
 			$google_map_link .= $location['zip'] . "%20";
 		}
 
-    if( isset( $location['country'] ) && '' !== $location['country'] ) {
+    	if( isset( $location['country'] ) && '' !== $location['country'] ) {
 			$google_map_link .= $location['country'];
 		}
-	$google_map_link .= "'>". __('Get Directions', 'cdash') . "</a><br /><br />";
+		$google_map_link .= "'>". __('Get Directions', 'cdash') . "</a></p><br /><br />";
+	}else{
+		$google_map_link .= '';
+	}
+
+
 	return $google_map_link;
 }
 
@@ -382,7 +388,7 @@ function cdash_display_edit_link($business_id)
 function cdash_back_to_bus_link(){
 	$options = get_option('cdash_directory_options');
 	$back_bus_link = "";
-	$back_bus_link = "<p><a href='" . $options['business_listings_url'] . "'></p>" . $options['business_listings_url_text'] . "</a>";
+	$back_bus_link = "<p><a href='" . $options['business_listings_url'] . "'>" . $options['business_listings_url_text'] . "</a></p>";
 	return $back_bus_link;
 }
 
