@@ -84,6 +84,21 @@ function cdash_language_init() {
 }
 add_action('init', 'cdash_language_init');
 
+//Enqueue required block scripts
+
+
+function cdash_bus_directory_block_scripts() {
+	$asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');	
+	wp_register_script(
+		'bd-blocks',
+		plugins_url( 'build/index.js', __FILE__ ),
+		$asset_file['dependencies'],
+		$asset_file['version']
+	);
+	wp_enqueue_script('bd-blocks');
+}
+add_action( 'enqueue_block_editor_assets', 'cdash_bus_directory_block_scripts', 30 );
+
 // ------------------------------------------------------------------------
 // SET UP CUSTOM POST TYPES AND TAXONOMIES
 // ------------------------------------------------------------------------
