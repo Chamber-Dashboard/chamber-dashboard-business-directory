@@ -88,10 +88,6 @@ clear: both;
   clear: both;
 }
 
-#businesslist.logo_gallery .business{
-    border:none;
-}
-
 #businesslist.grid2 .business,
 #cdcrm-people.grid2 .cdcrm-person,
 #search-results.grid2 .business {
@@ -191,4 +187,27 @@ clear: both;
 }
 #loader, #business_listings_format, #cdash_bus_list_page{
   display:none;
+}
+
+/*Logo Gallery Responsive Styles*/
+#businesslist.responsive.logo_gallery{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: center;
+    grid-gap:0;
+}
+
+#businesslist.responsive.logo_gallery .business{
+    margin:auto calc(.5em + .75vmin);
+}
+
+#businesslist.responsive.logo_gallery .business .description{
+    margin: 1em auto;
+}
+
+#businesslist.responsive.logo_gallery .business .description a img.logo{
+    margin:0;
+    display:block;
+	height:auto;
+	max-width:100%;
 }

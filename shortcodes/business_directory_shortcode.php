@@ -25,7 +25,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '', // options: slug of any membership status
-			'image_size'	=> '', //options: full_width
+			'image_size'	=> 'small', //options:small, medium, large, full_width
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
 			'show_category_filter' => 'no', //options: yes, no
@@ -242,14 +242,14 @@ function cdash_display_business_listings($add, $single_link, $image, $image_size
 	}
 
 	if(isset($image_size) && $image_size !=""){
-		$image_class = $image_size;
+		$image_class = $image_size . " logo";
 	}else{
 		$image_class = "alignleft logo";
 	}
 	$business_list .= "<div class='description'>";
 
 
-	$business_list .= cdash_bus_directory_display_image($image, $image_class, $single_link, $post_id, $logo_gallery);
+	$business_list .= cdash_bus_directory_display_image($image, $image_class, $image_size, $single_link, $post_id, $logo_gallery);
 
 	if($logo_gallery == "no"){
 		$business_list .= cdash_bus_directory_display_content($text);
@@ -286,9 +286,12 @@ function cdash_bus_directory_display_title($single_link){
 	return $business_list;
 }
 
-function cdash_bus_directory_display_image($image, $image_class, $single_link, $post_id, $logo_gallery){
+function cdash_bus_directory_display_image($image, $image_class, $image_size, $single_link, $post_id, $logo_gallery){
 	if(!isset($business_list)){
 		$business_list = '';
+	}
+	if($image_size == "small"){
+		$image_size = "thumb";
 	}
 	if( "logo" == $image ) {
 		global $buslogo_metabox;
@@ -297,11 +300,12 @@ function cdash_bus_directory_display_image($image, $image_class, $single_link, $
 		$logoattr = array(
 			//'class'	=> 'alignleft logo',
 			'class'	=> $image_class,
+			//'alt' => 'testing alt atribute'
 			);
 			if( $single_link == "yes" ) {
-				$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
+				$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], $image_size, 0, $logoattr ) . "</a>";
 			} else {
-				$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+				$business_list .= wp_get_attachment_image($logometa['buslogo'], $image_size, 0, $logoattr );
 			}
 		}
 	} elseif( "featured" == $image ) {
