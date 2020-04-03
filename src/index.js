@@ -1,6 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { SelectControl } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
+import { __ } from '@wordpress/i18n';
+import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 //import { withState } from '@wordpress/compose';
 //import { setState } from '@wordpress/compose';
 const { withState, setState } = wp.compose;
@@ -27,27 +29,28 @@ const {
     Disabled 
 } = wp.components;
 
-const MyServerSideRender = () => (
-    <ServerSideRender
-        block="cdash-bd-blocks/business-directory"
-        attributes={ {
-            format: 'list',
-            category: '',
-            tags: '',
-            level: '',
-            text: 'excerpt',
-            single_link: 'yes',
-            perpage: -1,
-            orderby: 'title',
-            order: 'asc',
-            image: 'logo',
-            status: '',
-            image_size: '',
-            alphpa: 'no',
-            logo_gallery: 'no',
-            show_category_filter: 'no',
-        } }
-    />
+const inspectorControls = (
+    <InspectorControls key="inspector">
+        <PanelBody title={ __( 'Business Directory Display Options' )}>
+            <PanelRow>
+
+            <SelectControl
+                            label="Format"
+                            value={ format }
+                            options= { formatOptions }
+                            onChange={ ( value ) =>
+                                setAttributes( { format: value } )
+                            }
+                            /*onChange={ (nextValue) => {
+                                props.setAttributes({
+                                    format: nextValue
+                                });
+                            }}*/
+                        />
+            </PanelRow>
+            
+        </PanelBody>
+    </InspectorControls>
 );
 
 const formatOptions = [
@@ -57,8 +60,33 @@ const formatOptions = [
     { label: 'Grid 4', value: 'grid4' },
     { label: 'Responsive', value: 'responsive' },   
  ];
-    
- 
+
+const textOptions = [
+    { label: 'Excerpt', value: 'excerpt' },
+    { label: 'Description', value: 'description' },
+    { label: 'None', value: 'none' },
+ ];
+
+const orderbyOptions = [
+    { label: 'Title', value: 'title' },
+    { label: 'Date', value: 'date' },
+    { label: 'Menu Order', value: 'menu_order' },
+    { label: 'Random', value: 'random' },
+    { label: 'Membership Level', value: 'membership_level' },
+ ];
+
+const orderOptions = [
+    { label: 'Ascending', value: 'asc' },
+    { label: 'Descending', value: 'desc' },
+];
+
+const imageOptions = [
+    { label: 'Logo', value: 'logo' },
+    { label: 'Featured Image', value: 'featured' },
+    { label: 'None', value: 'none' },
+];
+
+
 registerBlockType( 'cdash-bd-blocks/business-directory', {
     title: 'Display Business Directory',
     icon: 'admin-home',
@@ -88,7 +116,7 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'yes',
         },
-        parpage:{
+        perpage:{
             type: 'number',
             default: -1,
         },
@@ -130,33 +158,15 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         const {attributes: { format, category, tags, level, text, single_link, perpage, orderby, order, image,status, image_size, alpha, logo_gallery, show_category_filter }, className } = props;
 		return [
             <div className={ props.className }>
-                <Disabled>
-                    <ServerSideRender
-                        block="cdash-bd-blocks/business-directory"
-                        //attributes={ {format, category, tags, level, text, single_link, perpage, orderby, order, image,status, image_size, alpha, logo_gallery, show_category_filter }}
-                        attributes = {props.attributes}
-                    />
-                </Disabled>
-                <InspectorControls key="inspector">
-                    <PanelBody title={ __( 'Business Directory Display Options' ) } >
-                        <PanelRow>
-                        <SelectControl
-                            label="Format"
-                            value={ props.attributes.format }
-                            options= { formatOptions }
-                            onChange={ (nextValue) => {
-                                props.setAttributes({
-                                    format: nextValue
-                                });
-                            }}
-                        />
-
-                        </ PanelRow>
-                    </PanelBody>
-                </InspectorControls>
+                <ServerSideRender
+                    block="cdash-bd-blocks/business-directory"
+                    attributes = {props.attributes}
+                />
+                { inspectorControls }
                 <div className="businesslist">
                     <div className="bus_directory">CD Business Directory
                         <p>Format: {format}</p>
+                        
                     </div>
                     
                 </div>

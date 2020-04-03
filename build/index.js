@@ -103,6 +103,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/server-side-render */ "@wordpress/server-side-render");
 /* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_5__);
+
+
 
 
 
@@ -131,30 +137,26 @@ var _wp$components = wp.components,
     FormToggle = _wp$components.FormToggle,
     ToggleControl = _wp$components.ToggleControl,
     Disabled = _wp$components.Disabled;
+var inspectorControls = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
+  key: "inspector"
+}, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__["__"])('Business Directory Display Options')
+}, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
+  label: "Format",
+  value: _wordpress_date__WEBPACK_IMPORTED_MODULE_5__["format"],
+  options: formatOptions,
+  onChange: function onChange(value) {
+    return setAttributes({
+      format: value
+    });
+  }
+  /*onChange={ (nextValue) => {
+      props.setAttributes({
+          format: nextValue
+      });
+  }}*/
 
-var MyServerSideRender = function MyServerSideRender() {
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default.a, {
-    block: "cdash-bd-blocks/business-directory",
-    attributes: {
-      format: 'list',
-      category: '',
-      tags: '',
-      level: '',
-      text: 'excerpt',
-      single_link: 'yes',
-      perpage: -1,
-      orderby: 'title',
-      order: 'asc',
-      image: 'logo',
-      status: '',
-      image_size: '',
-      alphpa: 'no',
-      logo_gallery: 'no',
-      show_category_filter: 'no'
-    }
-  });
-};
-
+}))));
 var formatOptions = [{
   label: 'List',
   value: 'list'
@@ -170,6 +172,49 @@ var formatOptions = [{
 }, {
   label: 'Responsive',
   value: 'responsive'
+}];
+var textOptions = [{
+  label: 'Excerpt',
+  value: 'excerpt'
+}, {
+  label: 'Description',
+  value: 'description'
+}, {
+  label: 'None',
+  value: 'none'
+}];
+var orderbyOptions = [{
+  label: 'Title',
+  value: 'title'
+}, {
+  label: 'Date',
+  value: 'date'
+}, {
+  label: 'Menu Order',
+  value: 'menu_order'
+}, {
+  label: 'Random',
+  value: 'random'
+}, {
+  label: 'Membership Level',
+  value: 'membership_level'
+}];
+var orderOptions = [{
+  label: 'Ascending',
+  value: 'asc'
+}, {
+  label: 'Descending',
+  value: 'desc'
+}];
+var imageOptions = [{
+  label: 'Logo',
+  value: 'logo'
+}, {
+  label: 'Featured Image',
+  value: 'featured'
+}, {
+  label: 'None',
+  value: 'none'
 }];
 Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cdash-bd-blocks/business-directory', {
   title: 'Display Business Directory',
@@ -200,7 +245,7 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
       type: 'string',
       default: 'yes'
     },
-    parpage: {
+    perpage: {
       type: 'number',
       default: -1
     },
@@ -257,24 +302,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
         className = props.className;
     return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       className: props.className
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Disabled, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default.a, {
-      block: "cdash-bd-blocks/business-directory" //attributes={ {format, category, tags, level, text, single_link, perpage, orderby, order, image,status, image_size, alpha, logo_gallery, show_category_filter }}
-      ,
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default.a, {
+      block: "cdash-bd-blocks/business-directory",
       attributes: props.attributes
-    })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
-      key: "inspector"
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
-      title: __('Business Directory Display Options')
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
-      label: "Format",
-      value: props.attributes.format,
-      options: formatOptions,
-      onChange: function onChange(nextValue) {
-        props.setAttributes({
-          format: nextValue
-        });
-      }
-    })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    }), inspectorControls, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       className: "businesslist"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       className: "bus_directory"
@@ -310,6 +341,17 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
 
 /***/ }),
 
+/***/ "@wordpress/date":
+/*!***************************************!*\
+  !*** external {"this":["wp","date"]} ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["date"]; }());
+
+/***/ }),
+
 /***/ "@wordpress/element":
 /*!******************************************!*\
   !*** external {"this":["wp","element"]} ***!
@@ -318,6 +360,17 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["wp"]["element"]; }());
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!***************************************!*\
+  !*** external {"this":["wp","i18n"]} ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["i18n"]; }());
 
 /***/ }),
 
