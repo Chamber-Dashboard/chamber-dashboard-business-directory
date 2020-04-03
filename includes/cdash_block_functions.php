@@ -68,7 +68,7 @@ function cdash_block_category( $categories, $post ) {
                     'default'   => '',
                 ),
                 'image_size'    => array(
-                    'type'  => 'number',
+                    'type'  => 'string',
                     'default'   => '',
                 ),
                 'alpha'    => array(
@@ -90,11 +90,11 @@ function cdash_block_category( $categories, $post ) {
 
   function cdash_bus_directory_block_callback($attributes){
     extract( $attributes );
-    $shortcode_string = '[business_directory format="%s" category="%s" tags="%s" level="%s" text="%s" display="%s" single_link="%s" perpage="%s" orderby="%s" order="%s" image="%s" status="%s" image_size="%s" alpha="%s" logo_gallery="%s" show_category_filter="%s"]';
 
-    //return sprintf("Shortcode preview goes here.");
-    return sprintf("The shortcode preview should show here.");
+    $business_listings = cdash_business_directory_shortcode($attributes);
 
-    return sprintf( $shortcode_string, $format, $category, $tags, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status, $image_size, $alpha, $logo_gallery, $show_category_filter );
+    return $business_listings;
+    
+    //return sprintf( $shortcode_string, $format, $category, $tags, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status, $image_size, $alpha, $logo_gallery, $show_category_filter );
   }
 ?>
