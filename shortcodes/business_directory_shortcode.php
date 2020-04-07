@@ -25,7 +25,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '', // options: slug of any membership status
-			'image_size'	=> 'small', //options:small, medium, large, full_width
+			'image_size'	=> '', //options:small, medium, large, full_width
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
 			'show_category_filter' => 'no', //options: yes, no

@@ -17,8 +17,16 @@ function cdash_business_search_results_shortcode( $atts ) {
 	// Search results
 	if( $_GET ) {
 		// Get the search terms
-		$buscat = $_GET['buscat'];
-		$searchtext = $_GET['searchtext'];
+		if(isset($_GET['buscat'])){
+			$buscat = $_GET['buscat'];
+		}else{
+			$buscat = '';
+		}
+		if(isset($_GET['searchtext'])){
+			$searchtext = $_GET['searchtext'];
+		}else{
+			$searchtext = '';
+		}
 
 		// Set up a query with the search terms
         $options = get_option('cdash_directory_options');
@@ -49,8 +57,9 @@ function cdash_business_search_results_shortcode( $atts ) {
         $search_query = new WP_Query( $args );
 		if ( $search_query->have_posts() ) {
 			// Display the search results
-			$search_results .= "<div id='search-results' class='" . $format . "'>";
 			$search_results .= "<h2>" . __('Search Results', 'cdash') . "</h2>";
+			$search_results .= "<div id='search-results' class='" . $format . "'>";
+			//$search_results .= "<h2>" . __('Search Results', 'cdash') . "</h2>";
 			while ( $search_query->have_posts() ) : $search_query->the_post();
 				$search_results .= "<div class='search-result business'>";
 				$search_results .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
@@ -140,6 +149,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 				}
 				$search_results .= "</div><!-- .search-result -->";
 			endwhile;
+			$search_results .= "</div><!-- #search-results -->";
 			$total_pages = $search_query->max_num_pages;
 			if ($total_pages > 1){
 				$current_page = max( 1, get_query_var( 'paged' ) );
@@ -153,7 +163,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 			    ) );
 			    $search_results .= "</div>";
 			}
-			$search_results .= "</div><!-- #search-results -->";
+			//$search_results .= "</div><!-- #search-results -->";
 		//endif;
         }else{
             //$search_results = "<h2>Search Results</h2>";

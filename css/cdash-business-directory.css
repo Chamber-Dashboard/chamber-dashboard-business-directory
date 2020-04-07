@@ -27,6 +27,10 @@ width: auto; /* Prevent stretching of full-size images with height and width att
   height:auto;
 }
 
+#businesslist.logo_gallery img.logo{
+	max-width:100%;
+}
+
 #businesslist.full_width img.logo{
   max-width:100%;
   width:100%;
@@ -210,4 +214,8 @@ clear: both;
     display:block;
 	height:auto;
 	max-width:100%;
+}
+
+#businesslist.logo_gallery.grid2 .business .description a img.logo, #businesslist.logo_gallery.grid3 .business .description a img.logo, #businesslist.logo_gallery.grid4 .business .description a img.logo{
+	margin:0 auto;
 }
