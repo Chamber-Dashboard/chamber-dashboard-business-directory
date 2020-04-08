@@ -1,97 +1,24 @@
+/**
+ * Block dependencies
+ */
+import edit from './edit';
+
 import { registerBlockType } from '@wordpress/blocks';
-import { SelectControl } from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 //import { withState } from '@wordpress/compose';
 //import { setState } from '@wordpress/compose';
 const { withState, setState } = wp.compose;
-const {
-    RichText,
-    AlignmentToolbar,
-    BlockControls,
-    BlockAlignmentToolbar,
-    InspectorControls,
-    InnerBlocks,
-    withColors,
-    PanelColorSettings,
-    getColorClassName
-  } = wp.editor;
-
-  const {
-    Toolbar,
-    Button,
-    Tooltip,
-    PanelBody,
-    PanelRow,
-    FormToggle,
-    ToggleControl,
-    Disabled 
-} = wp.components;
-
-const inspectorControls = (
-    <InspectorControls key="inspector">
-        <PanelBody title={ __( 'Business Directory Display Options' )}>
-            <PanelRow>
-
-            <SelectControl
-                            label="Format"
-                            value={ format }
-                            options= { formatOptions }
-                            onChange={ ( value ) =>
-                                setAttributes( { format: value } )
-                            }
-                            /*onChange={ (nextValue) => {
-                                props.setAttributes({
-                                    format: nextValue
-                                });
-                            }}*/
-                        />
-            </PanelRow>
-            
-        </PanelBody>
-    </InspectorControls>
-);
-
-const formatOptions = [
-    { label: 'List', value: 'list' },
-    { label: 'Grid 2', value: 'grid2' },
-    { label: 'Grid 3', value: 'grid3' },
-    { label: 'Grid 4', value: 'grid4' },
-    { label: 'Responsive', value: 'responsive' },   
- ];
-
-const textOptions = [
-    { label: 'Excerpt', value: 'excerpt' },
-    { label: 'Description', value: 'description' },
-    { label: 'None', value: 'none' },
- ];
-
-const orderbyOptions = [
-    { label: 'Title', value: 'title' },
-    { label: 'Date', value: 'date' },
-    { label: 'Menu Order', value: 'menu_order' },
-    { label: 'Random', value: 'random' },
-    { label: 'Membership Level', value: 'membership_level' },
- ];
-
-const orderOptions = [
-    { label: 'Ascending', value: 'asc' },
-    { label: 'Descending', value: 'desc' },
-];
-
-const imageOptions = [
-    { label: 'Logo', value: 'logo' },
-    { label: 'Featured Image', value: 'featured' },
-    { label: 'None', value: 'none' },
-];
-
 
 registerBlockType( 'cdash-bd-blocks/business-directory', {
     title: 'Display Business Directory',
     icon: 'admin-home',
     category: 'cd-blocks',
     attributes: {
+        postLayout: {
+			type: 'string',
+			default: 'list',
+		},
         format: {
             type: 'string',
             default: 'list',
@@ -108,10 +35,18 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: '',
         },
+        displayPostContent:{
+            type:Boolean,
+            default: true,        
+        },
         text:{
             type: 'string',
             default: 'excerpt',
         },
+        singleLinkToggle: {
+            type: 'boolean',
+            default: true,
+        },
         single_link:{
             type: 'string',
             default: 'yes',
@@ -140,13 +75,25 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'number',
             default: '',
         },
+        alphaToggle:{
+            type: 'boolean',
+            default: false,
+        },
         alpha:{
             type: 'string',
             default: 'no',
         },
+        logoGalleryToggle:{
+            type: 'boolean',
+            default: false,
+        },
         logo_gallery:{
             type: 'string',
             default: 'no',
+        },
+        categoryFilterToggle:{
+            type: 'boolean',
+            default: false,
         },
         show_category_filter:{
             type: 'string',
@@ -154,25 +101,7 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         },
 
     },
-    edit: props => {
-        const {attributes: { format, category, tags, level, text, single_link, perpage, orderby, order, image,status, image_size, alpha, logo_gallery, show_category_filter }, className } = props;
-		return [
-            <div className={ props.className }>
-                <ServerSideRender
-                    block="cdash-bd-blocks/business-directory"
-                    attributes = {props.attributes}
-                />
-                { inspectorControls }
-                <div className="businesslist">
-                    <div className="bus_directory">CD Business Directory
-                        <p>Format: {format}</p>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-        ];
-	},
+    edit: edit,
     save() {
         // Rendering in PHP
         return null;
