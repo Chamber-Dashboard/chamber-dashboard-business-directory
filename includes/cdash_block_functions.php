@@ -19,6 +19,10 @@ function cdash_block_category( $categories, $post ) {
         'cdash-bd-blocks/business-directory', [
             'render_callback' => 'cdash_bus_directory_block_callback',
             'attributes'  => array(
+                'postLayout'    => array(
+                    'type'  => 'string',
+                    'default'   => 'list',
+                ),
                 'format'    => array(
                     'type'  => 'string',
                     'default'   => 'list',
@@ -35,6 +39,10 @@ function cdash_block_category( $categories, $post ) {
                     'type'  => 'string',
                     'default'   => '',
                 ),
+                'displayPostContent'=> array(
+                    'type'  => 'boolean',
+                    'default'   => 'true',
+                ),
                 'text'    => array(
                     'type'  => 'string',
                     'default'   => 'excerpt',
@@ -42,6 +50,10 @@ function cdash_block_category( $categories, $post ) {
                 'display'    => array(
                     'type'  => 'string',
                     'default'   => '',
+                ),
+                'singleLinkToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'true',
                 ),
                 'single_link'    => array(
                     'type'  => 'string',
@@ -71,13 +83,25 @@ function cdash_block_category( $categories, $post ) {
                     'type'  => 'string',
                     'default'   => '',
                 ),
+                'alphaToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
                 'alpha'    => array(
                     'type'  => 'string',
                     'default'   => 'no',
                 ),
+                'logoGalleryToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
                 'logo_gallery'    => array(
                     'type'  => 'string',
                     'default'   => 'no',
+                ),
+                'categoryFilterToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
                 ),
                 'show_category_filter'    => array(
                     'type'  => 'string',
