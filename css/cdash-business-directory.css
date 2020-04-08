@@ -218,4 +218,5 @@ clear: both;
 
 #businesslist.logo_gallery.grid2 .business .description a img.logo, #businesslist.logo_gallery.grid3 .business .description a img.logo, #businesslist.logo_gallery.grid4 .business .description a img.logo{
 	margin:0 auto;
+	display:block;
 }
