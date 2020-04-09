@@ -1,7 +1,7 @@
 import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
-import { withSelect } from '@wordpress/data';
+import { withSelect, widthDispatch } from '@wordpress/data';
 
 const {
     RichText,
@@ -65,8 +65,9 @@ const imageSizeOptions = [
     { label: 'Large', value: 'large' },
     { label: 'Full Width', value: 'full_width' },
 ];
-
-const postSelections = [];
+const postSelections = [
+    { label: 'Select a Post', value: '0' }
+];
 
 /*const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
     postSelections.push({label: "Select Categories", value: 0});
@@ -78,8 +79,28 @@ const postSelections = [];
 
 const edit = props => {
     const {attributes: {postLayout, format, category, tags, level, displayPostContent, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter }, className, setAttributes } = props;
+    
+    /*const posts =  withSelect( ( select, props ) => {
+        return {
+          posts: select( 'core' ).getEntityRecords( 'postType', 'post'  ).then(posts => {
+            jQuery.each( posts, function( key, val ) {
+                postSelections.push({label: val.title.rendered, value: val.id});
+            });
+          })
+        }
+    });*/
+
+    const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
+        jQuery.each( posts, function( key, val ) {
+            //postSelections.push({label: val.title.rendered, value: val.id});
+            postSelections.push({label: val.title, value: val.id});
+        });
+    });
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
+    };
+    const setcategories = category => {
+        props.setAttributes( { category } );
     };
     const setSingleLink = singleLinkToggle =>{
         props.setAttributes({singleLinkToggle})
@@ -101,6 +122,7 @@ const edit = props => {
         !! categoryFilterToggle ? __( props.setAttributes({show_category_filter: 'yes'}) ) : __( props.setAttributes({show_category_filter: 'no'}) )
         
     };
+
     const inspectorControls = (
         <InspectorControls key="inspector">
             <PanelBody title={ __( 'Business Directory Options' )}>
@@ -120,6 +142,7 @@ const edit = props => {
                         label = "Limit by Categories"
                         value = {category}
                         options = {postSelections}
+                        onChange = {setcategories}
                     />
                 </PanelRow>
                 <PanelRow>
