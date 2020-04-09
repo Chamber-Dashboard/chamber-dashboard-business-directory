@@ -203,7 +203,10 @@ var imageSizeOptions = [{
   label: 'Full Width',
   value: 'full_width'
 }];
-var postSelections = [];
+var postSelections = [{
+  label: 'Select a Post',
+  value: '0'
+}];
 /*const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
     postSelections.push({label: "Select Categories", value: 0});
     $.each( posts, function( key, val ) {
@@ -237,10 +240,37 @@ var edit = function edit(props) {
       show_category_filter = _props$attributes.show_category_filter,
       className = props.className,
       setAttributes = props.setAttributes;
+  /*const posts =  withSelect( ( select, props ) => {
+      return {
+        posts: select( 'core' ).getEntityRecords( 'postType', 'post'  ).then(posts => {
+          jQuery.each( posts, function( key, val ) {
+              postSelections.push({label: val.title.rendered, value: val.id});
+          });
+        })
+      }
+  });*/
+
+  var allPosts = wp.apiFetch({
+    path: "/wp/v2/taxonomies/business_category"
+  }).then(function (posts) {
+    jQuery.each(posts, function (key, val) {
+      //postSelections.push({label: val.title.rendered, value: val.id});
+      postSelections.push({
+        label: val.title,
+        value: val.id
+      });
+    });
+  });
 
   var setDirectoryLayout = function setDirectoryLayout(format) {
     props.setAttributes({
       format: format
+    });
+  };
+
+  var setcategories = function setcategories(category) {
+    props.setAttributes({
+      category: category
     });
   };
 
@@ -304,7 +334,8 @@ var edit = function edit(props) {
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     label: "Limit by Categories",
     value: category,
-    options: postSelections
+    options: postSelections,
+    onChange: setcategories
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     label: "Post Content",
     value: text,
