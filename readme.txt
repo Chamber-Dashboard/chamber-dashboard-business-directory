@@ -108,6 +108,7 @@ Several people have contributed to the development of Chamber Dashboard:
 == Changelog ==
 = 3.2.2 =
 * Fixed the display of logos when displaying a logo gallery 
+* Fixed spacing on directory search results page
 
 = 3.2.1 =
 * Fixed a couple of issues with the single business listing page
