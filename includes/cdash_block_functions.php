@@ -27,6 +27,13 @@ function cdash_block_category( $categories, $post ) {
                     'type'  => 'string',
                     'default'   => 'list',
                 ),
+                'categoryArray'    => array(
+                    'type'  => 'array',
+                    'default'   => [],
+                    'items'   => [
+                        'type' => 'string',
+                    ],
+                ),
                 'category'    => array(
                     'type'  => 'string',
                     'default'   => '',
@@ -34,6 +41,13 @@ function cdash_block_category( $categories, $post ) {
                 'tags'    => array(
                     'type'  => 'string',
                     'default'   => '',
+                ),
+                'membershipLevelArray'    => array(
+                    'type'  => 'array',
+                    'default'   => [],
+                    'items'   => [
+                        'type' => 'string',
+                    ],
                 ),
                 'level'    => array(
                     'type'  => 'string',
@@ -107,18 +121,46 @@ function cdash_block_category( $categories, $post ) {
                     'type'  => 'string',
                     'default'   => 'no',
                 ),
+                'displayOptions'    => array(
+                    'type'  => 'array',
+                    'default'   => [],
+                    'items'   => [
+                        'type' => 'string',
+                    ],
+                ),
+                'addressToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
+                'urlToggle'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
             ),
         ]
     );
   }
 
   function cdash_bus_directory_block_callback($attributes){
-    extract( $attributes );
+    if(isset($attributes['categoryArray']) && '' != $attributes['categoryArray']){
+		$attributes['category'] = $attributes['categoryArray'];
+    }
+    
+    if(isset($attributes['membershipLevelArray']) && '' != $attributes['membershipLevelArray']){
+		$attributes['level'] = $attributes['membershipLevelArray'];
+    }
 
+    if(isset($attributes['displayOptions']) && '' != $attributes['displayOptions']){
+		$attributes['display'] = implode(', ', $attributes['displayOptions']);
+    }
+
+    //cd_debug("Display Options Array: " . print_r($attributes['displayOptions'], true));
+
+    //cd_debug("Display Options: ". $attributes['display']);
+    
     $business_listings = cdash_business_directory_shortcode($attributes);
 
     return $business_listings;
-    
-    //return sprintf( $shortcode_string, $format, $category, $tags, $level, $text, $display, $single_link, $perpage, $orderby, $order, $image, $status, $image_size, $alpha, $logo_gallery, $show_category_filter );
+
   }
 ?>

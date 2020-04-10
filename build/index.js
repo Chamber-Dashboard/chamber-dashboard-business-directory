@@ -203,24 +203,43 @@ var imageSizeOptions = [{
   label: 'Full Width',
   value: 'full_width'
 }];
-var postSelections = [{
-  label: 'Select a Post',
-  value: '0'
+var categoryOptions = [{
+  label: 'Select one or more categories',
+  value: null
 }];
-/*const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
-    postSelections.push({label: "Select Categories", value: 0});
-    $.each( posts, function( key, val ) {
-        postSelections.push({label: val.title.rendered, value: val.id});
+wp.apiFetch({
+  path: "/wp/v2/business_category?per_page=100"
+}).then(function (posts) {
+  jQuery.each(posts, function (key, val) {
+    categoryOptions.push({
+      label: val.name,
+      value: val.slug
     });
-    return postSelections;
-});*/
+  });
+});
+var membershipLevelOptions = [{
+  label: 'Select one or more Membersihp Levels',
+  value: null
+}];
+wp.apiFetch({
+  path: "/wp/v2/membership_level?per_page=100"
+}).then(function (posts) {
+  jQuery.each(posts, function (key, val) {
+    membershipLevelOptions.push({
+      label: val.name,
+      value: val.slug
+    });
+  });
+});
 
 var edit = function edit(props) {
   var _props$attributes = props.attributes,
       postLayout = _props$attributes.postLayout,
       format = _props$attributes.format,
+      categoryArray = _props$attributes.categoryArray,
       category = _props$attributes.category,
       tags = _props$attributes.tags,
+      membershipLevelArray = _props$attributes.membershipLevelArray,
       level = _props$attributes.level,
       displayPostContent = _props$attributes.displayPostContent,
       text = _props$attributes.text,
@@ -238,29 +257,23 @@ var edit = function edit(props) {
       logo_gallery = _props$attributes.logo_gallery,
       categoryFilterToggle = _props$attributes.categoryFilterToggle,
       show_category_filter = _props$attributes.show_category_filter,
+      displayOptions = _props$attributes.displayOptions,
+      addressToggle = _props$attributes.addressToggle,
+      urlToggle = _props$attributes.urlToggle,
       className = props.className,
-      setAttributes = props.setAttributes;
-  /*const posts =  withSelect( ( select, props ) => {
-      return {
-        posts: select( 'core' ).getEntityRecords( 'postType', 'post'  ).then(posts => {
-          jQuery.each( posts, function( key, val ) {
-              postSelections.push({label: val.title.rendered, value: val.id});
-          });
-        })
-      }
-  });*/
+      setAttributes = props.setAttributes; //const addListItem = ( newListItem ) => setAttributes( { list: [ ...list, newListItem ] } );
 
-  var allPosts = wp.apiFetch({
-    path: "/wp/v2/taxonomies/business_category"
-  }).then(function (posts) {
-    jQuery.each(posts, function (key, val) {
-      //postSelections.push({label: val.title.rendered, value: val.id});
-      postSelections.push({
-        label: val.title,
-        value: val.id
-      });
+  var addDisplayOptions = function addDisplayOptions(value) {
+    displayOptions.push({
+      displayOptions: [displayOptions, value]
+    }); //props.setAttributes({displayOptions: [ value ]})
+  };
+
+  var removeDisplayOptions = function removeDisplayOptions(value) {
+    displayOptions.pop({
+      displayOptions: [displayOptions, value]
     });
-  });
+  };
 
   var setDirectoryLayout = function setDirectoryLayout(format) {
     props.setAttributes({
@@ -268,9 +281,15 @@ var edit = function edit(props) {
     });
   };
 
-  var setcategories = function setcategories(category) {
+  var setCategories = function setCategories(categoryArray) {
     props.setAttributes({
-      category: category
+      categoryArray: categoryArray
+    });
+  };
+
+  var setMembershipLevel = function setMembershipLevel(membershipLevelArray) {
+    props.setAttributes({
+      membershipLevelArray: membershipLevelArray
     });
   };
 
@@ -318,6 +337,28 @@ var edit = function edit(props) {
     }));
   };
 
+  var setAddressToggle = function setAddressToggle(addressToggle) {
+    var index = ''; //index = displayOptions.indexOf('address');
+
+    props.setAttributes({
+      addressToggle: addressToggle
+    });
+    !!addressToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])(addDisplayOptions('address') //props.setAttributes({displayOptions: [ 'address' ]})
+    //displayOptions.push({displayOptions: [displayOptions, 'address']})
+    ) : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])( //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
+    //displayOptions.pop({displayOptions: [displayOptions, 'address']})
+    removeDisplayOptions('address'));
+  };
+
+  var setUrlToggle = function setUrlToggle(urlToggle) {
+    props.setAttributes({
+      urlToggle: urlToggle
+    });
+    !!urlToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])(addDisplayOptions('url') //props.setAttributes({displayOptions: ['url']}) 
+    ) : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])( //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
+    removeDisplayOptions('url'));
+  };
+
   var inspectorControls = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
     key: "inspector"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
@@ -332,10 +373,17 @@ var edit = function edit(props) {
     ,
     onChange: setDirectoryLayout
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    multiple: true,
     label: "Limit by Categories",
-    value: category,
-    options: postSelections,
-    onChange: setcategories
+    value: categoryArray,
+    options: categoryOptions,
+    onChange: setCategories
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    multiple: true,
+    label: "Limit by Membership Level",
+    value: membershipLevelArray,
+    options: membershipLevelOptions,
+    onChange: setMembershipLevel
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     label: "Post Content",
     value: text,
@@ -419,7 +467,20 @@ var edit = function edit(props) {
     help: !!categoryFilterToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the filter by category option') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the filter by category option.')
   }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
     title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Options')
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null)));
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Address'),
+    checked: addressToggle,
+    onChange: setAddressToggle,
+    help: !!addressToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the address') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the address.')
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Url'),
+    checked: urlToggle
+    /*onChange={ ( value ) =>
+        setAttributes( { single_link: value } )
+    }*/
+    ,
+    onChange: setUrlToggle
+  }))));
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: props.className
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -429,7 +490,7 @@ var edit = function edit(props) {
     className: "businesslist"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "bus_directory"
-  }, "CD Business Directory", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Format: ", format), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Text: ", text))))];
+  }, "CD Business Directory")))];
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (edit);
@@ -477,6 +538,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
       type: 'string',
       default: 'list'
     },
+    categoryArray: {
+      type: 'array',
+      default: []
+    },
     category: {
       type: 'string',
       default: ''
@@ -484,6 +549,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
     tags: {
       type: 'string',
       default: ''
+    },
+    membershipLevelArray: {
+      type: 'array',
+      default: []
     },
     level: {
       type: 'string',
@@ -552,6 +621,18 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
     show_category_filter: {
       type: 'string',
       default: 'no'
+    },
+    dispayOptions: {
+      type: 'array',
+      default: []
+    },
+    addressToggle: {
+      type: 'boolean',
+      default: false
+    },
+    urlToggle: {
+      type: 'boolean',
+      default: false
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__["default"],

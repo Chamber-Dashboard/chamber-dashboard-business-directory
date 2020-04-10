@@ -23,6 +23,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'list',
         },
+        categoryArray:{
+            type: 'array',
+            default: [],
+        },
         category:{
             type: 'string',
             default: '',
@@ -31,6 +35,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: '',
         },
+        membershipLevelArray:{
+            type: 'array',
+            default: [],
+        },
         level:{
             type: 'string',
             default: '',
@@ -98,6 +106,18 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         show_category_filter:{
             type: 'string',
             default: 'no',
+        },
+        dispayOptions: {
+            type: 'array',
+            default: [],
+        },
+        addressToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        urlToggle:{
+            type: 'boolean',
+            default: false,
         },
 
     },

@@ -65,62 +65,101 @@ const imageSizeOptions = [
     { label: 'Large', value: 'large' },
     { label: 'Full Width', value: 'full_width' },
 ];
-const postSelections = [
-    { label: 'Select a Post', value: '0' }
+const categoryOptions = [
+    { label: 'Select one or more categories', value: null }
 ];
 
-/*const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
-    postSelections.push({label: "Select Categories", value: 0});
-    $.each( posts, function( key, val ) {
-        postSelections.push({label: val.title.rendered, value: val.id});
+wp.apiFetch({path: "/wp/v2/business_category?per_page=100"}).then(posts => {
+    jQuery.each( posts, function( key, val ) {
+        categoryOptions.push({label: val.name, value: val.slug});
     });
-    return postSelections;
-});*/
+});
+
+const membershipLevelOptions = [
+    { label: 'Select one or more Membersihp Levels', value: null }
+];
+
+wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
+    jQuery.each( posts, function( key, val ) {
+        membershipLevelOptions.push({label: val.name, value: val.slug});
+    });
+});
 
 const edit = props => {
-    const {attributes: {postLayout, format, category, tags, level, displayPostContent, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter }, className, setAttributes } = props;
-    
-    /*const posts =  withSelect( ( select, props ) => {
-        return {
-          posts: select( 'core' ).getEntityRecords( 'postType', 'post'  ).then(posts => {
-            jQuery.each( posts, function( key, val ) {
-                postSelections.push({label: val.title.rendered, value: val.id});
-            });
-          })
-        }
-    });*/
+    const {attributes: {postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayOptions, addressToggle, urlToggle }, className, setAttributes } = props;
 
-    const allPosts = wp.apiFetch({path: "/wp/v2/taxonomies/business_category"}).then(posts => {
-        jQuery.each( posts, function( key, val ) {
-            //postSelections.push({label: val.title.rendered, value: val.id});
-            postSelections.push({label: val.title, value: val.id});
-        });
-    });
+    //const addListItem = ( newListItem ) => setAttributes( { list: [ ...list, newListItem ] } );
+    const addDisplayOptions = (value) => {
+        displayOptions.push({displayOptions: [displayOptions, value]})
+        //props.setAttributes({displayOptions: [ value ]})
+    };
+    
+    const removeDisplayOptions = (value) => {
+        displayOptions.pop({displayOptions: [displayOptions, value]})
+    };
+    
+
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
     };
-    const setcategories = category => {
-        props.setAttributes( { category } );
+
+    const setCategories = categoryArray => {
+        props.setAttributes( { categoryArray} );
     };
+
+    const setMembershipLevel = membershipLevelArray => {
+        props.setAttributes( { membershipLevelArray} );
+    };
+
     const setSingleLink = singleLinkToggle =>{
         props.setAttributes({singleLinkToggle})
-        !! singleLinkToggle ? __( props.setAttributes({single_link: 'yes'}) ) : __( props.setAttributes({single_link: 'no'}) )
+        !! singleLinkToggle ? __( props.setAttributes({single_link: 'yes'}) ) : __( props.setAttributes({single_link: 'no'}) );
         
     };
     const setAlpha = alphaToggle =>{
         props.setAttributes({alphaToggle})
-        !! alphaToggle ? __( props.setAttributes({alpha: 'yes'}) ) : __( props.setAttributes({alpha: 'no'}) )
+        !! alphaToggle ? __( props.setAttributes({alpha: 'yes'}) ) : __( props.setAttributes({alpha: 'no'}) );
         
     };
     const setLogoGallery = logoGalleryToggle =>{
         props.setAttributes({logoGalleryToggle})
-        !! logoGalleryToggle ? __( props.setAttributes({logo_gallery: 'yes'}) ) : __( props.setAttributes({logo_gallery: 'no'}) )
+        !! logoGalleryToggle ? __( props.setAttributes({logo_gallery: 'yes'}) ) : __( props.setAttributes({logo_gallery: 'no'}) );
         
     };
     const setShowCategoryFilter = categoryFilterToggle =>{
         props.setAttributes({categoryFilterToggle})
-        !! categoryFilterToggle ? __( props.setAttributes({show_category_filter: 'yes'}) ) : __( props.setAttributes({show_category_filter: 'no'}) )
+        !! categoryFilterToggle ? __( props.setAttributes({show_category_filter: 'yes'}) ) : __( props.setAttributes({show_category_filter: 'no'}) );
         
+    };
+
+    const setAddressToggle = addressToggle =>{
+        let index = '';
+        //index = displayOptions.indexOf('address');
+        props.setAttributes({addressToggle})
+        !! addressToggle ? __(
+            addDisplayOptions('address')
+            //props.setAttributes({displayOptions: [ 'address' ]})
+            //displayOptions.push({displayOptions: [displayOptions, 'address']})
+
+        ) 
+        : __( 
+                //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
+                //displayOptions.pop({displayOptions: [displayOptions, 'address']})
+                removeDisplayOptions('address')
+            );
+    };
+
+    const setUrlToggle = urlToggle =>{
+        props.setAttributes({urlToggle})
+        !! urlToggle ? __( 
+            addDisplayOptions('url')
+            //props.setAttributes({displayOptions: ['url']}) 
+            ) 
+            : 
+            __( 
+                //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
+                removeDisplayOptions('url')
+            );
     };
 
     const inspectorControls = (
@@ -139,10 +178,20 @@ const edit = props => {
                 </PanelRow>
                 <PanelRow>
                     <SelectControl 
+                        multiple
                         label = "Limit by Categories"
-                        value = {category}
-                        options = {postSelections}
-                        onChange = {setcategories}
+                        value = {categoryArray}
+                        options = {categoryOptions}
+                        onChange = {setCategories}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl 
+                        multiple
+                        label = "Limit by Membership Level"
+                        value = {membershipLevelArray}
+                        options = {membershipLevelOptions}
+                        onChange = {setMembershipLevel}
                     />
                 </PanelRow>
                 <PanelRow>
@@ -242,8 +291,23 @@ const edit = props => {
             </PanelBody>
             <PanelBody title={ __( 'Display Options' )}>
                 <PanelRow>
-                    
-                </PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Address' ) }
+                            checked={ addressToggle }
+                            onChange = {setAddressToggle}
+                            help={ !! addressToggle ? __( 'Show the address' ) : __( 'Hide the address.' ) }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Url' ) }
+                            checked={ urlToggle }
+                            /*onChange={ ( value ) =>
+                                setAttributes( { single_link: value } )
+                            }*/
+                            onChange = {setUrlToggle}
+                        />
+                    </PanelRow>
             </PanelBody>
         </InspectorControls>
     );
@@ -256,8 +320,6 @@ const edit = props => {
             { inspectorControls }
             <div className="businesslist">
                 <div className="bus_directory">CD Business Directory
-                    <p>Format: {format}</p>
-                    <p>Text: {text}</p>
                     
                 </div>
             </div>
