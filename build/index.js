@@ -234,6 +234,7 @@ wp.apiFetch({
 
 var edit = function edit(props) {
   var _props$attributes = props.attributes,
+      cd_block = _props$attributes.cd_block,
       postLayout = _props$attributes.postLayout,
       format = _props$attributes.format,
       categoryArray = _props$attributes.categoryArray,
@@ -242,6 +243,7 @@ var edit = function edit(props) {
       membershipLevelArray = _props$attributes.membershipLevelArray,
       level = _props$attributes.level,
       displayPostContent = _props$attributes.displayPostContent,
+      display = _props$attributes.display,
       text = _props$attributes.text,
       singleLinkToggle = _props$attributes.singleLinkToggle,
       single_link = _props$attributes.single_link,
@@ -257,23 +259,19 @@ var edit = function edit(props) {
       logo_gallery = _props$attributes.logo_gallery,
       categoryFilterToggle = _props$attributes.categoryFilterToggle,
       show_category_filter = _props$attributes.show_category_filter,
-      displayOptions = _props$attributes.displayOptions,
-      addressToggle = _props$attributes.addressToggle,
-      urlToggle = _props$attributes.urlToggle,
+      displayAddressToggle = _props$attributes.displayAddressToggle,
+      displayUrlToggle = _props$attributes.displayUrlToggle,
+      displayPhoneToggle = _props$attributes.displayPhoneToggle,
+      displayEmailToggle = _props$attributes.displayEmailToggle,
+      displayLocationNameToggle = _props$attributes.displayLocationNameToggle,
+      displayCategoryToggle = _props$attributes.displayCategoryToggle,
+      displayLevelToggle = _props$attributes.displayLevelToggle,
+      displaySocialMediaLinkToggle = _props$attributes.displaySocialMediaLinkToggle,
+      displaySocialMediaIconsToggle = _props$attributes.displaySocialMediaIconsToggle,
+      displayLocationToggle = _props$attributes.displayLocationToggle,
+      displayHoursToggle = _props$attributes.displayHoursToggle,
       className = props.className,
-      setAttributes = props.setAttributes; //const addListItem = ( newListItem ) => setAttributes( { list: [ ...list, newListItem ] } );
-
-  var addDisplayOptions = function addDisplayOptions(value) {
-    displayOptions.push({
-      displayOptions: [displayOptions, value]
-    }); //props.setAttributes({displayOptions: [ value ]})
-  };
-
-  var removeDisplayOptions = function removeDisplayOptions(value) {
-    displayOptions.pop({
-      displayOptions: [displayOptions, value]
-    });
-  };
+      setAttributes = props.setAttributes;
 
   var setDirectoryLayout = function setDirectoryLayout(format) {
     props.setAttributes({
@@ -335,28 +333,6 @@ var edit = function edit(props) {
     })) : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])(props.setAttributes({
       show_category_filter: 'no'
     }));
-  };
-
-  var setAddressToggle = function setAddressToggle(addressToggle) {
-    var index = ''; //index = displayOptions.indexOf('address');
-
-    props.setAttributes({
-      addressToggle: addressToggle
-    });
-    !!addressToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])(addDisplayOptions('address') //props.setAttributes({displayOptions: [ 'address' ]})
-    //displayOptions.push({displayOptions: [displayOptions, 'address']})
-    ) : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])( //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
-    //displayOptions.pop({displayOptions: [displayOptions, 'address']})
-    removeDisplayOptions('address'));
-  };
-
-  var setUrlToggle = function setUrlToggle(urlToggle) {
-    props.setAttributes({
-      urlToggle: urlToggle
-    });
-    !!urlToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])(addDisplayOptions('url') //props.setAttributes({displayOptions: ['url']}) 
-    ) : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])( //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
-    removeDisplayOptions('url'));
   };
 
   var inspectorControls = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
@@ -469,17 +445,94 @@ var edit = function edit(props) {
     title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Options')
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
     label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Address'),
-    checked: addressToggle,
-    onChange: setAddressToggle,
-    help: !!addressToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the address') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the address.')
+    checked: displayAddressToggle //onChange = {setDisplayAddressToggle}
+    ,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayAddressToggle: nextValue
+      });
+    },
+    help: !!displayAddressToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the address') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the address.')
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
     label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Url'),
-    checked: urlToggle
-    /*onChange={ ( value ) =>
-        setAttributes( { single_link: value } )
-    }*/
-    ,
-    onChange: setUrlToggle
+    checked: displayUrlToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayUrlToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Phone'),
+    checked: displayPhoneToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayPhoneToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Email'),
+    checked: displayEmailToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayEmailToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Location'),
+    checked: displayLocationToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayLocationToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Location Name'),
+    checked: displayLocationNameToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayLocationNameToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Categories'),
+    checked: displayCategoryToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayCategoryToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Membersihp Level'),
+    checked: displayLevelToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayLevelToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Social Media Links'),
+    checked: displaySocialMediaLinkToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displaySocialMediaLinkToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Social Media Icons'),
+    checked: displaySocialMediaIconsToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displaySocialMediaIconsToggle: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Hours'),
+    checked: displayHoursToggle,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        displayHoursToggle: nextValue
+      });
+    }
   }))));
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: props.className
@@ -490,7 +543,7 @@ var edit = function edit(props) {
     className: "businesslist"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "bus_directory"
-  }, "CD Business Directory")))];
+  }, "CD Business Directory", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Display: ", display))))];
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (edit);
@@ -530,6 +583,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
   icon: 'admin-home',
   category: 'cd-blocks',
   attributes: {
+    cd_block: {
+      type: 'string',
+      default: 'yes'
+    },
     postLayout: {
       type: 'string',
       default: 'list'
@@ -561,6 +618,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
     displayPostContent: {
       type: Boolean,
       default: true
+    },
+    display: {
+      type: 'string',
+      default: ''
     },
     text: {
       type: 'string',
@@ -622,15 +683,47 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
       type: 'string',
       default: 'no'
     },
-    dispayOptions: {
-      type: 'array',
-      default: []
-    },
-    addressToggle: {
+    displayAddressToggle: {
       type: 'boolean',
       default: false
     },
-    urlToggle: {
+    displayUrlToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayPhoneToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayEmailToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayLocationNameToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayCategoryToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayLevelToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displaySocialMediaLinkToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displaySocialMediaIconsToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayLocationToggle: {
+      type: 'boolean',
+      default: false
+    },
+    displayHoursToggle: {
       type: 'boolean',
       default: false
     }

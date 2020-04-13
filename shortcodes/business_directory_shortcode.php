@@ -29,6 +29,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
 			'show_category_filter' => 'no', //options: yes, no
+			'cd_block' => 'no'
 		), $atts )
 	);
 
@@ -57,13 +58,21 @@ function cdash_business_directory_shortcode( $atts ) {
 	if($show_category_filter == 'yes'){
 		cdash_frontend_scripts();
 	}
-
+	//cd_debug("Is this coming from the block? ". $cd_block);
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
-  		$displayopts = explode( ", ", $display);
+		//cd_debug("Display is not null");
+		if($cd_block == "yes"){
+			$displayopts = explode( ",", $display);
+		}else if($cd_block == "no"){
+			$displayopts = explode( ", ", $display);
+		}
   	}else{
+		//cd_debug("Display is null");
 		$displayopts = '';
 	}
+	//cd_debug("Display from the shortcode function: " . $display);
+	//cd_debug("Display Opts :" . print_r($displayopts, true));
 	if(is_front_page()){
 		$paged = (int)get_query_var('page');
 	}else{

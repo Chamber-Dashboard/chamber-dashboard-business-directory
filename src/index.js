@@ -15,6 +15,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
     icon: 'admin-home',
     category: 'cd-blocks',
     attributes: {
+        cd_block:{
+            type: 'string',
+            default: 'yes',
+        },
         postLayout: {
 			type: 'string',
 			default: 'list',
@@ -47,7 +51,11 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type:Boolean,
             default: true,        
         },
-        text:{
+        display:{
+            type: 'string',
+            default: '',
+        },
+        text:{
             type: 'string',
             default: 'excerpt',
         },
@@ -107,19 +115,50 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'no',
         },
-        dispayOptions: {
-            type: 'array',
-            default: [],
-        },
-        addressToggle:{
+        displayAddressToggle:{
             type: 'boolean',
             default: false,
         },
-        urlToggle:{
+        displayUrlToggle:{
             type: 'boolean',
             default: false,
         },
-
+        displayPhoneToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayEmailToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayLocationNameToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayCategoryToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayLevelToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displaySocialMediaLinkToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displaySocialMediaIconsToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayLocationToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        displayHoursToggle:{
+            type: 'boolean',
+            default: false,
+        },
     },
     edit: edit,
     save() {

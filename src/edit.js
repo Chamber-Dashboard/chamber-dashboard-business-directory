@@ -86,18 +86,7 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
 });
 
 const edit = props => {
-    const {attributes: {postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayOptions, addressToggle, urlToggle }, className, setAttributes } = props;
-
-    //const addListItem = ( newListItem ) => setAttributes( { list: [ ...list, newListItem ] } );
-    const addDisplayOptions = (value) => {
-        displayOptions.push({displayOptions: [displayOptions, value]})
-        //props.setAttributes({displayOptions: [ value ]})
-    };
-    
-    const removeDisplayOptions = (value) => {
-        displayOptions.pop({displayOptions: [displayOptions, value]})
-    };
-    
+    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaLinkToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle }, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -130,36 +119,6 @@ const edit = props => {
         props.setAttributes({categoryFilterToggle})
         !! categoryFilterToggle ? __( props.setAttributes({show_category_filter: 'yes'}) ) : __( props.setAttributes({show_category_filter: 'no'}) );
         
-    };
-
-    const setAddressToggle = addressToggle =>{
-        let index = '';
-        //index = displayOptions.indexOf('address');
-        props.setAttributes({addressToggle})
-        !! addressToggle ? __(
-            addDisplayOptions('address')
-            //props.setAttributes({displayOptions: [ 'address' ]})
-            //displayOptions.push({displayOptions: [displayOptions, 'address']})
-
-        ) 
-        : __( 
-                //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
-                //displayOptions.pop({displayOptions: [displayOptions, 'address']})
-                removeDisplayOptions('address')
-            );
-    };
-
-    const setUrlToggle = urlToggle =>{
-        props.setAttributes({urlToggle})
-        !! urlToggle ? __( 
-            addDisplayOptions('url')
-            //props.setAttributes({displayOptions: ['url']}) 
-            ) 
-            : 
-            __( 
-                //props.setAttributes({displayOptions: [ displayOptions, '' ]}) 
-                removeDisplayOptions('url')
-            );
     };
 
     const inspectorControls = (
@@ -293,19 +252,102 @@ const edit = props => {
                 <PanelRow>
                         <ToggleControl
                             label={ __( 'Display Address' ) }
-                            checked={ addressToggle }
-                            onChange = {setAddressToggle}
-                            help={ !! addressToggle ? __( 'Show the address' ) : __( 'Hide the address.' ) }
+                            checked={ displayAddressToggle }
+                            //onChange = {setDisplayAddressToggle}
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayAddressToggle:  nextValue } )
+                            }
+                            help={ !! displayAddressToggle ? __( 'Show the address' ) : __( 'Hide the address.' ) }
                         />
                     </PanelRow>
                     <PanelRow>
                         <ToggleControl
                             label={ __( 'Display Url' ) }
-                            checked={ urlToggle }
-                            /*onChange={ ( value ) =>
-                                setAttributes( { single_link: value } )
-                            }*/
-                            onChange = {setUrlToggle}
+                            checked={ displayUrlToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayUrlToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Phone' ) }
+                            checked={ displayPhoneToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayPhoneToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Email' ) }
+                            checked={ displayEmailToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayEmailToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Location' ) }
+                            checked={ displayLocationToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayLocationToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Location Name' ) }
+                            checked={ displayLocationNameToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayLocationNameToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Categories' ) }
+                            checked={ displayCategoryToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayCategoryToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Membersihp Level' ) }
+                            checked={ displayLevelToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayLevelToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Social Media Links' ) }
+                            checked={ displaySocialMediaLinkToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displaySocialMediaLinkToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Social Media Icons' ) }
+                            checked={ displaySocialMediaIconsToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displaySocialMediaIconsToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Hours' ) }
+                            checked={ displayHoursToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayHoursToggle:  nextValue } )
+                            }
                         />
                     </PanelRow>
             </PanelBody>
@@ -320,7 +362,7 @@ const edit = props => {
             { inspectorControls }
             <div className="businesslist">
                 <div className="bus_directory">CD Business Directory
-                    
+                    <p>Display: {display}</p>
                 </div>
             </div>
         </div>
