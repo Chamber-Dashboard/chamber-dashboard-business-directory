@@ -193,6 +193,10 @@ clear: both;
   display:none;
 }
 
+#cdash_select_bus_category{
+	margin-top:50px;
+}
+
 /*Logo Gallery Responsive Styles*/
 #businesslist.responsive.logo_gallery{
     display:flex;

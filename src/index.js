@@ -83,6 +83,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'logo',
         },
+        membershipStatusArray:{
+            type: 'array',
+            default: [],
+        },
         status:{
             type: 'string',
             default: '',

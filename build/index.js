@@ -130,7 +130,9 @@ var _wp$components = wp.components,
     ToggleControl = _wp$components.ToggleControl,
     ToolbarGroup = _wp$components.ToolbarGroup,
     Disabled = _wp$components.Disabled,
-    RadioControl = _wp$components.RadioControl;
+    RadioControl = _wp$components.RadioControl,
+    RangeControl = _wp$components.RangeControl;
+var withState = wp.compose.withState;
 var formatOptions = [{
   label: 'List',
   value: 'list'
@@ -231,6 +233,18 @@ wp.apiFetch({
     });
   });
 });
+var membershipStatusOptions = [//{ label: 'Select a Membership Status', value: null }
+];
+wp.apiFetch({
+  path: "/wp/v2/membership_status?per_page=100"
+}).then(function (posts) {
+  jQuery.each(posts, function (key, val) {
+    membershipStatusOptions.push({
+      label: val.name,
+      value: val.slug
+    });
+  });
+});
 
 var edit = function edit(props) {
   var _props$attributes = props.attributes,
@@ -251,6 +265,7 @@ var edit = function edit(props) {
       orderby = _props$attributes.orderby,
       order = _props$attributes.order,
       image = _props$attributes.image,
+      membershipStatusArray = _props$attributes.membershipStatusArray,
       status = _props$attributes.status,
       image_size = _props$attributes.image_size,
       alphaToggle = _props$attributes.alphaToggle,
@@ -283,11 +298,18 @@ var edit = function edit(props) {
     props.setAttributes({
       categoryArray: categoryArray
     });
+    console.log(categoryArray);
   };
 
   var setMembershipLevel = function setMembershipLevel(membershipLevelArray) {
     props.setAttributes({
       membershipLevelArray: membershipLevelArray
+    });
+  };
+
+  var setMembershipStatus = function setMembershipStatus(membershipStatusArray) {
+    props.setAttributes({
+      membershipStatusArray: membershipStatusArray
     });
   };
 
@@ -338,7 +360,7 @@ var edit = function edit(props) {
   var inspectorControls = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
     key: "inspector"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Business Directory Options')
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Formatting Options')
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     label: "Directory Layout",
     value: format,
@@ -348,45 +370,18 @@ var edit = function edit(props) {
     }*/
     ,
     onChange: setDirectoryLayout
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    multiple: true,
-    label: "Limit by Categories",
-    value: categoryArray,
-    options: categoryOptions,
-    onChange: setCategories
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    multiple: true,
-    label: "Limit by Membership Level",
-    value: membershipLevelArray,
-    options: membershipLevelOptions,
-    onChange: setMembershipLevel
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    label: "Post Content",
-    value: text,
-    options: textOptions,
-    onChange: function onChange(nextValue) {
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+    label: "Number of Businesses per page",
+    min: -1,
+    max: 50,
+    onChange: function onChange(value) {
       return setAttributes({
-        text: nextValue
+        perpage: value
       });
-    }
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    label: "Type of Image",
-    value: image,
-    options: imageOptions,
-    onChange: function onChange(nextValue) {
-      return setAttributes({
-        image: nextValue
-      });
-    }
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    label: "Image Size",
-    value: image_size,
-    options: imageSizeOptions,
-    onChange: function onChange(nextValue) {
-      return setAttributes({
-        image_size: nextValue
-      });
-    }
+    },
+    value: perpage,
+    initialPosition: -1,
+    allowReset: "true"
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     label: "Order By",
     value: orderby,
@@ -405,44 +400,9 @@ var edit = function edit(props) {
         order: nextValue
       });
     }
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Single Link'),
-    checked: singleLinkToggle
-    /*onChange={ ( value ) =>
-    	setAttributes( { single_link: value } )
-                      }*/
-    ,
-    onChange: setSingleLink,
-    help: !!singleLinkToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the link') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the link.')
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show Alpha'),
-    checked: alphaToggle
-    /*onChange={ ( value ) =>
-    	setAttributes( { single_link: value } )
-                      }*/
-    ,
-    onChange: setAlpha,
-    help: !!alphaToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the alphabets') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the alphabets.')
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enable Logo Gallery'),
-    checked: logoGalleryToggle
-    /*onChange={ ( value ) =>
-    	setAttributes( { single_link: value } )
-                      }*/
-    ,
-    onChange: setLogoGallery,
-    help: !!logoGalleryToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the logo gallery') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the logo gallery.')
-  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enable Filter by Category'),
-    checked: categoryFilterToggle
-    /*onChange={ ( value ) =>
-    	setAttributes( { single_link: value } )
-                      }*/
-    ,
-    onChange: setShowCategoryFilter,
-    help: !!categoryFilterToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the filter by category option') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the filter by category option.')
   }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Options')
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Options'),
+    initialOpen: false
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
     label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Display Address'),
     checked: displayAddressToggle //onChange = {setDisplayAddressToggle}
@@ -533,6 +493,101 @@ var edit = function edit(props) {
         displayHoursToggle: nextValue
       });
     }
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Content Settings'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: "Post Content",
+    value: text,
+    options: textOptions,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        text: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Single Link'),
+    checked: singleLinkToggle
+    /*onChange={ ( value ) =>
+    	setAttributes( { single_link: value } )
+                      }*/
+    ,
+    onChange: setSingleLink,
+    help: !!singleLinkToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the link') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the link.')
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Image Settings'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: "Type of Image",
+    value: image,
+    options: imageOptions,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        image: nextValue
+      });
+    }
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    label: "Image Size",
+    value: image_size,
+    options: imageSizeOptions,
+    onChange: function onChange(nextValue) {
+      return setAttributes({
+        image_size: nextValue
+      });
+    }
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Limit by Business Categories'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    multiple: true,
+    label: "Limit by Categories",
+    value: categoryArray,
+    options: categoryOptions,
+    onChange: setCategories
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Limit by Membership Level or status'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    multiple: true,
+    label: "Limit by Membership Level",
+    value: membershipLevelArray,
+    options: membershipLevelOptions,
+    onChange: setMembershipLevel
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
+    multiple: true,
+    label: "Limit by Membership Status",
+    value: membershipStatusArray,
+    options: membershipStatusOptions,
+    onChange: setMembershipStatus
+  }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Additional Options'),
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enable Alphabetical Display'),
+    checked: alphaToggle
+    /*onChange={ ( value ) =>
+    	setAttributes( { single_link: value } )
+                      }*/
+    ,
+    onChange: setAlpha
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enable Logo Gallery'),
+    checked: logoGalleryToggle
+    /*onChange={ ( value ) =>
+    	setAttributes( { single_link: value } )
+                      }*/
+    ,
+    onChange: setLogoGallery,
+    help: !!logoGalleryToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the logo gallery') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the logo gallery.')
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ToggleControl, {
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Enable Filter by Category'),
+    checked: categoryFilterToggle
+    /*onChange={ ( value ) =>
+    	setAttributes( { single_link: value } )
+                      }*/
+    ,
+    onChange: setShowCategoryFilter,
+    help: !!categoryFilterToggle ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show the filter by category option') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the filter by category option.')
   }))));
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: props.className
@@ -541,9 +596,7 @@ var edit = function edit(props) {
     attributes: props.attributes
   }), inspectorControls, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "businesslist"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    className: "bus_directory"
-  }, "CD Business Directory", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Display: ", display))))];
+  }))];
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (edit);
@@ -650,6 +703,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('cda
     image: {
       type: 'string',
       default: 'logo'
+    },
+    membershipStatusArray: {
+      type: 'array',
+      default: []
     },
     status: {
       type: 'string',

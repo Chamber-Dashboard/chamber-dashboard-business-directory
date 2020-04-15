@@ -12,6 +12,16 @@ function cdash_block_category( $categories, $post ) {
   }
   add_filter( 'block_categories', 'cdash_block_category', 10, 2);
 
+  //add custom css in the in the editor
+  function cdash_block_editor_css(){
+    wp_enqueue_style(
+        'cdash_bd_editor_styles',
+        plugins_url( './css/cdash_block_editor.css', dirname(__FILE__) ),
+        array()
+     );
+  }
+  add_action( 'enqueue_block_editor_assets', 'cdash_block_editor_css' );
+
   //Business Directory Shortcode rendering
   if ( function_exists( 'register_block_type' ) ) {
       // Hook server side rendering into render callback
@@ -92,6 +102,13 @@ function cdash_block_category( $categories, $post ) {
                 'image'    => array(
                     'type'  => 'string',
                     'default'   => 'logo',
+                ),
+                'membershipStatusArray'    => array(
+                    'type'  => 'array',
+                    'default'   => [],
+                    'items'   => [
+                        'type' => 'string',
+                    ],
                 ),
                 'status'    => array(
                     'type'  => 'string',
@@ -206,9 +223,13 @@ function cdash_block_category( $categories, $post ) {
     if(isset($attributes['categoryArray']) && '' != $attributes['categoryArray']){
 		$attributes['category'] = $attributes['categoryArray'];
     }
-    
+
     if(isset($attributes['membershipLevelArray']) && '' != $attributes['membershipLevelArray']){
 		$attributes['level'] = $attributes['membershipLevelArray'];
+    }
+
+    if(isset($attributes['membershipStatusArray']) && '' != $attributes['membershipStatusArray']){
+		$attributes['status'] = implode(',', $attributes['membershipStatusArray']);
     }
 
     $business_listings = cdash_business_directory_shortcode($attributes);

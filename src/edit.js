@@ -26,7 +26,12 @@ const {
     ToolbarGroup,
     Disabled, 
     RadioControl,
+    RangeControl, 
 } = wp.components;
+
+const {
+    withState
+} = wp.compose;
 
 const formatOptions = [
     { label: 'List', value: 'list' },
@@ -85,8 +90,18 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
     });
 });
 
+const membershipStatusOptions = [
+    //{ label: 'Select a Membership Status', value: null }
+];
+
+wp.apiFetch({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
+    jQuery.each( posts, function( key, val ) {
+        membershipStatusOptions.push({label: val.name, value: val.slug});
+    });
+});
+
 const edit = props => {
-    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image,status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaLinkToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle }, className, setAttributes } = props;
+    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaLinkToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle }, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -94,10 +109,15 @@ const edit = props => {
 
     const setCategories = categoryArray => {
         props.setAttributes( { categoryArray} );
+        console.log(categoryArray);
     };
 
     const setMembershipLevel = membershipLevelArray => {
         props.setAttributes( { membershipLevelArray} );
+    };
+
+    const setMembershipStatus = membershipStatusArray => {
+        props.setAttributes( { membershipStatusArray} );
     };
 
     const setSingleLink = singleLinkToggle =>{
@@ -123,7 +143,7 @@ const edit = props => {
 
     const inspectorControls = (
         <InspectorControls key="inspector">
-            <PanelBody title={ __( 'Business Directory Options' )}>
+            <PanelBody title={ __( 'Formatting Options' )}>
                 <PanelRow>
                     <SelectControl
                         label="Directory Layout"
@@ -136,52 +156,15 @@ const edit = props => {
                     />
                 </PanelRow>
                 <PanelRow>
-                    <SelectControl 
-                        multiple
-                        label = "Limit by Categories"
-                        value = {categoryArray}
-                        options = {categoryOptions}
-                        onChange = {setCategories}
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <SelectControl 
-                        multiple
-                        label = "Limit by Membership Level"
-                        value = {membershipLevelArray}
-                        options = {membershipLevelOptions}
-                        onChange = {setMembershipLevel}
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <SelectControl
-                        label="Post Content"
-                        value={ text }
-                        options= { textOptions }
-                        onChange={ ( nextValue ) =>
-                            setAttributes( { text:  nextValue } )
-                        }
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <SelectControl
-                        label="Type of Image"
-                        value={image}
-                        options= { imageOptions }
-                        onChange={ ( nextValue ) =>
-                            setAttributes( { image:  nextValue } )
-                        }
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <SelectControl
-                        label="Image Size"
-                        value={image_size}
-                        options= { imageSizeOptions }
-                        onChange={ ( nextValue ) =>
-                            setAttributes( { image_size:  nextValue } )
-                        }
-                    />
+                <RangeControl
+                    label="Number of Businesses per page"
+                    min={-1 }
+                    max={ 50 }
+                    onChange={ ( value ) => setAttributes( { perpage: value} ) }
+                    value={ perpage }
+                    initialPosition = { -1 }
+                    allowReset = "true"
+                />
                 </PanelRow>
                 <PanelRow>
                     <SelectControl
@@ -203,52 +186,8 @@ const edit = props => {
                         }
                     />
                 </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-						label={ __( 'Single Link' ) }
-						checked={ singleLinkToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
-                        onChange = {setSingleLink}
-                        help={ !! singleLinkToggle ? __( 'Show the link' ) : __( 'Hide the link.' ) }
-					/>
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-						label={ __( 'Show Alpha' ) }
-						checked={ alphaToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
-                        onChange = {setAlpha}
-                        help={ !! alphaToggle ? __( 'Show the alphabets' ) : __( 'Hide the alphabets.' ) }
-					/>
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-						label={ __( 'Enable Logo Gallery' ) }
-						checked={ logoGalleryToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
-                        onChange = {setLogoGallery}
-                        help={ !! logoGalleryToggle ? __( 'Show the logo gallery' ) : __( 'Hide the logo gallery.' ) }
-					/>
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-						label={ __( 'Enable Filter by Category' ) }
-						checked={ categoryFilterToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
-                        onChange = {setShowCategoryFilter}
-                        help={ !! categoryFilterToggle ? __( 'Show the filter by category option' ) : __( 'Hide the filter by category option.' ) }
-					/>
-                </PanelRow>
             </PanelBody>
-            <PanelBody title={ __( 'Display Options' )}>
+            <PanelBody title={ __( 'Display Options' )} initialOpen={ false }>
                 <PanelRow>
                         <ToggleControl
                             label={ __( 'Display Address' ) }
@@ -351,6 +290,120 @@ const edit = props => {
                         />
                     </PanelRow>
             </PanelBody>
+            <PanelBody title={ __( 'Content Settings' )} initialOpen={ false }>
+                <PanelRow>
+                    <SelectControl
+                        label="Post Content"
+                        value={ text }
+                        options= { textOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { text:  nextValue } )
+                        }
+                    />
+                </PanelRow>        
+                <PanelRow>
+                    <ToggleControl
+						label={ __( 'Single Link' ) }
+						checked={ singleLinkToggle }
+						/*onChange={ ( value ) =>
+							setAttributes( { single_link: value } )
+                        }*/
+                        onChange = {setSingleLink}
+                        help={ !! singleLinkToggle ? __( 'Show the link' ) : __( 'Hide the link.' ) }
+					/>
+                </PanelRow>
+            </PanelBody>
+            <PanelBody title={ __( 'Image Settings' )} initialOpen={ false }>
+                <PanelRow>
+                    <SelectControl
+                        label="Type of Image"
+                        value={image}
+                        options= { imageOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { image:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl
+                        label="Image Size"
+                        value={image_size}
+                        options= { imageSizeOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { image_size:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+            </PanelBody>
+            <PanelBody title={ __( 'Limit by Business Categories' )} initialOpen={ false }>
+                <PanelRow>
+                    <SelectControl 
+                        multiple
+                        label = "Limit by Categories"
+                        value = {categoryArray}
+                        options = {categoryOptions}
+                        onChange = {setCategories}
+                    />
+                </PanelRow>
+            </PanelBody>
+            <PanelBody title={ __( 'Limit by Membership Level or status' )} initialOpen={ false }>
+                <PanelRow>
+                    <SelectControl 
+                        multiple
+                        label = "Limit by Membership Level"
+                        value = {membershipLevelArray}
+                        options = {membershipLevelOptions}
+                        onChange = {setMembershipLevel}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <SelectControl 
+                        multiple
+                        label = "Limit by Membership Status"
+                        value = {membershipStatusArray}
+                        options = {membershipStatusOptions}
+                        onChange = {setMembershipStatus}
+                    />
+                </PanelRow>
+            </PanelBody>
+            
+            
+            <PanelBody title={ __( 'Additional Options' )} initialOpen={ false }>
+                <PanelRow>
+                    <ToggleControl
+						label={ __( 'Enable Alphabetical Display' ) }
+						checked={ alphaToggle }
+						/*onChange={ ( value ) =>
+							setAttributes( { single_link: value } )
+                        }*/
+                        onChange = {setAlpha}
+					/>
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+						label={ __( 'Enable Logo Gallery' ) }
+						checked={ logoGalleryToggle }
+						/*onChange={ ( value ) =>
+							setAttributes( { single_link: value } )
+                        }*/
+                        onChange = {setLogoGallery}
+                        help={ !! logoGalleryToggle ? __( 'Show the logo gallery' ) : __( 'Hide the logo gallery.' ) }
+					/>
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+						label={ __( 'Enable Filter by Category' ) }
+						checked={ categoryFilterToggle }
+						/*onChange={ ( value ) =>
+							setAttributes( { single_link: value } )
+                        }*/
+                        onChange = {setShowCategoryFilter}
+                        help={ !! categoryFilterToggle ? __( 'Show the filter by category option' ) : __( 'Hide the filter by category option.' ) }
+					/>
+                </PanelRow>
+                
+            </PanelBody>
+            
         </InspectorControls>
     );
     return [
@@ -361,9 +414,7 @@ const edit = props => {
             />
             { inspectorControls }
             <div className="businesslist">
-                <div className="bus_directory">CD Business Directory
-                    <p>Display: {display}</p>
-                </div>
+                
             </div>
         </div>
     ];

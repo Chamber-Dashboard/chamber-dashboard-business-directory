@@ -102,7 +102,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			);
 	}
 
-
+	cd_debug("Membership Status: " . print_r($status, true));
 
 	$business_list = '';
 	if($alpha == 'yes'){
