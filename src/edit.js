@@ -121,8 +121,7 @@ const membershipStatusOptions = [
     //{ label: 'Select a Membership Status', value: null }
 ];
 
-const membershipStatus = wp.apiFetch;
-membershipStatus({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
+wp.apiFetch({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         membershipStatusOptions.push({label: val.name, value: val.slug});
     });

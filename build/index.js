@@ -243,8 +243,7 @@ wp.apiFetch({
 });
 var membershipStatusOptions = [//{ label: 'Select a Membership Status', value: null }
 ];
-var membershipStatus = wp.apiFetch;
-membershipStatus({
+wp.apiFetch({
   path: "/wp/v2/membership_status?per_page=100"
 }).then(function (posts) {
   jQuery.each(posts, function (key, val) {
