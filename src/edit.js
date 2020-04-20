@@ -1,9 +1,34 @@
 import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
-import { withSelect, widthDispatch } from '@wordpress/data';
+import { SelectControl, 
+    Toolbar,
+    Button,
+    Tooltip,
+    PanelBody,
+    PanelRow,
+    FormToggle,
+    ToggleControl,
+    ToolbarGroup,
+    Disabled, 
+    RadioControl,
+    RangeControl, } from '@wordpress/components';
 
-const {
+    import {
+        RichText,
+        AlignmentToolbar,
+        BlockControls,
+        BlockAlignmentToolbar,
+        InspectorControls,
+        InnerBlocks,
+        withColors,
+        PanelColorSettings,
+        getColorClassName
+    } from '@wordpress/editor'
+    ;
+import { withSelect, widthDispatch } from '@wordpress/data';
+//import { RichText, } from '@wordpress/rich-text';
+
+/*const {
     RichText,
     AlignmentToolbar,
     BlockControls,
@@ -13,9 +38,9 @@ const {
     withColors,
     PanelColorSettings,
     getColorClassName
-  } = wp.editor;
+  } = wp.editor;*/
 
-  const {
+  /*const {
     Toolbar,
     Button,
     Tooltip,
@@ -27,7 +52,7 @@ const {
     Disabled, 
     RadioControl,
     RangeControl, 
-} = wp.components;
+} = wp.components;*/
 
 const {
     withState
@@ -78,7 +103,9 @@ wp.apiFetch({path: "/wp/v2/business_category?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         categoryOptions.push({label: val.name, value: val.slug});
     });
-});
+}).catch( 
+
+)
 
 const membershipLevelOptions = [
     { label: 'Select one or more Membersihp Levels', value: null }
@@ -94,7 +121,8 @@ const membershipStatusOptions = [
     //{ label: 'Select a Membership Status', value: null }
 ];
 
-wp.apiFetch({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
+const membershipStatus = wp.apiFetch;
+membershipStatus({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         membershipStatusOptions.push({label: val.name, value: val.slug});
     });

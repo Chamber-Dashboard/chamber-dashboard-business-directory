@@ -20,9 +20,9 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             default: 'yes',
         },
         postLayout: {
-			type: 'string',
-			default: 'list',
-		},
+             type: 'string',
+             default: 'list',
+	},
         format: {
             type: 'string',
             default: 'list',

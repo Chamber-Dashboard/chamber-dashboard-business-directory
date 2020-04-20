@@ -227,10 +227,14 @@ function cdash_block_category( $categories, $post ) {
     if(isset($attributes['membershipLevelArray']) && '' != $attributes['membershipLevelArray']){
 		$attributes['level'] = $attributes['membershipLevelArray'];
     }
-
-    if(isset($attributes['membershipStatusArray']) && '' != $attributes['membershipStatusArray']){
-		$attributes['status'] = implode(',', $attributes['membershipStatusArray']);
+    if(cdash_check_mm_active()){
+        if(isset($attributes['membershipStatusArray']) && '' != $attributes['membershipStatusArray']){
+            $attributes['status'] = implode(',', $attributes['membershipStatusArray']);
+        }
+    }else{
+        $attributes['status'] = '';
     }
+    
 
     $business_listings = cdash_business_directory_shortcode($attributes);
 

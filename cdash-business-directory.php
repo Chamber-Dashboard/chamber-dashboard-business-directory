@@ -98,6 +98,7 @@ function cdash_bus_directory_block_scripts() {
 	wp_enqueue_script('bd-blocks');
 }
 add_action( 'enqueue_block_editor_assets', 'cdash_bus_directory_block_scripts', 30 );
+//add_action( 'init', 'cdash_bus_directory_block_scripts' );
 
 // ------------------------------------------------------------------------
 // SET UP CUSTOM POST TYPES AND TAXONOMIES
