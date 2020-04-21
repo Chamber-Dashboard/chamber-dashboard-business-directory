@@ -121,11 +121,19 @@ const membershipStatusOptions = [
     //{ label: 'Select a Membership Status', value: null }
 ];
 
-wp.apiFetch({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
-    jQuery.each( posts, function( key, val ) {
-        membershipStatusOptions.push({label: val.name, value: val.slug});
-    });
+var fetchUrlAction = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=cdash_check_mm_active_action';
+
+
+wp.apiFetch({url: fetchUrlAction}).then(response => {
+    if(response.cdash_mm_active){
+        wp.apiFetch({path: "/wp/v2/membership_status?per_page=100"}).then(posts => {
+            jQuery.each( posts, function( key, val ) {
+                membershipStatusOptions.push({label: val.name, value: val.slug});
+            });
+        });
+    }
 });
+
 
 const edit = props => {
     const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaLinkToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle }, className, setAttributes } = props;
@@ -362,22 +370,20 @@ const edit = props => {
                     />
                 </PanelRow>
             </PanelBody>
-            <PanelBody title={ __( 'Limit by Business Categories' )} initialOpen={ false }>
+            <PanelBody title={ __( 'Limit By:' )} initialOpen={ false }>
                 <PanelRow>
                     <SelectControl 
                         multiple
-                        label = "Limit by Categories"
+                        label = "Categories"
                         value = {categoryArray}
                         options = {categoryOptions}
                         onChange = {setCategories}
                     />
                 </PanelRow>
-            </PanelBody>
-            <PanelBody title={ __( 'Limit by Membership Level or status' )} initialOpen={ false }>
                 <PanelRow>
                     <SelectControl 
                         multiple
-                        label = "Limit by Membership Level"
+                        label = "Membership Level"
                         value = {membershipLevelArray}
                         options = {membershipLevelOptions}
                         onChange = {setMembershipLevel}
@@ -386,15 +392,13 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
-                        label = "Limit by Membership Status"
+                        label = "Membership Status"
                         value = {membershipStatusArray}
                         options = {membershipStatusOptions}
                         onChange = {setMembershipStatus}
                     />
                 </PanelRow>
             </PanelBody>
-            
-            
             <PanelBody title={ __( 'Additional Options' )} initialOpen={ false }>
                 <PanelRow>
                     <ToggleControl
@@ -421,9 +425,6 @@ const edit = props => {
                     <ToggleControl
 						label={ __( 'Enable Filter by Category' ) }
 						checked={ categoryFilterToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
                         onChange = {setShowCategoryFilter}
                         help={ !! categoryFilterToggle ? __( 'Show the filter by category option' ) : __( 'Hide the filter by category option.' ) }
 					/>

@@ -9,3 +9,12 @@
 #cdash_select_bus_category{
     margin-top:0px;
 }
+
+#cdash_bus_list_page{
+    display:none;
+}
+
+#businesslist.list img.logo{
+	max-width:100%;
+	height:auto;
+}

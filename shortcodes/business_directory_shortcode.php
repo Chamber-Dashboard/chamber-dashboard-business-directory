@@ -50,10 +50,12 @@ function cdash_business_directory_shortcode( $atts ) {
 	}*/
 
 	// Enqueue stylesheet if the display format is columns instead of list
-	if($format !== 'list') {
+	/*if($format !== 'list') {
 		cdash_enqueue_styles();
 		cdash_enqueue_scripts();
-	}
+	}*/
+	cdash_enqueue_styles();
+	cdash_enqueue_scripts();
 
 	if($show_category_filter == 'yes'){
 		cdash_frontend_scripts();

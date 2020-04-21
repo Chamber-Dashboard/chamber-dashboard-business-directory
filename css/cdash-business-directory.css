@@ -21,11 +21,17 @@ max-width: 100%;
 width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
 }
 
+#businesslist.list img.logo{
+	max-width:100%;
+	height:auto;
+}
+
 #business img.logo,
 #businesslist img.logo {
   max-width:50%;
   height:auto;
 }
+
 
 #businesslist.logo_gallery img.logo{
 	max-width:100%;

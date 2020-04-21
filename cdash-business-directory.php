@@ -96,6 +96,7 @@ function cdash_bus_directory_block_scripts() {
 		$asset_file['version']
 	);
 	wp_enqueue_script('bd-blocks');
+	wp_localize_script( 'bd-blocks', 'wpAjax', array( 'wpurl' => get_bloginfo('wpurl') ) );
 }
 add_action( 'enqueue_block_editor_assets', 'cdash_bus_directory_block_scripts', 30 );
 //add_action( 'init', 'cdash_bus_directory_block_scripts' );
