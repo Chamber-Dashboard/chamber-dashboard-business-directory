@@ -31,18 +31,10 @@ function cdash_exporter_function($email_address, $page = 1){
 		global $buscontact_metabox;
 		
         foreach ( (array) $businesses as $business ){
-			$contactmeta = $buscontact_metabox->the_meta();
-			$locations = $contactmeta['location'];
+			$contactmeta = $buscontact_metabox->the_meta($business->ID);
 			
-			if( isset( $contactmeta['location'] ) ) {
-				foreach( $locations as $location ) {
-					if(isset( $location['altname'] ) ){
-						$location_name = $location['altname'];
-					}else{
-						$location_name = "No Location name.";
-					}
-				}
-			}
+			$business_details = cdash_export_bus_location_data($contactmeta);
+			
             // here you can specify the fields, that exist in any way
 			$data = array(
 				array(
@@ -58,8 +50,16 @@ function cdash_exporter_function($email_address, $page = 1){
 					'value' => $email_address
 				),
 				array(
-					'name' => 'Location',
-					'value' => $location_name
+					'name' => 'Address',
+					'value' => $business_details['address']
+				),
+				array(
+					'name' => 'Phone',
+					'value' => $business_details['phone']
+				),
+				array(
+					'name' => 'Email',
+					'value' => $business_details['email']
 				),
             );
             $export_items[] = array(
@@ -77,6 +77,78 @@ function cdash_exporter_function($email_address, $page = 1){
 		'data' => $export_items,
 		'done' => $done,
 	);
+}
+
+function cdash_export_bus_location_data($contactmeta){
+	$business_details = array();
+	$locations = $contactmeta['location'];
+	$phone_number = '';
+	$email = '';
+	$business_address = '';
+	if( isset( $contactmeta['location'] ) ) {
+		foreach( $locations as $location ) {
+			if(isset( $location['address'] ) ){
+				$address = $location['address'];
+			}else{
+				$address = "";
+			}
+
+			if(isset( $location['city'] ) ){
+				$city = $location['city'];
+			}else{
+				$city = '';
+			}
+
+			if(isset( $location['state'] ) ){
+				$state = $location['state'];
+			}else{
+				$state = '';
+			}
+
+			if(isset( $location['zip'] ) ){
+				$zip = $location['zip'];
+			}else{
+				$zip = '';
+			}
+
+			if(isset( $location['country'] ) ){
+				$country = $location['country'];
+			}else{
+				$country = '';
+			}
+			$business_address = $address . ', ' . $city . ', ' . $state . ' ' . $zip . ' ' . $country;
+			$business_details['address'] = $business_address;
+
+			if(isset($location['phone'])) {
+				$phones = $location['phone'];
+				if(is_array($phones)) {
+					foreach($phones as $phone) {
+						if(isset($phone['phonenumber'])){
+							$phone_number .= $phone['phonenumber'];
+						}
+					}
+				}
+			}else{
+				$phone_number = '';
+			}
+			$business_details['phone'] = $phone_number;
+
+			if(isset($location['email'])) {
+				$emails = $location['email'];
+				if(is_array($emails)) {
+					foreach($emails as $email) {
+						if(isset($email['emailaddress'])){
+							$email = $email['emailaddress'];
+						}
+					}
+				}
+			}else{
+				$email = '';
+			}
+			$business_details['email'] = $email;
+		}
+	}
+	return $business_details;
 }
 
 
