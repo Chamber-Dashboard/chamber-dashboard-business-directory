@@ -11,7 +11,8 @@ import { SelectControl,
     ToolbarGroup,
     Disabled, 
     RadioControl,
-    RangeControl, } from '@wordpress/components';
+    RangeControl,
+    FontSizePicker } from '@wordpress/components';
 
     import {
         RichText,
@@ -111,12 +112,6 @@ const membershipLevelOptions = [
     { label: 'Select one or more Membersihp Levels', value: null }
 ];
 
-wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
-    jQuery.each( posts, function( key, val ) {
-        membershipLevelOptions.push({label: val.name, value: val.slug});
-    });
-});
-
 const membershipStatusOptions = [
     //{ label: 'Select a Membership Status', value: null }
 ];
@@ -134,9 +129,34 @@ wp.apiFetch({url: fetchUrlAction}).then(response => {
     }
 });
 
+const titleFontSizes = [
+    {
+        name: __( 'Small' ),
+        slug: 'small',
+        size: 12,
+    },
+    {
+        name: __( 'Medium' ),
+        slug: 'small',
+        size: 18,
+    },
+    {
+        name: __( 'Big' ),
+        slug: 'big',
+        size: 26,
+    },
+];
+const titleFallbackFontSize = 16;
+
+wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
+    jQuery.each( posts, function( key, val ) {
+        membershipLevelOptions.push({label: val.name, value: val.slug});
+    });
+});
+
 
 const edit = props => {
-    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaLinkToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle }, className, setAttributes } = props;
+    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, }, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -201,6 +221,40 @@ const edit = props => {
                     allowReset = "true"
                 />
                 </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={ __( 'Disable Pagination' ) }
+                        checked={ disablePagination }
+                        //onChange = {setDisplayAddressToggle}
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { disablePagination:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={ __( 'Enable Custom Title Font size' ) }
+                        checked={ changeTitleFontSize }
+                        //onChange = {setDisplayAddressToggle}
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { changeTitleFontSize:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+                    { changeTitleFontSize &&
+						 (  
+                            <PanelRow>
+                                <FontSizePicker
+                                    fontSizes={ titleFontSizes }
+                                    value={ titleFontSize }
+                                    fallbackFontSize={ titleFallbackFontSize }
+                                    withSlider= "true"
+                                    onChange={ ( nextValue ) =>
+                                        setAttributes( {titleFontSize:  nextValue } )
+                                    }
+                                />
+                            </PanelRow>
+					) }
                 <PanelRow>
                     <SelectControl
                         label="Order By"
@@ -299,15 +353,6 @@ const edit = props => {
                     </PanelRow>
                     <PanelRow>
                         <ToggleControl
-                            label={ __( 'Display Social Media Links' ) }
-                            checked={ displaySocialMediaLinkToggle }
-                            onChange={ ( nextValue ) =>
-                                setAttributes( { displaySocialMediaLinkToggle:  nextValue } )
-                            }
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <ToggleControl
                             label={ __( 'Display Social Media Icons' ) }
                             checked={ displaySocialMediaIconsToggle }
                             onChange={ ( nextValue ) =>
@@ -338,13 +383,9 @@ const edit = props => {
                 </PanelRow>        
                 <PanelRow>
                     <ToggleControl
-						label={ __( 'Single Link' ) }
+						label={ __( 'Enable click-thru to individual listing' ) }
 						checked={ singleLinkToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
                         onChange = {setSingleLink}
-                        help={ !! singleLinkToggle ? __( 'Show the link' ) : __( 'Hide the link.' ) }
 					/>
                 </PanelRow>
             </PanelBody>
@@ -402,11 +443,8 @@ const edit = props => {
             <PanelBody title={ __( 'Additional Options' )} initialOpen={ false }>
                 <PanelRow>
                     <ToggleControl
-						label={ __( 'Enable Alphabetical Display' ) }
+						label={ __( 'Enable Alpha Search' ) }
 						checked={ alphaToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
                         onChange = {setAlpha}
 					/>
                 </PanelRow>
@@ -414,9 +452,6 @@ const edit = props => {
                     <ToggleControl
 						label={ __( 'Enable Logo Gallery' ) }
 						checked={ logoGalleryToggle }
-						/*onChange={ ( value ) =>
-							setAttributes( { single_link: value } )
-                        }*/
                         onChange = {setLogoGallery}
                         help={ !! logoGalleryToggle ? __( 'Show the logo gallery' ) : __( 'Hide the logo gallery.' ) }
 					/>

@@ -18,7 +18,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'tags'	=>	'', // options: slug of any tag
 			'level' => '', // options: slug of any membership level
 			'text' => 'excerpt', // options: excerpt, description, none
-			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons, location, hours
+			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media, location, hours
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
 			'orderby' => 'title', // options: date, modified, menu_order, rand, membership_level
@@ -29,9 +29,14 @@ function cdash_business_directory_shortcode( $atts ) {
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
 			'show_category_filter' => 'no', //options: yes, no
-			'cd_block' => 'no'
+			'cd_block' => 'no',
+			'changeTitleFontSize' => true,
+			'titleFontSize' => '',
+			'disablePagination' => false,
 		), $atts )
 	);
+
+	cd_debug("Change Title font size in shortcode function: " . $changeTitleFontSize);
 
 	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
 	//Loop through the memberhsip levels
@@ -60,21 +65,17 @@ function cdash_business_directory_shortcode( $atts ) {
 	if($show_category_filter == 'yes'){
 		cdash_frontend_scripts();
 	}
-	//cd_debug("Is this coming from the block? ". $cd_block);
+	
 	// If user wants to display stuff other than the default, turn their display options into an array for parsing later
 	if($display !== '') {
-		//cd_debug("Display is not null");
 		if($cd_block == "yes"){
 			$displayopts = explode( ",", $display);
 		}else if($cd_block == "no"){
 			$displayopts = explode( ", ", $display);
 		}
   	}else{
-		//cd_debug("Display is null");
 		$displayopts = '';
 	}
-	//cd_debug("Display from the shortcode function: " . $display);
-	//cd_debug("Display Opts :" . print_r($displayopts, true));
 	if(is_front_page()){
 		$paged = (int)get_query_var('page');
 	}else{
@@ -87,6 +88,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	$args = array(
 		'post_type' => 'business',
+		//'no_found_rows' => true,
 		'posts_per_page' => $perpage,
 		'paged' => $paged,
 		'orderby' => $orderby,
@@ -94,6 +96,10 @@ function cdash_business_directory_shortcode( $atts ) {
 	  	'business_category' => $category,
 	  	'membership_level' => $level
 	);
+
+	if($disablePagination == '1'){
+		$args['no_found_rows'] = true;
+	}
 
 	if((isset($status)) && ($status != '')){
 		$args['tax_query'][] = array(
@@ -103,8 +109,6 @@ function cdash_business_directory_shortcode( $atts ) {
 			'operator' => 'IN'
 			);
 	}
-
-	cd_debug("Membership Status: " . print_r($status, true));
 
 	$business_list = '';
 	if($alpha == 'yes'){
@@ -160,10 +164,10 @@ function cdash_business_directory_shortcode( $atts ) {
 				$logometa = $buslogo_metabox->the_meta();
 				if($logo_gallery == "yes"){
 					if( isset( $logometa['buslogo'] ) ) {
-						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts);
+						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize);
 					}
 				}else{
-					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts);
+					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize);
 				}
 			endwhile;
 			$business_list .= "</div><!--end of businesslist-->";
@@ -242,14 +246,14 @@ function cdash_starts_with_query_filter( $where, $query ) {
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
 
-function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts){
+function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize){
 	if(!isset($business_list)){
 		$business_list = '';
 	}
 	$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
 
 	if($logo_gallery == "no"){
-		$business_list .= cdash_bus_directory_display_title($single_link);
+		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
 	}
 
 	if(isset($image_size) && $image_size !=""){
@@ -284,14 +288,19 @@ function cdash_display_business_listings($add, $single_link, $image, $image_size
 	return $business_list;
 }
 
-function cdash_bus_directory_display_title($single_link){
+function cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize){
 	if(!isset($business_list)){
 		$business_list = '';
-	}
-	if($single_link == "yes") {
-		$business_list .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
+	} 
+	$size = '';
+	if($cd_block == 'yes'){
+		if(isset($changeTitleFontSize) && $changeTitleFontSize == 1){
+			$size = " style='font-size:".$titleFontSize."px'";
+		}
+	}	if($single_link == "yes") {
+		$business_list .= "<h3". $size ."><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 	} else {
-		$business_list .= "<h3>" . get_the_title() . "</h3>";
+		$business_list .= "<h3". $size .">" . get_the_title() . "</h3>";
 	}
 
 	return $business_list;

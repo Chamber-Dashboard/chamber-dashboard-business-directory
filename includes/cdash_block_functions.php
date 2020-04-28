@@ -35,11 +35,11 @@ function cdash_block_category( $categories, $post ) {
                 ),
                 'postLayout'    => array(
                     'type'  => 'string',
-                    'default'   => 'list',
+                    'default'   => 'grid3',
                 ),
                 'format'    => array(
                     'type'  => 'string',
-                    'default'   => 'list',
+                    'default'   => 'grid3',
                 ),
                 'categoryArray'    => array(
                     'type'  => 'array',
@@ -73,7 +73,7 @@ function cdash_block_category( $categories, $post ) {
                 ),
                 'text'    => array(
                     'type'  => 'string',
-                    'default'   => 'excerpt',
+                    'default'   => 'none',
                 ),
                 'display'    => array(
                     'type'  => 'string',
@@ -101,7 +101,7 @@ function cdash_block_category( $categories, $post ) {
                 ),
                 'image'    => array(
                     'type'  => 'string',
-                    'default'   => 'logo',
+                    'default'   => 'featured',
                 ),
                 'membershipStatusArray'    => array(
                     'type'  => 'array',
@@ -148,15 +148,15 @@ function cdash_block_category( $categories, $post ) {
                 ),
                 'displayUrlToggle'    => array(
                     'type'  => 'boolean',
-                    'default'   => 'false',
+                    'default'   => 'true',
                 ),
                 'displayPhoneToggle'    => array(
                     'type'  => 'boolean',
-                    'default'   => 'false',
+                    'default'   => 'true',
                 ),
                 'displayEmailToggle'    => array(
                     'type'  => 'boolean',
-                    'default'   => 'false',
+                    'default'   => 'true',
                 ),
                 'displayLocationNameToggle'    => array(
                     'type'  => 'boolean',
@@ -186,6 +186,18 @@ function cdash_block_category( $categories, $post ) {
                     'type'  => 'boolean',
                     'default'   => 'false',
                 ),
+                'changeTitleFontSize'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
+                'titleFontSize'    => array(
+                    'type'  => 'number',
+                    'default'   => 16,
+                ),
+                'disablePagination'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'false',
+                ),
             ),
         ]
     );
@@ -209,16 +221,11 @@ function cdash_block_category( $categories, $post ) {
     $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLocationNameToggle', 'location_name');
     $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayCategoryToggle', 'category');
     $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLevelToggle', 'level');
-    $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displaySocialMediaLinkToggle', 'social_media_links');
-    $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displaySocialMediaIconsToggle', 'social_media_icons');
+    $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displaySocialMediaIconsToggle', 'social_media');
     $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLocationToggle', 'location');
     $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayHoursToggle', 'hours');
-    //cd_debug("Display Options Array 1: " . print_r($displayOptions, true));
-    //cd_debug("Display Options Array 2: " . print_r($displayOptions, true));
 
     $attributes['display'] = implode(',', $displayOptions);
-    //cd_debug("Display: ". $attributes['display']);
-
 
     if(isset($attributes['categoryArray']) && '' != $attributes['categoryArray']){
 		$attributes['category'] = $attributes['categoryArray'];
@@ -234,7 +241,8 @@ function cdash_block_category( $categories, $post ) {
     }else{
         $attributes['status'] = '';
     }
-    
+
+    //cd_debug("Title Font Size inside the block function: " . $attributes['titleFontSize']);
 
     $business_listings = cdash_business_directory_shortcode($attributes);
 

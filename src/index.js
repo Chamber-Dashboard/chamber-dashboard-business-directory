@@ -21,11 +21,11 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         },
         postLayout: {
              type: 'string',
-             default: 'list',
+             default: 'grid3',
 	},
         format: {
             type: 'string',
-            default: 'list',
+            default: 'grid3',
         },
         categoryArray:{
             type: 'array',
@@ -57,7 +57,7 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         },
         text:{
             type: 'string',
-            default: 'excerpt',
+            default: 'none',
         },
         singleLinkToggle: {
             type: 'boolean',
@@ -81,7 +81,7 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         },
         image:{
             type: 'string',
-            default: 'logo',
+            default: 'featured',
         },
         membershipStatusArray:{
             type: 'array',
@@ -125,15 +125,15 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         },
         displayUrlToggle:{
             type: 'boolean',
-            default: false,
+            default: true,
         },
         displayPhoneToggle:{
             type: 'boolean',
-            default: false,
+            default: true,
         },
         displayEmailToggle:{
             type: 'boolean',
-            default: false,
+            default: true,
         },
         displayLocationNameToggle:{
             type: 'boolean',
@@ -147,10 +147,6 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'boolean',
             default: false,
         },
-        displaySocialMediaLinkToggle:{
-            type: 'boolean',
-            default: false,
-        },
         displaySocialMediaIconsToggle:{
             type: 'boolean',
             default: false,
@@ -160,6 +156,18 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             default: false,
         },
         displayHoursToggle:{
+            type: 'boolean',
+            default: false,
+        },
+        changeTitleFontSize:{
+            type: 'boolean',
+            default: false,
+        },
+        titleFontSize:{
+            type: 'number',
+            default: 16,
+        },
+        disablePagination:{
             type: 'boolean',
             default: false,
         },
