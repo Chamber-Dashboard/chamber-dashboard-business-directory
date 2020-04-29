@@ -27,33 +27,6 @@ import { SelectControl,
     } from '@wordpress/editor'
     ;
 import { withSelect, widthDispatch } from '@wordpress/data';
-//import { RichText, } from '@wordpress/rich-text';
-
-/*const {
-    RichText,
-    AlignmentToolbar,
-    BlockControls,
-    BlockAlignmentToolbar,
-    InspectorControls,
-    InnerBlocks,
-    withColors,
-    PanelColorSettings,
-    getColorClassName
-  } = wp.editor;*/
-
-  /*const {
-    Toolbar,
-    Button,
-    Tooltip,
-    PanelBody,
-    PanelRow,
-    FormToggle,
-    ToggleControl,
-    ToolbarGroup,
-    Disabled, 
-    RadioControl,
-    RangeControl, 
-} = wp.components;*/
 
 const {
     withState
