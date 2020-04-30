@@ -14,7 +14,8 @@ function cdash_exporter_function($email_address, $page = 1){
     $page   = (int) $page;
     
     $export_items = array();
-    global $buscontact_metabox;
+	global $buscontact_metabox;
+	global $person_metabox;
     
     global $billing_metabox;
     $billing_meta = $billing_metabox->the_meta();
@@ -34,6 +35,10 @@ function cdash_exporter_function($email_address, $page = 1){
 			$contactmeta = $buscontact_metabox->the_meta($business->ID);
 			
 			$business_details = cdash_export_bus_location_data($contactmeta);
+			$people_details = cdash_get_people_data();
+			//Maybe get the person id from the user id and use that to get the person details
+
+			cd_debug("People Details: " . print_r($people_details, true));
 			
             // here you can specify the fields, that exist in any way
 			$data = array(
@@ -60,6 +65,10 @@ function cdash_exporter_function($email_address, $page = 1){
 				array(
 					'name' => 'Email',
 					'value' => $business_details['email']
+				),
+				array(
+					'name' => 'Connected Person Details',
+					'value' => $people_details['name']
 				),
             );
             $export_items[] = array(
@@ -149,6 +158,33 @@ function cdash_export_bus_location_data($contactmeta){
 		}
 	}
 	return $business_details;
+}
+
+function cdash_get_people_data(){
+	$person_details = array();
+	cd_debug("Inside the get people function.<br />");
+
+	$options = get_option( 'cdcrm_options' );
+
+	// Find connected posts
+	$people = get_posts( array(
+		'connected_type' => 'businesses_to_people',
+	  	'connected_items' => get_queried_object(),
+	  	'nopaging' => true,
+		'suppress_filters' => false
+	) );
+	cd_debug("People: " . print_r($people, true));
+
+	if($people){
+        foreach ( (array) $people as $person ){
+			cd_debug("Person ID: " . $person->ID . "<br />");
+			$person_meta = $person_metabox->the_meta($person->ID);
+			if(isset($person_meta['title'])){
+				$person_details['name'] = $person_meta['title'];
+			}
+		}
+	}
+	return $person_details();
 }
 
 
