@@ -284,4 +284,13 @@ function cdash_check_mu_active(){
   }
 }
 
+//Check if CRM is active
+function cdash_crm_active(){
+  if(function_exists('cdcrm_requires_wordpress_version')){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 ?>
