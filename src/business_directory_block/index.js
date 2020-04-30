@@ -7,9 +7,7 @@ import edit from './edit';
 import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
-//import { withState } from '@wordpress/compose';
 import { setState } from '@wordpress/compose';
-//const { withState, setState } = wp.compose;
 
 registerBlockType( 'cdash-bd-blocks/business-directory', {
     title: 'Display Business Directory',
