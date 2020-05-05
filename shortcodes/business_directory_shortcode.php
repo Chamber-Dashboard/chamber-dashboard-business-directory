@@ -36,7 +36,7 @@ function cdash_business_directory_shortcode( $atts ) {
 		), $atts )
 	);
 
-	cd_debug("Change Title font size in shortcode function: " . $changeTitleFontSize);
+	//cd_debug("Change Title font size in shortcode function: " . $changeTitleFontSize);
 
 	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
 	//Loop through the memberhsip levels
@@ -76,6 +76,7 @@ function cdash_business_directory_shortcode( $atts ) {
   	}else{
 		$displayopts = '';
 	}
+	cd_debug("Display Options inside shortcode function: " . $display);
 	if(is_front_page()){
 		$paged = (int)get_query_var('page');
 	}else{
@@ -113,10 +114,9 @@ function cdash_business_directory_shortcode( $atts ) {
 	$business_list = '';
 	if($alpha == 'yes'){
 		$business_list = cdash_list_alphabet();
-	}
-
-  	if(isset($_GET['starts_with'])) {
-		$args['starts_with'] = $_GET['starts_with'];
+		if(isset($_GET['starts_with'])) {
+			$args['starts_with'] = $_GET['starts_with'];
+		}
 	}
 
 	if($show_category_filter == 'yes'){

@@ -102,10 +102,6 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'no',
         },
-        logoGalleryToggle:{
-            type: 'boolean',
-            default: false,
-        },
         logo_gallery:{
             type: 'string',
             default: 'no',
@@ -133,10 +129,6 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         displayEmailToggle:{
             type: 'boolean',
             default: true,
-        },
-        displayLocationNameToggle:{
-            type: 'boolean',
-            default: false,
         },
         displayCategoryToggle:{
             type: 'boolean',

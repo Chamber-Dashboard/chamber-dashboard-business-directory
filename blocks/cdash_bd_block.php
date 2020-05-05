@@ -103,10 +103,6 @@ if ( function_exists( 'register_block_type' ) ) {
                   'type'  => 'string',
                   'default'   => 'no',
               ),
-              'logoGalleryToggle'    => array(
-                  'type'  => 'boolean',
-                  'default'   => 'false',
-              ),
               'logo_gallery'    => array(
                   'type'  => 'string',
                   'default'   => 'no',
@@ -134,10 +130,6 @@ if ( function_exists( 'register_block_type' ) ) {
               'displayEmailToggle'    => array(
                   'type'  => 'boolean',
                   'default'   => 'true',
-              ),
-              'displayLocationNameToggle'    => array(
-                  'type'  => 'boolean',
-                  'default'   => 'false',
               ),
               'displayCategoryToggle'    => array(
                   'type'  => 'boolean',
@@ -188,21 +180,24 @@ function cdash_set_display_options($attributes, $displayOptions, $toggle_name, $
 }
 
 function cdash_bus_directory_block_callback($attributes){
-  
   $displayOptions = [];
+  cd_debug("Display Options 1: " . print_r($displayOptions, true));
 
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayAddressToggle', 'address');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayUrlToggle', 'url');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayPhoneToggle', 'phone');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayEmailToggle', 'email');
-  $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLocationNameToggle', 'location_name');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayCategoryToggle', 'category');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLevelToggle', 'level');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displaySocialMediaIconsToggle', 'social_media');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayLocationToggle', 'location');
   $displayOptions = cdash_set_display_options($attributes, $displayOptions, 'displayHoursToggle', 'hours');
 
+  cd_debug("Display Options 2: " . print_r($displayOptions, true));
+
   $attributes['display'] = implode(',', $displayOptions);
+
+  cd_debug("Display Options inside the block function: " . $attributes['display']);
 
   if(isset($attributes['categoryArray']) && '' != $attributes['categoryArray']){
       $attributes['category'] = $attributes['categoryArray'];

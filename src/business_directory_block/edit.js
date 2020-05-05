@@ -49,7 +49,6 @@ const orderbyOptions = [
     { label: 'Date', value: 'date' },
     { label: 'Menu Order', value: 'menu_order' },
     { label: 'Random', value: 'random' },
-    { label: 'Membership Level', value: 'membership_level' },
  ];
 
 const orderOptions = [
@@ -121,6 +120,28 @@ const titleFontSizes = [
 ];
 const titleFallbackFontSize = 16;
 
+const CdashDisplayAddressToggle = withState( {
+    displayAddressToggle: false,
+} )( ( { displayAddressToggle, setState } ) => (
+    <ToggleControl
+        label="Display Address"
+        help={ displayAddressToggle ? 'Show Address.' : 'Hide Address.' }
+        checked={ displayAddressToggle }
+        onChange={ () => setState( ( state ) => ( { displayAddressToggle: ! state.displayAddressToggle } ) ) }
+    />
+) );
+
+const CdashDisplayUrlToggle = withState( {
+    displayUrlToggle: true,
+} )( ( { displayUrlToggle, setState } ) => (
+    <ToggleControl
+        label="Display Url"
+        help={ displayUrlToggle ? 'Show Url.' : 'Hide Url.' }
+        checked={ displayUrlToggle }        
+        onChange={ () => setState( ( state ) => ( { displayUrlToggle: ! state.displayUrlToggle } ) )  }
+    />
+) );
+
 wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         membershipLevelOptions.push({label: val.name, value: val.slug});
@@ -129,7 +150,7 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
 
 
 const edit = props => {
-    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logoGalleryToggle, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayLocationNameToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, }, className, setAttributes } = props;
+    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, }, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -156,11 +177,6 @@ const edit = props => {
     const setAlpha = alphaToggle =>{
         props.setAttributes({alphaToggle})
         !! alphaToggle ? __( props.setAttributes({alpha: 'yes'}) ) : __( props.setAttributes({alpha: 'no'}) );
-        
-    };
-    const setLogoGallery = logoGalleryToggle =>{
-        props.setAttributes({logoGalleryToggle})
-        !! logoGalleryToggle ? __( props.setAttributes({logo_gallery: 'yes'}) ) : __( props.setAttributes({logo_gallery: 'no'}) );
         
     };
     const setShowCategoryFilter = categoryFilterToggle =>{
@@ -251,15 +267,7 @@ const edit = props => {
             </PanelBody>
             <PanelBody title={ __( 'Display Options' )} initialOpen={ false }>
                 <PanelRow>
-                        <ToggleControl
-                            label={ __( 'Display Address' ) }
-                            checked={ displayAddressToggle }
-                            //onChange = {setDisplayAddressToggle}
-                            onChange={ ( nextValue ) =>
-                                setAttributes( { displayAddressToggle:  nextValue } )
-                            }
-                            help={ !! displayAddressToggle ? __( 'Show the address' ) : __( 'Hide the address.' ) }
-                        />
+                        <CdashDisplayAddressToggle />
                     </PanelRow>
                     <PanelRow>
                         <ToggleControl
@@ -294,15 +302,6 @@ const edit = props => {
                             checked={ displayLocationToggle }
                             onChange={ ( nextValue ) =>
                                 setAttributes( { displayLocationToggle:  nextValue } )
-                            }
-                        />
-                    </PanelRow>
-                    <PanelRow>
-                        <ToggleControl
-                            label={ __( 'Display Location Name' ) }
-                            checked={ displayLocationNameToggle }
-                            onChange={ ( nextValue ) =>
-                                setAttributes( { displayLocationNameToggle:  nextValue } )
                             }
                         />
                     </PanelRow>
@@ -419,14 +418,6 @@ const edit = props => {
 						label={ __( 'Enable Alpha Search' ) }
 						checked={ alphaToggle }
                         onChange = {setAlpha}
-					/>
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-						label={ __( 'Enable Logo Gallery' ) }
-						checked={ logoGalleryToggle }
-                        onChange = {setLogoGallery}
-                        help={ !! logoGalleryToggle ? __( 'Show the logo gallery' ) : __( 'Hide the logo gallery.' ) }
 					/>
                 </PanelRow>
                 <PanelRow>
