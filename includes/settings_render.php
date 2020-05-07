@@ -349,7 +349,7 @@ function cdash_custom_fields_render($args){
         <br />
         <a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
   		</div>
-  		<?php $i++;
+      <?php $i++;
   	}
   } else {
     ?>
@@ -425,9 +425,15 @@ function cdash_custom_fields_display_dir($field_set, $options, $i){
   if($field_set){
     ?>
     <p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>
-    <?php $field['display_dir'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_dir'], true ); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_dir'], true); ?> /><?php _e('No', 'cdash'); ?></label><br />
+    <?php $field['display_dir'] = "";
+    if(isset($options['bus_custom'][$i]['display_dir'])){
+      $display_dir = $options['bus_custom'][$i]['display_dir'];
+    }else{
+      $display_dir = '';
+    }
+    ?>
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $display_dir, true ); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $display_dir, true); ?> /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>
@@ -440,11 +446,16 @@ function cdash_custom_fields_display_dir($field_set, $options, $i){
 
 function cdash_custom_fields_display_single($field_set, $options, $i){
   if($field_set){
+    if(isset($options['bus_custom'][$i]['display_single'])){
+      $display_single = $options['bus_custom'][$i]['display_single'];
+    }else{
+      $display_single = '';
+    }
     ?>
     <p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
     <?php $field['display_single'] = ""; ?>
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][$i]['display_single']); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
-      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][$i]['display_single']); ?> /><?php _e('No', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $display_single); ?> /><?php _e('Yes', 'cdash'); ?></label><br />
+      <label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $display_single); ?> /><?php _e('No', 'cdash'); ?></label><br />
     <?php
   }else{
     ?>

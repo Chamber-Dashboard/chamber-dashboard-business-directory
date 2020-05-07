@@ -51,12 +51,21 @@ function chamber_dashboard_addons_page_render(){
                         );
 
                         display_addons(
-                          'Chamber Dashboard Member Manager Pro',
+                          'Chamber Dashboard Payment Options',
                           'member_manager_pro',
-                          'Gives you the option to use alternative payment gateways to process membership payments.',
-                          'https://chamberdashboard.com/downloads/member-manager-pro/',
+                          'Gives you some additional payment settings',
+                          'https://chamberdashboard.com/downloads/payment-options/',
                           '$49.00',
-  					              'plugin'
+  					      'plugin'
+                        );
+
+                        display_addons(
+                          'Chamber Dashboard WC Payments',
+                          'member_manager_pro',
+                          'Gives you the option to connect to alternative payment gateways',
+                          'https://chamberdashboard.com/downloads/wc-payments/',
+                          '$49.00',
+                          'plugin'
                         );
 
                         display_addons(
