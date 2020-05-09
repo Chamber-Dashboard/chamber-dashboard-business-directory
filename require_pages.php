@@ -27,4 +27,8 @@ foreach ( glob( plugin_dir_path( __FILE__ ) . "post_types/*.php" ) as $file ) {
 foreach ( glob( plugin_dir_path( __FILE__ ) . "views/*.php" ) as $file ) {
     require_once $file;
 }
+
+foreach ( glob( plugin_dir_path( __FILE__ ) . "blocks/*.php" ) as $file ) {
+    require_once $file;
+}
 ?>

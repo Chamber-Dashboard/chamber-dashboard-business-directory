@@ -284,4 +284,22 @@ function cdash_check_mu_active(){
   }
 }
 
+//Check if Member Manager is active
+function cdash_check_mm_active(){
+  if(function_exists('cdashmm_requires_wordpress_version')){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+function cdash_check_mm_active_ajax(){
+  $response = array();
+  $response['cdash_mm_active'] = cdash_check_mm_active();
+  echo json_encode($response);
+  wp_die();
+}
+
+add_action('wp_ajax_cdash_check_mm_active_action', 'cdash_check_mm_active_ajax');
+add_action('wp_ajax_nopriv_cdash_check_mm_active_action', 'cdash_check_mm_active_ajax');
 ?>

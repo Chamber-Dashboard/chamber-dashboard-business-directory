@@ -1,0 +1,24 @@
+{
+  "name": "bd-blocks",
+  "version": "1.0.0",
+  "description": "Business Directory blocks",
+  "main": "js/block.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/cguntur/chamber-dashboard-business-directory.git"
+  },
+  "author": "Chandrika Guntur",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/cguntur/chamber-dashboard-business-directory#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "7.1.3"
+  },
+  "dependencies": {
+    "@wordpress/server-side-render": "^1.8.6"
+  }
+}
