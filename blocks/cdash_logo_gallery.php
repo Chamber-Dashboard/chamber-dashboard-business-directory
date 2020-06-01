@@ -93,7 +93,7 @@ if ( function_exists( 'register_block_type' ) ) {
               ),
               'image_size'    => array(
                   'type'  => 'string',
-                  'default'   => '',
+                  'default'   => 'medium',
               ),
               'alpha'    => array(
                   'type'  => 'string',

@@ -1,18 +1,24 @@
 === Chamber Dashboard Business Directory ===
 Contributors: cguntur, gwendydd, LisaK.social
-Tags: Chamber of Commerce, business directory, businesses, Member Directory, A-Z directory listings, Featured Members, Featured Businesses, gutenberg ready
+Tags: business directory, membership association, A-Z directory listings, Gutenberg blocks, networking site, chamber of commerce, Member Directory,  Featured Members, Featured Businesses, business listings block, logo gallery block
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Business Directory gives you tools to manage your members and run any membership organization right from your WordPress website!
 
 == Description ==
-The Chamber Dashboard Business Directory makes it quick and easy to add a Business Directory to your site. The Directory integrates seamlessly with WordPress, is mobile-friendly and picks up its formatting from your existing theme, giving you design freedom. Learn more at [chamberdashboard.com] (https://chamberdashboard.com/features/).
+Display your Directory using shortcode or Business Directory block.
+
+= Business Directory Block =
+
+[youtube https://youtu.be/QyAas7Q9n0o  ]
+
+The Chamber Dashboard Business Directory makes it quick and easy to add a Business Directory to your site. The Directory is mobile-friendly and picks up its formatting from your existing WordPress theme, giving you design freedom. Learn more at [chamberdashboard.com] (https://chamberdashboard.com/features/).
 
 Used by chambers of commerce, visitor bureaus, professional associations, neighborhood guides and other membership organizations. Chamber Dashboard plugins give you the tools you need to build a powerful membership site, increase visitor engagement on your site and streamline member management. It includes 24/7 online payments, automated renewals, featured events, and of course a searchable Business Directory!
 
@@ -21,23 +27,23 @@ Used by chambers of commerce, visitor bureaus, professional associations, neighb
 * [5 Minute Getting Started Guide](https://chamberdashboard.com/docs/workflows/5-minute-setup-guide/)
 * [Complete Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
 
-= Build a community resource to increase traffic to your site  =
-*  	Add a searchable Business Directory to your site
-*   Search businesses by categories
-*   A-Z directory listings
-*   Import existing listings via CSV
-*   Customize directory information
-*   Display featured member listings
-*   Add custom fields to businesses
-*   Display listings on Google Maps
-*   Link to member’s social media pages
-
 = Simplify Member Management =
 *   Connect to the free [Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) plugin to start accepting online payments and automatically create new listings in your directory.
 *   Track new leads and member activities with the free [CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) plugin.
 *   Display upcoming events with the free [Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) plugin.
-*   Let members update their own listings, automate your renewal process, create a board or staff profile pages, change payment gateways and more with [addons](https://chamberdashboard.com/add-ons/) for Chamber Dashboard.
+*   Let members update their own listings, submit member events, automate your renewal process, create a board or staff profile pages, change payment gateways and more with [addons](https://chamberdashboard.com/add-ons/) for Chamber Dashboard.
 
+= Build a community resource to increase traffic to your site  =
+*   Add a searchable Business Directory to your site
+*   Filter by category
+*   A-Z search feature
+*   Import existing listings via CSV
+								   
+*   Display featured member listings
+*   Add custom fields to individual business listings
+*   Display listings on Google Maps
+*   Link to memberâ€™s social media pages
+*   Display Logo Gallery of member businesses
 For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
 
 = Give your site a modern, professional look =
@@ -79,6 +85,8 @@ Create a page, and insert the following shortcode:
 
 There are lots of options for this shortcode.  For a full description, see [Chamber Dashboard Documentation](http://chamberdashboard.com/document/displaying-business-directory-site/)
 
+Or use the new business directory block or the logo gallery block from the block editor
+
 = Will it work with my theme? =
 Probably!  It is designed to work with any theme that follows basic WordPress coding practices.
 
@@ -98,6 +106,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 4. Business search widget
 5. Map of Business listings
 6. A-Z Directory listings
+7. Business Directory block settings 
 
 = Contributors =
 Several people have contributed to the development of Chamber Dashboard:
@@ -106,6 +115,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.2.3 =
+* Added Gutenberg block to display business directory listings  
+
 = 3.2.2 =
 * Fixed the display of logos when displaying a logo gallery 
 * Fixed spacing on directory search results page

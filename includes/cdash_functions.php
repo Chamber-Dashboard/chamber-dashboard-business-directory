@@ -194,7 +194,7 @@ function cdash_is_member_updater_active(){
 }
 
 function cdash_enqueue_styles(){
-  wp_enqueue_style( 'cdash-business-directory', plugins_url( 'css/cdash-business-directory.css', dirname(__FILE__) ) );
+  wp_enqueue_style( 'cdash-business-directory', plugins_url( 'css/cdash-business-directory.css', dirname(__FILE__) ), '', null );
 }
 
 function cdash_enqueue_scripts(){

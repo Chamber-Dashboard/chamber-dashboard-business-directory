@@ -48,7 +48,7 @@ const orderbyOptions = [
     { label: 'Title', value: 'title' },
     { label: 'Date', value: 'date' },
     { label: 'Menu Order', value: 'menu_order' },
-    { label: 'Random', value: 'random' },
+    { label: 'Random', value: 'rand' },
  ];
 
 const orderOptions = [
@@ -63,6 +63,7 @@ const imageOptions = [
 ];
 
 const imageSizeOptions = [
+    { label: 'Auto', value: '' },
     { label: 'Small', value: 'thumbnail' },
     { label: 'Medium', value: 'medium' },
     { label: 'Large', value: 'large' },

@@ -13,7 +13,7 @@ import { setState } from '@wordpress/compose';
 
 registerBlockType( 'cdash-bd-blocks/logo-gallery', {
     title: 'Logo Gallery',
-    icon: 'admin-home',
+    icon: 'format-gallery',
     category: 'cd-blocks',
     attributes: {
         cd_block:{
@@ -93,8 +93,8 @@ registerBlockType( 'cdash-bd-blocks/logo-gallery', {
             default: '',
         },
         image_size:{
-            type: 'number',
-            default: '',
+            type: 'string',
+            default: 'medium',
         },
         alpha:{
             type: 'string',

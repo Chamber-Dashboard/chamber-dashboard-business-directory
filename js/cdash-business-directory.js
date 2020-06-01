@@ -46,3 +46,41 @@ jQuery(document).ready(function($){
     }
  }) 
 });
+
+function getGridData () {
+  // calc computed style
+const gridComputedStyle = window.getComputedStyle(businesslist);
+
+return {
+  // get number of grid rows
+  gridRowCount: gridComputedStyle.getPropertyValue("grid-template-rows").split(" ").length,
+  // get number of grid columns
+  gridColumnCount: gridComputedStyle.getPropertyValue("grid-template-columns").split(" ").length,
+  // get grid row sizes
+  gridRowSizes: gridComputedStyle.getPropertyValue("grid-template-rows").split(" ").map(parseFloat),
+  // get grid column sizes
+  gridColumnSizes: gridComputedStyle.getPropertyValue("grid-template-columns").split(" ").map(parseFloat)
+}
+}
+
+window.addEventListener("DOMContentLoaded", outputGridData);
+window.addEventListener("resize", outputGridData);
+
+function outputGridData () {
+  const gridData = getGridData();
+  const columnCount = gridData.gridColumnCount;
+  /*output.textContent = `
+    Rows: ${gridData.gridRowCount}
+    Columns: ${gridData.gridColumnCount}
+    Rows sizes: ${gridData.gridRowSizes}
+    Column sizes: ${gridData.gridColumnSizes}
+  `;*/
+  //document.getElementById("businesslist").className = "grid"+columnCount;
+  //document.querySelector("#businesslist .business .description a").className = "grid"+columnCount;
+  var images = document.querySelectorAll("#businesslist.responsive.cd_block .business .description a");
+  //alert(images);
+  for (i = 0; i < images.length; ++i) {
+    images[i].className = "grid"+columnCount;
+  }
+}
+

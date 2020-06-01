@@ -11,7 +11,7 @@ import { setState } from '@wordpress/compose';
 
 registerBlockType( 'cdash-bd-blocks/business-directory', {
     title: 'Display Business Directory',
-    icon: 'admin-home',
+    icon: 'store',
     category: 'cd-blocks',
     attributes: {
         cd_block:{

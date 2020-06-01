@@ -45,8 +45,7 @@ const orderbyOptions = [
     { label: 'Title', value: 'title' },
     { label: 'Date', value: 'date' },
     { label: 'Menu Order', value: 'menu_order' },
-    { label: 'Random', value: 'random' },
-    { label: 'Membership Level', value: 'membership_level' },
+    { label: 'Random', value: 'rand' },
  ];
 
 const orderOptions = [
@@ -55,10 +54,11 @@ const orderOptions = [
 ];
 
 const imageSizeOptions = [
-    { label: 'Small', value: 'small' },
+    { label: 'Auto', value: '' },
+    { label: 'Small', value: 'thumbnail' },
     { label: 'Medium', value: 'medium' },
     { label: 'Large', value: 'large' },
-    { label: 'Full Width', value: 'full_width' },
+    { label: 'Full Width', value: 'full' },
 ];
 const categoryOptions = [
     { label: 'Select one or more categories', value: null }
@@ -127,7 +127,7 @@ const edit = props => {
     const inspectorControls = (
         <InspectorControls key="inspector">
             <PanelBody title={ __( 'Formatting Options' )}>
-            <PanelRow>
+                <PanelRow>
                     <SelectControl
                         label="Directory Layout"
                         value={ format }
@@ -138,27 +138,6 @@ const edit = props => {
                         onChange = {setDirectoryLayout}
                     />
                 </PanelRow> 
-                <PanelRow>
-                    <RangeControl
-                        label="Number of Businesses per page"
-                        min={-1 }
-                        max={ 50 }
-                        onChange={ ( value ) => setAttributes( { perpage: value} ) }
-                        value={ perpage }
-                        initialPosition = { -1 }
-                        allowReset = "true"
-                    />
-                </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-                        label={ __( 'Disable Pagination' ) }
-                        checked={ disablePagination }
-                        //onChange = {setDisplayAddressToggle}
-                        onChange={ ( nextValue ) =>
-                            setAttributes( { disablePagination:  nextValue } )
-                        }
-                    />
-                </PanelRow>
                 <PanelRow>
                     <SelectControl
                         label="Order By"

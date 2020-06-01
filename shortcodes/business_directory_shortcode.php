@@ -25,7 +25,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 			'status' => '', // options: slug of any membership status
-			'image_size'	=> 'medium', //options: thumbnail, medium, large, full
+			'image_size'	=> '', //options: thumbnail, medium, large, full
 			'alpha'	=> 'no',	//options: yes, no
 			'logo_gallery' => 'no', // options: yes, no
 			'show_category_filter' => 'no', //options: yes, no
@@ -151,7 +151,14 @@ function cdash_business_directory_shortcode( $atts ) {
 	// The Loop
 	if ( $businessquery->have_posts() ) :
 		//$business_list = '';
-		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class ."'>";
+		$business_list .= "<div id='output'></div>";
+		if($cd_block == "yes"){
+			$block_class = "cd_block";
+		}else{
+			$block_class = "";
+		}
+		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class . ' ' . $block_class ."'>";
+		
 		$count = 0;
 			while ( $businessquery->have_posts() ) :
 				$businessquery->the_post();
@@ -255,12 +262,12 @@ function cdash_display_business_listings($add, $single_link, $image, $image_size
 	}
 
 	if(isset($image_size) && $image_size !=""){
-		$image_class = $image_size . " logo";
+		$image_class = $image_size . " ". $image;
 	}else{
-		$image_class = "alignleft logo";
+		$image_class = "alignleft " . $image;
+		//$image_class = "alignleft ";
 	}
 	$business_list .= "<div class='description'>";
-
 
 	$business_list .= cdash_bus_directory_display_image($image, $image_class, $image_size, $single_link, $post_id, $logo_gallery);
 
@@ -315,7 +322,8 @@ function cdash_bus_directory_display_image($image, $image_class, $image_size, $s
 		if( isset( $logometa['buslogo'] ) ) {
 		$logoattr = array(
 			//'class'	=> 'alignleft logo',
-			'class'	=> $image_class,
+			//'class'	=> $image_size . ' logo',
+			'class' => $image_class,
 			//'alt' => 'testing alt atribute'
 			);
 			if( $single_link == "yes" ) {
