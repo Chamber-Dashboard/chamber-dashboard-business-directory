@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.2.3
+Version: 3.2.4
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.2.3' );
+define( 'CDASH_BUS_VER', '3.2.4' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -172,7 +172,7 @@ function cdash_register_taxonomy_membership_level() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
-		'show_in_rest'							 => true,
+		'show_in_rest'				 => true,
 		'rewrite' => array (
             'slug' => _x( 'membership_level', 'membership_level', 'cdash' )
         )
