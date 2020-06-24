@@ -15,6 +15,9 @@ registerBlockType( 'cdash-bd-blocks/logo-gallery', {
     title: 'Logo Gallery',
     icon: 'format-gallery',
     category: 'cd-blocks',
+    description: 'The logo gallery block displays the Business Logos without the name, description or other fields.',
+    example: {
+    },
     attributes: {
         cd_block:{
             type: 'string',

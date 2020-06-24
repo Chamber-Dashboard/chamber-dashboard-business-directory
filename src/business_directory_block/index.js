@@ -13,6 +13,9 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
     title: 'Display Business Directory',
     icon: 'store',
     category: 'cd-blocks',
+    description: 'The business directory block displays the Business Directoy listings on your page.',
+    example: {
+    },
     attributes: {
         cd_block:{
             type: 'string',
