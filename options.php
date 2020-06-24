@@ -754,7 +754,7 @@ function cdash_options_page(){
     add_submenu_page( $slug, 'Getting Started', 'Getting Started', 'manage_options', 'cd-welcome', 'cdash_welcome_page' );
     $license_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
     $plugins = cdash_get_active_plugin_list();
-        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins) || in_array('cdash-member-manager-pro.php', $plugins) || in_array( 'cdash-wc-payments.php', $plugins ) || in_array('cd-mailchimp-addon.php', $plugins) ) {
+        if( in_array( 'cdash-recurring-payments.php', $plugins ) || in_array('cdash-member-updater.php', $plugins) || in_array('cdash-exporter.php', $plugins) || in_array('cdash-crm-importer.php', $plugins) || in_array('cdash-member-manager-pro.php', $plugins) || in_array( 'cdash-wc-payments.php', $plugins ) || in_array('cd-mailchimp-addon.php', $plugins) || in_array('cdash-payment-options.php', $plugins) ) {
             add_submenu_page( $slug, 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         }
 				//cdash_add_licence_page_menu_hook();
