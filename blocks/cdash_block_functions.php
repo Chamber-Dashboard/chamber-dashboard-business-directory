@@ -23,4 +23,13 @@ function cdash_block_category( $categories, $post ) {
   }
   add_action( 'enqueue_block_editor_assets', 'cdash_block_editor_css' );
 
+  //add search block css in the in the editor
+  function cdash_search_block_editor_css(){
+    //cdash_enqueue_styles();
+    wp_enqueue_style(
+        'cdash_search_block_editor_styles',
+        plugins_url( './css/search_block.css', dirname(__FILE__) ),
+        array()
+     );
+  }
 ?>

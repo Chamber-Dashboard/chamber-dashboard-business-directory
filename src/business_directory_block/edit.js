@@ -137,7 +137,6 @@ const edit = props => {
 
     const setCategories = categoryArray => {
         props.setAttributes( { categoryArray} );
-        console.log(categoryArray);
     };
 
     const setMembershipLevel = membershipLevelArray => {
@@ -253,16 +252,16 @@ const edit = props => {
                             setAttributes( { displayAddressToggle: nextValue } )
                         }
                     />
-                    </PanelRow>
-                    <PanelRow>
-                        <ToggleControl
-                            label={ __( 'Display Url' ) }
-                            checked={ displayUrlToggle }
-                            onChange={ ( nextValue ) =>
-                                setAttributes( { displayUrlToggle: nextValue } )
-                            }
-                        />
-                    </PanelRow>
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={ __( 'Display Url' ) }
+                        checked={ displayUrlToggle }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { displayUrlToggle: nextValue } )
+                        }
+                    />
+                </PanelRow>
                     <PanelRow>
                         <ToggleControl
                             label={ __( 'Display Phone' ) }

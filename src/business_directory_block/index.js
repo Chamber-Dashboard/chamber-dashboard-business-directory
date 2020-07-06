@@ -53,10 +53,6 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type:Boolean,
             default: true,        
         },
-        display:{
-            type: 'string',
-            default: '',
-        },
         text:{
             type: 'string',
             default: 'none',
@@ -117,6 +113,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'no',
         },
+        display:{
+            type: 'string',
+            default: '',
+        },
         displayAddressToggle:{
             type: 'boolean',
             default: false,
