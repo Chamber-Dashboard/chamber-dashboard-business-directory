@@ -42,17 +42,28 @@ function cdash_business_search_form_block($attributes){
     $search_form = "<div id='business-search' class='" . $class . "'>";
     //$search_form = "<div class='" . $class . "'>";
 
+    if(isset($attributes['searchFormCustomTitle']) && '' !== $attributes['searchFormCustomTitle']){
+        $custom_search_form_title = $attributes['searchFormCustomTitle'];
+    }else{
+        $custom_search_form_title = '';
+    }
 
-    if(isset($attributes['searchFormTitle']) && $attributes['searchFormTitle'] == true){
-        $search_form .= "<h3>" . __('Search', 'cdash') . "</h3>";
+    if(isset($attributes['searchFormTitleDisplay']) && $attributes['searchFormTitleDisplay'] == true){
+        $search_form .= "<h3>" . __($custom_search_form_title, 'cdash') . "</h3>";
     }
     
 
     $search_form .= "<form id='business-search-form' method='get' action='" . get_the_permalink() . "'>";
     $search_form .= "<p class='business-search-term'>";
+
+    if(isset($attributes['customSearchFormLabel']) && '' !== $attributes['customSearchFormLabel']){
+        $custom_search_term_label = $attributes['customSearchFormLabel'];
+    }else{
+        $custom_search_term_label = 'Search Term';
+    }
     
     if(isset($attributes['searchFormLabelDisplay']) && $attributes['searchFormLabelDisplay'] == true){
-        $search_form .= "<label id='business-search-term' aria-label='search-term'>" . __('Search Term', 'cdash') . "</label><br />";
+        $search_form .= "<label id='business-search-term' aria-label='search-term'>" . __($custom_search_term_label, 'cdash') . "</label><br />";
     }
     
     if(isset($attributes['searchInputPlaceholder']) && $attributes['searchInputPlaceholder'] != '' ){
@@ -115,10 +126,16 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
         $order_by = 'title';
     }
 
+    if(isset($attributes['perPage']) && $attributes['perPage'] != ''){
+        $restuls_per_page = $attributes['perPage'];
+    }else{
+        $restuls_per_page = $options['search_results_per_page'];
+    }
+
 
     $args = array(
         'post_type' => 'business',
-        'posts_per_page' => $options['search_results_per_page'],
+        'posts_per_page' => $restuls_per_page,
         'paged' => $paged,
         'order' => $order,
         'orderby' => $order_by
@@ -196,7 +213,9 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
                     $search_results .= wp_get_attachment_image( $logometa['buslogo'], $image_size, 0, $attr );
                 }
 
-                $search_results .= '<div class="cdash-description">' . get_the_excerpt() . '</div>';
+                if(isset($attributes['displayDescription']) && true == $attributes['displayDescription']){
+                    $search_results .= '<div class="cdash-description">' . get_the_excerpt() . '</div>';
+                }
 
                 if(isset($attributes['displayMemberLevel']) && '' != $attributes['displayMemberLevel']){
                     $search_results .= cdash_display_membership_level( $post->ID );
@@ -273,9 +292,12 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
         } else {*/
             $search_results .= "<div class='location'>";
 
+            //$header_tag_begin = "<h4>";
+            //$header_tag_end = "</h4>";
             if(isset($attributes['displayLocationName']) && '' != $attributes['displayLocationName']){
                 if(isset($location['altname'])){
                     $search_results .= "<h3>" . $location['altname'] . "</h3>";
+                    //$search_results .= $header_tag_begin . $location['altname'] . $header_tag_end;
                 }
             }
 

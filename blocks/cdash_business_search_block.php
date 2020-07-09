@@ -6,9 +6,13 @@ if ( function_exists( 'register_block_type' ) ) {
         'cdash-bd-blocks/business-directory-search', [
             'render_callback' => 'cdash_bus_directory_search_block_callback',
             'attributes'  => array(
-                'searchFormTitle'    => array(
+                'searchFormTitleDisplay'    => array(
                     'type'  => 'boolean',
                     'default'   => 'true',
+                ),
+                'searchFormCustomTitle' => array(
+                    'type'  => 'string',
+                    'default'   => __('Search', 'cdash'),
                 ),
                 'searchFormAlignment'    => array(
                     'type'  => 'string',
@@ -17,6 +21,10 @@ if ( function_exists( 'register_block_type' ) ) {
                 'searchFormLabelDisplay'    => array(
                     'type'  => 'boolean',
                     'default'   => 'true',
+                ),
+                'customSearchFormLabel' => array(
+                    'type'  => 'string',
+                    'default'   => __('Search Term', 'cdash'),
                 ),
                 'categoryFieldDisplay'    => array(
                     'type'  => 'boolean',
@@ -37,6 +45,10 @@ if ( function_exists( 'register_block_type' ) ) {
                 'searchDisplayFormat'    => array(
                     'type'  => 'string',
                     'default'   => 'list',
+                ),
+                'displayDescription'    => array(
+                    'type'  => 'boolean',
+                    'default'   => 'true',
                 ),
                 'displayMemberLevel'    => array(
                     'type'  => 'boolean',
@@ -64,7 +76,7 @@ if ( function_exists( 'register_block_type' ) ) {
                 ),
                 'perPage'    => array(
                     'type'  => 'number',
-                    'default'   => '-1',
+                    'default'   => -1,
                 ),
                 'orderBy'    => array(
                     'type'  => 'string',

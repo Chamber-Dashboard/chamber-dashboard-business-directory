@@ -65,7 +65,7 @@ const imageSizeOptions = [
 ];
 
 const edit = props => {
-    const {attributes:{searchFormTitle, searchFormAlignment, searchFormLabelDisplay, categoryFieldDisplay, categoryFieldLabelDisplay, customCategoryFieldLabel, searchInputPlaceholder, searchDisplayFormat, displayMemberLevel, displayCategory, displayTags, displaySocialMedia, displayUrl, displayHours, displayEmail, perPage, orderBy, order, imageType, imageSize, imageAlignment, displayLocationName, displayAddress, displayWebsite, displayPhone}, className, setAttributes} = props;
+    const {attributes:{searchFormTitleDisplay, searchFormCustomTitle, searchFormAlignment, searchFormLabelDisplay, customSearchFormLabel, categoryFieldDisplay, categoryFieldLabelDisplay, customCategoryFieldLabel, searchInputPlaceholder, searchDisplayFormat, displayDescription, displayMemberLevel, displayCategory, displayTags, displaySocialMedia, displayUrl, displayHours, displayEmail, perPage, orderBy, order, imageType, imageSize, imageAlignment, displayLocationName, displayAddress, displayWebsite, displayPhone}, className, setAttributes} = props;
 
     const setResultsPage = selectResultsPage => {
         props.setAttributes( { selectResultsPage} );
@@ -88,18 +88,53 @@ const edit = props => {
                 <PanelRow>
                     <ToggleControl
                         label={ __( 'Show Search Form Title' ) }
-                        checked={ searchFormTitle }
+                        checked={ searchFormTitleDisplay }
                         onChange={ ( nextValue ) =>
-                            setAttributes( { searchFormTitle: nextValue } )
+                            setAttributes( { searchFormTitleDisplay: nextValue } )
                         }
                     />
                 </PanelRow>
+                { searchFormTitleDisplay &&
+				    (
+                        <PanelRow>
+                            <TextControl
+                                label="Custom Search Form Title"
+                                value={ searchFormCustomTitle }
+                                onChange={ ( nextValue ) =>
+                                    setAttributes( { searchFormCustomTitle: nextValue } )
+                                }
+                            />
+                        </PanelRow>
+                    )
+                }
                 <PanelRow>
                     <ToggleControl
                         label={ __( 'Show Search Form Label' ) }
                         checked={ searchFormLabelDisplay }
                         onChange={ ( nextValue ) =>
                             setAttributes( { searchFormLabelDisplay: nextValue } )
+                        }
+                    />
+                </PanelRow>
+                { searchFormLabelDisplay &&
+				    (
+                        <PanelRow>
+                            <TextControl
+                                label="Custom Search Form Label"
+                                value={ customSearchFormLabel }
+                                onChange={ ( nextValue ) =>
+                                    setAttributes( { customSearchFormLabel: nextValue } )
+                                }
+                            />
+                        </PanelRow>
+                    )
+                }
+                <PanelRow>
+                    <TextControl
+                        label="Search Form Placeholder"
+                        value={ searchInputPlaceholder }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { searchInputPlaceholder: nextValue } )
                         }
                     />
                 </PanelRow>
@@ -147,16 +182,6 @@ const edit = props => {
                     )
                 }
 
-                <PanelRow>
-                    <TextControl
-                        label="Search Form Placeholder"
-                        value={ searchInputPlaceholder }
-                        onChange={ ( nextValue ) =>
-                            setAttributes( { searchInputPlaceholder: nextValue } )
-                        }
-                    />
-                </PanelRow>
-            
             </PanelBody>
             <PanelBody title={ __( 'Search Results Options' )} initialOpen={ false }>
                 <PanelRow>
@@ -174,10 +199,11 @@ const edit = props => {
                         label="Number of Businesses per page"
                         min={-1 }
                         max={ 50 }
-                        onChange={ ( value ) => setAttributes( { perpage: value} ) }
                         value={ perPage }
+                        onChange={ ( value ) => setAttributes( { perPage: value} ) }
                         initialPosition = { -1 }
-                        allowReset = "true"
+                        //allowReset = { true }
+                        //resetFallbackValue = { -1 }
                     />
                 </PanelRow>
                 <PanelRow>
@@ -224,6 +250,15 @@ const edit = props => {
                 </PanelRow>
             </PanelBody>
             <PanelBody title={ __( 'Search Results Display Options' )} initialOpen={ false }>
+                <PanelRow>
+                    <ToggleControl
+                        label={ __( 'Display Description' ) }
+                        checked={ displayDescription }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { displayDescription:  nextValue } )
+                        }
+                    />
+                </PanelRow>
                 <PanelRow>
                     <ToggleControl
                         label={ __( 'Display Membership Level' ) }

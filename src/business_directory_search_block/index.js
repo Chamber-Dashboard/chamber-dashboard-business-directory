@@ -17,9 +17,13 @@ registerBlockType( 'cdash-bd-blocks/business-directory-search', {
     example: {
     },
     attributes: {
-        searchFormTitle:{
+        searchFormTitleDisplay:{
             type: 'boolean',
             default: true,
+        },
+        searchFormCustomTitle: {
+            type: 'string',
+            default: 'Search'
         },
         searchFormAlignment:{
             type: 'string',
@@ -28,6 +32,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory-search', {
         searchFormLabelDisplay:{
             type: 'boolean',
             default: true,
+        },
+        customSearchFormLabel: {
+            type: 'string',
+            default: 'Search Text'
         },
         categoryFieldDisplay:{
             type: 'boolean',
@@ -73,7 +81,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory-search', {
             type: 'string',
             default: 'asc',
         },
-    
+        displayDescription: {
+            type: 'boolean',
+            default: true,
+        },
         displayMemberLevel:{
             type: 'boolean',
             default: true,
