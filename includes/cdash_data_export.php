@@ -31,11 +31,7 @@ function cdash_people_exporter_function($email_address, $page = 1){
 	$user = get_user_by( 'email', $email_address );
 	$user_id = $user->ID;
 
-	cd_debug("User ID: " . $user_id);
-
 	$person_id = cdash_get_person_id_from_user_id($user_id, true);
-
-	cd_debug("Person ID: " . $person_id);
 
 	global $person_metabox;
 	$person_details = array();
@@ -51,7 +47,6 @@ function cdash_people_exporter_function($email_address, $page = 1){
 	) );
 	if($people){
         foreach ( (array) $people as $person ){
-			cd_debug("Person ID: " . $person->ID);
 			$person_meta = $person_metabox->the_meta($person->ID);
 			$person_details = cdash_get_person_data($person, $person_meta);
 
@@ -97,20 +92,77 @@ function cdash_business_exporter_function($email_address, $page = 1){
     $page   = (int) $page;
     
     $export_items = array();
+	
 	global $buscontact_metabox;
+	$contactmeta = $buscontact_metabox->the_meta();
+
 	global $person_metabox;
     
     global $billing_metabox;
-    $billing_meta = $billing_metabox->the_meta();
+	$billing_meta = $billing_metabox->the_meta();
+	
+	if(isset($billing_meta['billing_email'])){
+		$billing_email = $billing_meta['billing_email'];
+	}else{
+		$billing_email = '';
+	}
 
-	$businesses = get_posts( array(
+	$businesses_with_matching_billing_email = get_posts( array(
 		'post_type' => 'business',
 		'posts_per_page' => 100, // how much to process each time
 		'paged' => $page,
-		'meta_key' => $billing_meta['billing_email'],
+		/*'meta_query' => array(
+			// meta query takes an array of arrays, watch out for this!
+			array(
+			   'key'     => $billing_meta['billing_email'],
+			   'value'   => $email_address,
+			   'compare' => 'IN'
+			)
+			),*/
+		//'meta_key' => $billing_email,
+		'meta_key'	=> '_cdash_billing_email',
 		'meta_value' => $email_address
-    ) );
-    
+	) );
+
+	//cd_debug("Businesses with matching billing email: " . print_r($businesses_with_matching_billing_email, true));
+
+	$businesses_with_matching_business_email = get_posts( array(
+		'post_type' => 'business',
+		'posts_per_page' => 100, // how much to process each time
+		'paged' => $page,
+		'meta_query' => array(
+			// meta query takes an array of arrays, watch out for this!
+			array(
+			   'key'     =>'_cdash_location[email][emailaddress]',
+			   'value'   => $email_address,
+			   'compare' => 'LIKE',
+			)
+			),
+		//'meta_key' => '_cdash_location',
+		//'meta_value' => $email_address
+	));
+
+	cd_debug("Businesses with matching business email: " . print_r($businesses_with_matching_business_email, true));
+	
+	// Find businesses connected to people & users
+	$user = get_user_by( 'email', $email_address );
+	$user_id = $user->ID;
+
+	$person_id = cdash_get_person_id_from_user_id($user_id, true);
+
+	$business_id = cdash_get_business_id_from_person_id($person_id, true);
+
+	$businesses_connected_to_people = get_posts( array(
+		'connected_type' => 'businesses_to_people',
+	  	'connected_items' => $person_id,
+	  	'nopaging' => true,
+		'suppress_filters' => false
+	) );
+
+	$businesses = array_merge($businesses_with_matching_billing_email, $businesses_connected_to_people, $businesses_with_matching_business_email);
+
+	//cd_debug("Businesses: " . print_r($businesses, true));
+
     if($businesses){
 		global $buscontact_metabox;
 		global $billing_metabox;
