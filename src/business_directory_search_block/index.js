@@ -125,6 +125,14 @@ registerBlockType( 'cdash-bd-blocks/business-directory-search', {
             type: 'boolean',
             default: true,
         },
+        businessTitleFontSize:{
+            type: 'number',
+            default: 26,
+        },
+        businessLocationNameFontSize:{
+            type: 'number',
+            default: 26,
+        },
     },
     edit: edit,
     save() {

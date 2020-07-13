@@ -203,7 +203,13 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
                     $image_align = 'left';
                 }
 
-                $search_results .= "<h3><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
+                if(isset($attributes['businessTitleFontSize']) && '' !== $attributes['businessTitleFontSize']){
+                    $title_font_size = $attributes['businessTitleFontSize'];
+                }else{
+                    $title_font_size = 26;
+                }
+
+                $search_results .= "<h3 style='font-size:".$title_font_size."px'><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 
                 if($image_type == "featured"){
                     $image_class="featured" . " ". $image_align;
@@ -269,7 +275,6 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
 			    $search_results .= "</div>";
 			}
     }else{
-        //$search_results = "<h2>Search Results</h2>";
         $search_results = __("<p>We're sorry, your search for <b>".$searchtext . "</b> did not produce any results.<br /></p>", "cdash");
         $search_results .= "<h3>Search Suggestions</h3>";
         $search_results .= "<ul><li>Try a different search term</li>";
@@ -283,56 +288,51 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
 
 //function cdash_display_business_location_info($locations){
     function cdash_display_business_location_info($attributes, $location){
-    if(!isset($search_results)){
-        $search_results = '';
-    }
-    //foreach($locations as $location) {
-        /*if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
-            continue;
-        } else {*/
-            $search_results .= "<div class='location'>";
+        if(!isset($search_results)){
+            $search_results = '';
+        }
 
-            //$header_tag_begin = "<h4>";
-            //$header_tag_end = "</h4>";
-            if(isset($attributes['displayLocationName']) && '' != $attributes['displayLocationName']){
-                if(isset($location['altname'])){
-                    $search_results .= "<h3>" . $location['altname'] . "</h3>";
-                    //$search_results .= $header_tag_begin . $location['altname'] . $header_tag_end;
-                }
-            }
+        if(isset($attributes['businessLocationNameFontSize']) && '' !== $attributes['businessLocationNameFontSize']){
+            $location_name_font_size = $attributes['businessLocationNameFontSize'];
+        }else{
+            $location_name_font_size = 26;
+        }
+        $search_results .= "<div class='location'>";
 
-            if(isset($attributes['displayAddress']) && '' != $attributes['displayAddress']){
-                $search_results .= cdash_display_address( $location );
+       if(isset($attributes['displayLocationName']) && '' != $attributes['displayLocationName']){
+           if(isset($location['altname'])){
+                $search_results .= "<h3 style='font-size:".$location_name_font_size."px'>" . $location['altname'] . "</h3>";
             }
+        }
+        if(isset($attributes['displayAddress']) && '' != $attributes['displayAddress']){
+            $search_results .= cdash_display_address( $location );
+        }
 
-            if(isset($attributes['displayWebsite']) && '' != $attributes['displayWebsite']){
-                if(isset($location['url']) && '' !== $location['url']){
-                    $search_results .= cdash_display_url( $location['url'] );
-                }
+        if(isset($attributes['displayWebsite']) && '' != $attributes['displayWebsite']){
+            if(isset($location['url']) && '' !== $location['url']){
+                $search_results .= cdash_display_url( $location['url'] );
             }
+        }
 
-            if(isset($attributes['displayHours']) && '' != $attributes['displayHours']){
-                if(isset($location['hours']) && '' !== $location['hours']){
-                    $search_results .= $location['hours'];
-                }
-                
+        if(isset($attributes['displayHours']) && '' != $attributes['displayHours']){
+            if(isset($location['hours']) && '' !== $location['hours']){
+                $search_results .= $location['hours'];
             }
+            
+        }
 
-            if(isset($attributes['displayPhone']) && '' != $attributes['displayPhone']){
-                if(isset($location['phone']) && '' !== $location['phone']){
-                    $search_results .= cdash_display_phone_numbers( $location['phone'] );
-                }
+        if(isset($attributes['displayPhone']) && '' != $attributes['displayPhone']){
+            if(isset($location['phone']) && '' !== $location['phone']){
+                $search_results .= cdash_display_phone_numbers( $location['phone'] );
             }
+        }
 
-            if(isset($attributes['displayEmail']) && '' != $attributes['displayEmail']){
-                if(isset($location['email']) && '' !== $location['email']){
-                    $search_results .= cdash_display_email_addresses( $location['email'] );
-                }
+        if(isset($attributes['displayEmail']) && '' != $attributes['displayEmail']){
+            if(isset($location['email']) && '' !== $location['email']){
+                $search_results .= cdash_display_email_addresses( $location['email'] );
             }
-            $search_results .= "</div><!-- .location -->";
-        //}
-        
-    //}
+        }
+        $search_results .= "</div><!-- .location -->";
 
     // Reset Post Data
 
@@ -340,7 +340,6 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
     return $search_results;
 }
 
-//add_action( 'wp_enqueue_scripts', 'cdash_enqueue_block_search_scripts' );
 function cdash_enqueue_block_search_scripts(){
     wp_enqueue_style( 'search_block_css', plugins_url( '../css/search_block.css', __FILE__ ));
 }

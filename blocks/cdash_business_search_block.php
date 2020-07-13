@@ -118,6 +118,14 @@ if ( function_exists( 'register_block_type' ) ) {
                     'type'  => 'boolean',
                     'default'   => 'true',
                 ),
+                'businessTitleFontSize' => array(
+                    'type'  => 'number',
+                    'default'   => 26,
+                ),
+                'businessLocationNameFontSize' => array(
+                    'type'  => 'number',
+                    'default'   => 26,
+                ),
             )
         ]
     );

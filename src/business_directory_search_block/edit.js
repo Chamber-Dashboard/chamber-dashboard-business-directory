@@ -64,8 +64,27 @@ const imageSizeOptions = [
     { label: 'Full Width', value: 'full' },
 ];
 
+const titleFontSizes = [
+    {
+        name: __( 'Small' ),
+        slug: 'small',
+        size: 12,
+    },
+    {
+        name: __( 'Medium' ),
+        slug: 'medium',
+        size: 18,
+    },
+    {
+        name: __( 'Big' ),
+        slug: 'big',
+        size: 26,
+    },
+];
+const titleFallbackFontSize = 16;
+
 const edit = props => {
-    const {attributes:{searchFormTitleDisplay, searchFormCustomTitle, searchFormAlignment, searchFormLabelDisplay, customSearchFormLabel, categoryFieldDisplay, categoryFieldLabelDisplay, customCategoryFieldLabel, searchInputPlaceholder, searchDisplayFormat, displayDescription, displayMemberLevel, displayCategory, displayTags, displaySocialMedia, displayUrl, displayHours, displayEmail, perPage, orderBy, order, imageType, imageSize, imageAlignment, displayLocationName, displayAddress, displayWebsite, displayPhone}, className, setAttributes} = props;
+    const {attributes:{searchFormTitleDisplay, searchFormCustomTitle, searchFormAlignment, searchFormLabelDisplay, customSearchFormLabel, categoryFieldDisplay, categoryFieldLabelDisplay, customCategoryFieldLabel, searchInputPlaceholder, searchDisplayFormat, displayDescription, displayMemberLevel, displayCategory, displayTags, displaySocialMedia, displayUrl, displayHours, displayEmail, perPage, orderBy, order, imageType, imageSize, imageAlignment, displayLocationName, displayAddress, displayWebsite, displayPhone, businessTitleFontSize, businessLocationNameFontSize}, className, setAttributes} = props;
 
     const setResultsPage = selectResultsPage => {
         props.setAttributes( { selectResultsPage} );
@@ -225,6 +244,30 @@ const edit = props => {
                             setAttributes( { order:  nextValue } )
                         }
                     />        
+                </PanelRow>
+                <PanelRow>Business Title Font Size</PanelRow>
+                <PanelRow>
+                    <FontSizePicker
+                        fontSizes={ titleFontSizes }
+                        value={ businessTitleFontSize }
+                        fallbackFontSize={ titleFallbackFontSize }
+                        withSlider= "true"
+                        onChange={ ( nextValue ) =>
+                            setAttributes( {businessTitleFontSize:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+                <PanelRow>Location Name Font Size</PanelRow>
+                <PanelRow>
+                    <FontSizePicker
+                        fontSizes={ titleFontSizes }
+                        value={ businessLocationNameFontSize }
+                        fallbackFontSize={ titleFallbackFontSize }
+                        withSlider= "true"
+                        onChange={ ( nextValue ) =>
+                            setAttributes( {businessLocationNameFontSize:  nextValue } )
+                        }
+                    />
                 </PanelRow>
             </PanelBody>
             <PanelBody title={ __( 'Search Results Image Options' )} initialOpen={ false }>

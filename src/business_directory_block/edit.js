@@ -110,7 +110,7 @@ const titleFontSizes = [
     },
     {
         name: __( 'Medium' ),
-        slug: 'small',
+        slug: 'medium',
         size: 18,
     },
     {
