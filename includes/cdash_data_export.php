@@ -26,26 +26,32 @@ function cdash_people_exporter_function($email_address, $page = 1){
 	global $person_metabox;
 
 	$export_items = array();
-	//Check if there are any prople records connected to the user with the given email
 
+	//Check if there are any prople records connected to the user with the given email
 	$user = get_user_by( 'email', $email_address );
 	$user_id = $user->ID;
 
-	$person_id = cdash_get_person_id_from_user_id($user_id, true);
+	if(cdash_check_cd_crm_active()){
+		$person_id = cdash_get_person_id_from_user_id($user_id, true);
 
-	global $person_metabox;
-	$person_details = array();
+		global $person_metabox;
+		$person_details = array();
 
-	$options = get_option( 'cdcrm_options' );
+		$options = get_option( 'cdcrm_options' );
 
-	// Find connected posts
-	$people = get_posts( array(
-		'connected_type' => 'people_to_user',
-	  	'connected_items' => get_queried_object(),
-	  	'nopaging' => true,
-		'suppress_filters' => false
-	) );
-	if($people){
+		// Find connected posts
+		$people = get_posts( array(
+			'connected_type' => 'people_to_user',
+			'connected_items' => get_queried_object(),
+			'nopaging' => true,
+			'suppress_filters' => false
+		) );
+	}else{
+		$people = '';
+	}
+
+	
+	if($people != ''){
         foreach ( (array) $people as $person ){
 			$person_meta = $person_metabox->the_meta($person->ID);
 			$person_details = cdash_get_person_data($person, $person_meta);
@@ -107,61 +113,36 @@ function cdash_business_exporter_function($email_address, $page = 1){
 		$billing_email = '';
 	}
 
+	//Get businesse with matching billing email
 	$businesses_with_matching_billing_email = get_posts( array(
 		'post_type' => 'business',
 		'posts_per_page' => 100, // how much to process each time
 		'paged' => $page,
-		/*'meta_query' => array(
-			// meta query takes an array of arrays, watch out for this!
-			array(
-			   'key'     => $billing_meta['billing_email'],
-			   'value'   => $email_address,
-			   'compare' => 'IN'
-			)
-			),*/
-		//'meta_key' => $billing_email,
 		'meta_key'	=> '_cdash_billing_email',
 		'meta_value' => $email_address
 	) );
 
 	//cd_debug("Businesses with matching billing email: " . print_r($businesses_with_matching_billing_email, true));
 
-	$businesses_with_matching_business_email = get_posts( array(
-		'post_type' => 'business',
-		'posts_per_page' => 100, // how much to process each time
-		'paged' => $page,
-		'meta_query' => array(
-			// meta query takes an array of arrays, watch out for this!
-			array(
-			   'key'     =>'_cdash_location[email][emailaddress]',
-			   'value'   => $email_address,
-			   'compare' => 'LIKE',
-			)
-			),
-		//'meta_key' => '_cdash_location',
-		//'meta_value' => $email_address
-	));
-
-	cd_debug("Businesses with matching business email: " . print_r($businesses_with_matching_business_email, true));
-	
 	// Find businesses connected to people & users
 	$user = get_user_by( 'email', $email_address );
 	$user_id = $user->ID;
+	
+	if(cdash_check_cd_crm_active()){
+		$person_id = cdash_get_person_id_from_user_id($user_id, true);
 
-	$person_id = cdash_get_person_id_from_user_id($user_id, true);
+		$business_id = cdash_get_business_id_from_person_id($person_id, true);
 
-	$business_id = cdash_get_business_id_from_person_id($person_id, true);
-
-	$businesses_connected_to_people = get_posts( array(
-		'connected_type' => 'businesses_to_people',
-	  	'connected_items' => $person_id,
-	  	'nopaging' => true,
-		'suppress_filters' => false
-	) );
-
-	$businesses = array_merge($businesses_with_matching_billing_email, $businesses_connected_to_people, $businesses_with_matching_business_email);
-
-	//cd_debug("Businesses: " . print_r($businesses, true));
+		$businesses_connected_to_people = get_posts( array(
+			'connected_type' => 'businesses_to_people',
+			'connected_items' => $person_id,
+			'nopaging' => true,
+			'suppress_filters' => false
+		) );
+		$businesses = array_merge($businesses_with_matching_billing_email, $businesses_connected_to_people);
+	}else{
+		$buisinesses = $businesses_with_matching_billing_email;
+	}
 
     if($businesses){
 		global $buscontact_metabox;
