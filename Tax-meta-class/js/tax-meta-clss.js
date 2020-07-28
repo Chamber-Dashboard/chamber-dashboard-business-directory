@@ -132,7 +132,8 @@ jQuery(document).ready(function($) {
   
   */
   //edit
-  $(".at-re-toggle").live('click', function() {
+  //$(".at-re-toggle").live('click', function() {
+    $('body').on('click', '.at-re-toggle', function(e){
     $(this).prev().toggle('slow');
   });
   
@@ -172,12 +173,14 @@ jQuery(document).ready(function($) {
    * better handler for color picker with repeater fields support
    * which now works both when button is clicked and when field gains focus.
    */
-  $('.at-color').live('focus', function() {
+  //$('.at-color').live('focus', function() {
+  $('body').on('focus', '.at-color', function(){
     var $this = $(this);
     $(this).siblings('.at-color-picker').farbtastic($this).toggle();
   });
 
-  $('.at-color').live('focusout', function() {
+  //$('.at-color').live('focusout', function() {
+    $('body').on('focusout', '.at-color', function(){
     var $this = $(this);
     $(this).siblings('.at-color-picker').farbtastic($this).toggle();
   });
@@ -243,7 +246,8 @@ jQuery(document).ready(function($) {
   
   load_images_muploader();
   //delete img button
-  jQuery('.at-delete_image_button').live('click', function(e){
+  //jQuery('.at-delete_image_button').live('click', function(e){
+    jQuery('body').on('click', '.at-delete_image_button', function(e){
     var field_id = jQuery(this).attr("rel");
     var at_id = jQuery(this).prev().prev();
     var at_src = jQuery(this).prev();
@@ -277,7 +281,8 @@ jQuery(document).ready(function($) {
   //upload button
   var formfield1;
   var formfield2;
-  jQuery('.at-upload_image_button').live('click',function(e){
+  //jQuery('.at-upload_image_button').live('click',function(e){
+  jQuery('body').on('click', '.at-upload_image_button', function(e){
     formfield1 = jQuery(this).prev();
     formfield2 = jQuery(this).prev().prev();      
     tb_show('', 'media-upload.php?post_id=0&type=image&amp;TB_iframe=true&tax_meta_c=instopo');

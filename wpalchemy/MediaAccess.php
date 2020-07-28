@@ -370,7 +370,11 @@
 						
 						var formlabel = 0;
 
-						$('[class*=<?php echo $this->button_class_name; ?>]').live('click', function(e)
+						//Added a fix for WP 5.5
+						var buttonClassName = '[class*=<?php echo $this->button_class_name; ?>]';
+
+						//$('[class*=<?php //echo $this->button_class_name; ?>]').live('click', function(e)
+						$('body').on('click', buttonClassName, function(e)
 						{
 							e.preventDefault();
 							
