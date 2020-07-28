@@ -1,12 +1,20 @@
 <?php
-add_filter( 'wp_privacy_personal_data_exporters', 'cdash_register_people_exporter', 10);
-function cdash_register_people_exporter( $exporters_array ) {
-	$exporters_array['chamber-dashboard-people'] = array(
-		'exporter_friendly_name' => 'CD People exporter', //isn't shown anywhere
-		'callback' => 'cdash_people_exporter_function', //name of the callback function which is below
-	);
-	return $exporters_array;
-}
+//if(cdash_check_cd_crm_active()){
+	add_filter( 'wp_privacy_personal_data_exporters', 'cdash_register_people_exporter', 10);
+//}
+	function cdash_register_people_exporter( $exporters_array ) {
+		if(cdash_check_cd_crm_active()){
+			$exporters_array['chamber-dashboard-people'] = array(
+				'exporter_friendly_name' => 'CD People exporter', //isn't shown anywhere
+				'callback' => 'cdash_people_exporter_function', //name of the callback function which is below
+			);
+		}else{
+			$exporters_array = [];
+		}
+		
+		return $exporters_array;
+	}
+
 
 add_filter( 'wp_privacy_personal_data_exporters', 'cdash_register_business_exporter', 10);
 function cdash_register_business_exporter( $exporters_array ) {
@@ -102,7 +110,7 @@ function cdash_business_exporter_function($email_address, $page = 1){
 	global $buscontact_metabox;
 	$contactmeta = $buscontact_metabox->the_meta();
 
-	global $person_metabox;
+	//global $person_metabox;
     
     global $billing_metabox;
 	$billing_meta = $billing_metabox->the_meta();
@@ -122,8 +130,6 @@ function cdash_business_exporter_function($email_address, $page = 1){
 		'meta_value' => $email_address
 	) );
 
-	//cd_debug("Businesses with matching billing email: " . print_r($businesses_with_matching_billing_email, true));
-
 	// Find businesses connected to people & users
 	$user = get_user_by( 'email', $email_address );
 	$user_id = $user->ID;
@@ -141,7 +147,7 @@ function cdash_business_exporter_function($email_address, $page = 1){
 		) );
 		$businesses = array_merge($businesses_with_matching_billing_email, $businesses_connected_to_people);
 	}else{
-		$buisinesses = $businesses_with_matching_billing_email;
+		$businesses = $businesses_with_matching_billing_email;
 	}
 
     if($businesses){

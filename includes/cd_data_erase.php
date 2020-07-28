@@ -108,7 +108,6 @@ function cdash_business_eraser_function($email_address, $iteration = 1){
     if($businesses){
         foreach ( (array) $businesses as $business ){
             $business_id = $business->ID;
-            //cd_debug("Business ID: " . $business->ID);
             $my_post = array(
                 'ID' => $business_id,
                 'post_title' => $business->post_title . __(' - Delete per GDPR', 'cdash'),

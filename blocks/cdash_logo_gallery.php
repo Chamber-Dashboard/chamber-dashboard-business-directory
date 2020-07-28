@@ -142,8 +142,6 @@ function cdash_logo_gallery_block_callback($attributes){
       $attributes['status'] = '';
   }
 
-  //cd_debug("Title Font Size inside the block function: " . $attributes['titleFontSize']);
-
   $business_listings = cdash_business_directory_shortcode($attributes);
 
   return $business_listings;
