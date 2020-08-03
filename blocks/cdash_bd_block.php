@@ -167,6 +167,10 @@ if ( function_exists( 'register_block_type' ) ) {
                   'type'  => 'boolean',
                   'default'   => 'false',
               ),
+              'displayImageOnTop'    => array(
+                'type'  => 'boolean',
+                'default'   => 'false',
+            ),
           ),
       ]
   );

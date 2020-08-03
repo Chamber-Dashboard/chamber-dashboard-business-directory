@@ -165,6 +165,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'boolean',
             default: false,
         },
+        displayImageOnTop:{
+            type: 'boolean',
+            default: false,
+        },
     },
     edit: edit,
     save() {

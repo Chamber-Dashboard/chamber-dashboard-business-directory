@@ -33,6 +33,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'changeTitleFontSize' => true,
 			'titleFontSize' => '',
 			'disablePagination' => false,
+			'displayImageOnTop' => false,
 		), $atts )
 	);
 	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
@@ -169,10 +170,10 @@ function cdash_business_directory_shortcode( $atts ) {
 				$logometa = $buslogo_metabox->the_meta();
 				if($logo_gallery == "yes"){
 					if( isset( $logometa['buslogo'] ) ) {
-						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize);
+						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop);
 					}
 				}else{
-					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize);
+					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop);
 				}
 			endwhile;
 			$business_list .= "</div><!--end of businesslist-->";
@@ -251,31 +252,13 @@ function cdash_starts_with_query_filter( $where, $query ) {
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
 
-function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize){
+function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop){
 	if(!isset($business_list)){
 		$business_list = '';
 	}
 	$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
 
-	if($logo_gallery == "no"){
-		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
-	}
-
-	if(isset($image_size) && $image_size !=""){
-		$image_class = $image_size . " ". $image;
-	}else{
-		$image_class = "alignleft " . $image;
-		//$image_class = "alignleft ";
-	}
-	$business_list .= "<div class='description'>";
-
-	$business_list .= cdash_bus_directory_display_image($image, $image_class, $image_size, $single_link, $post_id, $logo_gallery);
-
-	if($logo_gallery == "no"){
-		$business_list .= cdash_bus_directory_display_content($text);
-	}
-
-	$business_list .= "</div>";
+	$business_list .= cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $image, $image_size, $post_id, $logo_gallery, $text);
 
 	if($logo_gallery == "no"){
 		$business_list .= cdash_bus_directory_display_meta_fields($display, $displayopts);
@@ -311,9 +294,16 @@ function cdash_bus_directory_display_title($single_link, $cd_block, $changeTitle
 	return $business_list;
 }
 
-function cdash_bus_directory_display_image($image, $image_class, $image_size, $single_link, $post_id, $logo_gallery){
+function cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery){
 	if(!isset($business_list)){
 		$business_list = '';
+	}
+
+	if(isset($image_size) && $image_size !=""){
+		$image_class = $image_size . " ". $image;
+	}else{
+		$image_class = "alignleft " . $image;
+		//$image_class = "alignleft ";
 	}
 	
 	if( "logo" == $image ) {
@@ -349,6 +339,56 @@ function cdash_bus_directory_display_image($image, $image_class, $image_size, $s
 
 	}
 
+	return $business_list;
+}
+
+function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $image, $image_size, $post_id, $logo_gallery, $text){
+	if(!isset($business_list)){
+		$business_list = '';
+	}
+	/*if($logo_gallery == "no"){
+		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
+	}
+
+	$business_list .= "<div class='description'>";
+
+	$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
+
+	if($logo_gallery == "no"){
+		$business_list .= cdash_bus_directory_display_content($text);
+	}
+
+	$business_list .= "</div>";*/
+
+
+	if($logo_gallery == "yes"){
+		$business_list .= "<div class='description'>";
+		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
+		$business_list .= "</div>";
+	}elseif($cd_block == "yes" && $displayImageOnTop == "yes"){
+		cd_debug("Is this a block: " . $cd_block);
+		cd_debug("Display image on top: " . $displayImageOnTop);
+
+		//display image, title, content
+		$business_list .= "<div class='description bus_listing_image'>";
+		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
+		$business_list .= "</div>";
+		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
+		$business_list .= "<div class='description bus_content'>";
+		$business_list .= cdash_bus_directory_display_content($text);
+		$business_list .= "</div>";
+	}else{
+		cd_debug("Is this a block: " . $cd_block);
+		cd_debug("Display image on top: " . $displayImageOnTop);
+		
+		//display title, image and content
+		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
+		$business_list .= "<div class='description'>";
+
+		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
+		$business_list .= cdash_bus_directory_display_content($text);
+		$business_list .= "</div>";
+	}
 	return $business_list;
 }
 
