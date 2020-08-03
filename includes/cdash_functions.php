@@ -302,4 +302,16 @@ function cdash_check_mm_active_ajax(){
 
 add_action('wp_ajax_cdash_check_mm_active_action', 'cdash_check_mm_active_ajax');
 add_action('wp_ajax_nopriv_cdash_check_mm_active_action', 'cdash_check_mm_active_ajax');
+
+//Check if CRM is active
+function cdash_check_cd_crm_active(){
+  if(function_exists('cdash_requires_wordpress_version')){
+		$plugins = cdash_get_active_plugin_list();
+		if ((in_array('cdash-crm.php', $plugins))) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
 ?>

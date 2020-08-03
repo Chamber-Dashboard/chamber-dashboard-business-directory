@@ -105,8 +105,8 @@ fwrite($fh, chr(0xEF).chr(0xBB).chr(0xBF));
 						'city' => '',
 						'state' => '',
 						'zip' => '',
-            'country' => '',
-            'hours' => '',
+            			'country' => '',
+           				'hours' => '',
 						'url' => '',
 					);
 					foreach ($locationinfo as $key => $value) {

@@ -547,9 +547,9 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 					$phones = $location['phone'];
 					if(is_array($phones)) {
 						foreach($phones as $phone) {
-              if(isset($phone['phonenumber'])){
-                $phonenumbers .= $phone['phonenumber'];
-              }
+							if(isset($phone['phonenumber'])){
+								$phonenumbers .= $phone['phonenumber'];
+							}
 							if(isset($phone['phonetype'])) {
 								$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
 							}
