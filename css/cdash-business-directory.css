@@ -251,3 +251,9 @@ clear: both;
 #businesslist.grid3.cd_block img.medium, #businesslist.grid3.cd_block img.large, #businesslist.grid3.cd_block img.full, #businesslist.grid4.cd_block img.medium, #businesslist.grid4.cd_block img.large, #businesslist.grid4.cd_block img.full{
 	width:100%;
 }
+
+/*Adding these styles along with the display image on top option in business directory block*/
+#businesslist.cd_block .business .description.bus_listing_image{
+	height:auto;
+	overflow: hidden;
+}

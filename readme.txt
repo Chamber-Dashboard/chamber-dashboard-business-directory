@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 3.2.6
+Stable tag: 3.2.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,10 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= .3.2.7 =
+* Added the businesse and people records to the WordPress data export
+* Added the option to display the image above the title in business listings when using the business directory block 
+
 = 3.2.6 =
 * Added a Gutenberg block to display a business search form 
 

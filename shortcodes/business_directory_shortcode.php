@@ -366,8 +366,6 @@ function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitle
 		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
 		$business_list .= "</div>";
 	}elseif($cd_block == "yes" && $displayImageOnTop == "yes"){
-		cd_debug("Is this a block: " . $cd_block);
-		cd_debug("Display image on top: " . $displayImageOnTop);
 
 		//display image, title, content
 		$business_list .= "<div class='description bus_listing_image'>";
@@ -378,9 +376,6 @@ function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitle
 		$business_list .= cdash_bus_directory_display_content($text);
 		$business_list .= "</div>";
 	}else{
-		cd_debug("Is this a block: " . $cd_block);
-		cd_debug("Display image on top: " . $displayImageOnTop);
-		
 		//display title, image and content
 		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
 		$business_list .= "<div class='description'>";
