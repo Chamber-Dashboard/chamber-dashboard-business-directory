@@ -89,12 +89,10 @@ function cdash_get_lat_long($address, $city, $state, $zip, $country) {
   $data = json_decode( $body, true );
   $lat = 0;
   $lng = 0;
-  if(!empty($data)){
+  if(!empty($data && $data['status'] !== 'REQUEST_DENIED')){
       if(is_array($data)){
         $lat = $data['results'][0]['geometry']['location']['lat'];
         $lng = $data['results'][0]['geometry']['location']['lng'];
-        //$lat = $data['results'][0]['geometry']['location']['lat'];
-        //$lng = $data['results'][0]['geometry']['location']['lng'];
       }else{
         $lat = '';
         $lng = '';

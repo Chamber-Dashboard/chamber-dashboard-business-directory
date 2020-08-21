@@ -14,16 +14,17 @@ function cdash_business_directory_shortcode( $atts ) {
 	extract( shortcode_atts(
 		array(
 			'format' => 'list',  // options: list, grid2, grid3, grid4, responsive
-			'category' => '', // options: slug of any category
-			'tags'	=>	'', // options: slug of any tag
-			'level' => '', // options: slug of any membership level
 			'text' => 'excerpt', // options: excerpt, description, none
-			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media, location, hours
-			'single_link' => 'yes', // options: yes, no
-			'perpage' => '-1', // options: any number
 			'orderby' => 'title', // options: date, modified, menu_order, rand, membership_level
 			'order' => 'asc', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
+			'category' => '', // options: slug of any category
+			'tags'	=>	'', // options: slug of any tag
+			'level' => '', // options: slug of any membership level
+			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media, location, hours
+			'single_link' => 'yes', // options: yes, no
+			'perpage' => '-1', // options: any number
+			
 			'status' => '', // options: slug of any membership status
 			'image_size'	=> '', //options: thumbnail, medium, large, full
 			'alpha'	=> 'no',	//options: yes, no

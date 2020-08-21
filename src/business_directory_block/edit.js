@@ -171,9 +171,6 @@ const edit = props => {
                         label="Directory Layout"
                         value={ format }
                         options= { formatOptions }
-                        /*onChange={ ( nextValue ) =>
-                            setAttributes( { format:  nextValue } )
-                        }*/
                         onChange = {setDirectoryLayout}
                     />
                 </PanelRow>
