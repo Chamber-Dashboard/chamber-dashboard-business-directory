@@ -153,8 +153,8 @@ jQuery(document).ready(function($) {
     $this.timepicker( { showSecond: true, timeFormat: format } );
     
   });
-
-  $('.at-color').wpColorPicker();
+  //Disabled this as this was throwing an error. - CG
+  //$('.at-color').wpColorPicker();
 
   /**
    * Helper Function
@@ -245,10 +245,13 @@ jQuery(document).ready(function($) {
         var $this = $(this);
 
         $this.bind(type, data, fn);
-        if (version_compare($.fn.jquery,'1.8') == 'lt')
-          var currentBindings = $this.data('events')[type];
-        else
+        if (version_compare($.fn.jquery,'1.8') == 'lt'){
+          //var currentBindings = $this.data('events')[type];
+          //Changed this because of an error in the console - CG
           var currentBindings = $._data(this, "events")[type];
+        }else{
+          var currentBindings = $._data(this, "events")[type];
+        }
         if ($.isArray(currentBindings)) {
             currentBindings.unshift(currentBindings.pop());
         }
@@ -257,10 +260,13 @@ jQuery(document).ready(function($) {
   };
   /** fix tinymce not saving on add screen*/
   $('#submit').preBind('click', function() {
+    //$('input[type="submit"]').preBind('click', function() {
     if(typeof tinymce !== "undefined" && $('input[name=action]').val() == 'add-tag'){
+    //if(typeof tinymce !== "undefined"){
       $.each(tinymce.editors,function(i,editor){
         var tx = editor.targetElm;
         $(tx).html(editor.getContent());
+        $(tx).triggerSave();
       });
     }
   });
