@@ -10,12 +10,12 @@
 
 			<?php $mb->the_field('date'); ?>
 			<label><?php esc_html_e('Date', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			<p><input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 
 			<label><?php esc_html_e('Note', 'cdash'); ?></label>
 			<p>
 				<?php $metabox->the_field('notetext'); ?>
-				<textarea name="<?php $metabox->the_name(); ?>" rows="5"><?php $metabox->the_value(); ?></textarea>
+				<textarea name="<?php sanitize_text_field($metabox->the_name()); ?>" rows="5"><?php sanitize_text_field($metabox->the_value()); ?></textarea>
 			</p>
  		</div>
 
