@@ -255,7 +255,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 							echo '<p>' . $featured_business_excerpt . '</p>';
 						}
 					}
-					if( isset( $contactmeta['location'] ) ) {
+					if( isset( $contactmeta['location'] ) && '' != $contactmeta['location'] ) {
 						$locations = $contactmeta['location'];
 						foreach( $locations as $location ) {
 							if( in_array( 'location_name', $instance['display'] ) && isset( $location['altname'] ) ) {
@@ -264,18 +264,18 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 							if( in_array( 'address', $instance['display'] ) ) {
 								echo cdash_display_address( $location );
 							}
-              if( in_array( 'hours', $instance['display'] ) && isset( $location['hours'] ) ) {
-                  echo $location['hours'] . '<br /><br />';
-			        }
-    					if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
-                  echo cdash_display_url( $location['url'] );
-			        }
-              if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
-                  echo cdash_display_phone_numbers( $location['phone'] );
-              }
-              if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
-                  echo cdash_display_email_addresses( $location['email'] );
-              }
+              				if( in_array( 'hours', $instance['display'] ) && isset( $location['hours'] ) ) {
+								echo $location['hours'] . '<br /><br />';
+							}
+    						if( in_array( 'url', $instance['display'] ) && isset( $location['url'] ) ) {
+                  				echo cdash_display_url( $location['url'] );
+			        		}
+							if( in_array( 'phone', $instance['display'] ) && isset( $location['phone'] ) ) {
+								echo cdash_display_phone_numbers( $location['phone'] );
+							}
+							if( in_array( 'email', $instance['display'] ) && isset( $location['email'] ) ) {
+								echo cdash_display_email_addresses( $location['email'] );
+							}
 						}
 					}
 					if( in_array( 'social', $instance['display'] ) ) {

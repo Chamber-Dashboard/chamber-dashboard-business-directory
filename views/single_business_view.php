@@ -34,7 +34,7 @@ function cdash_single_business($content) {
 		global $post;
 		$business_content = "<div id='business'>";
 		if((isset($member_options['hide_lapsed_members'])) && (cdash_display_business_status($post_id) == "lapsed")) {
-			$business_content .= "This business is not a current member.";
+			$business_content .= __e("This business is not a current member.", "cdash");
 		}else{
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) {
 			$business_content .= cdash_display_featured_image($post_id, false, '', 'full', '');
@@ -67,7 +67,7 @@ function cdash_single_business($content) {
 			$business_content .= cdash_display_business_tags($post_id);
 		}
 
-		if( isset( $contactmeta['location'] ) ) {
+		if( isset( $contactmeta['location'] ) && '' !== $contactmeta['location'] ) {
 			$locations = $contactmeta['location'];
 			foreach( $locations as $location ) {
 				if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
@@ -104,7 +104,7 @@ function cdash_single_business($content) {
 			}
 		}
 
-		if( isset($options['bus_custom'] )) {
+		if( isset($options['bus_custom'] ) ) {
 		 	$business_content .= cdash_display_custom_fields( get_the_id() );
 		}
 		$business_contacts = '';
@@ -112,7 +112,7 @@ function cdash_single_business($content) {
 		if( isset( $options['sv_map']) && "1" == $options['sv_map'] ) {
 			// only show the map if locations have addresses entered
 			$needmap = "false";
-			if( isset( $contactmeta['location'] ) ) {
+			if( isset( $contactmeta['location'] ) && '' !== $contactmeta['location'] ) {
 				$locations = $contactmeta['location'];
 				foreach ( $locations as $location ) {
 					if( ( isset( $location['address'] ) || ( isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) ) && !isset( $location['donotdisplay'] ) ) {
