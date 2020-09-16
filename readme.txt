@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 3.2.9
+Stable tag: 3.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.3.0 =
+* Fixed some security issue with WP Alchemy saving the data from the business edit page in the admin 
+
 = 3.2.9 =
 * Fixed the errors with tax meta class. The memberhsip level data now gets saved properly.
 

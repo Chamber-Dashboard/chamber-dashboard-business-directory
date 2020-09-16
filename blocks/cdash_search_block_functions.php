@@ -241,8 +241,6 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
 
                 if( isset( $contactmeta['location'] ) && is_array( $contactmeta['location'] ) ) {
                     $locations = $contactmeta['location'];
-                    //cd_debug("Locations: " . print_r($locations));
-                    //$search_results .= cdash_display_business_location_info($locations);
                     foreach($locations as $location) {
                         if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
                             continue;

@@ -545,8 +545,8 @@ class WPAlchemy_MetaBox
 							// try to fix corrupted serialized data, specifically "\r\n" being converted to "\n" during wordpress XML export (WXR)
 							// "maybe_unserialize()" fixes a wordpress bug which double serializes already serialized data during export/import
 							$value = maybe_unserialize( preg_replace( '!s:(\d+):"(.*?)";!es', "'s:'.strlen('$2').':\"$2\";'", stripslashes( $meta['value'] ) ) );
-
-							update_post_meta( $post_id, $key,  $value );
+							//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
+							update_post_meta( $post_id, $key,  sanitize_text_field($value) );
 						}
 					}
 				}
@@ -2288,7 +2288,8 @@ class WPAlchemy_MetaBox
 					}
 					else
 					{
-						update_post_meta($post_id, $field, $new_value);
+						//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
+						update_post_meta($post_id, $field, sanitize_text_field($new_value));
 					}
 				}
 			}
@@ -2321,7 +2322,8 @@ class WPAlchemy_MetaBox
 			}
 			else
 			{
-				update_post_meta($post_id, $this->id, $new_data);
+				//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
+				update_post_meta($post_id, $this->id, sanitize_text_field($new_data));
 			}
 
 			// keep data tidy, delete values if previously using WPALCHEMY_MODE_EXTRACT

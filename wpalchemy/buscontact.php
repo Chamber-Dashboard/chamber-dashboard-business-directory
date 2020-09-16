@@ -9,18 +9,18 @@
 
 		<?php $mb->the_field('altname'); ?>
 		<label><?php esc_html_e('Location Name', 'cdash'); ?></label>
-		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+		<p><input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 
 		<?php $mb->the_field('donotdisplay'); ?>
 		<label><?php esc_html_e('Do Not Display', 'cdash'); ?></label>
 		<p class="explain"><?php esc_html_e('Check this if you do not want this location to display to the public on the website'); ?></p>
-		<p><input type="checkbox" name="<?php $mb->the_name(); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> <?php esc_html_e('Do Not Display', 'cdash'); ?></p>
+		<p><input type="checkbox" name="<?php esc_attr( sanitize_text_field($mb->the_name())); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> <?php esc_html_e('Do Not Display', 'cdash'); ?></p>
 
 		<div class="address-data">
 			<label><?php esc_html_e('Address', 'cdash'); ?></label>
 			<p class="address-wrapper">
 				<?php $metabox->the_field('address'); ?>
-				<textarea class="trigger-geolocation" name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
+				<textarea class="trigger-geolocation" name="<?php sanitize_text_field($metabox->the_name()); ?>" rows="3"><?php sanitize_textarea_field($metabox->the_value()); ?></textarea>
 			</p>
 
 			<?php $options = get_option('cdash_directory_options'); ?>
@@ -28,25 +28,25 @@
 			<div class="fourth city-wrapper">
 				<?php $mb->the_field('city'); ?>
 				<label><?php esc_html_e('City', 'cdash'); ?></label>
-				<p><input type="text" class="city trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="city trigger-geolocation" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 			</div>
 
 			<div class="fourth state-wrapper">
 				<?php $mb->the_field('state'); ?>
 				<label><?php esc_html_e('State', 'cdash'); ?></label>
-				<p><input type="text" class="state trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="state trigger-geolocation" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 			</div>
 
 			<div class="fourth zip-wrapper">
 				<?php $mb->the_field('zip'); ?>
 				<label><?php esc_html_e('Zip', 'cdash'); ?></label>
-				<p><input type="text" class="zip trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="zip trigger-geolocation" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 			</div>
 
 			<div class="fourth country-wrapper">
 				<?php $mb->the_field('country'); ?>
 				<label><?php esc_html_e('Country', 'cdash'); ?></label>
-				<p><input type="text" class="country trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="country trigger-geolocation" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 			</div>
 
 			<div class="geolocation-data clearfix">
@@ -59,11 +59,11 @@
 					<div class="half custom-coords-fields">
 						<?php $mb->the_field('custom_latitude'); ?>
 						<label><?php esc_html_e( 'Latitude', 'cdash' ); ?></label>
-						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-latitude new-coords" value="<?php $mb->the_value(); ?>"/>
+						<input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" class="custom-latitude new-coords" value="<?php sanitize_text_field($mb->the_value()); ?>"/>
 
 						<?php $mb->the_field('custom_longitude'); ?>
 						<label><?php esc_html_e( 'Longitude', 'cdash' ); ?></label>
-						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-longitude new-coords" value="<?php $mb->the_value(); ?>"/>
+						<input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" class="custom-longitude new-coords" value="<?php sanitize_text_field($mb->the_value()); ?>"/>
 						<p class="update-preview">
 							<a href="#" class="update-map button"><?php esc_html_e( 'Update Map Preview', 'cdash' ); ?></a>
 							<span class="update-reminder" style="display:none;"><?php esc_html_e( 'Make sure you save your changes!', 'cdash' ); ?></span>
@@ -71,17 +71,17 @@
 					</div>
 				</div>
 				<?php $mb->the_field('latitude'); ?>
-				<input type="hidden" name="<?php $mb->the_name(); ?>" class="latitude" value="<?php $mb->the_value(); ?>"/>
+				<input type="hidden" name="<?php sanitize_text_field($mb->the_name()); ?>" class="latitude" value="<?php sanitize_text_field($mb->the_value()); ?>"/>
 
 				<?php $mb->the_field('longitude'); ?>
-				<input type="hidden" name="<?php $mb->the_name(); ?>" class="longitude" value="<?php $mb->the_value(); ?>"/>
+				<input type="hidden" name="<?php sanitize_text_field($mb->the_name()); ?>" class="longitude" value="<?php sanitize_text_field($mb->the_value()); ?>"/>
 			</div>
 		</div>
 
 		<div class="clearfix">
 			<?php $mb->the_field('url'); ?>
 			<label><?php esc_html_e('Web Address', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" placeholder="http://"/></p>
+			<p><input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>" placeholder="http://"/></p>
 		</div>
 
 		<fieldset class="half left phone-fieldset">
@@ -93,12 +93,12 @@
 			<?php $mb->the_group_open(); ?>
 				<?php $mb->the_field('phonenumber'); ?>
 				<label><?php esc_html_e('Phone Number', 'cdash'); ?></label>
-				<p><input type="text" class="phone" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="phone" name="<?php esc_attr( $mb->the_name() ); ?>" value="<?php esc_attr( sanitize_text_field($mb->the_value()) ); ?>"/></p>
 
 				<?php $mb->the_field('phonetype'); ?>
 				<label><?php esc_html_e('Phone Number Type', 'cdash'); ?></label>
 				<?php $selected = ' selected="selected"'; ?>
-				<select name="<?php $mb->the_name(); ?>">
+				<select name="<?php sanitize_text_field($mb->the_name()); ?>">
 					<option value=""></option>
 					<?php $mb->the_field('phonetype'); ?>
 					<?php $options = get_option('cdash_directory_options');
@@ -126,12 +126,12 @@
 			<?php $mb->the_group_open(); ?>
 				<?php $mb->the_field('emailaddress'); ?>
 				<label><?php esc_html_e('Email Address', 'cdash'); ?></label>
-				<p><input type="text" class="email" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="email" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 
 				<?php $mb->the_field('emailtype'); ?>
 				<label><?php esc_html_e('Email Address Type', 'cdash'); ?></label>
 				<?php $selected = ' selected="selected"'; ?>
-				<select name="<?php $mb->the_name(); ?>">
+				<select name="<?php sanitize_text_field($mb->the_name()); ?>">
 					<option value=""></option>
 					<?php $mb->the_field('emailtype'); ?>
 					<?php $options = get_option('cdash_directory_options');
@@ -155,7 +155,7 @@
 		<div class="fourth hours-wrapper">
             <?php $mb->the_field('hours'); ?>
             <label><?php esc_html_e('Business Hours', 'cdash'); ?></label>
-            <p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+            <p><input type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
         </div>
 
         <p class="clearfix"><a href="#" class="button billing-copy"><?php esc_html_e('Use This Location for Billing', 'cdash'); ?></a></p>
@@ -179,7 +179,7 @@
 			<?php $mb->the_field('socialservice'); ?>
 			<label><?php esc_html_e('Social Media Service', 'cdash'); ?></label>
 			<?php $selected = ' selected="selected"'; ?>
-			<select name="<?php $mb->the_name(); ?>">
+			<select name="<?php sanitize_text_field($mb->the_name()); ?>">
 				<option value=""></option>
 				<?php $mb->the_field('socialservice'); ?>
 				<option value="avvo" <?php if ($mb->get_the_value() == 'avvo') echo $selected; ?>><?php esc_html_e( 'Avvo', 'cdash' ); ?></option>
@@ -202,7 +202,7 @@
 		<div class="half">
 			<?php $mb->the_field('socialurl'); ?>
 			<label><?php esc_html_e('Social Media URL', 'cdash'); ?></label>
-			<p><input placeholder="http://" type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			<p><input placeholder="http://" type="text" name="<?php sanitize_text_field($mb->the_name()); ?>" value="<?php sanitize_text_field($mb->the_value()); ?>"/></p>
 		</div>
 
 		<a href="#" class="dodelete button"><?php esc_html_e('Remove This Social Media Link', 'cdash'); ?></a>
