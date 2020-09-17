@@ -546,7 +546,11 @@ class WPAlchemy_MetaBox
 							// "maybe_unserialize()" fixes a wordpress bug which double serializes already serialized data during export/import
 							$value = maybe_unserialize( preg_replace( '!s:(\d+):"(.*?)";!es', "'s:'.strlen('$2').':\"$2\";'", stripslashes( $meta['value'] ) ) );
 							//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
-							update_post_meta( $post_id, $key,  sanitize_text_field($value) );
+							//update_post_meta( $post_id, $key,  sanitize_text_field($value) );
+							cd_debug("Value: " . $value);
+							$sanitized_value = filter_var($value, FILTER_SANITIZE_STRING);
+							cd_debug("Sanitized Value: " . $sanitized_value);
+							update_post_meta( $post_id, $key,  $sanitized_value );
 						}
 					}
 				}
@@ -2272,8 +2276,9 @@ class WPAlchemy_MetaBox
 		{
 			$new_fields = array();
 
-			if (is_array($new_data))
-			{
+			if (is_array($new_data)){
+				cd_debug("New Data: " . print_r($new_data, true));
+				$new_data = filter_var_array($new_data, FILTER_SANITIZE_STRING);
 				foreach ($new_data as $k => $v)
 				{
 					$field = $this->prefix . $k;
@@ -2281,15 +2286,17 @@ class WPAlchemy_MetaBox
 					array_push($new_fields,$field);
 
 					$new_value = $new_data[$k];
-
-					if (is_null($new_value))
-					{
+					//cd_debug("New Value 1: " . print_r($new_value, true));
+					
+					if (is_null($new_value)){
+						cd_debug("New Value Null: " . print_r($new_value, true));
 						delete_post_meta($post_id, $field);
-					}
-					else
-					{
+					}else{
 						//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
-						update_post_meta($post_id, $field, sanitize_text_field($new_value));
+						//cd_debug("New Value 2: " . print_r($new_value, true));
+						//$sanitized_new_value = filter_var_array($new_value, FILTER_SANITIZE_STRING);
+						//cd_debug("Sanitized New Value: " . print_r($sanitized_new_value,true));
+						update_post_meta($post_id, $field, $new_value);
 					}
 				}
 			}
@@ -2323,7 +2330,11 @@ class WPAlchemy_MetaBox
 			else
 			{
 				//Added the sanitize_text_field to make sure the data is sanitized even when it is entered in the admin -CG
-				update_post_meta($post_id, $this->id, sanitize_text_field($new_data));
+				//update_post_meta($post_id, $this->id, sanitize_text_field($new_data));
+				cd_debug("New Data: " . $new_data);
+				$sanitized_new_data = filter_var($new_data, FILTER_SANITIZE_STRING);
+				cd_debug("Sanitized New Data: " . $sanitized_new_data);
+				update_post_meta($post_id, $this->id, $sanitized_new_data);
 			}
 
 			// keep data tidy, delete values if previously using WPALCHEMY_MODE_EXTRACT

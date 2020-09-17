@@ -66,9 +66,10 @@ function cdash_single_business($content) {
 		if( isset( $options['sv_tags'] ) && "1" == $options['sv_tags'] ) {
 			$business_content .= cdash_display_business_tags($post_id);
 		}
-
+		cd_debug("Locations: " . print_r($contactmeta['location'], true));
 		if( isset( $contactmeta['location'] ) && '' !== $contactmeta['location'] ) {
 			$locations = $contactmeta['location'];
+			
 			foreach( $locations as $location ) {
 				if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
 					continue;
