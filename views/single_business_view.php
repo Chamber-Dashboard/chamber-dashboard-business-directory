@@ -34,7 +34,7 @@ function cdash_single_business($content) {
 		global $post;
 		$business_content = "<div id='business'>";
 		if((isset($member_options['hide_lapsed_members'])) && (cdash_display_business_status($post_id) == "lapsed")) {
-			$business_content .= __e("This business is not a current member.", "cdash");
+			$business_content .= __("This business is not a current member.", "cdash");
 		}else{
 		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) {
 			$business_content .= cdash_display_featured_image($post_id, false, '', 'full', '');
