@@ -412,11 +412,14 @@ class Tax_Meta_Class {
   public function check_field_date() {
     
     if ( $this->has_field( 'date' ) && $this->is_edit_page() ) {
-      // Enqueu JQuery UI, use proper version.
-      wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css' );
-      wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
+      // Enqueu JQuery UI, use proper version. 
+      //Updated to use the jquery css from the plugin instead of including the external link
+      wp_enqueue_script( 'jquery-ui-core');
+      wp_enqueue_style( 'tmc-jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ), array('jquery-ui-core'));
+      
+      //wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css' );
+      //wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
     }
-    
   }
   
   /**
@@ -430,12 +433,13 @@ class Tax_Meta_Class {
     if ( $this->has_field( 'time' ) && $this->is_edit_page() ) {
       
       // Enqueu JQuery UI, use proper version.
+      //wp_enqueue_style( 'tmc-jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ) );
+      //wp_enqueue_script( 'jquery-ui-core');
       wp_enqueue_style( 'tmc-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css', array(),false,true);
       wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ),false,true );
-      wp_enqueue_script( 'at-timepicker', 'https://github.com/trentrichardson/jQuery-Timepicker-Addon/raw/master/jquery-ui-timepicker-addon.js', array( 'tmc-jquery-ui' ),false,true );
-    
+      //wp_enqueue_script( 'at-timepicker', 'https://github.com/trentrichardson/jQuery-Timepicker-Addon/raw/master/jquery-ui-timepicker-addon.js', array( 'tmc-jquery-ui' ),false,true );
+      wp_enqueue_script( 'at-timepicker', plugins_url('js/jquery-ui-timepicker-addon.js', __FILE__), array( 'jquery-ui-core' ),false,true );
     }
-    
   }
   
   /**

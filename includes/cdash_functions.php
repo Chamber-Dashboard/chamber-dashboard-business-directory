@@ -213,7 +213,8 @@ add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
 //add_action( 'admin_init', 'cdash_admin_scripts' );
 
 function cdash_demo_content_styles(){
-	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+  wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+  //wp_enqueue_style('jquery-ui-styles',  plugins_url( 'css/jquery_ui.css', dirname(__FILE__)));
 }
 
 function cdash_frontend_scripts(){
