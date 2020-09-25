@@ -7,7 +7,7 @@ function cdash_import_form() { ?>
 		<h4><?php _e( 'Import Businesses', 'cdash' ); ?></h4>
 		<p><?php _e('Chamber Dashboard Business Directory plugin includes a free import feature. You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>Country</li><li>Business Hours</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
 		<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly. Visit our <a href="https://chamberdashboard.com/docs/plugin-features/import-export/" target="_blank">documentation</a> pages for more information.', 'cdash' ); ?></p>
-		<p><a href="<?php echo plugin_dir_url(dirname(__FILE__)); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
+		<p><a href="https://chamberdashboard.com/docs/plugin-features/import-export/#Free_Import_Option" target="_blank"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
 		<?php wp_import_upload_form('admin.php?page=cd-settings&tab=import_export'); ?>
 <?php
 
