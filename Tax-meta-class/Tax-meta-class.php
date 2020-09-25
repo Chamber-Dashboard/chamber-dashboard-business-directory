@@ -571,31 +571,18 @@ class Tax_Meta_Class {
         }
         echo '</table>
         <span class="at-re-toggle"><img src="';
-           if ($this->_Local_images){
-             echo $plugin_path.'/images/edit.png';
-           }else{
-             echo 'http://i.imgur.com/ka0E2.png';
-           }
-           echo '" alt="Edit" title="Edit"/></span> 
+          echo $plugin_path.'/images/edit.png';
+          echo '" alt="Edit" title="Edit"/></span> 
         <img src="';
-        if ($this->_Local_images){
           echo $plugin_path.'/images/remove.png';
-        }else{
-          echo 'http://i.imgur.com/g8Duj.png';
-        }
-        echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
+          echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
-        
         }
         $this->show_field_end( $field, $meta );
       }
 
     echo '<img src="';
-    if ($this->_Local_images){
-      echo $plugin_path.'/images/add.png';
-    }else{
-      echo 'http://i.imgur.com/w5Tuc.png';
-    }
+    echo $plugin_path.'/images/add.png';
     echo '" alt="'.__('Add','cdash').'" title="'.__('Add','cdash').'" id="add-'.$field['id'].'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
@@ -625,11 +612,7 @@ class Tax_Meta_Class {
       echo '</tr>';
     } 
     echo '</table><img src="';
-    if ($this->_Local_images){
-      echo $plugin_path.'/images/remove.png';
-    }else{
-      echo 'http://i.imgur.com/g8Duj.png';
-    }
+    echo $plugin_path.'/images/remove.png';
     echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
     $counter = 'countadd_'.$field['id'];
     $js_code = ob_get_clean ();
