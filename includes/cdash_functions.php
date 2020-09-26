@@ -223,12 +223,12 @@ function cdash_frontend_scripts(){
 
 global $pagenow;
 if(isset($_GET['page'])){
-  $page = $_GET['page'];
+  $page = sanitize_text_field($_GET['page']);
 }else{
     $page = '';
 }
 if(isset($_GET['tab'])){
-  $tab = $_GET['tab'];
+  $tab = sanitize_text_field($_GET['tab']);
 }
 
 if($pagenow == 'admin.php' && $page == 'cdash-about' && $tab == 'cdash-about'){

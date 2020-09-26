@@ -766,7 +766,7 @@ function cdash_options_page(){
 //New CD Settings
 function cdash_settings(){
     global $cdash_active_tab;
-    $cdash_active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'directory';
+    $cdash_active_tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : 'directory';
 	?>
     <h2 class="nav-tab-wrapper">
 	<?php

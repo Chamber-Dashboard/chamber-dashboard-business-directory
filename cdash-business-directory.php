@@ -299,7 +299,7 @@ function cdash_admin_scripts_and_styles($hook)
 		wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
         wp_enqueue_style('jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ));
         if(isset($_GET['page'])){
-            $page = $_GET['page'];
+            $page = sanitize_text_field($_GET['page']);
         }else{
             $page = '';
         }

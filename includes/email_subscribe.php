@@ -31,9 +31,9 @@ function cdash_email_subscribe(){
       </form>
       <?php
         if(isset($_POST['cdash_ac_email_subscribe'])){
-          $firstname = $_POST['first_name'];
-          $lastname = $_POST['last_name'];
-          $email = $_POST['cdash_email'];
+          $firstname = sanitize_text_field($_POST['first_name']);
+          $lastname = sanitize_text_field($_POST['last_name']);
+          $email = sanitize_email($_POST['cdash_email']);
           $url = 'https://chamberdashboard.activehosted.com';
 
           $params = array(

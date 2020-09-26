@@ -8,13 +8,13 @@ function cdash_business_search_block_output($attributes){
         $search_form = '';
 
         if(isset($_GET['buscat'])){
-            $buscat = $_GET['buscat'];
+            $buscat = sanitize_text_field($_GET['buscat']);
         }else{
             $buscat = '';
         }
 
         if(isset($_GET['searchtext'])){
-            $searchtext = $_GET['searchtext'];
+            $searchtext = sanitize_text_field($_GET['searchtext']);
             $search_form .= cdash_business_search_form_block($attributes);
             $search_form .= cdash_search_results_block($attributes, $searchtext, $buscat);
         }else{

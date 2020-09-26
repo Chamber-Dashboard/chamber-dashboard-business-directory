@@ -9,6 +9,7 @@ function cdash_business_search_results_shortcode( $atts ) {
 			'image_size'	=> '' //options: full_width
         ), $atts )
 	);
+	
 	cdash_enqueue_styles();
 	if( $format !== 'list' ) {
 		cdash_enqueue_scripts();
@@ -18,12 +19,13 @@ function cdash_business_search_results_shortcode( $atts ) {
 	if( $_GET ) {
 		// Get the search terms
 		if(isset($_GET['buscat'])){
-			$buscat = $_GET['buscat'];
+			$buscat = sanitize_text_field($_GET['buscat']);
 		}else{
 			$buscat = '';
 		}
 		if(isset($_GET['searchtext'])){
-			$searchtext = $_GET['searchtext'];
+			$searchtext = wp_strip_all_tags($_GET['searchtext']);
+			cd_debug("Search Text: ". $searchtext);
 		}else{
 			$searchtext = '';
 		}
@@ -225,7 +227,7 @@ add_shortcode( 'business_search_form', 'cdash_business_search_form_shortcode' );
 function cdash_business_search_shortcode( $atts ) {
 	extract( shortcode_atts(
         array(
-			'format' => 'list',  // options: any url
+			'format' => 'list',  // options: grid2, grid3, grid4
         ), $atts )
 	);
 

@@ -41,20 +41,20 @@ function cdash_import_form() { ?>
 					$businessinfo = array (
 						'post_type'     => 'business',
 						'post_title'    => sanitize_text_field($data[0]),
-						'post_content' 	=> $data[1],
+						'post_content' 	=> sanitize_textarea_field($data[1]),
 						'post_status'   => 'publish',
 						);
 					// Create a business
 					$newbusiness = wp_insert_post($businessinfo, true);
 					// Add business categories
 					if(isset($data[2])) {
-						$categories = explode(';', $data[2]);
+						$categories = explode(';', sanitize_text_field($data[2]));
 						wp_set_object_terms( $newbusiness, $categories, 'business_category' );
 					}
 
 					// Add membership levels
 					if(isset($data[3])) {
-						$levels = explode(';', $data[3]);
+						$levels = explode(';', sanitize_text_field($data[3]));
 						wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
 					}
 
@@ -66,7 +66,7 @@ function cdash_import_form() { ?>
 					// Get all the phone numbers and put them in the array format wpalchemy expects
 					$numbers = array();
 					if(isset($data[12]) && !empty($data[12])) {
-						$tempnums = explode(';', $data[12]);
+						$tempnums = explode(';', sanitize_text_field($data[12]));
 						foreach ($tempnums as $number) {
 							$numbers[]['phonenumber'] = $number;
 						}
@@ -77,7 +77,7 @@ function cdash_import_form() { ?>
 					// Get all the email addresses and put them in the array format wpalchemy expects
 					$emails = array();
 					if(isset($data[13]) && !empty($data[13])) {
-						$tempmails = explode(';', $data[13]);
+						$tempmails = explode(';', sanitize_text_field($data[13]));
 						foreach ($tempmails as $email) {
 							$emails[]['emailaddress'] = $email;
 						}
@@ -88,15 +88,15 @@ function cdash_import_form() { ?>
 					// Get the geolocation data
 					if( isset( $data[5] ) ) {
 						// ask Google for the latitude and longitude
-						$rawaddress = $data[5];
+						$rawaddress = sanitize_text_field($data[5]);
 						if( isset( $data[6] ) ) {
-							$rawaddress .= ' ' . $data[6];
+							$rawaddress .= ' ' . sanitize_text_field($data[6]);
 						}
 						if( isset( $data[7] ) ) {
-							$rawaddress .= ' ' . $data[7];
+							$rawaddress .= ' ' . sanitize_text_field($data[7]);
 						}
 						if( isset( $data[8] ) ) {
-							$rawaddress .= ' ' . $data[8];
+							$rawaddress .= ' ' . sanitize_text_field($data[8]);
 						}
 						$address = urlencode( $rawaddress );
 						$json = wp_remote_get(cdash_get_google_map_url($address));
@@ -119,12 +119,12 @@ function cdash_import_form() { ?>
 							'state'		=> $data[7],
 							'zip'		=> $data[8],
               				'country'   => $data[9],
-              				'hours'     => $data[10],
+              				'hours'     => sanitize_text_field($data[10]),
 							'latitude'	=> $latitude,
 							'longitude'	=> $longitude,
-							'url'		=> $data[11],
-							'phone'		=> $numbers,
-							'email'		=> $emails,
+							'url'		=> esc_url($data[11]),
+							'phone'		=> sanitize_text_field($numbers),
+							'email'		=> sanitize_email($emails),
 							)
 						);
 
