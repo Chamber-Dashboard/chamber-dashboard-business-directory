@@ -18,10 +18,10 @@ add_action( 'upgrader_process_complete', 'cdash_set_demo_transient');
 function cdash_install_demo_content_button(){
   ?>
   <div id="demo_content_buttons">
-    <p>Welcome to the Business Directory plugin! Install demo content now, then check out the Business Directory page to see a sample Directory, or dismiss this notice to get started with uploading your own listings.</p>
-    <p class="demo_content button cdash_admin button-primary">Install Demo Content</p>
-    <p class="demo_content_decline button cdash_admin button-primary">No Thanks!</p>
-    <p id="loader">Loading...</p>
+    <p><?php esc_html_e("Welcome to the Business Directory plugin! Install demo content now, then check out the Business Directory page to see a sample Directory, or dismiss this notice to get started with uploading your own listings.", "cdash"); ?></p>
+    <p class="demo_content button cdash_admin button-primary"><?php esc_html_e("Install Demo Content", "cdash"); ?></p>
+    <p class="demo_content_decline button cdash_admin button-primary"><?php esc_html_e("No Thanks!", "cdash"); ?></p>
+    <p id="loader"><?php esc_html_e("Loading...", "cdash"); ?></p>
     <p class="cdash_demo_success_message"></p>
   </div>
   <?php
@@ -38,11 +38,11 @@ function cdash_add_demo_data(){
 
   if ( ($demo_post_id != 0) || $demo_page_id !=0 )
     {
-        $response = 'Demo data successfully added.';
+        $response = __('Demo data successfully added.', 'cdash');
         flush_rewrite_rules();
     }
     else {
-        $response = 'The data already exists.';
+        $response = __('The data already exists.', 'cdash');
     }
     // Return the String
     die($response);
@@ -70,11 +70,11 @@ function cdash_insert_demo_business(){
   global $wpdb;
   $user_id = get_current_user_id();
   // Create post object
-  $demo_content = "Create a description for your business here, or install the Member Updater plugin so your members can update their own listings!";
+  $demo_content = __("Create a description for your business here, or install the Member Updater plugin so your members can update their own listings!", "cdash");
 
   $demo_bus_data = array(
     array (
-      'title' => 'Karleton’s Bakery',
+      'title' => __('Karleton’s Bakery', 'cdash'),
       'content' => $demo_content,
       'post_category' => 'Restaurants',
       'featured_image' => 'images/demo_content/bakery_photogy-karlis-dambrans.jpg',
@@ -85,7 +85,7 @@ function cdash_insert_demo_business(){
       'country' => 'USA'
     ),
     array (
-      'title' => 'Wong’s Coffee & Tea',
+      'title' => __('Wong’s Coffee & Tea','cdash'),
       'content' => $demo_content,
       'post_category' => 'Restaurants',
       'featured_image' =>'images/demo_content/coffee_shopphotoby-jason-wong.jpg',
@@ -96,7 +96,7 @@ function cdash_insert_demo_business(){
       'country' => 'USA'
     ),
     array (
-      'title' => 'Brendon’s Camera',
+      'title' => __('Brendon’s Camera', 'cdash'),
       'content' => $demo_content,
       'post_category' => 'Retail Shops',
       'featured_image' =>'images/demo_content/camera_shop_photoby-brendan-church.jpg',
@@ -234,12 +234,12 @@ function cdash_add_demo_pages(){
   // Create post object
     $demo_bus_pages = array(
     array (
-      'title' => 'Business Directory',
+      'title' => __('Business Directory','cdash'),
       'content' => '[business_directory format="grid3" display="url, email, category" image="featured" description="none"]',
     ),
     array (
-      'title' => 'Become a Member',
-      'content' => 'Install the free ' . $member_page_content .  ' plugin now. Accept online payments 24/7. Automatically create new listings in your Business Directory.'
+      'title' => __('Become a Member', 'cdash'),
+      'content' => __('Install the free ' . $member_page_content .  ' plugin now. Accept online payments 24/7. Automatically create new listings in your Business Directory.', 'cdash')
     ),
   );
 
