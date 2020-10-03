@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.3.1
+Version: 3.3.2
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.3.1' );
+define( 'CDASH_BUS_VER', '3.3.2' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -293,11 +293,13 @@ define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 function cdash_admin_scripts_and_styles($hook)
 {
     if ( is_admin() ) {
-        //wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
-        wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
-        wp_enqueue_style('jquery-ui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+		//wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
+-       //wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
+-       //wp_enqueue_style('jquery-ui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+		wp_enqueue_style( 'wpalchemy-metabox', plugins_url( 'wpalchemy/meta.css', __FILE__ ));
+        wp_enqueue_style('jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ));
         if(isset($_GET['page'])){
-            $page = $_GET['page'];
+            $page = sanitize_text_field($_GET['page']);
         }else{
             $page = '';
         }

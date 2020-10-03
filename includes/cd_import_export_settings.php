@@ -3,9 +3,9 @@ function cd_import_export(){
     ?>
     <div class="wrap">
         <?php
-        $page = $_GET['page'];
+        $page = sanitize_text_field($_GET['page']);
         if(isset($_GET['tab'])){
-            $tab = $_GET['tab'];
+            $tab = sanitize_text_field($_GET['tab']);
         }
 
         ?>

@@ -84,7 +84,7 @@ function cdash_business_directory_shortcode( $atts ) {
 	}
 
 	if(isset($_GET['bus_category'])){
-		$category = $_GET['bus_category'];
+		$category = sanitize_text_field($_GET['bus_category']);
 	}
 
 	$args = array(
@@ -115,7 +115,7 @@ function cdash_business_directory_shortcode( $atts ) {
 	if($alpha == 'yes'){
 		$business_list = cdash_list_alphabet();
 		if(isset($_GET['starts_with'])) {
-			$args['starts_with'] = $_GET['starts_with'];
+			$args['starts_with'] = sanitize_text_field($_GET['starts_with']);
 		}
 	}
 
@@ -131,7 +131,7 @@ function cdash_business_directory_shortcode( $atts ) {
 		$business_list .= '</p>';
 		$business_list .= '<p id="cdash_bus_list_page">'.$url.'</p>';
 		if(isset($_GET['bus_category'])){
-			$bus_cat_slug = $_GET['bus_category'];
+			$bus_cat_slug = sanitize_text_field($_GET['bus_category']);
 			$bus_cat_name = get_term_by('slug', $bus_cat_slug, 'business_category');
 			$business_list .= '<p>Category: ' . $bus_cat_name->name . '</p>';
 		}

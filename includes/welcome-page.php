@@ -57,12 +57,12 @@ function cdash_support_page_render(){
 ?>
     <div class="wrap">
 		<?php
-        $page = $_GET['page'];
+        $page = sanitize_text_field($_GET['page']);
         if(isset($_GET['tab'])){
-            $tab = $_GET['tab'];
+            $tab = sanitize_text_field($_GET['tab']);
         }
         if(isset($_GET['section'])){
-            $section = $_GET['section'];
+            $section = sanitize_text_field($_GET['section']);
         }else{
             $section = "support";
         }

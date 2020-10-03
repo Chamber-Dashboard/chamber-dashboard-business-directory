@@ -412,11 +412,14 @@ class Tax_Meta_Class {
   public function check_field_date() {
     
     if ( $this->has_field( 'date' ) && $this->is_edit_page() ) {
-      // Enqueu JQuery UI, use proper version.
-      wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css' );
-      wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
+      // Enqueu JQuery UI, use proper version. 
+      //Updated to use the jquery css from the plugin instead of including the external link
+      wp_enqueue_script( 'jquery-ui-core');
+      wp_enqueue_style( 'tmc-jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ), array('jquery-ui-core'));
+      
+      //wp_enqueue_style( 'tmc-jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css' );
+      //wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ) );
     }
-    
   }
   
   /**
@@ -430,12 +433,13 @@ class Tax_Meta_Class {
     if ( $this->has_field( 'time' ) && $this->is_edit_page() ) {
       
       // Enqueu JQuery UI, use proper version.
+      //wp_enqueue_style( 'tmc-jquery-ui-css', plugins_url( 'css/jquery_ui_base_theme.css', __FILE__ ) );
+      //wp_enqueue_script( 'jquery-ui-core');
       wp_enqueue_style( 'tmc-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/themes/base/jquery-ui.css', array(),false,true);
       wp_enqueue_script( 'tmc-jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $this->get_jqueryui_ver() . '/jquery-ui.min.js', array( 'jquery' ),false,true );
-      wp_enqueue_script( 'at-timepicker', 'https://github.com/trentrichardson/jQuery-Timepicker-Addon/raw/master/jquery-ui-timepicker-addon.js', array( 'tmc-jquery-ui' ),false,true );
-    
+      //wp_enqueue_script( 'at-timepicker', 'https://github.com/trentrichardson/jQuery-Timepicker-Addon/raw/master/jquery-ui-timepicker-addon.js', array( 'tmc-jquery-ui' ),false,true );
+      wp_enqueue_script( 'at-timepicker', plugins_url('js/jquery-ui-timepicker-addon.js', __FILE__), array( 'jquery-ui-core' ),false,true );
     }
-    
   }
   
   /**
@@ -567,31 +571,18 @@ class Tax_Meta_Class {
         }
         echo '</table>
         <span class="at-re-toggle"><img src="';
-           if ($this->_Local_images){
-             echo $plugin_path.'/images/edit.png';
-           }else{
-             echo 'http://i.imgur.com/ka0E2.png';
-           }
-           echo '" alt="Edit" title="Edit"/></span> 
+          echo $plugin_path.'/images/edit.png';
+          echo '" alt="Edit" title="Edit"/></span> 
         <img src="';
-        if ($this->_Local_images){
           echo $plugin_path.'/images/remove.png';
-        }else{
-          echo 'http://i.imgur.com/g8Duj.png';
-        }
-        echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
+          echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
-        
         }
         $this->show_field_end( $field, $meta );
       }
 
     echo '<img src="';
-    if ($this->_Local_images){
-      echo $plugin_path.'/images/add.png';
-    }else{
-      echo 'http://i.imgur.com/w5Tuc.png';
-    }
+    echo $plugin_path.'/images/add.png';
     echo '" alt="'.__('Add','cdash').'" title="'.__('Add','cdash').'" id="add-'.$field['id'].'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
@@ -621,11 +612,7 @@ class Tax_Meta_Class {
       echo '</tr>';
     } 
     echo '</table><img src="';
-    if ($this->_Local_images){
-      echo $plugin_path.'/images/remove.png';
-    }else{
-      echo 'http://i.imgur.com/g8Duj.png';
-    }
+    echo $plugin_path.'/images/remove.png';
     echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
     $counter = 'countadd_'.$field['id'];
     $js_code = ob_get_clean ();

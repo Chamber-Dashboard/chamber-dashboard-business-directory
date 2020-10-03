@@ -213,7 +213,9 @@ add_action('admin_enqueue_scripts', 'cdash_admin_scripts');
 //add_action( 'admin_init', 'cdash_admin_scripts' );
 
 function cdash_demo_content_styles(){
-	wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+  //wp_enqueue_style('jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+  wp_enqueue_style('jquery-ui-styles', plugins_url('css/jquery_ui_smoothness_theme_css.css', dirname(__FILE__)));
+  //wp_enqueue_style('jquery-ui-styles',  plugins_url( 'css/jquery_ui.css', dirname(__FILE__)));
 }
 
 function cdash_frontend_scripts(){
@@ -222,12 +224,12 @@ function cdash_frontend_scripts(){
 
 global $pagenow;
 if(isset($_GET['page'])){
-  $page = $_GET['page'];
+  $page = sanitize_text_field($_GET['page']);
 }else{
     $page = '';
 }
 if(isset($_GET['tab'])){
-  $tab = $_GET['tab'];
+  $tab = sanitize_text_field($_GET['tab']);
 }
 
 if($pagenow == 'admin.php' && $page == 'cdash-about' && $tab == 'cdash-about'){

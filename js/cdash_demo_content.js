@@ -43,7 +43,10 @@ jQuery(document).ready(function($){
   });
 
   $(".demo_content_decline").click(function(event){
-    $(".dashboard_page_cdash-about .ui-dialog").hide();
-    $(".dashboard_page_cdash-about .ui-widget-overlay").hide();
+    //$(".dashboard_page_cdash-about .ui-dialog").hide();
+    $(".chamber-dashboard_page_cd-welcome .ui-dialog.cdash_demo_content_modal").hide();
+    //$(".ui-dialog.cdash_demo_content_modal ").hide();
+    //$(".dashboard_page_cdash-about .ui-widget-overlay").hide();
+    $(".chamber-dashboard_page_cd-welcome .ui-widget-overlay").hide();
   });
 });
