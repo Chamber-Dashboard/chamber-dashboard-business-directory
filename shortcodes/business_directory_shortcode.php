@@ -290,9 +290,9 @@ function cdash_bus_directory_display_title($single_link, $cd_block, $changeTitle
 		$business_list .= "<h3". $size ."><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
 	} else {
 		$business_list .= "<h3". $size .">" . get_the_title() . "</h3>";
-	}
+    }
 
-	return $business_list;
+    return $business_list;
 }
 
 function cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery){

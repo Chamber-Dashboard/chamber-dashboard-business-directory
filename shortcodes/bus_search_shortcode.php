@@ -25,7 +25,6 @@ function cdash_business_search_results_shortcode( $atts ) {
 		}
 		if(isset($_GET['searchtext'])){
 			$searchtext = wp_strip_all_tags($_GET['searchtext']);
-			cd_debug("Search Text: ". $searchtext);
 		}else{
 			$searchtext = '';
 		}
