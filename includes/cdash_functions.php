@@ -125,37 +125,64 @@ function cd_log_message($level, $message) {
     }
   }
 }
-
-function display_categories_grid($taxonomies, $showcount){
-if ( !empty($taxonomies) ) :
-    $output = '<div class="business_category responsive">';
-    foreach( $taxonomies as $category ) {
-      if($showcount == 1){
-        $num_posts = " (" . $category->count . ")";
-      }else{
-        $num_posts = '';
-      }
-        if( $category->parent == 0 ) {
-            $output.= '<div class="cdash_parent_category"><div><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a><span class="number_posts">' . $num_posts . '</span></div>';
-            $taxonomy_output = array();
-            foreach( $taxonomies as $subcategory ) {
-                if($subcategory->parent == $category->term_id) {
-                    if($showcount == 1){
-                      $num_posts = " (" . $subcategory->count . ")";
-                    }else{
-                      $num_posts = '';
-                    }
-                  $taxonomy_output[] = '<span class="cdash_child_category"><a class="cdash_cc_link" href="'. get_term_link($subcategory->slug, 'business_category') .'">
-                    '. esc_html( $subcategory->name ) .'</a>' . $num_posts . '</span>';
-                }
+function display_categories_grid($taxonomies, $showcount, $showCatImage, $showCatDesc, $hierarchical, $align_class, $depth, $child_of){
+    $maxdepth = ($depth == 0) ? 99 : $depth;
+    $output = '<div class="business_category responsive ' . $align_class . '">';
+    if ( !empty($taxonomies) ) {
+        foreach( $taxonomies as $category ) {
+            if($showcount == 1){
+                $num_posts = " (" . $category->count . ")";
+            }else{
+                $num_posts = '';
             }
-            $output .= join($taxonomy_output, ", ");
-            $output.='</div>';
+            if( $hierarchical == 1 ) {
+                if($category->parent == $child_of){ //These are parent categories
+                    $output .= '<div class="cdash_parent_category"><div><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a><span class="number_posts">' . $num_posts . '</span></div>';
+                    $childcats = get_child_category_list($taxonomies, $showcount, $showCatImage, $showCatDesc, $category, 1, $maxdepth);
+                    $output .= join(", ", $childcats );
+                    $output.='</div>';
+                }
+            }else{
+                $output.= '<div class="cdash_parent_category"><div><a class="cdash_pc_link" href="'. get_term_link($category->slug, 'business_category') .'"><b>' . esc_attr( $category->name ) . '</b></a><span class="number_posts">' . $num_posts . '</span></div>';
+                $taxonomy_output = array();
+                foreach( $taxonomies as $subcategory ) {
+                    if($subcategory->parent == $category->term_id) {
+                        if($showcount == 1){
+                            $num_posts = " (" . $subcategory->count . ")";
+                        }else{
+                            $num_posts = '';
+                        }
+                    }
+                }
+                $output.='</div>';
+            }        
+        }
+    }else{
+        $output .= "No Categories found.";
+    }
+    $output .= '</div>';
+    return $output;
+}
+
+function get_child_category_list($taxonomies, $showcount, $showCatImage, $showCatDesc, $parent, $curdepth, $maxdepth) {
+    $ret = array();
+    if ($curdepth < $maxdepth) {
+        foreach($taxonomies as $subcat) {
+            if ($subcat->parent === $parent->term_id) {
+                $ret[] = '<span class="cdash_child_category_' . $curdepth . '">'
+                             . '<a class="cdash_cc_link" href="' 
+                             . get_term_link($subcat->slug, 'business_category') 
+                             . '">'
+                             . esc_html( $subcat->name ) 
+                             .'</a>' 
+                             . (($showcount == 1) ? " (" . $subcat->count . ")" : '') 
+                             . '</span>';
+                $childcats = get_child_category_list($taxonomies, $showcount, $showCatImage, $showCatDesc, $subcat, $curdepth+1, $maxdepth);
+                $ret = array_merge($ret, $childcats);
+            }
         }
     }
-    $output.='</div>';
-    return $output;
-endif;
+    return $ret;
 }
 
 function cdash_display_categories_dropdown($args){

@@ -406,3 +406,9 @@ p.right{
     min-height: 500px;
     margin-top: 15px;
 }
+
+/*Styles for the multi select dropdown in the block settings*/
+
+.components-select-control.cdash_multi_select select{
+    height:100px!important;
+}

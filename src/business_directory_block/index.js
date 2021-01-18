@@ -16,7 +16,17 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
     description: 'The business directory block displays the Business Directoy listings on your page.',
     example: {
     },
+    supports: {
+        // Declare support for block's alignment.
+        // This adds support for all the options:
+        // left, center, right, wide, and full.
+        align: true,
+    },
     attributes: {
+        align: {
+            type: 'string',
+            default: ''
+        },
         cd_block:{
             type: 'string',
             default: 'yes',

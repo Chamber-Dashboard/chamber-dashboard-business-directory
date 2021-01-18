@@ -180,6 +180,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Categories"
                         value = {categoryArray}
                         options = {categoryOptions}
@@ -189,6 +190,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Membership Level"
                         value = {membershipLevelArray}
                         options = {membershipLevelOptions}
@@ -198,6 +200,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Membership Status"
                         value = {membershipStatusArray}
                         options = {membershipStatusOptions}

@@ -129,7 +129,7 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
 
 
 const edit = props => {
-    const {attributes: {cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, }, className, setAttributes } = props;
+    const {attributes: {align, cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, }, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -377,6 +377,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Categories"
                         value = {categoryArray}
                         options = {categoryOptions}
@@ -386,6 +387,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Membership Level"
                         value = {membershipLevelArray}
                         options = {membershipLevelOptions}
@@ -395,6 +397,7 @@ const edit = props => {
                 <PanelRow>
                     <SelectControl 
                         multiple
+                        className = "cdash_multi_select"
                         label = "Membership Status"
                         value = {membershipStatusArray}
                         options = {membershipStatusOptions}

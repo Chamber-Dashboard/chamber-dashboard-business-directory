@@ -2,10 +2,14 @@
 //Business Directory Shortcode rendering
 if ( function_exists( 'register_block_type' ) ) {
     // Hook server side rendering into render callback
-  register_block_type(
+    register_block_type(
       'cdash-bd-blocks/business-directory', [
           'render_callback' => 'cdash_bus_directory_block_callback',
           'attributes'  => array(
+              'align'  => array(
+                    'type'  => 'string',
+                    'default' => 'center',
+                ),
               'cd_block'  => array(
                   'type'  => 'string',
                   'default' => 'yes',

@@ -184,6 +184,7 @@ clear: both;
   max-width:80%;
   margin:0 auto;
   text-align:center;
+  margin-bottom:80px;
 }
 
 .alpha_listings ul li{
@@ -256,4 +257,10 @@ clear: both;
 #businesslist.cd_block .business .description.bus_listing_image{
 	height:auto;
 	overflow: hidden;
+}
+
+/* Adding this to wrap the emails and categories*/
+
+#businesslist .business .email a, #businesslist .business .categories{
+    overflow-wrap: break-word;
 }
