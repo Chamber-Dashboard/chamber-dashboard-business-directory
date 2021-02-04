@@ -185,18 +185,27 @@ clear: both;
   margin:0 auto;
   text-align:center;
   margin-bottom:80px;
+  display: flex;
+  justify-content: center;
+}
+
+.alpha_listings ul{
+    width:100%;
 }
 
 .alpha_listings ul li{
-  float:left;
+  /*float:left;*/
+  display: inline-flex;
+  justify-content: center;
   list-style-type: none;
   padding-left: 0.75%;
   padding-right: 0.75%;
   }
 
-.alpha_listings{
-  margin-bottom:100px;
-}
+  .cdash_cat_filter{
+      margin-bottom:80px;
+  }
+
 #loader, #business_listings_format, #cdash_bus_list_page{
   display:none;
 }

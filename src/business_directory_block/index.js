@@ -20,7 +20,7 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         // Declare support for block's alignment.
         // This adds support for all the options:
         // left, center, right, wide, and full.
-        align: true,
+        align: [ 'left', 'right', 'center', 'wide' ]
     },
     attributes: {
         align: {

@@ -34,7 +34,8 @@ function cdash_business_directory_shortcode( $atts ) {
 			'changeTitleFontSize' => true,
 			'titleFontSize' => '',
 			'disablePagination' => false,
-			'displayImageOnTop' => false,
+            'displayImageOnTop' => false,
+            'align'             => ''
 		), $atts )
 	);
 	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
@@ -113,28 +114,14 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	$business_list = '';
 	if($alpha == 'yes'){
-		$business_list = cdash_list_alphabet();
+		$business_list .= cdash_list_alphabet($align);
 		if(isset($_GET['starts_with'])) {
 			$args['starts_with'] = sanitize_text_field($_GET['starts_with']);
 		}
 	}
 
 	if($show_category_filter == 'yes'){
-		// remove pagination from url
-		$pattern = "/page(\/)*([0-9\/])*/i";
-		$current_url = home_url( add_query_arg( array(), $wp->request ) );
-		$url = preg_replace($pattern, '', $current_url);
-		$business_list .= '<p>' . cdash_bus_cat_dropdown();
-		if(isset($_GET['bus_category'])){
-			$business_list.= '<a href="'.$url.'">Clear Filter</a>';
-		}
-		$business_list .= '</p>';
-		$business_list .= '<p id="cdash_bus_list_page">'.$url.'</p>';
-		if(isset($_GET['bus_category'])){
-			$bus_cat_slug = sanitize_text_field($_GET['bus_category']);
-			$bus_cat_name = get_term_by('slug', $bus_cat_slug, 'business_category');
-			$business_list .= '<p>Category: ' . $bus_cat_name->name . '</p>';
-		}
+		 $business_list .= cdash_display_bus_cat_filter();
 	}
 
 	$args = cdash_add_hide_lapsed_members_filter($args);
@@ -158,7 +145,9 @@ function cdash_business_directory_shortcode( $atts ) {
 			$block_class = "cd_block";
 		}else{
 			$block_class = "";
-		}
+        }
+        $business_list .= "<div class='align".$align."'>";
+        
 		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class . ' ' . $block_class ."'>";
 		
 		$count = 0;
@@ -177,7 +166,8 @@ function cdash_business_directory_shortcode( $atts ) {
 					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop);
 				}
 			endwhile;
-			$business_list .= "</div><!--end of businesslist-->";
+            $business_list .= "</div><!--end of businesslist-->";
+            $business_list .= "</div>";
 			// pagination links
 			$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
@@ -218,11 +208,12 @@ function cdash_business_directory_shortcode( $atts ) {
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 
 //Display the list of alphabet
-function cdash_list_alphabet(){
-	global $wp;
+function cdash_list_alphabet($align){
+    global $wp;
+    $align_class = "align".$align;
 	$results = str_split("0ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	$alpha = '';
-	$alpha .= "<div class='alpha_listings'>";
+	$alpha .= "<div class='alpha_listings ".$align_class."'>";
 	$alpha .= "<ul>";
 	$url_parts = explode("?", get_pagenum_link(1));
 	$base_url = $url_parts[0];
@@ -471,5 +462,28 @@ function cdash_bus_logo_exists(){
 	}else{
 		return false;
 	}
+}
+
+function cdash_display_bus_cat_filter(){
+    if(!isset($business_list)){
+        $business_list = '';
+    }
+    global $wp;
+    // remove pagination from url
+    $pattern = "/page(\/)*([0-9\/])*/i";
+    $current_url = home_url( add_query_arg( array(), $wp->request ) );
+    $url = preg_replace($pattern, '', $current_url);
+    $business_list .= '<p class="cdash_cat_filter">' . cdash_bus_cat_dropdown();
+    if(isset($_GET['bus_category'])){
+        $business_list.= '<a href="'.$url.'">Clear Filter</a>';
+    }
+    $business_list .= '</p>';
+    $business_list .= '<p id="cdash_bus_list_page">'.$url.'</p>';
+    if(isset($_GET['bus_category'])){
+        $bus_cat_slug = sanitize_text_field($_GET['bus_category']);
+        $bus_cat_name = get_term_by('slug', $bus_cat_slug, 'business_category');
+        $business_list .= '<p>Category: ' . $bus_cat_name->name . '</p>';
+    }
+    return $business_list;
 }
 ?>
