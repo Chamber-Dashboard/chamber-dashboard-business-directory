@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "wp-scripts start",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "bundle": "dir-archiver --src . --dest ../chamber-dashboard-business-directory.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,8 @@
     "@wordpress/scripts": "7.1.3"
   },
   "dependencies": {
-    "@wordpress/block-editor": "^5.1.0",
-    "@wordpress/server-side-render": "^1.8.6"
+    "@wordpress/block-editor": "^5.3.0",
+    "@wordpress/server-side-render": "^1.8.6",
+    "dir-archiver": "^1.2.0"
   }
 }

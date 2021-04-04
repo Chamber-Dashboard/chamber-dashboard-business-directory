@@ -258,7 +258,7 @@ clear: both;
 	max-width:100%;
 }
 
-#businesslist.grid3.cd_block img.medium, #businesslist.grid3.cd_block img.large, #businesslist.grid3.cd_block img.full, #businesslist.grid4.cd_block img.medium, #businesslist.grid4.cd_block img.large, #businesslist.grid4.cd_block img.full{
+#businesslist.grid3.cd_block img.medium, #businesslist.grid3.cd_block img.large, #businesslist.grid2.cd_block img.full, #businesslist.grid3.cd_block img.full, #businesslist.grid4.cd_block img.medium, #businesslist.grid4.cd_block img.large, #businesslist.grid4.cd_block img.full{
 	width:100%;
 }
 
@@ -272,4 +272,13 @@ clear: both;
 
 #businesslist .business .email a, #businesslist .business .categories{
     overflow-wrap: break-word;
+}
+
+/*Adding padding for business list with borders*/
+#businesslist .business.border_set h3, #businesslist .business.border_set .description .bus_content, #businesslist .business.border_set p, #businesslist .business.border_set .description a img.auto, #businesslist .business.border_set .description a img.thumbnail, #businesslist .business.border_set .description a img.medium, #businesslist .business.border_set .description a img.large {
+	padding: 0px 10px;
+}
+
+#businesslist .business.border_set .description span.bus_content{
+	display:block;
 }

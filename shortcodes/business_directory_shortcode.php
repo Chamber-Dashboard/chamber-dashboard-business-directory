@@ -35,9 +35,15 @@ function cdash_business_directory_shortcode( $atts ) {
 			'titleFontSize' => '',
 			'disablePagination' => false,
             'displayImageOnTop' => false,
-            'align'             => ''
+            'align'             => '',
+			'textAlignment'		=>	'left',
+			'enableBorder'		=>	false,
+			'borderColor'		=>	'',
+			'borderThickness'	=>	0,
+			'borderStyle'		=>	'',
 		), $atts )
 	);
+
 	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
 	//Loop through the memberhsip levels
 
@@ -137,8 +143,26 @@ function cdash_business_directory_shortcode( $atts ) {
 		$logo_class = "";
 	}
 
+	$border_styles = array();
+	if(isset($enableBorder) && $enableBorder === true){
+		$border_styles['class']	= "border_set";
+		$border_styles['border'] = "style = 'border: " . $borderColor . ' ' . $borderThickness . 'px ' . $borderStyle ."'";
+	}else{
+		$border_styles['class'] = '';
+		$border_styles['border'] = '';
+	}
+
+	$text_align = 'has-text-align-'.$textAlignment;
+	if($align == "center" || $align == "left" || $align == "right"){
+		$block_align = "";
+	}else{
+		$block_align = 'align'.$align;
+	}
+	
+
 	// The Loop
 	if ( $businessquery->have_posts() ) :
+		$image_sizes = cdash_get_wp_image_sizes();
 		//$business_list = '';
 		$business_list .= "<div id='output'></div>";
 		if($cd_block == "yes"){
@@ -146,9 +170,9 @@ function cdash_business_directory_shortcode( $atts ) {
 		}else{
 			$block_class = "";
         }
-        $business_list .= "<div class='align".$align."'>";
+        //$business_list .= "<div class='".$block_align."'>";
         
-		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class . ' ' . $block_class ."'>";
+		$business_list .= "<div id='businesslist' class='" . $format . ' ' . $image_size . ' '. $logo_class . ' ' . $block_class . ' ' . $text_align . ' ' . $block_align . "'>";
 		
 		$count = 0;
 			while ( $businessquery->have_posts() ) :
@@ -160,14 +184,14 @@ function cdash_business_directory_shortcode( $atts ) {
 				$logometa = $buslogo_metabox->the_meta();
 				if($logo_gallery == "yes"){
 					if( isset( $logometa['buslogo'] ) ) {
-						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop);
+						$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $border_styles);
 					}
 				}else{
-					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop);
+					$business_list .= cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $border_styles);
 				}
 			endwhile;
             $business_list .= "</div><!--end of businesslist-->";
-            $business_list .= "</div>";
+            //$business_list .= "</div>";
 			// pagination links
 			$total_pages = $businessquery->max_num_pages;
 			if ($total_pages > 1){
@@ -244,11 +268,12 @@ function cdash_starts_with_query_filter( $where, $query ) {
 }
 add_filter( 'posts_where', 'cdash_starts_with_query_filter', 10, 2 );
 
-function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop){
+function cdash_display_business_listings($add, $single_link, $image, $image_size, $post_id, $logo_gallery, $text, $display, $displayopts, $cd_block, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $border_styles){
 	if(!isset($business_list)){
 		$business_list = '';
 	}
-	$business_list .= "<div class='" . $add ." business " . join( ' ', get_post_class() ) . "'>";
+	//$business_list .= "<div class='" . $add ." business " . $border_styles['class'] . ' ' . join( ' ', get_post_class() ) . ">";
+	$business_list .= "<div class='" . $add . " business " . $border_styles['class'] . ' ' . join(' ', get_post_class() ) . "' " . $border_styles['border'] . ">";
 
 	$business_list .= cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $image, $image_size, $post_id, $logo_gallery, $text);
 
@@ -275,7 +300,9 @@ function cdash_bus_directory_display_title($single_link, $cd_block, $changeTitle
 	$size = '';
 	if($cd_block == 'yes'){
 		if(isset($changeTitleFontSize) && $changeTitleFontSize == 1){
+			//$size = " style='font-size:".$titleFontSize."px'";
 			$size = " style='font-size:".$titleFontSize."px'";
+			//$size = " style='font-size:".$font_size."'";
 		}
 	}	if($single_link == "yes") {
 		$business_list .= "<h3". $size ."><a href='" . get_the_permalink() . "'>" . get_the_title() . "</a></h3>";
@@ -294,7 +321,7 @@ function cdash_bus_directory_display_image($image, $image_size, $single_link, $p
 	if(isset($image_size) && $image_size !=""){
 		$image_class = $image_size . " ". $image;
 	}else{
-		$image_class = "alignleft " . $image;
+		$image_class = "alignleft auto " . $image;
 		//$image_class = "alignleft ";
 	}
 	
@@ -338,20 +365,6 @@ function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitle
 	if(!isset($business_list)){
 		$business_list = '';
 	}
-	/*if($logo_gallery == "no"){
-		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
-	}
-
-	$business_list .= "<div class='description'>";
-
-	$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
-
-	if($logo_gallery == "no"){
-		$business_list .= cdash_bus_directory_display_content($text);
-	}
-
-	$business_list .= "</div>";*/
-
 
 	if($logo_gallery == "yes"){
 		$business_list .= "<div class='description'>";
@@ -371,9 +384,8 @@ function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitle
 		//display title, image and content
 		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
 		$business_list .= "<div class='description'>";
-
 		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
-		$business_list .= cdash_bus_directory_display_content($text);
+		$business_list .= '<span class="bus_content">' . cdash_bus_directory_display_content($text) . '</span>';
 		$business_list .= "</div>";
 	}
 	return $business_list;

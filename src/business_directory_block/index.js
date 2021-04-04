@@ -20,12 +20,16 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
         // Declare support for block's alignment.
         // This adds support for all the options:
         // left, center, right, wide, and full.
-        align: [ 'left', 'right', 'center', 'wide' ]
+        align: [ 'wide', 'full' ]
     },
     attributes: {
         align: {
             type: 'string',
             default: ''
+        },
+        textAlignment: {
+            type: 'string',
+            default: 'left',
         },
         cd_block:{
             type: 'string',
@@ -147,6 +151,10 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'boolean',
             default: false,
         },
+        displayTagsToggle:{
+            type: 'boolean',
+            default: false,
+        },
         displayLevelToggle:{
             type: 'boolean',
             default: false,
@@ -179,6 +187,22 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'boolean',
             default: false,
         },
+        enableBorder: {
+            type: 'boolean',
+            default: false,
+        },
+        borderColor: {
+            type: 'string',
+            default: '#000000',
+        },
+        borderThickness: {
+            type: 'number',
+            default: 1,
+        },
+        borderStyle: {
+            type: 'string',
+            default: 'solid',
+        },
     },
     edit: edit,
     save() {
