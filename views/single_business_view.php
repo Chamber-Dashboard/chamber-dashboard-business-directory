@@ -161,18 +161,21 @@ function cdash_single_business_map() {
 			var locations = [
 				<?php
 				foreach($locations as $location) {
-					$address = esc_html( $location['address'] );
-					$city = esc_html( $location['city'] );
-					$state = esc_html( $location['state'] );
-					$zip = esc_html($location['zip']);
-					$country = esc_html($location['country']);
+					$location_info = cdash_get_location_info($location);
+
+					$address = $location_info['address'];
+					$city = $location_info['city'];
+					$state = $location_info['state'];
+					$zip = $location_info['zip'];
+					$country = $location_info['country'];
 
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
 						if(!isset($location['latitude']) || !isset($location['custom_latitude']) || $location['latitude'] == 0 && !isset($location['longitude']) || !isset($location['custom_longitude']) || $location['longitude'] == 0 ){
 							//Get lat and long from address
-							$latLng = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
+							//$latLng = cdash_get_lat_long($location['address'], $location['city'], $location['state'], $location['zip'], $location['country'] );
+							$latLng = cdash_get_lat_long($address, $city, $state, $zip, $country );
 							$lat = $latLng[0];
 							$long = $latLng[1];
 						}else{
@@ -216,12 +219,34 @@ function cdash_single_business_map() {
 							}
 
 							// get other information for the pop-up window
-							$popaddress = esc_html( $location['address'] );
-							$popcity = esc_html( $location['city'] );
-							$popstate = esc_html( $location['state'] );
+							if(isset($location['address'])){
+								$popaddress = esc_html( $location['address'] );
+							}else{
+								$popaddress = '';
+							}
+							
+							if(isset($location['city'])){
+								$popcity = esc_html( $location['city'] );
+							}else{
+								$popcity = '';
+							}
+
+							if(isset($location['state'])){
+								$popstate = esc_html( $location['state'] );
+							}else{
+								$popstate = '';
+							}
+
+							if(isset($location['zip'])){
+								$popzip = esc_html($location['zip']);
+							}else{
+								$popzip = '';
+							}
+							
+							
 							?>
 
-							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location['state']; ?> <?php echo $location['zip']; ?> </div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location['state']; ?> <?php echo $popzip; ?> </div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 							<?php
 						//}
 					}
@@ -284,5 +309,39 @@ function cdash_info_window() {
 	return $output;
 }
 
+function cdash_get_location_info($location){
+	$location_info = array();
+	if(isset($location['address'])){
+		$location_info['address'] = esc_html( $location['address'] );
+	}else{
+		$location_info['address'] = '';
+	}
+
+	if(isset($location['city'])){
+		$location_info['city'] = esc_html( $location['city'] );
+	}else{
+		$location_info['city'] = '';
+	}
+
+	if(isset($location['state'])){
+		$location_info['state'] = esc_html( $location['state'] );
+	}else{
+		$location_info['state'] = '';
+	}
+
+	if(isset($location['zip'])){
+		$location_info['zip'] = esc_html($location['zip']);
+	}else{
+		$location_info['zip'] = '';
+	}
+
+	if(isset($location['country'])){
+		$location_info['country'] = esc_html($location['country']);
+	}else{
+		$location_info['country'] = '';
+	}
+
+	return $location_info;
+}
 
 ?>
