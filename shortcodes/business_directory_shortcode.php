@@ -41,30 +41,12 @@ function cdash_business_directory_shortcode( $atts ) {
 			'borderColor'		=>	'',
 			'borderThickness'	=>	0,
 			'borderStyle'		=>	'',
+			'borderRadius'		=>	0,
+			'borderRadiusUnits'	=>	'px',
+
 		), $atts )
 	);
 
-	//If member manager is active AND orderby="membership_level", set $level=$membership_level[0]
-	//Loop through the memberhsip levels
-
-	/*if(function_exists('cdashmm_requires_wordpress_version') && $orderby == 'membership_level'){
-		$membership_levels =	get_terms( array(
-		'taxonomy' => 'membership_level',
-		'hide_empty' => false,
-		'orderby'		=>	'term_order',
-		'order'			=>	'ASC'
-		) );
-
-		foreach( $membership_levels as $level ){
-			$level = $membership_level->slug;
-		}
-	}*/
-
-	// Enqueue stylesheet if the display format is columns instead of list
-	/*if($format !== 'list') {
-		cdash_enqueue_styles();
-		cdash_enqueue_scripts();
-	}*/
 	cdash_enqueue_styles();
 	cdash_enqueue_scripts();
 
@@ -145,8 +127,10 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	$border_styles = array();
 	if(isset($enableBorder) && $enableBorder === true){
+		$border = $borderColor . ' ' . $borderThickness . 'px ' . $borderStyle;
+		$border_radius = $borderRadius . $borderRadiusUnits;
 		$border_styles['class']	= "border_set";
-		$border_styles['border'] = "style = 'border: " . $borderColor . ' ' . $borderThickness . 'px ' . $borderStyle ."'";
+		$border_styles['border'] = 'style = "border: ' . $border . ';border-radius: ' . $border_radius .'";';
 	}else{
 		$border_styles['class'] = '';
 		$border_styles['border'] = '';
@@ -272,7 +256,6 @@ function cdash_display_business_listings($add, $single_link, $image, $image_size
 	if(!isset($business_list)){
 		$business_list = '';
 	}
-	//$business_list .= "<div class='" . $add ." business " . $border_styles['class'] . ' ' . join( ' ', get_post_class() ) . ">";
 	$business_list .= "<div class='" . $add . " business " . $border_styles['class'] . ' ' . join(' ', get_post_class() ) . "' " . $border_styles['border'] . ">";
 
 	$business_list .= cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitleFontSize, $titleFontSize, $displayImageOnTop, $image, $image_size, $post_id, $logo_gallery, $text);

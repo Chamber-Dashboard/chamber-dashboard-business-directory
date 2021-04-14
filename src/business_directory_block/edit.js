@@ -129,6 +129,11 @@ const titleFontSizes = [
 ];
 const titleFallbackFontSize = 16;
 
+const borderRadiusUnitOptions = [
+    { label: 'px', value: 'px' },
+    { label: '%', value: '%' },
+];
+
 wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         membershipLevelOptions.push({label: val.name, value: val.slug});
@@ -137,7 +142,7 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
 
 
 const edit = props => {
-    const {attributes: {align, textAlignment, cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayTagsToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, enableBorder, borderColor, borderThickness, borderStyle}, className, setAttributes } = props;
+    const {attributes: {align, textAlignment, cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayTagsToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, enableBorder, borderColor, borderThickness, borderStyle, borderRadius, borderRadiusUnits}, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -289,6 +294,31 @@ const edit = props => {
                         options= { borderStyleOptions }
                         onChange={ ( nextValue ) =>
                             setAttributes( {borderStyle:  nextValue } )
+                        }
+                    />
+                )}
+                { enableBorder &&
+                (  
+                    <PanelRow>
+                        <RangeControl
+                            label="Border Radius"
+                            min={0 }
+                            max={ 100 }
+                            onChange={ ( value ) => setAttributes( { borderRadius: value} ) }
+                            value={ borderRadius }
+                            initialPosition = { 0 }
+                            allowReset = "true"
+                        />
+                    </PanelRow>
+                ) }
+                { enableBorder &&
+                (
+                    <SelectControl
+                        label="Border Radius Units"
+                        value={borderRadiusUnits}
+                        options= { borderRadiusUnitOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( {borderRadiusUnits:  nextValue } )
                         }
                     />
                 )}

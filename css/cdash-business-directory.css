@@ -282,3 +282,27 @@ clear: both;
 #businesslist .business.border_set .description span.bus_content{
 	display:block;
 }
+
+#businesslist.grid4.cd_block.alignfull{
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 2%;
+}
+
+
+#businesslist.grid3.cd_block.alignfull{
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2%;
+}
+
+#businesslist.grid2.cd_block.alignfull{
+	display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+}
+
+#businesslist.grid4.cd_block.alignfull .business, #businesslist.grid3.cd_block.alignfull .business, #businesslist.grid2.cd_block.alignfull .business{
+	width: auto;
+	margin-right: auto;
+}

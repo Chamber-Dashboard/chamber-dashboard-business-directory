@@ -199,6 +199,14 @@ if ( function_exists( 'register_block_type' ) ) {
                     'type'  => 'string',
                     'default'   => 'solid',
                 ),
+                'borderRadius'    => array(
+                    'type'  => 'number',
+                    'default'   => '0',
+                ),
+                'borderRadiusUnits'    => array(
+                    'type'  => 'string',
+                    'default'   => 'px',
+                ),
             ),
         ]
     );

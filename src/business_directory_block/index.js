@@ -203,6 +203,14 @@ registerBlockType( 'cdash-bd-blocks/business-directory', {
             type: 'string',
             default: 'solid',
         },
+        borderRadius: {
+            type: 'number',
+            default: 0,
+        },
+        borderRadiusUnits: {
+            type: 'string',
+            default: 'px',
+        },
     },
     edit: edit,
     save() {
