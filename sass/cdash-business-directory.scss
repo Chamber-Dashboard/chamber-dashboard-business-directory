@@ -117,8 +117,88 @@
 
 }
 
-/** Logo Gallery Responsive Styles*/
+/*.button {
+    body.page-about & { }
+  }*/
+
+/*Adding these styles along with the display image on top option in business directory block*/
 #businesslist{
+    &.cd_block{
+        .business{
+            /*margin: 0px 0px 15px 0px;
+            float: none;*/
+
+            &.grid2 &{
+                width: 45%;
+                margin-right: 2%;
+                float: left;
+            }
+
+            &.grid3 &{
+                width: 30%;
+                margin-right: 2%;
+                float: left;
+            }
+
+            &.grid4 &{
+                width: 22.5%;
+                margin-right: 2&;
+                float: left;
+            }
+            .description.bus_listing_image{
+                height: auto;
+                overflow: hidden;
+            }
+
+            .description{
+                clear: none;
+            }
+
+            /* Adding this to wrap the emails and categories*/
+            .email a, .categories{
+                overflow-wrap: break-word;
+            }
+        }
+        &.alignfull{
+            margin-right: 0px;
+        }
+
+        &.alignfull, &.alignwide{
+            display: grid;
+            column-gap: 2%;
+            width: auto;
+
+            &.grid2, &.grid3, &.grid4{
+                .business{
+                    min-width: 300px;
+                    max-width: 100%;
+                    width: auto;
+                    margin-right: 0px;
+                }
+            }
+
+            &.grid2{
+                grid-template-columns: 1fr 1fr;
+            }
+
+            &.grid3{
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            &.grid4{
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+        
+        &.responsive{
+            grid-template-columns: repeat(auto-fit, minmax(250px, auto));
+        }
+    }
+}
+
+
+/** Logo Gallery Responsive Styles*/
+#businesslist.logo_gallery{
     &.responsive{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, auto));
@@ -162,19 +242,19 @@
 
 /** Image alignment for blocks*/
 
-$selector_one: selector-nest("&.grid2, .responsive a.grid1, .responsive a.grid2, &.responsive");
+$selector_one: selector-nest("&.grid2, .responsive a.grid1, .responsive a.grid2");
 
 $selector_list: selector-nest("&.list");
 
-$selector_two: selector-nest("&.grid3, &.grid4");
+$selector_two: selector-nest("&.grid3, &.grid4, &.responsive");
 
 $selector_three: selector-nest("&.has-text-align-center");
 #businesslist.cd_block{
     img{
-        margin: 0px 0px 3% 0px;
+        /*margin: 0px 3% 3% 0px;*/
     }
     #{$selector_three}{
-        img{
+        .description a img, img{
             margin: 0 auto;
         }
     }
@@ -217,72 +297,8 @@ $selector_three: selector-nest("&.has-text-align-center");
             &.thumbnail{
                 float: left;
             }
-        }
-    }
-}
-
-
-
-/*#businesslist.cd_block img.thumbnail, 
-#businesslist.cd_block.list img.medium, 
-#businesslist.cd_block.responsive a.grid1 img.medium,
-#businesslist.cd_block.grid2 img.medium,
-#businesslist.cd_block.responsive a.grid2 img.medium
-#businesslist.cd_block.list img.large, 
-#businesslist.list.cd_block.responsive a.grid1 img.large
- {
-	float:left;
-	margin-right:3%;
-	margin-bottom:3%;
-}
-
-#businesslist.cd_block.logo_gallery img.thumbnail, #businesslist.grid2.cd_block.logo_gallery img.medium, #businesslist.grid2.cd_block.logo_gallery img.large,  #businesslist.grid2.cd_block img.large{
-	float:none;
-}
-
-#businesslist.cd_block img.full, #businesslist.grid2.cd_block img.large, #businesslist.cd_block.responsive a.grid2 img.large, #businesslist.cd_block.responsive a.grid1 img.large {
-	max-width:100%;
-}
-
-#businesslist.grid3.cd_block img.medium, #businesslist.grid3.cd_block img.large, #businesslist.grid4.cd_block img.medium, #businesslist.grid4.cd_block img.large, #businesslist.cd_block.responsive a.grid4 img.medium, #businesslist.cd_block.responsive a.grid3 img.medium, #businesslist.cd_block.responsive a.grid4 img.large, #businesslist.cd_block.responsive a.grid3 img.large{
-    width: auto;
-    height: auto; 
-}*/
-
-/*Adding these styles along with the display image on top option in business directory block*/
-#businesslist{
-    &.cd_block{
-        .business{
-            width: auto;
-            margin: 0px;
-            float: none;
-            .description.bus_listing_image{
-                height: auto;
-                overflow: hidden;
-            }
-
-            /* Adding this to wrap the emails and categories*/
-            .email a, .categories{
-                overflow-wrap: break-word;
-            }
-        }
-
-        &.alignfull{
-            display: grid;
-            column-gap: 2%;
-            width: auto;
-            margin-right: 0px;
-
-            &.grid2{
-                grid-template-columns: 1fr 1fr;
-            }
-
-            &.grid3{
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            &.grid4{
-                grid-template-columns: 1fr 1fr 1fr 1fr;
+            &.full{
+                width: 100%;
             }
         }
     }
@@ -291,7 +307,7 @@ $selector_three: selector-nest("&.has-text-align-center");
 /*Adding padding for business list with borders*/
 #businesslist{
     .business.border_set{
-        h3, .description .bus_content, p{
+        h3, .description.bus_content, p{
             padding: 0px 10px;
         }
         .description {
@@ -352,6 +368,10 @@ $selector_three: selector-nest("&.has-text-align-center");
 }
 
 /*Category Filter dropdown styles for business directory display*/
+#loader, #business_listings_format, #cdash_bus_list_page{
+    display:none;
+  }
+  
 .cdash_cat_filter{
     margin-bottom: 80px;
 }
@@ -408,7 +428,7 @@ $selector_three: selector-nest("&.has-text-align-center");
         content: '';
         clear: both;
     }
-    @media screen and (max0width: 700px) {
+    @media screen and (max-width: 700px) {
         &.grid2 .business, &.grid3 .business, &.grid4 .business{
             width: 100%;
             float: none;

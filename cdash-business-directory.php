@@ -721,7 +721,7 @@ function cdashmm_display_update_block_notice() {
     /* Check that the user hasn't already clicked to ignore the message */
 	if ( ! get_user_meta($user_id, 'cdash_block_update_notice_ignore') ) {
     echo '<div class="notice notice is-dismissible cdash_update_notice"><p>';
-    printf(__('Thank you for updating Business Directory. Please note that we have fixed some styling issues with the business directory block display. Make sure to visit your directory display page to ensure everything looks good. You can go view the documentation <a href="https://chamberdashboard.com/docs/plugin-features/business-directory/display-directory-shortcode/#Business_Directory_Block" target="_blank">here</a> for more information on this. | <a href="%1$s">Hide Notice</a>'), '?cdash_block_update_notice_ignore=0');
+    printf(__('Thank you for updating Business Directory. Please note that we have fixed some styling issues with the business directory block display. Make sure to visit your directory display page to ensure everything looks good. You can go view the documentation <a href="https://chamberdashboard.com/docs/plugin-features/business-directory/display-directory-shortcode/" target="_blank">here</a> for more information on this. | <a href="%1$s">Hide Notice</a>'), '?cdash_block_update_notice_ignore=0');
     echo "</p></div>";
 	}
 }

@@ -216,6 +216,9 @@ function cdash_search_results_block($attributes, $searchtext, $buscat){
                     $search_results .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, $image_size) . '</a>';
                 }elseif($image_type == "logo" && isset($logometa['buslogo'])){
                     $image_class="logo" . " " . $image_align;
+                    $attr = array(
+						'class'	=> $image_class,
+					);
                     $search_results .= wp_get_attachment_image( $logometa['buslogo'], $image_size, 0, $attr );
                 }
 

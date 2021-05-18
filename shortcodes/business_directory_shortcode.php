@@ -350,15 +350,15 @@ function cdash_display_bus_title_and_image($cd_block, $single_link, $changeTitle
 	}
 
 	if($logo_gallery == "yes"){
-		$business_list .= "<div class='description'>";
+		//$business_list .= "<div class='description'>";
 		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
-		$business_list .= "</div>";
+		//$business_list .= "</div>";
 	}elseif($cd_block == "yes" && $displayImageOnTop == "yes"){
 
 		//display image, title, content
-		$business_list .= "<div class='description bus_listing_image'>";
+		//$business_list .= "<div class='description bus_listing_image'>";
 		$business_list .= cdash_bus_directory_display_image($image, $image_size, $single_link, $post_id, $logo_gallery);
-		$business_list .= "</div>";
+		//$business_list .= "</div>";
 		$business_list .= cdash_bus_directory_display_title($single_link, $cd_block, $changeTitleFontSize, $titleFontSize);
 		$business_list .= "<div class='description bus_content'>";
 		$business_list .= cdash_bus_directory_display_content($text);

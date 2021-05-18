@@ -105,47 +105,121 @@
 	}
 }
 
+/*.button {
+    body.page-about & { }
+  }*/
+/*Adding these styles along with the display image on top option in business directory block*/
+#businesslist.cd_block .business {
+	/*margin: 0px 0px 15px 0px;
+            float: none;*/
+	/* Adding this to wrap the emails and categories*/
+}
+
+#businesslist.cd_block .business.grid2 #businesslist.cd_block .business {
+	width: 45%;
+	margin-right: 2%;
+	float: left;
+}
+
+#businesslist.cd_block .business.grid3 #businesslist.cd_block .business {
+	width: 30%;
+	margin-right: 2%;
+	float: left;
+}
+
+#businesslist.cd_block .business.grid4 #businesslist.cd_block .business {
+	width: 22.5%;
+	margin-right: 2 #businesslist.cd_block .business.grid4 #businesslist.cd_block .business;
+	float: left;
+}
+
+#businesslist.cd_block .business .description.bus_listing_image {
+	height: auto;
+	overflow: hidden;
+}
+
+#businesslist.cd_block .business .description {
+	clear: none;
+}
+
+#businesslist.cd_block .business .email a, #businesslist.cd_block .business .categories {
+	overflow-wrap: break-word;
+}
+
+#businesslist.cd_block.alignfull {
+	margin-right: 0px;
+}
+
+#businesslist.cd_block.alignfull, #businesslist.cd_block.alignwide {
+	display: grid;
+	column-gap: 2%;
+	width: auto;
+}
+
+#businesslist.cd_block.alignfull.grid2 .business, #businesslist.cd_block.alignfull.grid3 .business, #businesslist.cd_block.alignfull.grid4 .business, #businesslist.cd_block.alignwide.grid2 .business, #businesslist.cd_block.alignwide.grid3 .business, #businesslist.cd_block.alignwide.grid4 .business {
+	min-width: 300px;
+	max-width: 100%;
+	width: auto;
+	margin-right: 0px;
+}
+
+#businesslist.cd_block.alignfull.grid2, #businesslist.cd_block.alignwide.grid2 {
+	grid-template-columns: 1fr 1fr;
+}
+
+#businesslist.cd_block.alignfull.grid3, #businesslist.cd_block.alignwide.grid3 {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+#businesslist.cd_block.alignfull.grid4, #businesslist.cd_block.alignwide.grid4 {
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#businesslist.cd_block.responsive {
+	grid-template-columns: repeat(auto-fit, minmax(250px, auto));
+}
+
 /** Logo Gallery Responsive Styles*/
-#businesslist.responsive {
+#businesslist.logo_gallery.responsive {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, auto));
 	grid-auto-columns: max-content;
 	column-gap: 2%;
 }
 
-#businesslist.responsive.logo_gallery {
+#businesslist.logo_gallery.responsive.logo_gallery {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	grid-gap: 0;
 }
 
-#businesslist.responsive.logo_gallery .business {
+#businesslist.logo_gallery.responsive.logo_gallery .business {
 	margin: auto calc(.5em + .75vmin);
 }
 
-#businesslist.responsive.logo_gallery .business .description {
+#businesslist.logo_gallery.responsive.logo_gallery .business .description {
 	margin: 1em auto;
 }
 
-#businesslist.responsive.logo_gallery .business .description a img.logo {
+#businesslist.logo_gallery.responsive.logo_gallery .business .description a img.logo {
 	margin: 0;
 	display: block;
 	height: auto;
 	max-width: 100%;
 }
 
-#businesslist.grid2 .business .description a img.logo, #businesslist.grid3 .business .description a img.logo, #businesslist.grid4 .business .description a img.logo {
+#businesslist.logo_gallery.grid2 .business .description a img.logo, #businesslist.logo_gallery.grid3 .business .description a img.logo, #businesslist.logo_gallery.grid4 .business .description a img.logo {
 	display: block;
 	margin: 0 auto;
 }
 
 /** Image alignment for blocks*/
 #businesslist.cd_block img {
-	margin: 0px 0px 3% 0px;
+	/*margin: 0px 3% 3% 0px;*/
 }
 
-#businesslist.cd_block.has-text-align-center img {
+#businesslist.cd_block.has-text-align-center .description a img, #businesslist.cd_block.has-text-align-center img {
 	margin: 0 auto;
 }
 
@@ -164,94 +238,37 @@
 	float: none;
 }
 
-#businesslist.cd_block.grid2 img.featured, #businesslist.cd_block.grid2 img.logo, #businesslist.cd_block .responsive a.grid1 img.featured, #businesslist.cd_block .responsive a.grid1 img.logo, #businesslist.cd_block .responsive a.grid2 img.featured, #businesslist.cd_block .responsive a.grid2 img.logo, #businesslist.cd_block.responsive img.featured, #businesslist.cd_block.responsive img.logo {
+#businesslist.cd_block.grid2 img.featured, #businesslist.cd_block.grid2 img.logo, #businesslist.cd_block .responsive a.grid1 img.featured, #businesslist.cd_block .responsive a.grid1 img.logo, #businesslist.cd_block .responsive a.grid2 img.featured, #businesslist.cd_block .responsive a.grid2 img.logo {
 	max-width: 100%;
 	height: auto;
 }
 
-#businesslist.cd_block.grid2 img.featured.auto, #businesslist.cd_block.grid2 img.featured.thumbnail, #businesslist.cd_block.grid2 img.logo.auto, #businesslist.cd_block.grid2 img.logo.thumbnail, #businesslist.cd_block .responsive a.grid1 img.featured.auto, #businesslist.cd_block .responsive a.grid1 img.featured.thumbnail, #businesslist.cd_block .responsive a.grid1 img.logo.auto, #businesslist.cd_block .responsive a.grid1 img.logo.thumbnail, #businesslist.cd_block .responsive a.grid2 img.featured.auto, #businesslist.cd_block .responsive a.grid2 img.featured.thumbnail, #businesslist.cd_block .responsive a.grid2 img.logo.auto, #businesslist.cd_block .responsive a.grid2 img.logo.thumbnail, #businesslist.cd_block.responsive img.featured.auto, #businesslist.cd_block.responsive img.featured.thumbnail, #businesslist.cd_block.responsive img.logo.auto, #businesslist.cd_block.responsive img.logo.thumbnail {
+#businesslist.cd_block.grid2 img.featured.auto, #businesslist.cd_block.grid2 img.featured.thumbnail, #businesslist.cd_block.grid2 img.logo.auto, #businesslist.cd_block.grid2 img.logo.thumbnail, #businesslist.cd_block .responsive a.grid1 img.featured.auto, #businesslist.cd_block .responsive a.grid1 img.featured.thumbnail, #businesslist.cd_block .responsive a.grid1 img.logo.auto, #businesslist.cd_block .responsive a.grid1 img.logo.thumbnail, #businesslist.cd_block .responsive a.grid2 img.featured.auto, #businesslist.cd_block .responsive a.grid2 img.featured.thumbnail, #businesslist.cd_block .responsive a.grid2 img.logo.auto, #businesslist.cd_block .responsive a.grid2 img.logo.thumbnail {
 	float: left;
 	margin-right: 3%;
 	margin-bottom: 3%;
 }
 
-#businesslist.cd_block.grid2 img.featured.medium, #businesslist.cd_block.grid2 img.featured.large, #businesslist.cd_block.grid2 img.featured.full, #businesslist.cd_block.grid2 img.logo.medium, #businesslist.cd_block.grid2 img.logo.large, #businesslist.cd_block.grid2 img.logo.full, #businesslist.cd_block .responsive a.grid1 img.featured.medium, #businesslist.cd_block .responsive a.grid1 img.featured.large, #businesslist.cd_block .responsive a.grid1 img.featured.full, #businesslist.cd_block .responsive a.grid1 img.logo.medium, #businesslist.cd_block .responsive a.grid1 img.logo.large, #businesslist.cd_block .responsive a.grid1 img.logo.full, #businesslist.cd_block .responsive a.grid2 img.featured.medium, #businesslist.cd_block .responsive a.grid2 img.featured.large, #businesslist.cd_block .responsive a.grid2 img.featured.full, #businesslist.cd_block .responsive a.grid2 img.logo.medium, #businesslist.cd_block .responsive a.grid2 img.logo.large, #businesslist.cd_block .responsive a.grid2 img.logo.full, #businesslist.cd_block.responsive img.featured.medium, #businesslist.cd_block.responsive img.featured.large, #businesslist.cd_block.responsive img.featured.full, #businesslist.cd_block.responsive img.logo.medium, #businesslist.cd_block.responsive img.logo.large, #businesslist.cd_block.responsive img.logo.full {
+#businesslist.cd_block.grid2 img.featured.medium, #businesslist.cd_block.grid2 img.featured.large, #businesslist.cd_block.grid2 img.featured.full, #businesslist.cd_block.grid2 img.logo.medium, #businesslist.cd_block.grid2 img.logo.large, #businesslist.cd_block.grid2 img.logo.full, #businesslist.cd_block .responsive a.grid1 img.featured.medium, #businesslist.cd_block .responsive a.grid1 img.featured.large, #businesslist.cd_block .responsive a.grid1 img.featured.full, #businesslist.cd_block .responsive a.grid1 img.logo.medium, #businesslist.cd_block .responsive a.grid1 img.logo.large, #businesslist.cd_block .responsive a.grid1 img.logo.full, #businesslist.cd_block .responsive a.grid2 img.featured.medium, #businesslist.cd_block .responsive a.grid2 img.featured.large, #businesslist.cd_block .responsive a.grid2 img.featured.full, #businesslist.cd_block .responsive a.grid2 img.logo.medium, #businesslist.cd_block .responsive a.grid2 img.logo.large, #businesslist.cd_block .responsive a.grid2 img.logo.full {
 	float: none;
 }
 
-#businesslist.cd_block.grid3 img.featured.auto, #businesslist.cd_block.grid3 img.logo.auto, #businesslist.cd_block.grid4 img.featured.auto, #businesslist.cd_block.grid4 img.logo.auto {
+#businesslist.cd_block.grid3 img.featured.auto, #businesslist.cd_block.grid3 img.logo.auto, #businesslist.cd_block.grid4 img.featured.auto, #businesslist.cd_block.grid4 img.logo.auto, #businesslist.cd_block.responsive img.featured.auto, #businesslist.cd_block.responsive img.logo.auto {
 	width: auto;
 	max-width: 100%;
 	height: auto;
 }
 
-#businesslist.cd_block.grid3 img.featured.thumbnail, #businesslist.cd_block.grid3 img.logo.thumbnail, #businesslist.cd_block.grid4 img.featured.thumbnail, #businesslist.cd_block.grid4 img.logo.thumbnail {
+#businesslist.cd_block.grid3 img.featured.thumbnail, #businesslist.cd_block.grid3 img.logo.thumbnail, #businesslist.cd_block.grid4 img.featured.thumbnail, #businesslist.cd_block.grid4 img.logo.thumbnail, #businesslist.cd_block.responsive img.featured.thumbnail, #businesslist.cd_block.responsive img.logo.thumbnail {
 	float: left;
 }
 
-/*#businesslist.cd_block img.thumbnail, 
-#businesslist.cd_block.list img.medium, 
-#businesslist.cd_block.responsive a.grid1 img.medium,
-#businesslist.cd_block.grid2 img.medium,
-#businesslist.cd_block.responsive a.grid2 img.medium
-#businesslist.cd_block.list img.large, 
-#businesslist.list.cd_block.responsive a.grid1 img.large
- {
-	float:left;
-	margin-right:3%;
-	margin-bottom:3%;
-}
-
-#businesslist.cd_block.logo_gallery img.thumbnail, #businesslist.grid2.cd_block.logo_gallery img.medium, #businesslist.grid2.cd_block.logo_gallery img.large,  #businesslist.grid2.cd_block img.large{
-	float:none;
-}
-
-#businesslist.cd_block img.full, #businesslist.grid2.cd_block img.large, #businesslist.cd_block.responsive a.grid2 img.large, #businesslist.cd_block.responsive a.grid1 img.large {
-	max-width:100%;
-}
-
-#businesslist.grid3.cd_block img.medium, #businesslist.grid3.cd_block img.large, #businesslist.grid4.cd_block img.medium, #businesslist.grid4.cd_block img.large, #businesslist.cd_block.responsive a.grid4 img.medium, #businesslist.cd_block.responsive a.grid3 img.medium, #businesslist.cd_block.responsive a.grid4 img.large, #businesslist.cd_block.responsive a.grid3 img.large{
-    width: auto;
-    height: auto; 
-}*/
-/*Adding these styles along with the display image on top option in business directory block*/
-#businesslist.cd_block .business {
-	width: auto;
-	margin: 0px;
-	float: none;
-	/* Adding this to wrap the emails and categories*/
-}
-
-#businesslist.cd_block .business .description.bus_listing_image {
-	height: auto;
-	overflow: hidden;
-}
-
-#businesslist.cd_block .business .email a, #businesslist.cd_block .business .categories {
-	overflow-wrap: break-word;
-}
-
-#businesslist.cd_block.alignfull {
-	display: grid;
-	column-gap: 2%;
-	width: auto;
-	margin-right: 0px;
-}
-
-#businesslist.cd_block.alignfull.grid2 {
-	grid-template-columns: 1fr 1fr;
-}
-
-#businesslist.cd_block.alignfull.grid3 {
-	grid-template-columns: 1fr 1fr 1fr;
-}
-
-#businesslist.cd_block.alignfull.grid4 {
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+#businesslist.cd_block.grid3 img.featured.full, #businesslist.cd_block.grid3 img.logo.full, #businesslist.cd_block.grid4 img.featured.full, #businesslist.cd_block.grid4 img.logo.full, #businesslist.cd_block.responsive img.featured.full, #businesslist.cd_block.responsive img.logo.full {
+	width: 100%;
 }
 
 /*Adding padding for business list with borders*/
-#businesslist .business.border_set h3, #businesslist .business.border_set .description .bus_content, #businesslist .business.border_set p {
+#businesslist .business.border_set h3, #businesslist .business.border_set .description.bus_content, #businesslist .business.border_set p {
 	padding: 0px 10px;
 }
 
@@ -303,6 +320,10 @@
 }
 
 /*Category Filter dropdown styles for business directory display*/
+#loader, #business_listings_format, #cdash_bus_list_page {
+	display: none;
+}
+
 .cdash_cat_filter {
 	margin-bottom: 80px;
 }
@@ -355,7 +376,7 @@
 	clear: both;
 }
 
-@media screen and (max0width: 700px) {
+@media screen and (max-width: 700px) {
 	#search-results.grid2 .business, #search-results.grid3 .business, #search-results.grid4 .business {
 		width: 100%;
 		float: none;

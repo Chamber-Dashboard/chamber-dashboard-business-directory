@@ -414,7 +414,7 @@ function cdash_display_featured_image($post_id, $is_single_link, $permalink, $im
     if(isset($options['cdash_default_thumb']) && $options['cdash_default_thumb'] != ''){
       $default_featured_image = $options['cdash_default_thumb'];
       if($is_single_link){
-        $featured_image .= '<a href="' . $permalink . '"><img class="'.$thumbattr['class'].'" width="'.$image_width.'" height="'.$image_height.'" src="' . $default_featured_image .'" /></a><br />';
+        $featured_image .= '<a href="' . $permalink . '"><img class="'.$thumbattr['class'].'" width="'.$image_width.'" height="'.$image_height.'" src="' . $default_featured_image .'" /></a>';
       }else{
         $featured_image .= '<img class="featured '.$image_size.'" width="'.$thumbattr['class'].'" height="'.$image_height.'" src="' . $default_featured_image .'" /><br />';
       }
