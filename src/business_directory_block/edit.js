@@ -12,7 +12,10 @@ import { SelectControl,
     Disabled, 
     RadioControl,
     RangeControl,
-    FontSizePicker } from '@wordpress/components';
+    FontSizePicker,
+    ColorPicker,
+    ColorPalette,
+} from '@wordpress/components';
 
     import {
         RichText,
@@ -24,13 +27,11 @@ import { SelectControl,
         withColors,
         PanelColorSettings,
         getColorClassName
-    } from '@wordpress/editor'
+    } from '@wordpress/block-editor'
     ;
 import { withSelect, widthDispatch } from '@wordpress/data';
 
-const {
-    withState
-} = wp.compose;
+import { withState } from '@wordpress/compose';
 
 const formatOptions = [
     { label: 'List', value: 'list' },
@@ -71,6 +72,13 @@ const imageSizeOptions = [
 ];
 const categoryOptions = [
     { label: 'Select one or more categories', value: null }
+];
+
+const borderStyleOptions = [
+    { label: 'Solid', value: 'solid' },
+    { label: 'Dotted', value: 'dotted' },
+    { label: 'Dashed', value: 'dashed' },
+    { label: 'Double', value: 'double' },
 ];
 
 wp.apiFetch({path: "/wp/v2/business_category?per_page=100"}).then(posts => {
@@ -121,6 +129,11 @@ const titleFontSizes = [
 ];
 const titleFallbackFontSize = 16;
 
+const borderRadiusUnitOptions = [
+    { label: 'px', value: 'px' },
+    { label: '%', value: '%' },
+];
+
 wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
         membershipLevelOptions.push({label: val.name, value: val.slug});
@@ -129,7 +142,7 @@ wp.apiFetch({path: "/wp/v2/membership_level?per_page=100"}).then(posts => {
 
 
 const edit = props => {
-    const {attributes: {align, cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, }, className, setAttributes } = props;
+    const {attributes: {align, textAlignment, cd_block, postLayout, format, categoryArray, category, tags, membershipLevelArray, level, displayPostContent, display, text, singleLinkToggle, single_link, perpage, orderby, order, image, membershipStatusArray, status, image_size, alphaToggle, alpha, logo_gallery, categoryFilterToggle,  show_category_filter, displayAddressToggle, displayUrlToggle, displayPhoneToggle, displayEmailToggle, displayCategoryToggle, displayTagsToggle, displayLevelToggle, displaySocialMediaIconsToggle, displayLocationNameToggle, displayHoursToggle, changeTitleFontSize, titleFontSize, disablePagination, displayImageOnTop, enableBorder, borderColor, borderThickness, borderStyle, borderRadius, borderRadiusUnits}, className, setAttributes } = props;
 
     const setDirectoryLayout = format => {
         props.setAttributes( { format } );
@@ -229,6 +242,87 @@ const edit = props => {
                             </PanelRow>
 					) }
                 <PanelRow>
+                    <ToggleControl
+                        label={ __( 'Enable Border Styles' ) }
+                        checked={ enableBorder }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( { enableBorder:  nextValue } )
+                        }
+                    />
+                </PanelRow>
+                { enableBorder && (
+                    /*<ColorPalette
+                        colors={ colors }
+                        value={ borderColor }
+                        onChange={ ( color ) => setState( { color } ) }
+                    />*/
+                    /*<ColorPicker
+                        label="Border Color"
+                        color={ borderColor }
+                        onChangeComplete={ ( value ) => setState( value.hex ) }
+                    />*/
+                    <PanelColorSettings
+                        title={ __( 'Color Settings' ) }
+                        colorSettings={ [
+                            {
+                                value: borderColor,
+                                onChange: ( colorValue ) => setAttributes( { borderColor: colorValue } ),
+                                label: __( 'Border Color' ),
+                            },
+                        ] }
+                    />
+                )}
+                { enableBorder &&
+                (  
+                    <PanelRow>
+                        <RangeControl
+                            label="Border Thickness"
+                            min={1 }
+                            max={ 10 }
+                            onChange={ ( value ) => setAttributes( { borderThickness: value} ) }
+                            value={ borderThickness }
+                            initialPosition = { 1 }
+                            allowReset = "true"
+                        />
+                    </PanelRow>
+                ) }
+                { enableBorder &&
+                (
+                    <SelectControl
+                        label="Border Style"
+                        value={borderStyle}
+                        options= { borderStyleOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( {borderStyle:  nextValue } )
+                        }
+                    />
+                )}
+                { enableBorder &&
+                (  
+                    <PanelRow>
+                        <RangeControl
+                            label="Border Radius"
+                            min={0 }
+                            max={ 100 }
+                            onChange={ ( value ) => setAttributes( { borderRadius: value} ) }
+                            value={ borderRadius }
+                            initialPosition = { 0 }
+                            allowReset = "true"
+                        />
+                    </PanelRow>
+                ) }
+                { enableBorder &&
+                (
+                    <SelectControl
+                        label="Border Radius Units"
+                        value={borderRadiusUnits}
+                        options= { borderRadiusUnitOptions }
+                        onChange={ ( nextValue ) =>
+                            setAttributes( {borderRadiusUnits:  nextValue } )
+                        }
+                    />
+                )}
+                <PanelRow>
                     <SelectControl
                         label="Order By"
                         value={orderby}
@@ -301,6 +395,15 @@ const edit = props => {
                             checked={ displayCategoryToggle }
                             onChange={ ( nextValue ) =>
                                 setAttributes( { displayCategoryToggle:  nextValue } )
+                            }
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={ __( 'Display Tags' ) }
+                            checked={ displayTagsToggle }
+                            onChange={ ( nextValue ) =>
+                                setAttributes( { displayTagsToggle:  nextValue } )
                             }
                         />
                     </PanelRow>
@@ -426,12 +529,21 @@ const edit = props => {
             
         </InspectorControls>
     );
+    const alignmentControls = (
+        <BlockControls>
+            <AlignmentToolbar
+                value={textAlignment}
+                onChange={(newalign) => setAttributes({ textAlignment: newalign })}
+            />
+        </BlockControls>
+    );
     return [
         <div className={ props.className }>
             <ServerSideRender
                 block="cdash-bd-blocks/business-directory"
                 attributes = {props.attributes}
             />
+            { alignmentControls }
             { inspectorControls }
             <div className="businesslist">
                 

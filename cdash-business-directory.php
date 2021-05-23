@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.3.3
+Version: 3.3.4
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://chamberdashboard.com/
 Text Domain: cdash
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.3.3' );
+define( 'CDASH_BUS_VER', '3.3.4' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -714,6 +714,28 @@ function cdash_check_geolocation() {
 	}
 
 }
+
+function cdashmm_display_update_block_notice() {
+	global $current_user ;
+    $user_id = $current_user->ID;
+    /* Check that the user hasn't already clicked to ignore the message */
+	if ( ! get_user_meta($user_id, 'cdash_block_update_notice_ignore') ) {
+    echo '<div class="notice notice is-dismissible cdash_update_notice"><p>';
+    printf(__('Thank you for updating Business Directory. Please note that we have fixed some styling issues with the business directory block display. Make sure to visit your directory display page to ensure everything looks good. You can go view the documentation <a href="https://chamberdashboard.com/docs/plugin-features/business-directory/display-directory-shortcode/" target="_blank">here</a> for more information on this. | <a href="%1$s">Hide Notice</a>'), '?cdash_block_update_notice_ignore=0');
+    echo "</p></div>";
+	}
+}
+add_action( 'admin_notices', 'cdashmm_display_update_block_notice' );
+
+function cdash_block_update_notice_ignore() {
+	global $current_user;
+        $user_id = $current_user->ID;
+        /* If user clicks to ignore the notice, add that to their user meta */
+        if ( isset($_GET['cdash_block_update_notice_ignore']) && '0' == $_GET['cdash_block_update_notice_ignore'] ) {
+             add_user_meta($user_id, 'cdash_block_update_notice_ignore', 'true', true);
+	}
+}
+add_action('admin_init', 'cdash_block_update_notice_ignore');
 
 function cdash_ask_to_update_geolocation() {
 	?>

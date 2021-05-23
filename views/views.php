@@ -398,15 +398,25 @@ function cdash_back_to_bus_link(){
 
 function cdash_display_featured_image($post_id, $is_single_link, $permalink, $image_size, $thumbattr){
   global $post;
+  $image_sizes = cdash_get_wp_image_sizes();
+  if(isset($image_sizes[$image_size])){
+	  $image_width = $image_sizes[$image_size]['width'];
+	  $image_height = $image_sizes[$image_size]['height'];
+  }else{
+	  $image_width = "";
+	  $image_height = "";
+  }
+  
+  //print_r($image_sizes);
   $featured_image = '';
   $options = get_option('cdash_directory_options');
   if(!has_post_thumbnail()){
     if(isset($options['cdash_default_thumb']) && $options['cdash_default_thumb'] != ''){
       $default_featured_image = $options['cdash_default_thumb'];
       if($is_single_link){
-        $featured_image .= '<div class="featured_image"><a href="' . $permalink . '"><img src="' . $default_featured_image .'" /></a></div><br />';
+        $featured_image .= '<a href="' . $permalink . '"><img class="'.$thumbattr['class'].'" width="'.$image_width.'" height="'.$image_height.'" src="' . $default_featured_image .'" /></a>';
       }else{
-        $featured_image .= "<div class='featured_image'><img src='" . $default_featured_image . "' /></div><br />";
+        $featured_image .= '<img class="featured '.$image_size.'" width="'.$thumbattr['class'].'" height="'.$image_height.'" src="' . $default_featured_image .'" /><br />';
       }
     }
   }else{
@@ -417,5 +427,23 @@ function cdash_display_featured_image($post_id, $is_single_link, $permalink, $im
     }
   }
   return $featured_image;
+}
+
+function cdash_get_wp_image_sizes(){
+	global $_wp_additional_image_sizes;
+
+		$default_image_sizes = get_intermediate_image_sizes();
+
+		foreach ( $default_image_sizes as $size ) {
+			$image_sizes[ $size ][ 'width' ] = intval( get_option( "{$size}_size_w" ) );
+			$image_sizes[ $size ][ 'height' ] = intval( get_option( "{$size}_size_h" ) );
+			$image_sizes[ $size ][ 'crop' ] = get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false;
+		}
+
+		if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+			$image_sizes = array_merge( $image_sizes, $_wp_additional_image_sizes );
+		}
+
+		return $image_sizes;
 }
 ?>
