@@ -727,6 +727,16 @@ function cdashmm_display_update_block_notice() {
 }
 add_action( 'admin_notices', 'cdashmm_display_update_block_notice' );
 
+function cdash_block_update_notice_ignore() {
+	global $current_user;
+        $user_id = $current_user->ID;
+        /* If user clicks to ignore the notice, add that to their user meta */
+        if ( isset($_GET['cdash_block_update_notice_ignore']) && '0' == $_GET['cdash_block_update_notice_ignore'] ) {
+             add_user_meta($user_id, 'cdash_block_update_notice_ignore', 'true', true);
+	}
+}
+add_action('admin_init', 'cdash_block_update_notice_ignore');
+
 function cdash_ask_to_update_geolocation() {
 	?>
     <div class="update-nag">
