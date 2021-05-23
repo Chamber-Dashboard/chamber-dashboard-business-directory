@@ -36,14 +36,19 @@
 	margin: 0;
 }
 
-#businesslist .business {
-	margin-bottom: 15px;
+#businesslist {
+	display: grid;
+	grid-column-gap: 2%;
 }
 
-#businesslist .business:after {
-	display: table;
-	content: '';
-	clear: both;
+#businesslist .business {
+	width: 100%;
+	margin-bottom: 15px;
+	/*&:after{
+            display: table;
+            content: '';
+            clear: both;
+        }*/
 }
 
 #businesslist.logo_gallery img.logo {
@@ -60,16 +65,34 @@
 	clear: both;
 }
 
-#businesslist.grid2 .business {
-	width: 45%;
-	margin-right: 2%;
-	float: left;
+#businesslist.grid2 {
+	grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 600px) {
+	#businesslist.grid2 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+#businesslist.grid3 {
+	grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 600px) {
+	#businesslist.grid3 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	#businesslist.grid3 {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
 }
 
 #businesslist.grid3 .business {
-	width: 30%;
-	margin-right: 2%;
-	float: left;
+	width: 100%;
 }
 
 #businesslist.grid3 .business .logo.alignleft, #businesslist.grid3 .business .featured.alignleft {
@@ -79,10 +102,30 @@
 	margin-bottom: 1em;
 }
 
+#businesslist.grid4 {
+	grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 600px) {
+	#businesslist.grid4 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	#businesslist.grid4 {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	#businesslist.grid4 {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+	}
+}
+
 #businesslist.grid4 .business {
-	width: 22.5%;
-	margin-right: 2%;
-	float: left;
+	width: 100%;
 }
 
 #businesslist.grid4 .business .logo.alignleft, #businesslist.grid4 .business .featured.alignleft {
@@ -92,90 +135,16 @@
 	margin-bottom: 1em;
 }
 
-#businesslist.grid2:after, #businesslist.grid3:after {
-	display: table;
-	content: '';
-	clear: both;
-}
-
-@media screen and (max0width: 700px) {
-	#businesslist.grid2 .business, #businesslist.grid3 .business, #businesslist.grid4 .business {
-		width: 100%;
-		float: none;
-	}
-}
-
-/*.button {
-    body.page-about & { }
-  }*/
 /*Adding these styles along with the display image on top option in business directory block*/
-#businesslist.cd_block .business {
-	/*margin: 0px 0px 15px 0px;
-            float: none;*/
-	/* Adding this to wrap the emails and categories*/
-}
-
-#businesslist.cd_block .business.grid2 #businesslist.cd_block .business {
-	width: 45%;
-	margin-right: 2%;
-	float: left;
-}
-
-#businesslist.cd_block .business.grid3 #businesslist.cd_block .business {
-	width: 30%;
-	margin-right: 2%;
-	float: left;
-}
-
-#businesslist.cd_block .business.grid4 #businesslist.cd_block .business {
-	width: 22.5%;
-	margin-right: 2 #businesslist.cd_block .business.grid4 #businesslist.cd_block .business;
-	float: left;
-}
-
-#businesslist.cd_block .business .description.bus_listing_image {
-	height: auto;
-	overflow: hidden;
-}
-
-#businesslist.cd_block .business .description {
-	clear: none;
-}
-
-#businesslist.cd_block .business .email a, #businesslist.cd_block .business .categories {
-	overflow-wrap: break-word;
-}
-
-#businesslist.cd_block.alignfull {
-	margin-right: 0px;
-}
-
-#businesslist.cd_block.alignfull, #businesslist.cd_block.alignwide {
-	display: grid;
-	column-gap: 2%;
-	width: auto;
-}
-
-#businesslist.cd_block.alignfull.grid2 .business, #businesslist.cd_block.alignfull.grid3 .business, #businesslist.cd_block.alignfull.grid4 .business, #businesslist.cd_block.alignwide.grid2 .business, #businesslist.cd_block.alignwide.grid3 .business, #businesslist.cd_block.alignwide.grid4 .business {
-	min-width: 300px;
-	max-width: 100%;
-	width: auto;
-	margin-right: 0px;
-}
-
-#businesslist.cd_block.alignfull.grid2, #businesslist.cd_block.alignwide.grid2 {
-	grid-template-columns: 1fr 1fr;
-}
-
-#businesslist.cd_block.alignfull.grid3, #businesslist.cd_block.alignwide.grid3 {
-	grid-template-columns: 1fr 1fr 1fr;
-}
-
-#businesslist.cd_block.alignfull.grid4, #businesslist.cd_block.alignwide.grid4 {
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+#businesslist.cd_block {
+	/*&.alignfull, &.alignwide{
+            margin-right: 0px;
+        }*/
 }
 
 #businesslist.cd_block.responsive {
+	display: grid;
+	column-gap: 2%;
 	grid-template-columns: repeat(auto-fit, minmax(250px, auto));
 }
 
@@ -268,7 +237,7 @@
 }
 
 /*Adding padding for business list with borders*/
-#businesslist .business.border_set h3, #businesslist .business.border_set .description.bus_content, #businesslist .business.border_set p {
+#businesslist .business.border_set h3, #businesslist .business.border_set .description.bus_content, #businesslist .business.border_set .bus_content, #businesslist .business.border_set p {
 	padding: 0px 10px;
 }
 
@@ -426,7 +395,7 @@
 	float: left;
 }
 
-@media screen and (max0width: 700px) {
+@media screen and (max-width: 700px) {
 	#cdcrm-people.grid2 .cdcrm-person, #cdcrm-people.grid3 .cdcrm-person, #cdcrm-people.grid4 .cdcrm-person {
 		width: 100%;
 		float: none;

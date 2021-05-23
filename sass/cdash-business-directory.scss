@@ -40,14 +40,18 @@
 }
 
 #businesslist{
+    display: grid;
+    grid-column-gap: 2%;
     .business{
+        width: 100%;
         margin-bottom: 15px;
-        &:after{
+        /*&:after{
             display: table;
             content: '';
             clear: both;
-        }
+        }*/
     }
+
     &.logo_gallery{
         img.logo{
             max-width: 100%;
@@ -67,17 +71,25 @@
     }
 
     &.grid2{
-        .business{
-            width: 45%;
-            margin-right: 2%;
-            float:left;
+        grid-template-columns: 1fr;
+        @media screen and (min-width: 600px){
+            grid-template-columns: 1fr 1fr;
         }
     }
+
     &.grid3{
+        grid-template-columns: 1fr;
+        @media screen and (min-width: 600px){
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media screen and (min-width: 768px){
+            grid-template-columns: 1fr 1fr 1fr;
+        }
         .business{
-            width: 30%;
-            margin-right: 2%;
-            float: left; 
+            width: 100%;
+            // margin-right: 2%;
+            // float: left; 
 
             .logo.alignleft, .featured.alignleft{
                 width: 100%;
@@ -89,10 +101,20 @@
     }
 
     &.grid4{
+        grid-template-columns: 1fr;
+        @media screen and (min-width: 600px){
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media screen and (min-width: 768px){
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        @media screen and (min-width: 992px){
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
         .business{
-            width: 22.5%;
-            margin-right: 2%;
-            float: left;
+            width: 100%;
             .logo.alignleft, .featured.alignleft{
                 width: 100%;
                 max-width: 100%;
@@ -101,101 +123,22 @@
             }
         }
     }
-
-    &.grid2:after, &.grid3:after{
-        display: table;
-        content: '';
-        clear: both;
-    }
-
-    @media screen and (max0width: 700px) {
-        &.grid2 .business, &.grid3 .business, &.grid4 .business{
-            width: 100%;
-            float: none;
-        }    
-    }
-
 }
-
-/*.button {
-    body.page-about & { }
-  }*/
 
 /*Adding these styles along with the display image on top option in business directory block*/
 #businesslist{
     &.cd_block{
-        .business{
-            /*margin: 0px 0px 15px 0px;
-            float: none;*/
-
-            &.grid2 &{
-                width: 45%;
-                margin-right: 2%;
-                float: left;
-            }
-
-            &.grid3 &{
-                width: 30%;
-                margin-right: 2%;
-                float: left;
-            }
-
-            &.grid4 &{
-                width: 22.5%;
-                margin-right: 2&;
-                float: left;
-            }
-            .description.bus_listing_image{
-                height: auto;
-                overflow: hidden;
-            }
-
-            .description{
-                clear: none;
-            }
-
-            /* Adding this to wrap the emails and categories*/
-            .email a, .categories{
-                overflow-wrap: break-word;
-            }
-        }
-        &.alignfull{
+        /*&.alignfull, &.alignwide{
             margin-right: 0px;
-        }
+        }*/
 
-        &.alignfull, &.alignwide{
+        &.responsive{
             display: grid;
             column-gap: 2%;
-            width: auto;
-
-            &.grid2, &.grid3, &.grid4{
-                .business{
-                    min-width: 300px;
-                    max-width: 100%;
-                    width: auto;
-                    margin-right: 0px;
-                }
-            }
-
-            &.grid2{
-                grid-template-columns: 1fr 1fr;
-            }
-
-            &.grid3{
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            &.grid4{
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-            }
-        }
-        
-        &.responsive{
             grid-template-columns: repeat(auto-fit, minmax(250px, auto));
         }
     }
 }
-
 
 /** Logo Gallery Responsive Styles*/
 #businesslist.logo_gallery{
@@ -307,7 +250,7 @@ $selector_three: selector-nest("&.has-text-align-center");
 /*Adding padding for business list with borders*/
 #businesslist{
     .business.border_set{
-        h3, .description.bus_content, p{
+        h3, .description.bus_content, .bus_content, p{
             padding: 0px 10px;
         }
         .description {
@@ -487,7 +430,7 @@ $selector_three: selector-nest("&.has-text-align-center");
         }
     }
 
-    @media screen and (max0width: 700px) {
+    @media screen and (max-width: 700px) {
         &.grid2 .cdcrm-person, &.grid3 .cdcrm-person, &.grid4 .cdcrm-person{
             width: 100%;
             float: none;
