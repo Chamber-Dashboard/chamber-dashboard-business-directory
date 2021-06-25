@@ -116,7 +116,7 @@ Several people have contributed to the development of Chamber Dashboard:
 
 == Changelog ==
 = 3.3.4 =
-* Updated the business directory block
+* Updated the business directory layouts to be responsive and work well with the full width and wide width options
 
 = 3.3.3 =
 * Added the business category block 
