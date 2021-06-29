@@ -35,6 +35,15 @@ function cdash_directory_settings(){
                     <li class="<?php echo $section == 'bus_directory' ? 'section_active' : ''; ?>">
                         <a href="?page=cd-settings&tab=directory&section=bus_directory" class="<?php echo $section == 'bus_directory' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Business Directory Settings', 'cdash' ); ?></a><span>|</span>
                     </li>
+                    <?php
+                    if(cdash_is_member_updater_active()){
+                    ?>
+                        <li class="<?php echo $section == 'cd_mu_restrict_display' ? 'section_active' : ''; ?>">
+                            <a href="?page=cd-settings&tab=directory&section=cd_mu_restrict_display" class="<?php echo $section == 'cd_mu_restrict_display' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Restrict Display', 'cdash' ); ?></a><span>|</span>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="<?php echo $section == 'cd_bus_docs' ? 'section_active' : ''; ?>">
                         <a href="?page=cd-settings&tab=directory&section=cd_bus_docs" class="<?php echo $section == 'cd_bus_docs' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Shortcodes', 'cdash' ); ?></a>
                     </li>
@@ -47,6 +56,8 @@ function cdash_directory_settings(){
                     cdash_bus_directory_settings();
                 }else if($section == 'cd_bus_docs'){
                     cdash_settings_sidebar();
+                }else if($section == 'cd_mu_restrict_display' && cdash_is_member_updater_active()){
+                    echo "Test";
                 }
               ?>
             </div>
