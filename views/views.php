@@ -407,6 +407,12 @@ function cdash_display_featured_image($post_id, $is_single_link, $permalink, $im
 	  $image_height = "";
   }
   
+  if(isset($thumbattr) && $thumbattr != ""){
+	  $img_class = $thumbattr['class'];
+  }else{
+	  $img_class = "";
+  }
+
   //print_r($image_sizes);
   $featured_image = '';
   $options = get_option('cdash_directory_options');
@@ -414,9 +420,9 @@ function cdash_display_featured_image($post_id, $is_single_link, $permalink, $im
     if(isset($options['cdash_default_thumb']) && $options['cdash_default_thumb'] != ''){
       $default_featured_image = $options['cdash_default_thumb'];
       if($is_single_link){
-        $featured_image .= '<a href="' . $permalink . '"><img class="'.$thumbattr['class'].'" width="'.$image_width.'" height="'.$image_height.'" src="' . $default_featured_image .'" /></a>';
+        $featured_image .= '<a href="' . $permalink . '"><img class="'.$img_class.'" width="'.$image_width.'" height="'.$image_height.'" src="' . $default_featured_image .'" /></a>';
       }else{
-        $featured_image .= '<img class="featured '.$image_size.'" width="'.$thumbattr['class'].'" height="'.$image_height.'" src="' . $default_featured_image .'" /><br />';
+        $featured_image .= '<img class="featured '.$image_size.'" width="'.$img_class.'" height="'.$image_height.'" src="' . $default_featured_image .'" /><br />';
       }
     }
   }else{
