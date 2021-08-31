@@ -3,9 +3,9 @@ Contributors: cguntur, gwendydd, LisaK.social
 Tags: business directory, membership association, A-Z directory listings, Gutenberg blocks, networking site, chamber of commerce, Member Directory,  Featured Members, Featured Businesses, business listings block, logo gallery block
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 3.3.5
+Stable tag: 3.3.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,9 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.3.6 =
+* Updated the block_categories filter to block_categories_all
+
 = 3.3.5 =
 * Fixed an error with displaying the default featured image on the single business page 
 

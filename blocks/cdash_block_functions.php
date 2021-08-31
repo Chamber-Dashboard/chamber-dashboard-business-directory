@@ -10,7 +10,7 @@ function cdash_block_category( $categories, $post ) {
       )
     );
   }
-  add_filter( 'block_categories', 'cdash_block_category', 10, 2);
+  add_filter( 'block_categories_all', 'cdash_block_category', 10, 2);
 
   //add custom css in the in the editor
   function cdash_block_editor_css(){

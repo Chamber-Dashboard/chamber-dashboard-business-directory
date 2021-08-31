@@ -564,7 +564,7 @@ function cdash_options_init(){
 
   add_settings_field(
     'tax_social',
-    __( 'Socail Media Links', 'cdash' ),
+    __( 'Social Media Links', 'cdash' ),
     'cdash_tax_social_render',
     'cdash_plugin_options',
     'cdash_options_tax_view_section',
