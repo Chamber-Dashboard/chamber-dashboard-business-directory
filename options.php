@@ -758,7 +758,7 @@ function cdash_options_page(){
             add_submenu_page( $slug, 'Licenses', 'Licenses', 'manage_options', 'chamber_dashboard_license', 'chamber_dashboard_licenses_page_render' );
         }
 				//cdash_add_licence_page_menu_hook();
-    add_submenu_page( $slug, 'Addons', 'Addons', 'manage_options', 'cd-addons', 'chamber_dashboard_addons_page_render' );
+    //add_submenu_page( $slug, 'Addons', 'Addons', 'manage_options', 'cd-addons', 'chamber_dashboard_addons_page_render' );
 
     add_submenu_page( $slug, 'Support', 'Support', 'manage_options', 'cd-settings&tab=support', 'cdash_support_page_render' );
 }

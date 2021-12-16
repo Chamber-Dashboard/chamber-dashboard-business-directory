@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.6
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 3.3.6
+Stable tag: 3.3.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,6 +13,8 @@ Business Directory gives you tools to manage your members and run any membership
 
 == Description ==
 Display your Directory using shortcode or Business Directory block.
+
+**Regretfully, we must inform you that Chamber Dashboard will discontinue development of both our free and premium plugins & themes as of January 2022. The plugins will continue to function on your WordPress website and we will continue to provide support for the next six months.**
 
 = Business Directory Block =
 

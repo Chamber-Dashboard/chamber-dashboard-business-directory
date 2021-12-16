@@ -133,9 +133,9 @@ function cdash_support_page(){
 			<li>
 				<?php esc_html_e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a>
 			</li>
-			<li>
-				<?php esc_html_e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a>
-			</li>
+			<!--<li>
+				<?php //esc_html_e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a>
+			</li>-->
 		</ul>
 	</div>
 	<?php
