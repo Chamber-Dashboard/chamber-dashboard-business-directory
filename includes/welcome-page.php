@@ -122,21 +122,7 @@ add_action('admin_init', 'cdash_welcome');
 function cdash_support_page(){
 	?>
 	<div class="cd_support_page">
-		<h4><?php esc_html_e('Please review the plugin documentation and troubleshooting guide first. If you still can\'t find the answer, open a support ticket and we will be happy to answer your questions and assist you with any problems. Please note: If you have not purchased a premium plugin from us, support is available here -'); ?> <a href="https://chamberdashboard.com/priority-support-package/" target="_blank">https://chamberdashboard.com/priority-support-package/</a>  </h4>
-		<ul>
-			<li>
-				<?php esc_html_e('Documentation'); ?> - <a href="https://chamberdashboard.com/chamber-dashboard-support/documentation/" target="_blank">https://chamberdashboard.com/chamber-dashboard-support/documentation/</a>
-			</li>
-			<li>
-				<?php esc_html_e('Troubleshooting'); ?> - <a href="https://chamberdashboard.com/trouble-shooting-guide/"target="_blank">https://chamberdashboard.com/trouble-shooting-guide/</a>
-			</li>
-			<li>
-				<?php esc_html_e('Submit Ticket'); ?> - <a href="https://chamberdashboard.com/submit-support-ticket/"target="_blank">https://chamberdashboard.com/submit-support-ticket/</a>
-			</li>
-			<!--<li>
-				<?php //esc_html_e('Premium Plugins'); ?> - <a href="https://chamberdashboard.com/add-ons/"target="_blank">https://chamberdashboard.com/add-ons/</a>
-			</li>-->
-		</ul>
+		<h4><?php esc_html_e('You can contact us through the WordPress plugin support - '); ?> <a href="https://wordpress.org/support/plugin/chamber-dashboard-business-directory/" target="_blank">https://wordpress.org/support/plugin/chamber-dashboard-business-directory/</a>  </h4>
 	</div>
 	<?php
 }

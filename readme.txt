@@ -2,10 +2,10 @@
 Contributors: cguntur, gwendydd, LisaK.social
 Tags: business directory, membership association, A-Z directory listings, Gutenberg blocks, networking site, chamber of commerce, Member Directory,  Featured Members, Featured Businesses, business listings block, logo gallery block
 Donate link: http://chamberdashboard.com/donate
-Requires at least: 4.6
-Tested up to: 5.8
+Requires at least: 5.0
+Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 3.3.7
+Stable tag: 3.3.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,26 +14,20 @@ Business Directory gives you tools to manage your members and run any membership
 == Description ==
 Display your Directory using shortcode or Business Directory block.
 
-**Regretfully, we must inform you that Chamber Dashboard will discontinue development of both our free and premium plugins & themes as of January 2022. The plugins will continue to function on your WordPress website and we will continue to provide support for the next six months.**
+**Regretfully, we must inform you that Chamber Dashboard has discontinued development of both our free and premium plugins & themes as of January 2022. The plugins will continue to function on your WordPress website.**
 
 = Business Directory Block =
 
 [youtube https://youtu.be/QyAas7Q9n0o  ]
 
-The Chamber Dashboard Business Directory makes it quick and easy to add a Business Directory to your site. The Directory is mobile-friendly and picks up its formatting from your existing WordPress theme, giving you design freedom. Learn more at [chamberdashboard.com] (https://chamberdashboard.com/features/).
+The Chamber Dashboard Business Directory makes it quick and easy to add a Business Directory to your site. The Directory is mobile-friendly and picks up its formatting from your existing WordPress theme, giving you design freedom. 
 
 Used by chambers of commerce, visitor bureaus, professional associations, neighborhood guides and other membership organizations. Chamber Dashboard plugins give you the tools you need to build a powerful membership site, increase visitor engagement on your site and streamline member management. It includes 24/7 online payments, automated renewals, featured events, and of course a searchable Business Directory!
-
-= Get started with our quick 5 minute setup guide =
-
-* [5 Minute Getting Started Guide](https://chamberdashboard.com/docs/workflows/5-minute-setup-guide/)
-* [Complete Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
 
 = Simplify Member Management =
 *   Connect to the free [Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) plugin to start accepting online payments and automatically create new listings in your directory.
 *   Track new leads and member activities with the free [CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) plugin.
 *   Display upcoming events with the free [Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) plugin.
-*   Let members update their own listings, submit member events, automate your renewal process, create a board or staff profile pages, change payment gateways and more with [addons](https://chamberdashboard.com/add-ons/) for Chamber Dashboard.
 
 = Build a community resource to increase traffic to your site  =
 *   Add a searchable Business Directory to your site
@@ -44,17 +38,12 @@ Used by chambers of commerce, visitor bureaus, professional associations, neighb
 *   Display featured member listings
 *   Add custom fields to individual business listings
 *   Display listings on Google Maps
-*   Link to memberâ€™s social media pages
+*   Link to member's social media pages
 *   Display Logo Gallery of member businesses
-For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](https://chamberdashboard.com/chamber-dashboard-support/)
 
-= Give your site a modern, professional look =
-Chamber Dashboard plugins work out of the box with any theme in the WordPress Theme Repository. Or save time and energy with a [premium theme](https://chamberdashboard.com/wordpress-themes/) to give your site a fresh new look, plus includes specially designed pages to show off your business directory. [See live demo](http://chamber-beautiful.chamberdashboard.com/).
 
 = Support =
-If you are using our free plugins, you can access our documentation <a href="https://chamberdashboard.com/chamber-dashboard-support/" target="_blank">here</a>
-
-If you have purchased any of our premium plugins or our support plan, you can open a <a href="https://chamberdashboard.com/submit-support-ticket/" target="_blank">support ticket</a>
+You can contact us through WordPress plugin support.
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -85,18 +74,10 @@ If you have purchased any of our premium plugins or our support plan, you can op
 Create a page, and insert the following shortcode:
 [business_directory]
 
-There are lots of options for this shortcode.  For a full description, see [Chamber Dashboard Documentation](http://chamberdashboard.com/document/displaying-business-directory-site/)
-
 Or use the new business directory block or the logo gallery block from the block editor
 
 = Will it work with my theme? =
 Probably!  It is designed to work with any theme that follows basic WordPress coding practices.
-
-= Can I see other sites that are using Chamber Dashboard? =
-Yes!  We have a [list of organizations using Chamber Dashboard](https://chamberdashboard.com/user-showcase/)
-
-= I want the plugin to do _____.  Can you make it do that? =
-Probably! We are definitely interested in making this as useful as possible for chambers of commerce, so please let us know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
 
 = Is it translation-ready? =
 Yes, the plugin is ready to be translated!  .po and .mo files are included.  If you translate the plugin, we would love to include your translation with future releases of the plugin.
@@ -117,6 +98,12 @@ Several people have contributed to the development of Chamber Dashboard:
 * Justin Ribeiro - business categories shortcode
 
 == Changelog ==
+= 3.3.8 =
+* Updated the plugin to work with WP 6.3
+
+= 3.3.7 =
+* Updated a few links in the plugin files
+
 = 3.3.6 =
 * Updated the block_categories filter to block_categories_all
 

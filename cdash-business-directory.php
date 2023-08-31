@@ -1,15 +1,15 @@
 <?php
 /*
 Plugin Name: Chamber Dashboard Business Directory
-Plugin URI: http://chamberdashboard.com
+Plugin URI: http://www.gcsdesign.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.3.7
+Version: 3.3.8
 Author: Chandrika Guntur, Morgan Kay
-Author URI: https://chamberdashboard.com/
+Author URI: https://www.gcsdesign.com/
 Text Domain: cdash
 */
 
-/*  Copyright 2015 Morgan Kay and Chamber Dashboard (email : info@chamberdashboard.com)
+/*  Copyright 2023 Morgan Kay, Chandrika Sista  (email : cguntur@gcsdesign.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ Text Domain: cdash
 */
 
 define( 'CDASH_BD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CDASH_BUS_VER', '3.3.7' );
+define( 'CDASH_BUS_VER', '3.3.8' );
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
