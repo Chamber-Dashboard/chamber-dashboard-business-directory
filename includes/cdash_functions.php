@@ -127,7 +127,7 @@ function cd_log_message($level, $message) {
 }
 function display_categories_grid($taxonomies, $showcount, $showCatImage, $showCatDesc, $hierarchical, $align_class, $depth, $child_of){
     $maxdepth = ($depth == 0) ? 99 : $depth;
-    $output = '<div class="business_category responsive ' . $align_class . '">';
+    $output = '<div class="business_category responsive ' . esc_attr($align_class) . '">';
     if ( !empty($taxonomies) ) {
         foreach( $taxonomies as $category ) {
             if($showcount == 1){

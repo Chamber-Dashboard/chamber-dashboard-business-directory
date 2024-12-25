@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://www.gcsdesign.com
 Description: Display a directory of the businesses in your chamber of commerce
-Version: 3.3.8
+Version: 3.3.9
 Author: Chandrika Guntur, Morgan Kay
 Author URI: https://www.gcsdesign.com/
 Text Domain: cdash

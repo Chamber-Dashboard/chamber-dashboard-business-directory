@@ -218,7 +218,7 @@ add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
 //Display the list of alphabet
 function cdash_list_alphabet($align){
     global $wp;
-    $align_class = "align".$align;
+    $align_class = "align".esc_attr($align);
 	$results = str_split("0ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	$alpha = '';
 	$alpha .= "<div class='alpha_listings ".$align_class."'>";

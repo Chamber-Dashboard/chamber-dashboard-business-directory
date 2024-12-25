@@ -49,7 +49,7 @@ function cdash_business_categories_shortcode( $atts ) {
     }
 
 	if($format == 'list'){
-		$categories = '<ul class="business-categories ' . $align_class. '">' . 	wp_list_categories($args) . '</ul>';
+		$categories = '<ul class="business-categories ' . esc_attr($align_class). '">' . 	wp_list_categories($args) . '</ul>';
 	}else if($format == 'grid'){
 		cdash_enqueue_styles();
 		$categories = display_categories_grid($taxonomies, $showcount, $showCatImage, $showCatDesc, $hierarchical, $align_class, $depth, $child_of);
