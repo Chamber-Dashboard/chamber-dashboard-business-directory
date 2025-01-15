@@ -27,6 +27,7 @@ jQuery(document).ready(function($){
       type:'post',
       data: {
         'action': 'cdash_add_demo_data',
+        'nonce': 'cdash-demo-content',
       },
       beforeSend: function() {
         $('#loader').show();

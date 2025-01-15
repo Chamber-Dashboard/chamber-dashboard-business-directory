@@ -236,6 +236,10 @@ function cdash_admin_scripts() {
 
   //wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__) ) );
   wp_enqueue_script( 'cdash-demo-content', plugins_url( 'js/cdash_demo_content.js', dirname(__FILE__)), 'jquery-ui');
+  wp_localize_script('cdash-demo-content','cdash_demo_content_ajax',array( 
+    'ajax_url' => admin_url( 'admin-ajax.php' ),
+    'nonce' => wp_create_nonce('add_demo_content')
+) );
 }
 
 add_action('admin_enqueue_scripts', 'cdash_admin_scripts');

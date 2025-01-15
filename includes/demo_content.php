@@ -28,6 +28,14 @@ function cdash_install_demo_content_button(){
 }
 
 function cdash_add_demo_data(){
+  //check_ajax_referer('add_demo_content', 'nonce');
+  wp_verify_nonce( $_POST['nonce'], 'add_demo_content' );
+  
+  // Make sure user is admin
+  if ( ! current_user_can( 'manage_options' ) ) {
+    return;
+  }
+  //check_ajax_referer('add_demo_content', 'security');
   $response = '';
 
   //Create demo business categories
@@ -36,12 +44,10 @@ function cdash_add_demo_data(){
   $demo_post_id = cdash_insert_demo_business();
   $demo_page_id = cdash_add_demo_pages();
 
-  if ( ($demo_post_id != 0) || $demo_page_id !=0 )
-    {
+  if ( ($demo_post_id != 0) || $demo_page_id !=0 ){
         $response = __('Demo data successfully added.', 'cdash');
         flush_rewrite_rules();
-    }
-    else {
+    }else {
         $response = __('The data already exists.', 'cdash');
     }
     // Return the String
