@@ -34,11 +34,11 @@ function cdash_add_demo_data(){
 
   // Make sure user is admin
   if ( !current_user_can( 'manage_options' ) ) {
-    return;
+    wp_die();
   }
 
   if(!wp_verify_nonce( $nonce, 'add_demo_content' )){
-    return;
+    wp_die();
   }
   
   //Create demo business categories
@@ -54,7 +54,7 @@ function cdash_add_demo_data(){
     $response = __('The data already exists.', 'cdash');
   }
   // Return the String
-  die($response);
+  wp_die($response);
 }
 
 // creating Ajax call for WordPress
